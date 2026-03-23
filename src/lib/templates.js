@@ -6,7 +6,7 @@ export const templates = [
   },
   {
     id: "dia-mujer",
-    title: "DÍA DE LA MUJER",
+    title: "Día de la mujer",
     image: "/public/images/dia-mujer/img.svg",
-  },
+  }
 ];

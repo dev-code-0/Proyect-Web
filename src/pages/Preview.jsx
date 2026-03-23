@@ -1,46 +1,97 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { templates } from '../lib/templates';
 import '../styles/preview.css';
 
-// Importamos el template recién creado
 import DiaMujerTemplate from '../templates/dia-mujer/index.jsx';
+import { diaMujerConfig } from '../templates/dia-mujer/config.js';
+import CustomizeModal from '../components/CustomizeModal';
+import ShareModal from '../components/ShareModal'; // Importamos el nuevo modal
+import { supabase } from '../lib/supabase';
 
 export default function Preview() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [generatedLink, setGeneratedLink] = useState('');
+  const [previewData, setPreviewData] = useState({}); 
+
   const templateActual = templates.find(t => t.id === id);
 
   if (!templateActual) {
     return <div style={{textAlign: 'center', marginTop: '50px'}}>Proyecto no encontrado</div>;
   }
 
-  // Función para renderizar el componente correcto según el ID
+  const handleSaveConfig = async (datosPersonalizados) => {
+    const uniqueId = Math.random().toString(36).substring(2, 9);
+    
+    // Guardamos en la base de datos real
+    const { data, error } = await supabase
+      .from('proyectos_creados')
+      .insert([{ id: uniqueId, template_id: id, user_data: datosPersonalizados }]);
+
+    if (error) {
+      console.error("Error al guardar:", error);
+      alert("Hubo un error al guardar tu proyecto.");
+      return;
+    }
+
+    const finalLink = `${window.location.origin}/view/${uniqueId}`;
+    setGeneratedLink(finalLink);
+    setShowCustomizeModal(false);
+    setShowShareModal(true);
+  };
+
   const renderTemplate = () => {
     switch(id) {
       case 'dia-mujer':
-        // Le pasamos un data vacío para que use los datos de prueba
-        return <DiaMujerTemplate data={{}} />; 
+        return <DiaMujerTemplate data={previewData} />; 
       default:
-        return <p>Aquí se mostrará la web de {templateActual.title.toLowerCase()}</p>;
+        return <p>Aquí se mostrará la web de <strong>{templateActual.title.toLowerCase()}</strong></p>;
     }
   };
+
+  const getConfig = () => {
+    if (id === 'dia-mujer') return diaMujerConfig;
+    return { name: 'Proyecto genérico', fields: [] };
+  };
+
+  // Función para cuando cierra el modal de compartir
+  const handleCloseShare = () => {
+    setShowShareModal(false);
+    navigate('/'); // Lo mandamos al inicio
+  }
 
   return (
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
       
-      {/* El cuadro de previsualización que simula un celular */}
       <div className="preview-box" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
         {renderTemplate()}
       </div>
 
-      <button className="btn-personalizar">
+      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>
         Personalizar
       </button>
 
-      <Link to="/" className="btn-volver">
-        Volver
-      </Link>
+      <Link to="/" className="btn-volver">Volver</Link>
+
+      {/* Modal para rellenar datos */}
+      {showCustomizeModal && (
+        <CustomizeModal 
+          config={getConfig()} 
+          onClose={() => setShowCustomizeModal(false)} 
+          onSave={handleSaveConfig} 
+        />
+      )}
+
+      {/* Modal final con el QR y el Link */}
+      <ShareModal 
+        isOpen={showShareModal}
+        onClose={handleCloseShare}
+        shareLink={generatedLink}
+      />
     </main>
   );
 }

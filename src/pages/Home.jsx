@@ -9,7 +9,7 @@ export default function Home() {
       <h1 className="main-title">CODE FREE</h1>
       
       {/* Carrusel Dinámico */}
-      <TemplateCarousel />
+      <TemplateCarousel /> 
 
       <ActionButtons />
     </main>

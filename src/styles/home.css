@@ -10,7 +10,7 @@
   letter-spacing: 2px;
   margin-bottom: 30px;
   font-weight: 900;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos de los botones blancos */
@@ -24,16 +24,20 @@
 }
 
 .btn-white {
-  background-color: rgb(255, 255, 255);
-  color: black;
-  border: none;
+  background:
+    radial-gradient(circle 25px at 10px 10px, #ffffff 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.1) 40%, transparent 80%) padding-box,
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
+    linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636) border-box;
+
+  color: #fff;
+  border: 1.5px solid transparent;
   border-radius: 20px;
   padding: 15px 20px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
 
@@ -72,8 +76,11 @@
 /* Estilos del Modal */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,5 +95,20 @@
   max-width: 90%;
 }
 
-.btn-blue { background: #52BFF2; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; }
-.btn-gray { background: #ccc; color: black; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;}
+.btn-blue {
+  background: #52BFF2;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.btn-gray {
+  background: #ccc;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}

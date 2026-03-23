@@ -91,7 +91,7 @@ export default function DiaMujerTemplate({ data }) {
         id="sobre-pantalla"
         onClick={abrirSobre}
       >
-        <div className="sobre-contenido pulse">
+        <div className="sobre-contenido pulse" >
           <span className="icono-sobre">
             {/* Importar el svg aqui */}
             <img src={IconoSobre} alt="" />
@@ -174,6 +174,10 @@ export default function DiaMujerTemplate({ data }) {
       {/* CARRUSEL */}
       {mostrarCarrusel && (
         <div id="carrusel-lightbox" className="pantalla-completa">
+          {/* NUEVO BOTÓN DE CERRAR AQUÍ */}
+          <div className="btn-cerrar-carrusel" onClick={terminarCarrusel}>
+            ✖
+          </div>
           <img
             id="foto-actual"
             src={misFotos[indiceFoto]}

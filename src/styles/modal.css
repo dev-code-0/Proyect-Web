@@ -1,0 +1,53 @@
+/* Heredamos el overlay oscuro que ya teníamos en global/home, agregamos lo específico del form */
+.custom-modal {
+  width: 100%;
+  max-width: 400px;
+  color: #333;
+}
+
+.custom-modal h2 {
+  color: #52BFF2;
+  margin-bottom: 5px;
+}
+
+.custom-modal p {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+.form-group input[type="file"] {
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
