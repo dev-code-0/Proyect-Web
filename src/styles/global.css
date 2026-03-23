@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+}
+
+body {
+  background-color: #686968; /* El azul de tu imagen */
+  color: rgb(255, 0, 221);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

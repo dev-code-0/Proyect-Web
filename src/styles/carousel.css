@@ -1,0 +1,59 @@
+.carousel-container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 0 20px 0;
+  /* Para que el scroll sea suave en móviles */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ocultar barra de scroll para que se vea más limpio */
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+.carousel-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.carousel-card {
+  background: rgb(83, 83, 83);
+  min-width: 130px;
+  height: 150px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.carousel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+}
+
+.carousel-card:active {
+  transform: scale(0.95);
+}
+
+.carousel-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.carousel-title {
+  color: black;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 5px;
+  width: 100%;
+}

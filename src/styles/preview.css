@@ -1,0 +1,48 @@
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.preview-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.preview-box {
+  background: white;
+  width: 100%;
+  max-width: 320px;
+  height: 550px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.btn-personalizar {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+
+.btn-volver {
+  color: white;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
