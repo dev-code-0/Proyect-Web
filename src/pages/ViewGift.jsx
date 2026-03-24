@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 // Importamos todos los templates que existan
 import DiaMujerTemplate from '../templates/dia-mujer/index.jsx';
 import { supabase } from '../lib/supabase';
+import RosaVirtualTemplate from '../templates/rosa-virtual/index.jsx';
 
 
 export default function ViewGift() {
@@ -50,6 +51,12 @@ export default function ViewGift() {
       return (
         <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
           <DiaMujerTemplate data={projectData.user_data} />
+        </div>
+      );
+    case 'rosa-virtual':
+      return (
+        <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+          <RosaVirtualTemplate data={projectData.user_data} />
         </div>
       );
     default:

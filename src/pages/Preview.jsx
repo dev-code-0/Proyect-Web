@@ -1,35 +1,43 @@
-import React, { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { templates } from '../lib/templates';
-import '../styles/preview.css';
+import React, { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { templates } from "../lib/templates";
+import "../styles/preview.css";
 
-import DiaMujerTemplate from '../templates/dia-mujer/index.jsx';
-import { diaMujerConfig } from '../templates/dia-mujer/config.js';
-import CustomizeModal from '../components/CustomizeModal';
-import ShareModal from '../components/ShareModal'; // Importamos el nuevo modal
-import { supabase } from '../lib/supabase';
+import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
+import { diaMujerConfig } from "../templates/dia-mujer/config.js";
+import CustomizeModal from "../components/CustomizeModal";
+import ShareModal from "../components/ShareModal"; // Importamos el nuevo modal
+import { supabase } from "../lib/supabase";
+import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
+import RosaCreator from "../templates/rosa-virtual/RosaCreator.jsx";
 
 export default function Preview() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [generatedLink, setGeneratedLink] = useState('');
-  const [previewData, setPreviewData] = useState({}); 
+  const [generatedLink, setGeneratedLink] = useState("");
+  const [previewData, setPreviewData] = useState({});
 
-  const templateActual = templates.find(t => t.id === id);
+  const templateActual = templates.find((t) => t.id === id);
 
   if (!templateActual) {
-    return <div style={{textAlign: 'center', marginTop: '50px'}}>Proyecto no encontrado</div>;
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        Proyecto no encontrado
+      </div>
+    );
   }
 
   const handleSaveConfig = async (datosPersonalizados) => {
     const uniqueId = Math.random().toString(36).substring(2, 9);
-    
+
     // Guardamos en la base de datos real
     const { data, error } = await supabase
-      .from('proyectos_creados')
-      .insert([{ id: uniqueId, template_id: id, user_data: datosPersonalizados }]);
+      .from("proyectos_creados")
+      .insert([
+        { id: uniqueId, template_id: id, user_data: datosPersonalizados },
+      ]);
 
     if (error) {
       console.error("Error al guardar:", error);
@@ -44,50 +52,71 @@ export default function Preview() {
   };
 
   const renderTemplate = () => {
-    switch(id) {
-      case 'dia-mujer':
-        return <DiaMujerTemplate data={previewData} />; 
+    switch (id) {
+      case "dia-mujer":
+        return <DiaMujerTemplate data={previewData} />;
+      case "rosa-virtual":
+        return <RosaVirtualTemplate data={previewData} />;
       default:
-        return <p>Aquí se mostrará la web de <strong>{templateActual.title.toLowerCase()}</strong></p>;
+        return (
+          <p>
+            Aquí se mostrará la web de{" "}
+            <strong>{templateActual.title.toLowerCase()}</strong>
+          </p>
+        );
     }
   };
 
   const getConfig = () => {
-    if (id === 'dia-mujer') return diaMujerConfig;
-    return { name: 'Proyecto genérico', fields: [] };
+    if (id === "dia-mujer") return diaMujerConfig;
+    return { name: "Proyecto genérico", fields: [] };
   };
 
   // Función para cuando cierra el modal de compartir
   const handleCloseShare = () => {
     setShowShareModal(false);
-    navigate('/'); // Lo mandamos al inicio
-  }
+    navigate("/"); // Lo mandamos al inicio
+  };
 
   return (
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
-      
-      <div className="preview-box" style={{ padding: 0, overflow: 'hidden', position: 'relative' }}>
+
+      <div
+        className="preview-box"
+        style={{ padding: 0, overflow: "hidden", position: "relative" }}
+      >
         {renderTemplate()}
       </div>
 
-      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>
+      <button
+        className="btn-personalizar"
+        onClick={() => setShowCustomizeModal(true)}
+      >
         Personalizar
       </button>
 
-      <Link to="/" className="btn-volver">Volver</Link>
+      <Link to="/" className="btn-volver">
+        Volver
+      </Link>
 
       {/* Modal para rellenar datos */}
-      {showCustomizeModal && (
-        <CustomizeModal 
-          config={getConfig()} 
-          onClose={() => setShowCustomizeModal(false)} 
-          onSave={handleSaveConfig} 
-        />
-      )}
+      {showCustomizeModal &&
+        (id === "rosa-virtual" ? (
+          <RosaCreator
+            onClose={() => setShowCustomizeModal(false)}
+            onSave={handleSaveConfig}
+          />
+        ) : (
+          <CustomizeModal
+            config={getConfig()}
+            onClose={() => setShowCustomizeModal(false)}
+            onSave={handleSaveConfig}
+          />
+        ))}
 
       {/* Modal final con el QR y el Link */}
-      <ShareModal 
+      <ShareModal
         isOpen={showShareModal}
         onClose={handleCloseShare}
         shareLink={generatedLink}

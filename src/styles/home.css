@@ -38,7 +38,11 @@
   cursor: pointer;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  transition: transform 0.2s, scale 0.2s;
+}
+
+.btn-white:hover {
+  transform: scale(1.1);
 }
 
 .btn-white:active {

@@ -8,5 +8,10 @@ export const templates = [
     id: "dia-mujer",
     title: "Día de la mujer",
     image: "/public/images/dia-mujer/img.svg",
-  }
+  },
+  {
+    id: "rosa-virtual",
+    title: "ROSA VIRTUAL",
+    image: "public/images/flowers/favicon.svg",
+  },
 ];
