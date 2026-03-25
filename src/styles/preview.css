@@ -10,12 +10,13 @@
   font-size: 1.8rem;
   margin-bottom: 20px;
   text-align: center;
+  color: rgb(255, 0, 221);
+
 }
 
 .preview-box {
   background: white;
-  width: 100%;
-  max-width: 320px;
+  width: 320px;
   height: 550px;
   border-radius: 10px;
   display: flex;

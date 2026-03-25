@@ -8,32 +8,32 @@ import './creator.css';
 // ─── Datos ────────────────────────────────────────────────────────────────────
 
 const ROSAS = [
-  { color: 'red',       hex: '#e23535', bgLight: '#ffdada', img: 'rose-red.png',       ramo: 'roses-red.png',       alt: 'Rosa roja'     },
-  { color: 'orange',    hex: '#ff9c24', bgLight: '#ffe3c1', img: 'rose-orange.png',    ramo: 'roses-orange.png',    alt: 'Rosa naranja'  },
-  { color: 'violet',    hex: '#6e16e3', bgLight: '#cfcee7', img: 'rose-violet.png',    ramo: 'roses-violet.png',    alt: 'Rosa violeta'  },
-  { color: 'yellow',    hex: '#fdd300', bgLight: '#fef4a7', img: 'rose-yellow.png',    ramo: 'roses-yellow.png',    alt: 'Rosa amarilla' },
-  { color: 'lightblue', hex: '#2d95ff', bgLight: '#d3ebff', img: 'rose-lightblue.png', ramo: 'roses-lightblue.png', alt: 'Rosa azul'     },
-  { color: 'white',     hex: '#b0b0b0', bgLight: '#dcdcdc', img: 'rose-white.png',     ramo: 'roses-white.png',     alt: 'Rosa blanca'   },
-  { color: 'pink',      hex: '#ff58ac', bgLight: '#f0c9dc', img: 'rose-pink.png',      ramo: 'roses-rose.png',      alt: 'Rosa rosada'   },
+  { color: 'red',       hex: '#e23535', bgLight: '#ffdada', img: 'rose-red.webp',       ramo: 'roses-red.webp',       alt: 'Rosa roja'     },
+  { color: 'orange',    hex: '#ff9c24', bgLight: '#ffe3c1', img: 'rose-orange.webp',    ramo: 'roses-orange.webp',    alt: 'Rosa naranja'  },
+  { color: 'violet',    hex: '#6e16e3', bgLight: '#cfcee7', img: 'rose-violet.webp',    ramo: 'roses-violet.webp',    alt: 'Rosa violeta'  },
+  { color: 'yellow',    hex: '#fdd300', bgLight: '#fef4a7', img: 'rose-yellow.webp',    ramo: 'roses-yellow.webp',    alt: 'Rosa amarilla' },
+  { color: 'lightblue', hex: '#2d95ff', bgLight: '#d3ebff', img: 'rose-lightblue.webp', ramo: 'roses-lightblue.webp', alt: 'Rosa azul'     },
+  { color: 'white',     hex: '#b0b0b0', bgLight: '#dcdcdc', img: 'rose-white.webp',     ramo: 'roses-white.webp',     alt: 'Rosa blanca'   },
+  { color: 'pink',      hex: '#ff58ac', bgLight: '#f0c9dc', img: 'rose-pink.webp',      ramo: 'roses-rose.webp',      alt: 'Rosa rosada'   },
 ];
 
-const INTENCIONES = [
-  { sub: 'Mostrar',    main: 'Amor',      msg: ', te han regalado esta rosa para que sepas lo especial que eres para esa persona' },
-  { sub: 'Desear',     main: 'Suerte',    msg: ', te han regalado esta rosa para desearte mucha suerte en los próximos días' },
-  { sub: 'Subir sus',  main: 'Ánimos',    msg: ', te han regalado esta rosa para darte muchos ánimos y abrazos' },
-  { sub: 'Apoyar',     main: 'Enfermo',   msg: ', te han regalado esta rosa para que te encuentres mejor y te recuperes pronto.' },
-  { sub: 'Feliz',      main: 'San Valentín', msg: ', te han regalado esta rosa para mostrar su amor y desearte un buen San Valentín.' },
-  { sub: 'Feliz',      main: 'Cumple',    msg: ', te han regalado esta rosa para desearte un Feliz Cumpleaños y darte abrazos.' },
-  { sub: 'Dia de la',  main: 'Madre',     msg: ', te han regalado esta rosa para desearte un buen día de la Madre.' },
-  { sub: 'Dia del',    main: 'Padre',     msg: ', te han regalado esta rosa para desearte un buen día del Padre.' },
-  { sub: 'Cumple',     main: 'Mes',       msg: ', te han regalado esta rosa para celebrar este día del mes tan especial.' },
-  { sub: 'Pedir',      main: 'Perdón',    msg: ', te han regalado esta rosa porque siente mucho lo que ha pasado.' },
-  { sub: 'Para',       main: 'Felicitar', msg: ', te han regalado esta rosa para felicitarte por lo que ha ocurrido!' },
-  { sub: 'Dar las',    main: 'Gracias',   msg: ', te han regalado esta rosa para agradecerte todo lo que has hecho.' },
-  { sub: 'Feliz Sant', main: 'Jordi',     msg: ', te han regalado esta rosa para desearte un Feliz Sant Jordi!' },
-  { sub: 'Apoyar',     main: 'Cancer',    msg: ', te han regalado esta rosa para demostrar apoyo en la lucha contra el cáncer' },
-  { sub: 'Agradecer',  main: 'Amistad',   msg: ', te han regalado esta rosa para agradecer vuestra amistad' },
-  { sub: 'Sín',        main: 'Razón',     msg: ', te han regalado esta rosa sin razón, porque eres importante' },
+const INTENCIONES = [   
+  { sub: 'Mostrar',    main: 'Amor',          msg: ', te han regalado esta rosa para que sepas lo especial que eres para esa persona' },
+  { sub: 'Desear',     main: 'Suerte',        msg: ', te han regalado esta rosa para desearte mucha suerte en los próximos días' },
+  { sub: 'Subir sus',  main: 'Ánimos',        msg: ', te han regalado esta rosa para darte muchos ánimos y abrazos' },
+  { sub: 'Apoyar',     main: 'Enfermo',       msg: ', te han regalado esta rosa para que te encuentres mejor y te recuperes pronto.' },
+  { sub: 'Feliz',      main: 'San Valentín',  msg: ', te han regalado esta rosa para mostrar su amor y desearte un buen San Valentín.' },
+  { sub: 'Feliz',      main: 'Cumple',        msg: ', te han regalado esta rosa para desearte un Feliz Cumpleaños y darte abrazos.' },
+  { sub: 'Dia de la',  main: 'Madre',         msg: ', te han regalado esta rosa para desearte un buen día de la Madre.' },
+  { sub: 'Dia del',    main: 'Padre',         msg: ', te han regalado esta rosa para desearte un buen día del Padre.' },
+  { sub: 'Cumple',     main: 'Mes',           msg: ', te han regalado esta rosa para celebrar este día del mes tan especial.' },
+  { sub: 'Pedir',      main: 'Perdón',        msg: ', te han regalado esta rosa porque siente mucho lo que ha pasado.' },
+  { sub: 'Para',       main: 'Felicitar',     msg: ', te han regalado esta rosa para felicitarte por lo que ha ocurrido!' },
+  { sub: 'Dar las',    main: 'Gracias',       msg: ', te han regalado esta rosa para agradecerte todo lo que has hecho.' },
+  { sub: 'Feliz Sant', main: 'Jordi',         msg: ', te han regalado esta rosa para desearte un Feliz Sant Jordi!' },
+  { sub: 'Apoyar',     main: 'Cancer',        msg: ', te han regalado esta rosa para demostrar apoyo en la lucha contra el cáncer' },
+  { sub: 'Agradecer',  main: 'Amistad',       msg: ', te han regalado esta rosa para agradecer vuestra amistad' },
+  { sub: 'Sín',        main: 'Razón',         msg: ', te han regalado esta rosa sin razón, porque eres importante' },
 ];
 
 const IMG_BASE = '/src/templates/rosa-virtual/images/';
@@ -59,25 +59,25 @@ function RosaIcon({ color = 'currentColor', size = 44, style = {} }) {
 // ─── Componente Principal ──────────────────────────────────────────────────────
 
 export default function RosaCreator({ onSave, onClose }) {
-  const [step, setStep]                   = useState(1);
-  const [animDir, setAnimDir]             = useState('next');   // 'next' | 'prev'
+  const [step, setStep]                         = useState(1);
+  const [animDir, setAnimDir]                   = useState('next');   // 'next' | 'prev'
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showVideoModal, setShowVideoModal]     = useState(false);
-  const [videoUrl, setVideoUrl]           = useState('');
-  const [videoSaved, setVideoSaved]       = useState('');
-  const [charCount, setCharCount]         = useState(0);
+  const [videoUrl, setVideoUrl]                 = useState('');
+  const [videoSaved, setVideoSaved]             = useState('');
+  const [charCount, setCharCount]               = useState(0);
   const [intentionSelected, setIntentionSelected] = useState(null); // índice
-  const [rosaIndex, setRosaIndex]         = useState(0);            // slide activo
-  const [isBouquet, setIsBouquet]         = useState(false);
-  const nameInputRef                      = useRef(null);
-  const swiperRef                         = useRef(null);
+  const [rosaIndex, setRosaIndex]                   = useState(0);            // slide activo
+  const [isBouquet, setIsBouquet]                   = useState(false);
+  const nameInputRef                                = useRef(null);
+  const swiperRef                                   = useRef(null);
 
   const [formData, setFormData] = useState({
     color:    'red',
     colorHex: '#e23535',
     bgLight:  '#ffdada',
-    roseImg:  `${IMG_BASE}rose-red.png`,
-    ramoImg:  `${IMG_BASE}roses-red.png`,
+    roseImg:  `${IMG_BASE}rose-red.webp`,
+    ramoImg:  `${IMG_BASE}roses-red.webp`,
     nombre:   '',
     intencion: '',
     intencionMsg: '',
@@ -117,7 +117,7 @@ export default function RosaCreator({ onSave, onClose }) {
       swiperRef.current.slideTo(sequence[i]);
       setTimeout(run, 700);
     };
-    const init = setTimeout(run, 500);
+    const init = setTimeout(run, 1000);
     return () => clearTimeout(init);
   }, []);
 
@@ -309,7 +309,7 @@ export default function RosaCreator({ onSave, onClose }) {
 
 
         {/* ════════════════════════════════════════════════
-            PASOS 2‑4 — Header compartido: vista previa
+            PASOS 2‑3 — Header compartido: vista previa
         ════════════════════════════════════════════════ */}
         {step >= 2 && step <= 3 && (
   <div
@@ -391,6 +391,7 @@ export default function RosaCreator({ onSave, onClose }) {
         )}
 
 
+       
         {/* ════════════════════════════════════════════════
             PASO 3 — Intención
         ════════════════════════════════════════════════ */}
@@ -407,15 +408,11 @@ export default function RosaCreator({ onSave, onClose }) {
               {/* Fila 1: Amor, Ánimos, Gracias */}
               <div className="intention-container">
                 {[0, 2, 11].map(i => (
-                  <IntentionCard
-                    key={i}
-                    idx={i}
-                    color={formData.colorHex}
-                    selected={intentionSelected === i}
-                    onSelect={() => {
-                      setIntentionSelected(i);
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].main, intencionMsg: INTENCIONES[i].msg }));
-                    }}
+                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
+                    onSelect={() => { 
+                      setIntentionSelected(i); 
+                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
+                    }} 
                   />
                 ))}
               </div>
@@ -423,28 +420,44 @@ export default function RosaCreator({ onSave, onClose }) {
               <div className="intention-container">
                 {[12, 10, 9].map(i => (
                   <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { setIntentionSelected(i); setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].main, intencionMsg: INTENCIONES[i].msg })); }} />
+                    onSelect={() => { 
+                      setIntentionSelected(i); 
+                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
+                    }} 
+                  />
                 ))}
               </div>
               {/* Fila 3 */}
               <div className="intention-container">
                 {[3, 1, 5].map(i => (
                   <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { setIntentionSelected(i); setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].main, intencionMsg: INTENCIONES[i].msg })); }} />
+                    onSelect={() => { 
+                      setIntentionSelected(i); 
+                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
+                    }} 
+                  />
                 ))}
               </div>
               {/* Fila 4 */}
               <div className="intention-container">
                 {[6, 7, 8].map(i => (
                   <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { setIntentionSelected(i); setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].main, intencionMsg: INTENCIONES[i].msg })); }} />
+                    onSelect={() => { 
+                      setIntentionSelected(i); 
+                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
+                    }} 
+                  />
                 ))}
               </div>
               {/* Fila 5 */}
               <div className="intention-container">
                 {[13, 14, 15].map(i => (
                   <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { setIntentionSelected(i); setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].main, intencionMsg: INTENCIONES[i].msg })); }} />
+                    onSelect={() => { 
+                      setIntentionSelected(i); 
+                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
+                    }} 
+                  />
                 ))}
               </div>
             </div>
@@ -636,7 +649,7 @@ export default function RosaCreator({ onSave, onClose }) {
             <div className="summary-container" style={{ display: 'grid', gap: 10, padding: 10 }}>
               {[
                 { label: 'Nombre',             value: formData.nombre },
-                { label: 'Intención',          value: formData.intencion },
+                { label: 'Intención',          value: formData.intencionCorta || formData.intencion },
                 { label: 'Mensaje Adicional',  value: formData.mensaje },
                 { label: 'Enlace de Video',    value: videoSaved || 'No especificado' },
               ].map(({ label, value }) => (

@@ -16,6 +16,7 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  color: #000;
 }
 
 /* ── Overlay / Contenedor principal ───────────────────────── */
@@ -254,7 +255,7 @@ button {
   width: 150px;
   height: 150px;
   flex-shrink: 0;
-  transition: transform 0.7s ease;
+  transition: transform 2s ease;
   transform: translateX(0);
 }
 
@@ -274,7 +275,7 @@ button {
 
 .rc-preview-text--visible {
   display: block;
-  animation: fadeInText 0.7s ease forwards;
+  animation: fadeInText 2s ease forwards;
 }
 
 .rc-preview-label {
@@ -298,7 +299,7 @@ button {
 
 .rc-preview-label--visible {
   display: block;
-  animation: fadeInText 0.7s ease forwards;
+  animation: fadeInText 2s ease forwards;
 }
 
 @keyframes fadeInText {
@@ -451,12 +452,12 @@ button {
 /* ── Animación de entrada del swiper: 1 → 1.2 → 1 ────────── */
 @keyframes swiperPulse {
   0%   { transform: scale(1); }
-  50%  { transform: scale(1.2); }
+  50%  { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
 
 .rc-swiper-wrapper {
-  animation: swiperPulse 2s ease-in-out 1;
+  animation: swiperPulse 2s ease-in-out 1s 1;
 }
 
 /* ── Responsive ───────────────────────────────────────────── */

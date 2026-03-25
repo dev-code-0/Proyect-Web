@@ -11,7 +11,7 @@ export const templates = [
   },
   {
     id: "rosa-virtual",
-    title: "ROSA VIRTUAL",
+    title: "Rosa virtual",
     image: "public/images/flowers/favicon.svg",
   },
 ];
