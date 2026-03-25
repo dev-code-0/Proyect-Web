@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
+  height: 100dvh;
+  justify-content: space-around;
 }
 
 .main-title {
@@ -10,8 +12,8 @@
   letter-spacing: 2px;
   margin-bottom: 30px;
   font-weight: 900;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  color: rgb(255, 0, 221);
+  text-shadow: 4px 4px 10px rgb(0, 241, 255);
+  color: rgb(0, 241, 255);
 
 }
 
@@ -31,7 +33,7 @@
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
     linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636) border-box;
 
-  color: #fff;
+  color: rgb(0,241,255);
   border: 1.5px solid transparent;
   border-radius: 20px;
   padding: 15px 20px;
@@ -94,7 +96,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: rgb(33, 33, 33);
   padding: 30px;
   border-radius: 20px;
   text-align: center;
@@ -102,8 +104,8 @@
 }
 
 .btn-blue {
-  background: #52BFF2;
-  color: white;
+  background: rgb(0, 241, 255);
+  color: #333;
   padding: 10px 20px;
   border-radius: 10px;
   font-weight: bold;

@@ -2,18 +2,21 @@
 .custom-modal {
   width: 100%;
   max-width: 400px;
-  color: #333;
+    color: rgb(0, 241, 255);
+
 }
 
 .custom-modal h2 {
-  color: #52BFF2;
+  color: rgb(0, 241, 255);
   margin-bottom: 5px;
 }
 
 .custom-modal p {
   margin-bottom: 20px;
   font-size: 0.9rem;
-  color: #666;
+  color: #fff;
+  font-weight: 500;
+  
 }
 
 .custom-form {
@@ -39,6 +42,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   font-family: inherit;
+  color: #333;
 }
 
 .form-group input[type="file"] {

@@ -10,7 +10,7 @@
   font-size: 1.8rem;
   margin-bottom: 20px;
   text-align: center;
-  color: rgb(255, 0, 221);
+  color: rgb(0, 241, 255);
 
 }
 
@@ -30,8 +30,12 @@
 }
 
 .btn-personalizar {
-  background-color: white;
-  color: black;
+  background:
+    radial-gradient(circle 25px at 10px 10px, #ffffff 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.1) 40%, transparent 80%) padding-box,
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
+    linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636) border-box;
+
+  color: rgb(0,241,255);
   border: none;
   border-radius: 20px;
   padding: 15px 40px;
@@ -43,7 +47,7 @@
 }
 
 .btn-volver {
-  color: white;
-  font-size: 0.9rem;
-  text-decoration: underline;
-}
+  color: rgb(0,241,255);
+  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: bold;

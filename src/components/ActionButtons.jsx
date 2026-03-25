@@ -1,29 +1,37 @@
 import React, { useState } from 'react';
 import YapeModal from './YapeModal';
+import FeedbackModal from './FeedbackModal'; // Importamos el nuevo modal
 
 export default function ActionButtons() {
   const [showYape, setShowYape] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false); // Estado para el nuevo modal
 
-  // Reemplaza estos links con los tuyos
-  const whatsappSugerencias = "https://wa.me/51983631052?text=Hola, tengo una sugerencia para la web... ";
+  // Link de tu comunidad de WhatsApp (el de sugerencias ya lo borramos)
   const whatsappComunidad = "https://chat.whatsapp.com/IGo1Z3EGz827anxc9QifNj";
 
   return (
     <div className="action-buttons-container">
-      <a href={whatsappSugerencias} target="_blank" rel="noreferrer" className="btn-white">
-        Enviar sugerencia
-      </a>
       
+      {/* Botón 1: Enviar Sugerencia (Abre el Modal) */}
+      <button onClick={() => setShowFeedback(true)} className="btn-white">
+        Enviar sugerencia
+      </button>
+      
+      {/* Botón 2: Apóyanos (Abre Yape) */}
       <button onClick={() => setShowYape(true)} className="btn-white">
         Apóyanos
       </button>
 
+      {/* Botón 3: Comunidad */}
       <a href={whatsappComunidad} target="_blank" rel="noreferrer" className="btn-white">
         Comunidad de WhatsApp
       </a>
 
-      {/* Renderiza el modal solo si showYape es true */}
+      {/* Renderizamos los modales solo si sus estados son true */}
       {showYape && <YapeModal onClose={() => setShowYape(false)} />}
+      
+      {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
+      
     </div>
   );
 }

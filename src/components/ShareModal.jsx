@@ -32,13 +32,13 @@ export default function ShareModal({ isOpen, onClose, shareLink }) {
         <h2>¡Tu regalo está listo!</h2>
         <p>Comparte este enlace o el código QR con esa persona especial.</p>
         
-        <div style={{ margin: '20px 0', background: '#f5f5f5', padding: '15px', borderRadius: '10px', wordBreak: 'break-all', fontSize: '0.9rem' }}>
+        <div style={{color:'#333', margin: '20px 0', background: '#f5f5f5', padding: '15px', borderRadius: '10px', wordBreak: 'break-all', fontSize: '0.9rem' }}>
           <strong>{shareLink}</strong>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }} ref={qrRef}>
           {/* Aquí se genera el QR mágicamente */}
-          <QRCodeCanvas value={shareLink} size={150} level={"H"} />
+          <QRCodeCanvas style={{padding: '10px', background: '#fff'}} value={shareLink} size={150} level={"H"} />
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -48,7 +48,7 @@ export default function ShareModal({ isOpen, onClose, shareLink }) {
           <button onClick={downloadQR} className="btn-white" style={{ width: '100%', border: '2px solid #52BFF2', color: '#52BFF2' }}>
             Descargar QR
           </button>
-          <button onClick={onClose} className="btn-gray" style={{ width: '100%', marginTop: '10px' }}>
+          <button onClick={onClose} className="btn-white" style={{ width: '100%', marginTop: '10px' }}>
             Cerrar y Volver al Inicio
           </button>
         </div>
