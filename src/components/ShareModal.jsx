@@ -16,8 +16,30 @@ export default function ShareModal({ isOpen, onClose, shareLink }) {
   };
 
   const downloadQR = () => {
-    const canvas = qrRef.current.querySelector('canvas');
-    const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+    // Agarramos el QR que generó la librería
+    const originalCanvas = qrRef.current.querySelector('canvas');
+    
+    // 1. Creamos un canvas temporal (invisible) para armar la imagen final
+    const canvasFinal = document.createElement('canvas');
+    const padding = 20; // Aquí decides de qué grosor quieres el borde blanco
+    const size = originalCanvas.width;
+
+    // El tamaño final será el QR + el padding de ambos lados
+    canvasFinal.width = size + (padding * 2);
+    canvasFinal.height = size + (padding * 2);
+
+    const ctx = canvasFinal.getContext('2d');
+
+    // 2. Pintamos todo el fondo de BLANCO primero
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+
+    // 3. Dibujamos tu QR original encima, empujándolo para que quede en el centro
+    ctx.drawImage(originalCanvas, padding, padding);
+
+    // 4. Ahora sí, descargamos este NUEVO canvas que ya tiene el fondo y el padding
+    const pngUrl = canvasFinal.toDataURL("image/png");
+    
     let downloadLink = document.createElement("a");
     downloadLink.href = pngUrl;
     downloadLink.download = "Tu_Regalo_QR.png";

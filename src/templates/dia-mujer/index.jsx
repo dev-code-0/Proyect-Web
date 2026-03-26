@@ -7,6 +7,7 @@ import Imagen1 from "./images/foto1.jpeg";
 import Imagen2 from "./images/foto2.jpeg";
 import Imagen3 from "./images/foto3.jpeg";
 import ILOVEYOUSO from "./song/I-love-you-so.mp3";
+import usePreloadImages from '../../hooks/usePreloadImages'; // Ajusta la ruta según dónde estés
 
 export default function DiaMujerTemplate({ data }) {
   // Datos dinámicos (si no hay, usamos valores por defecto para la previsualización)
@@ -19,7 +20,11 @@ export default function DiaMujerTemplate({ data }) {
           Imagen2,
           Imagen3
         ];
-  const srcMusica = data?.musica || ILOVEYOUSO; // Aquí iría tu I-love-you-so.mp3 si lo pones en la carpeta public
+
+        
+        const srcMusica = data?.musica || data?.audio || data?.cancion || ILOVEYOUSO; // Aquí iría tu I-love-you-so.mp3 si lo pones en la carpeta public
+        
+  usePreloadImages(misFotos); //Cargar las fotos al entrar a la página
 
   // Estados que reemplazan a los document.getElementById
   const [sobreAbierto, setSobreAbierto] = useState(false);
@@ -29,7 +34,9 @@ export default function DiaMujerTemplate({ data }) {
   const audioRef = useRef(null);
   const intervaloCarrusel = useRef(null);
 
-  // 1. Lógica del Sobre
+
+
+ // 1. Lógica del Sobre
   const abrirSobre = () => {
     if (navigator.vibrate) navigator.vibrate(50);
     setSobreAbierto(true);
