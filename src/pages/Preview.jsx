@@ -5,9 +5,11 @@ import "../styles/preview.css";
 
 import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
 import { diaMujerConfig } from "../templates/dia-mujer/config.js";
+
 import CustomizeModal from "../components/CustomizeModal";
 import ShareModal from "../components/ShareModal"; // Importamos el nuevo modal
 import { supabase } from "../lib/supabase";
+
 import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
 import RosaCreator from "../templates/rosa-virtual/RosaCreator.jsx";
 

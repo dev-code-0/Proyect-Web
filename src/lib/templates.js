@@ -1,7 +1,7 @@
 export const templates = [
   {
-    id: "flores-amarillas",
-    title: "Flores Amarillas",
+    id: "prueba-conex",
+    title: "Prubea Conex",
     image: "/public/images/flowers/favicon.svg",
   },
   {
