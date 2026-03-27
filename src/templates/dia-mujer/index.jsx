@@ -2,27 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import IconoSobre from "./icoCarta.svg";
 import IconoMujer from "./icoMujer.svg";
-import ImageLogo from "./images/video.png"
 import Imagen1 from "./images/foto1.jpeg";
 import Imagen2 from "./images/foto2.jpeg";
 import Imagen3 from "./images/foto3.jpeg";
 import ILOVEYOUSO from "./song/I-love-you-so.mp3";
 import usePreloadImages from '../../hooks/usePreloadImages'; // Ajusta la ruta según dónde estés
+import LogoMovie from "./movie.svg";
 
 export default function DiaMujerTemplate({ data }) {
   // Datos dinámicos (si no hay, usamos valores por defecto para la previsualización)
   const nombre = data?.nombre || "Maria";
-  const misFotos =
-    data?.fotos && data.fotos.length > 0
-      ? data.fotos
-      : [
-          Imagen1,
-          Imagen2,
-          Imagen3
-        ];
-
-        
-        const srcMusica = data?.musica || data?.audio || data?.cancion || ILOVEYOUSO; // Aquí iría tu I-love-you-so.mp3 si lo pones en la carpeta public
+  const misFotos = data?.fotos && data.fotos.length > 0 ? data.fotos : [Imagen1, Imagen2, Imagen3];
+  const srcMusica = data?.musica || data?.audio || data?.cancion || ILOVEYOUSO; // Aquí iría tu I-love-you-so.mp3 si lo pones en la carpeta public
         
   usePreloadImages(misFotos); //Cargar las fotos al entrar a la página
 
@@ -162,8 +153,6 @@ export default function DiaMujerTemplate({ data }) {
           {/* Cambia esto por tu imagen de video si la tienes en la carpeta public */}
           <div
             style={{
-              background: "#000",
-              color: "white",
               padding: "10px 20px",
               borderRadius: "15px",
               width: "50px",
@@ -173,7 +162,7 @@ export default function DiaMujerTemplate({ data }) {
               justifyContent: "center",
             }}
           >
-            <img className="imagen-logo" src={ImageLogo} alt="" />
+            <img className="imagen-logo" src={LogoMovie} alt="" />
           </div>
         </div>
       </main>

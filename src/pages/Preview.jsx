@@ -13,6 +13,9 @@ import { supabase } from "../lib/supabase";
 import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
 import RosaCreator from "../templates/rosa-virtual/RosaCreator.jsx";
 
+import PruebaConexTemplate from "../templates/prueba-conex/index.jsx"
+import { pruebaConexConfig } from "../templates/prueba-conex/config.js"
+
 export default function Preview() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -59,6 +62,8 @@ export default function Preview() {
         return <DiaMujerTemplate data={previewData} />;
       case "rosa-virtual":
         return <RosaVirtualTemplate data={previewData} />;
+      case "prueba-conex":
+        return <PruebaConexTemplate data={previewData} />;
       default:
         return (
           <p>
@@ -71,6 +76,7 @@ export default function Preview() {
 
   const getConfig = () => {
     if (id === "dia-mujer") return diaMujerConfig;
+    if (id === "prueba-conex") return pruebaConexConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 

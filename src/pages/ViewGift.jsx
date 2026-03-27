@@ -6,6 +6,8 @@ import DiaMujerTemplate from '../templates/dia-mujer/index.jsx';
 import { supabase } from '../lib/supabase';
 import RosaVirtualTemplate from '../templates/rosa-virtual/index.jsx';
 
+import PruebaConexTemplate from '../templates/prueba-conex/index.jsx';
+
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -58,7 +60,13 @@ export default function ViewGift() {
         <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
           <RosaVirtualTemplate data={projectData.user_data} />
         </div>
-      );
+      );  
+      case 'prueba-conex':
+        return (
+          <div style={ {width: '100vh', height: '100vh', position: 'relative'} }>
+            <PruebaConexTemplate data={projectData.user_data} />
+          </div>
+        )
     default:
       return <div style={{ color: 'white' }}>Template no soportado.</div>;
   }
