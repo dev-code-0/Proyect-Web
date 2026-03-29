@@ -1,0 +1,191 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;900&display=swap');
+
+/* ---- Root / fondo ----------------------------------------- */
+.novia-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fde8f0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #ffc2d4 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, #ffb3c6 0%, transparent 40%);
+  transition: background 0.8s ease;
+  font-family: 'Nunito', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.novia-root--yes {
+  background: #fff0f6;
+  background-image:
+    radial-gradient(circle at 20% 20%, #ffd6e7 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #ffb3c6 0%, transparent 50%);
+}
+
+.novia-wrap {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* ---- Card -------------------------------------------------- */
+.novia-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 150, 180, 0.35);
+  border-radius: 32px;
+  box-shadow:
+    0 8px 40px rgba(220, 80, 120, 0.13),
+    0 2px 8px rgba(0,0,0,0.06);
+  padding: 2.5rem 2rem 2rem;
+  max-width: 420px;
+  width: 90vw;
+  height: 90%;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  animation: cardIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.93); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+/* ---- GIF --------------------------------------------------- */
+.novia-gif-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 220px;
+  align-items: center;
+}
+
+.novia-gif {
+  width: 62%;
+  border-radius: 18px;
+  animation: gifPop 0.4s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes gifPop {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+/* ---- Pregunta --------------------------------------------- */
+.novia-question {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  color: #d6336c;
+  margin: 1rem 0 1.5rem;
+  text-shadow: 0 2px 8px rgba(214, 51, 108, 0.18);
+  line-height: 1.3;
+}
+
+/* ---- Botones ----------------------------------------------- */
+.novia-btns {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.novia-btn {
+  padding: 14px 34px;
+  font-size: 1.2rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.25s,
+              background 0.2s;
+  outline: none;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+/* Sí */
+.novia-btn--si {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.25s,
+              background 0.2s;
+}
+.novia-btn--si:hover {
+  background: linear-gradient(135deg, #009e7a, #00b4b0);
+  box-shadow: 0 8px 24px rgba(0, 184, 148, 0.35);
+}
+.novia-btn--si:active {
+  transform: scale(0.96) !important;
+}
+
+/* No */
+.novia-btn--no {
+  background: linear-gradient(135deg, #e17055, #d63031);
+  z-index: 100;
+}
+.novia-btn--no:hover {
+  background: linear-gradient(135deg, #c0392b, #96281b);
+  box-shadow: 0 8px 24px rgba(214, 48, 49, 0.35);
+}
+
+/* ---- Mensaje de respuesta ---------------------------------- */
+.novia-message {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  color: #d6336c;
+  margin-top: 1.2rem;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(214, 51, 108, 0.2);
+  animation: msgPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes msgPulse {
+  from { transform: scale(1);   }
+  to   { transform: scale(1.06);}
+}
+
+/* ---- Corazones flotantes ----------------------------------- */
+.hearts-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.heart-particle {
+  position: absolute;
+  bottom: -2rem;
+  animation: floatUp linear infinite both;
+  opacity: 0;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0)   rotate(-10deg); opacity: 0;   }
+  10%  { opacity: 1; }
+  80%  { opacity: 0.8; }
+  100% { transform: translateY(-110vh) rotate(15deg); opacity: 0; }
+}
+
+/* ---- Responsive ------------------------------------------- */
+@media (max-width: 420px) {
+  .novia-card {
+    padding: 1.8rem 1.2rem 1.5rem;
+  }
+  .novia-gif {
+    width: 72%;
+  }
+}

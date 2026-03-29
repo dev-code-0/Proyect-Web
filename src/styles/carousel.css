@@ -1,22 +1,63 @@
-.carousel-container {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
+.carousel-shell {
+  --carousel-shell-max: clamp(300px, 92vw, 500px);
+  --carousel-card-width: clamp(115px, 30vw, 130px);
   width: 100%;
-  max-width: 500px;
-  padding: 10px 0 20px 0;
+  max-width: var(--carousel-shell-max);
+  box-sizing: border-box;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel-viewport {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel-container {
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   /* Para que el scroll sea suave en móviles */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(0, 241, 255) rgba(4, 122, 116, 0.22);
 }
 
-/* Ocultar barra de scroll para que se vea más limpio */
-.carousel-container::-webkit-scrollbar {
-  display: none;
+.carousel-track {
+  display: flex;
+  gap: clamp(10px, 2.8vw, 15px);
+  width: max-content;
+  min-width: 100%;
+  justify-content: center;
+  padding: 10px 0 20px 0;
 }
-.carousel-container {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.carousel-container::-webkit-scrollbar {
+  height: 9px;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+  background: #696969;
+  border-radius: 999px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
 }
 
 .carousel-card {
@@ -25,7 +66,8 @@
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
     linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636) border-box;
 
-  min-width: 130px;
+  width: var(--carousel-card-width);
+  min-width: var(--carousel-card-width);
   height: 150px;
   border-radius: 15px;
   display: flex;
@@ -35,7 +77,9 @@
   overflow: hidden;
   box-shadow: inset -5px -10px 8px 1px rgb(0 0 0);;
   transition: transform 0.2s, box-shadow 0.2s;
-  flex-shrink: 0;
+  flex: 0 0 var(--carousel-card-width);
+  touch-action: pan-x;
+  
 }
 
 .carousel-card:hover {
@@ -48,9 +92,10 @@
 }
 
 .carousel-img {
-  width: 70px;
   height: 70px;
   object-fit: cover;
+  pointer-events: none;
+
 }
 
 .carousel-title {

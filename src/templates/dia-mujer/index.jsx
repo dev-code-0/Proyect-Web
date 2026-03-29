@@ -155,8 +155,7 @@ export default function DiaMujerTemplate({ data }) {
             style={{
               padding: "10px 20px",
               borderRadius: "15px",
-              width: "50px",
-              height: "50px",
+              width: "80px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

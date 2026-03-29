@@ -8,6 +8,10 @@ import RosaVirtualTemplate from '../templates/rosa-virtual/index.jsx';
 
 import PruebaConexTemplate from '../templates/prueba-conex/index.jsx';
 
+import FloresAmarillasTemplate from '../templates/flores-amarillas/index.jsx';
+import NoviaPregunta from '../templates/pregunta/index.jsx';
+import FloresCorazonesTemplate from '../templates/flores-corazones/index.jsx';
+
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -63,8 +67,26 @@ export default function ViewGift() {
       );  
       case 'prueba-conex':
         return (
-          <div style={ {width: '100vh', height: '100vh', position: 'relative'} }>
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
             <PruebaConexTemplate data={projectData.user_data} />
+          </div>
+        )
+      case 'flores-amarillas':
+        return (
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
+            <FloresAmarillasTemplate data={projectData.user_data} />
+          </div>
+        )
+      case 'pregunta':
+        return (
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
+            <NoviaPregunta data={projectData.user_data} />
+          </div>
+        )
+      case 'flores-corazones':
+        return (
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
+            <FloresCorazonesTemplate data={projectData.user_data} />
           </div>
         )
     default:

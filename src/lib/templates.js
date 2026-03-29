@@ -12,6 +12,20 @@ export const templates = [
   {
     id: "rosa-virtual",
     title: "Rosa virtual",
-    image: "public/images/flowers/favicon.svg",
+    image: "/public/images/flowers/favicon.svg",
+  },
+  {
+    id: "flores-amarillas",
+    title: "Flores amarillas",
+    image: "/public/images/flores-amarillas/flores_2.svg",
+  },
+  {
+    id: "pregunta",
+    title: "Pregunta",
+    image: "/public/images/pregunta/oso1.svg",
+  },
+  { id: "flores-corazones", 
+    title: "Flores y Corazones", 
+    image: "/public/images/flores-corazones/cajita.webp",
   },
 ];

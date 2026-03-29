@@ -16,6 +16,16 @@ import RosaCreator from "../templates/rosa-virtual/RosaCreator.jsx";
 import PruebaConexTemplate from "../templates/prueba-conex/index.jsx"
 import { pruebaConexConfig } from "../templates/prueba-conex/config.js"
 
+import FloresAmarillasTemplate from "../templates/flores-amarillas/index.jsx";
+import { floresAmarillasConfig } from "../templates/flores-amarillas/config.js";
+
+import NoviaPregunta from "../templates/pregunta/index.jsx";
+import { preguntaConfig } from "../templates/pregunta/config.js";
+
+import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
+import { floresCorazonesConfig } from "../templates/flores-corazones/config.js";
+
+
 export default function Preview() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -64,6 +74,12 @@ export default function Preview() {
         return <RosaVirtualTemplate data={previewData} />;
       case "prueba-conex":
         return <PruebaConexTemplate data={previewData} />;
+      case "flores-amarillas":
+        return <FloresAmarillasTemplate data={previewData} />;
+      case "pregunta":
+        return <NoviaPregunta data={previewData} />;
+      case "flores-corazones":
+        return <FloresCorazonesTemplate data={previewData} />;
       default:
         return (
           <p>
@@ -77,6 +93,9 @@ export default function Preview() {
   const getConfig = () => {
     if (id === "dia-mujer") return diaMujerConfig;
     if (id === "prueba-conex") return pruebaConexConfig;
+    if (id === "flores-amarillas") return floresAmarillasConfig;
+    if (id === "pregunta") return preguntaConfig;
+    if (id === "flores-corazones") return floresCorazonesConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 
