@@ -28,4 +28,9 @@ export const templates = [
     title: "Flores y Corazones", 
     image: "/public/images/flores-corazones/cajita.webp",
   },
+  {
+    id: "hypebox-misteriosa",
+    title: "Hypebox Misteriosa",
+    image: "/public/images/hypebox-misteriosa/preview.webp",
+  }
 ];

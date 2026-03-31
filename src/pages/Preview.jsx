@@ -25,6 +25,9 @@ import { preguntaConfig } from "../templates/pregunta/config.js";
 import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
 import { floresCorazonesConfig } from "../templates/flores-corazones/config.js";
 
+import HypeboxMisteriosa from "../templates/hypebox-misteriosa/index.jsx";
+import { hypeboxMisteriosaConfig } from "../templates/hypebox-misteriosa/config.js";
+
 
 export default function Preview() {
   const { id } = useParams();
@@ -80,6 +83,8 @@ export default function Preview() {
         return <NoviaPregunta data={previewData} />;
       case "flores-corazones":
         return <FloresCorazonesTemplate data={previewData} />;
+      case "hypebox-misteriosa":
+        return <HypeboxMisteriosa data={previewData} />;
       default:
         return (
           <p>
@@ -96,6 +101,8 @@ export default function Preview() {
     if (id === "flores-amarillas") return floresAmarillasConfig;
     if (id === "pregunta") return preguntaConfig;
     if (id === "flores-corazones") return floresCorazonesConfig;
+    if (id === "hypebox-misteriosa") return hypeboxMisteriosaConfig;
+
     return { name: "Proyecto genérico", fields: [] };
   };
 
