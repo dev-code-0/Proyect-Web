@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* --- Contenedor Principal (Actúa como el Viewport) --- */
+.regalo-virtual-container {
+  container-type: size;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #231b08 0%, #0d0d0d 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: inherit;
+  color: #fff;
+  font-family: 'Lora', serif;
+  box-sizing: border-box;
+}
+
+.regalo-virtual-container * {
+  box-sizing: border-box;
+}
+
+/* --- Fondo animado --- */
+.fondo-estrellas {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particula {
+  position: absolute;
+  bottom: -10px;
+  width: clamp(4px, 2cqw, 8px);
+  height: clamp(4px, 2cqw, 8px);
+  background: rgba(255, 204, 0, 0.4);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 204, 0, 0.2);
+  animation: flotar linear infinite;
+}
+
+@keyframes flotar {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100cqh) scale(1.5); opacity: 0; }
+}
+
+/* --- Pantalla de Inicio --- */
+.pantalla-inicio {
+  height: 100cqh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.titulo-tocar {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2rem, 10cqw, 3.5rem);
+  color: #ffcc00;
+  text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+  margin-bottom: 30px;
+  animation: pulso 2s infinite alternate;
+  text-align: center;
+}
+
+.boton-abrir {
+  background: linear-gradient(45deg, #ff8c00, #ffcc00);
+  border: none;
+  padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
+  font-size: clamp(1.2rem, 5cqw, 1.5rem);
+  font-family: 'Lora', serif;
+  font-weight: bold;
+  color: #5c3a00;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(255, 140, 0, 0.5);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.boton-abrir:active { transform: scale(0.95); }
+
+@keyframes pulso {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.05); opacity: 1; }
+}
+
+/* --- Contenido Principal --- */
+.contenido-abierto {
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.seccion-flores {
+  height: 100cqh;
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.titulo-principal {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.8rem, 9cqw, 3.5rem);
+  color: #ffcc00;
+  text-align: center;
+  margin-top: 10cqh;
+  text-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+  opacity: 0;
+  animation: aparecerTexto 2s forwards 0.5s;
+  line-height: 1.2;
+  padding: 0 10px;
+}
+
+@keyframes aparecerTexto {
+  to { opacity: 1; transform: translateY(10px); }
+}
+
+/* --- Sistema de Girasoles Responsive --- */
+.jardin-girasoles {
+  position: absolute;
+  bottom: 10%;
+  width: 100%;
+  max-width: 600px;
+  height: 50cqh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.girasol-wrapper {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: bottom center;
+}
+
+/* Posicionamiento y densidad para 10 girasoles */
+.girasol-5, .girasol-6 { left: 45%; transform: translateX(-50%) scale(1.1); z-index: 5; }
+.girasol-6 { left: 55%; }
+.girasol-4 { left: 30%; transform: scale(0.9) rotate(-5deg); }
+.girasol-7 { right: 30%; transform: scale(0.9) rotate(5deg); }
+.girasol-3 { left: 20%; transform: scale(0.7) rotate(-10deg); }
+.girasol-8 { right: 20%; transform: scale(0.7) rotate(10deg); }
+.girasol-2 { left: 10%; transform: scale(0.5) rotate(-15deg); }
+.girasol-9 { right: 10%; transform: scale(0.5) rotate(15deg); }
+.girasol-1 { left: 0%; transform: scale(0.4) rotate(-20deg); }
+.girasol-10 { right: 0%; transform: scale(0.4) rotate(20deg); }
+
+/* --- RESPONSIVIDAD ESPECÍFICA (Apegarse más en pantalla chica) --- */
+@container (max-width: 600px) {
+  .girasol-5, .girasol-6 { left: 48%; transform: translateX(-50%) scale(1); z-index: 5; }
+  .girasol-6 { left: 52%; }
+  .girasol-4 { left: 40%; transform: scale(0.8) rotate(-5deg); }
+  .girasol-7 { right: 40%; transform: scale(0.8) rotate(5deg); }
+  .girasol-3 { left: 32%; transform: scale(0.6) rotate(-10deg); }
+  .girasol-8 { right: 32%; transform: scale(0.6) rotate(10deg); }
+  .girasol-2 { left: 25%; transform: scale(0.5) rotate(-15deg); }
+  .girasol-9 { right: 25%; transform: scale(0.5) rotate(15deg); }
+  .girasol-1 { left: 18%; transform: scale(0.4) rotate(-20deg); }
+  .girasol-10 { right: 18%; transform: scale(0.4) rotate(20deg); }
+}
+
+.tallo {
+  width: clamp(6px, 2cqw, 12px);
+  height: 0;
+  background: linear-gradient(to right, #2d5a27, #4ca646, #2d5a27);
+  border-radius: 6px;
+  position: relative;
+  animation: crecerTallo 2s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+}
+
+/* Retrasos escalonados para 10 girasoles */
+.girasol-5 .tallo, .girasol-6 .tallo { animation-delay: 1s; }
+.girasol-4 .tallo, .girasol-7 .tallo { animation-delay: 1.2s; }
+.girasol-3 .tallo, .girasol-8 .tallo { animation-delay: 1.4s; }
+.girasol-2 .tallo, .girasol-9 .tallo { animation-delay: 1.6s; }
+.girasol-1 .tallo, .girasol-10 .tallo { animation-delay: 1.8s; }
+
+@keyframes crecerTallo {
+  to { height: clamp(150px, 35cqh, 350px); }
+}
+
+.cabeza-girasol {
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%) scale(0);
+  width: clamp(50px, 15cqw, 80px);
+  height: clamp(50px, 15cqw, 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: popFlor 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Retrasos de aparición escalonados */
+.girasol-5 .cabeza-girasol, .girasol-6 .cabeza-girasol { animation-delay: 2.5s; }
+.girasol-4 .cabeza-girasol, .girasol-7 .cabeza-girasol { animation-delay: 2.7s; }
+.girasol-3 .cabeza-girasol, .girasol-8 .cabeza-girasol { animation-delay: 2.9s; }
+.girasol-2 .cabeza-girasol, .girasol-9 .cabeza-girasol { animation-delay: 3.1s; }
+.girasol-1 .cabeza-girasol, .girasol-10 .cabeza-girasol { animation-delay: 3.3s; }
+
+@keyframes popFlor {
+  to { transform: translateY(-50%) scale(1); }
+}
+
+.centro-girasol {
+  width: 75%;
+  height: 75%;
+  background: radial-gradient(circle, #5c3a21 0%, #291500 100%);
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+.petalos { position: absolute; width: 100%; height: 100%; z-index: 1; }
+
+.petalo {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 30%;
+  height: 100%;
+  margin-left: -15%;
+  background: linear-gradient(to bottom, #ffea00, #ff9d00);
+  border-radius: 50% 50% 20% 20%;
+  transform-origin: 50% 100%;
+  /* --- Brillo Neón Amarillo/Naranja Solicitado --- */
+  box-shadow: 0 0 10px rgba(255, 234, 0, 0.8), 0 0 20px rgba(255, 157, 0, 0.5);
+}
+
+.indicador-scroll {
+  position: absolute;
+  bottom: 20px;
+  font-size: clamp(0.8rem, 4cqw, 1rem);
+  color: rgba(255,255,255,0.6);
+  animation: pulso 1.5s infinite alternate;
+}
+
+/* --- Sección Carta --- */
+.seccion-carta {
+  min-height: 100cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 15px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.9) 20%);
+  animation: fadeIn 1s forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tarjeta-mensaje {
+  background: rgba(15, 15, 15, 0.85);
+  border: 1px solid #ffcc00;
+  border-radius: 15px;
+  padding: clamp(20px, 6cqw, 40px);
+  width: 95%;
+  max-width: 500px;
+  box-shadow: 0 0 30px rgba(255, 204, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.titulo-carta {
+  font-family: 'Dancing Script', cursive;
+  color: #ffcc00;
+  font-size: clamp(2rem, 8cqw, 2.5rem);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.tarjeta-mensaje p {
+  line-height: 1.6;
+  font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
+  margin-bottom: 15px;
+  color: #e0e0e0;
+}
+
+.tarjeta-mensaje .firma {
+  text-align: right;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-top: 25px;
+}
+
+.girasol-final { margin-top: 60px; margin-bottom: 50px; }
+
+.cabeza-girasol.grande {
+  position: relative;
+  transform: scale(1.5);
+  animation: latir 3s ease-in-out infinite alternate;
+  /* Brillo neón para el girasol final */
+  box-shadow: 0 0 15px rgba(255, 234, 0, 0.8), 0 0 25px rgba(255, 157, 0, 0.5);
+}
+
+@keyframes latir {
+  from { transform: scale(1.5); }
+  to { transform: scale(1.6); }
+}

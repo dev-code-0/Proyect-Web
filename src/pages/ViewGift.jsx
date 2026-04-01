@@ -11,6 +11,8 @@ import PruebaConexTemplate from '../templates/prueba-conex/index.jsx';
 import FloresAmarillasTemplate from '../templates/flores-amarillas/index.jsx';
 import NoviaPregunta from '../templates/pregunta/index.jsx';
 import FloresCorazonesTemplate from '../templates/flores-corazones/index.jsx';
+import GirasolesTemplate from '../templates/girasoles/index.jsx';
+import RamoHotWheelsTemplate from '../templates/hot-wheels/index.jsx';
 
 
 export default function ViewGift() {
@@ -89,6 +91,19 @@ export default function ViewGift() {
             <FloresCorazonesTemplate data={projectData.user_data} />
           </div>
         )
+      case 'girasoles':
+        return (
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
+            <GirasolesTemplate data={projectData.user_data} />
+          </div>
+        )
+      case 'hot-wheels':
+        return (
+          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
+            <RamoHotWheelsTemplate data={projectData.user_data} />
+          </div>
+        )
+
     default:
       return <div style={{ color: 'white' }}>Template no soportado.</div>;
   }

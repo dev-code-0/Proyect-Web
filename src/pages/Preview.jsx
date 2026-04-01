@@ -25,8 +25,15 @@ import { preguntaConfig } from "../templates/pregunta/config.js";
 import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
 import { floresCorazonesConfig } from "../templates/flores-corazones/config.js";
 
-import HypeboxMisteriosa from "../templates/hypebox-misteriosa/index.jsx";
-import { hypeboxMisteriosaConfig } from "../templates/hypebox-misteriosa/config.js";
+import GirasolesTemplate from "../templates/girasoles/index.jsx";
+import { girasolesConfig } from "../templates/girasoles/config.js";
+
+import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
+import { hotWheelsConfig } from "../templates/hot-wheels/config.js";
+
+import CorazonCarruselTemplate from "../templates/corazon-carrusel/index.jsx";
+import { CorazonCarruselConfig } from "../templates/corazon-carrusel/config.js";
+
 
 
 export default function Preview() {
@@ -83,10 +90,14 @@ export default function Preview() {
         return <NoviaPregunta data={previewData} />;
       case "flores-corazones":
         return <FloresCorazonesTemplate data={previewData} />;
-      case "hypebox-misteriosa":
-        return <HypeboxMisteriosa data={previewData} />;
+      case "girasoles":
+        return <GirasolesTemplate data={previewData} />;
+      case "hot-wheels":
+        return <RamoHotWheelsTemplate data={previewData} />;
+      case "corazon-carrusel":
+        return <CorazonCarruselTemplate data={previewData} />;
       default:
-        return (
+        return ( 
           <p>
             Aquí se mostrará la web de{" "}
             <strong>{templateActual.title.toLowerCase()}</strong>
@@ -101,8 +112,9 @@ export default function Preview() {
     if (id === "flores-amarillas") return floresAmarillasConfig;
     if (id === "pregunta") return preguntaConfig;
     if (id === "flores-corazones") return floresCorazonesConfig;
-    if (id === "hypebox-misteriosa") return hypeboxMisteriosaConfig;
-
+    if (id === "girasoles") return girasolesConfig;
+    if (id === "hot-wheels") return hotWheelsConfig;
+    if (id === "corazon-carrusel") return CorazonCarruselConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 
@@ -116,10 +128,7 @@ export default function Preview() {
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
 
-      <div
-        className="preview-box"
-        style={{ padding: 0, overflow: "hidden", position: "relative" }}
-      >
+      <div className="preview-box">
         {renderTemplate()}
       </div>
 

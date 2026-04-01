@@ -32,5 +32,20 @@ export const templates = [
     id: "hypebox-misteriosa",
     title: "Hypebox Misteriosa",
     image: "/public/images/hypebox-misteriosa/preview.webp",
+  },
+  {
+    id: "girasoles",
+    title: "Girasoles",
+    image: "/public/images/girasoles/preview.webp",
+  }, 
+  {
+    id: "hot-wheels",
+    title: "Ramo Hot Wheels",
+    image: "/public/images/hot-wheels/preview.webp",
+  },
+  {
+    id: "corazon-carrusel",
+    title: "Corazón Carrusel",
+    image: "/public/images/corazon-carrusel/preview.webp",
   }
 ];
