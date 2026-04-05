@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
 // Importamos todos los templates que existan
-import DiaMujerTemplate from '../templates/dia-mujer/index.jsx';
-import { supabase } from '../lib/supabase';
-import RosaVirtualTemplate from '../templates/rosa-virtual/index.jsx';
+import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
+import { supabase } from "../lib/supabase";
+import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
 
-import PruebaConexTemplate from '../templates/prueba-conex/index.jsx';
+import PruebaConexTemplate from "../templates/prueba-conex/index.jsx";
 
-import FloresAmarillasTemplate from '../templates/flores-amarillas/index.jsx';
-import NoviaPregunta from '../templates/pregunta/index.jsx';
-import FloresCorazonesTemplate from '../templates/flores-corazones/index.jsx';
-import GirasolesTemplate from '../templates/girasoles/index.jsx';
-import RamoHotWheelsTemplate from '../templates/hot-wheels/index.jsx';
-
+import FloresAmarillasTemplate from "../templates/flores-amarillas/index.jsx";
+import NoviaPregunta from "../templates/pregunta/index.jsx";
+import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
+import GirasolesTemplate from "../templates/girasoles/index.jsx";
+import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
   const [projectData, setProjectData] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  // const style = {style: { width: "100vw", height: "100vh", position: "relative" }};
 
- useEffect(() => {
+  useEffect(() => {
     const fetchProject = async () => {
       const { data, error } = await supabase
-        .from('proyectos_creados')
-        .select('*')
-        .eq('id', id)
+        .from("proyectos_creados")
+        .select("*")
+        .eq("id", id)
         .single(); // Pedimos un solo registro
 
       if (error || !data) {
-        setError('No se encontró el regalo. El enlace podría estar roto o haber expirado.');
+        setError(
+          "No se encontró el regalo. El enlace podría estar roto o haber expirado.",
+        );
       } else {
         setProjectData(data);
       }
@@ -38,73 +40,85 @@ export default function ViewGift() {
     fetchProject();
   }, [id]);
 
-
   if (error) {
     return (
-      <div style={{ textAlign: 'center', padding: '50px', color: 'white' }}>
+      <div style={{ textAlign: "center", padding: "50px", color: "white" }}>
         <h2>Oops...</h2>
         <p>{error}</p>
-        <Link to="/" style={{ color: 'white', textDecoration: 'underline' }}>Ir al inicio</Link>
+        <Link to="/" style={{ color: "white", textDecoration: "underline" }}>
+          Ir al inicio
+        </Link>
       </div>
     );
   }
 
   if (!projectData) {
-    return <div style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Cargando sorpresa...</div>;
+    return (
+      <div style={{ color: "white", textAlign: "center", marginTop: "50px" }}>
+        Cargando sorpresa...
+      </div>
+    );
   }
 
   // 2. Renderizamos el template correcto envolviéndolo en un contenedor de pantalla completa
   switch (projectData.template_id) {
-    case 'dia-mujer':
+    case "dia-mujer":
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
           <DiaMujerTemplate data={projectData.user_data} />
         </div>
       );
-    case 'rosa-virtual':
+
+    case "rosa-virtual":
       return (
-        <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
           <RosaVirtualTemplate data={projectData.user_data} />
         </div>
-      );  
-      case 'prueba-conex':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <PruebaConexTemplate data={projectData.user_data} />
-          </div>
-        )
-      case 'flores-amarillas':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <FloresAmarillasTemplate data={projectData.user_data} />
-          </div>
-        )
-      case 'pregunta':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <NoviaPregunta data={projectData.user_data} />
-          </div>
-        )
-      case 'flores-corazones':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <FloresCorazonesTemplate data={projectData.user_data} />
-          </div>
-        )
-      case 'girasoles':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <GirasolesTemplate data={projectData.user_data} />
-          </div>
-        )
-      case 'hot-wheels':
-        return (
-          <div style={ {width: '100vw', height: '100vh', position: 'relative'} }>
-            <RamoHotWheelsTemplate data={projectData.user_data} />
-          </div>
-        )
+      );
+
+    case "prueba-conex":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <PruebaConexTemplate data={projectData.user_data} />
+        </div>
+      );
+
+    case "flores-amarillas":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <FloresAmarillasTemplate data={projectData.user_data} />
+        </div>
+      );
+
+    case "pregunta":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <NoviaPregunta data={projectData.user_data} />
+        </div>
+      );
+
+    case "flores-corazones":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <FloresCorazonesTemplate data={projectData.user_data} />
+        </div>
+      );
+
+    case "girasoles":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <GirasolesTemplate data={projectData.user_data} />
+        </div>
+      );
+
+    case "hot-wheels":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <RamoHotWheelsTemplate data={projectData.user_data} />
+        </div>
+      );
 
     default:
-      return <div style={{ color: 'white' }}>Template no soportado.</div>;
+      return <div style={{ color: "white" }}>Template no soportado.</div>;
   }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import RamoAzul from "./ramo-azul.png"; // Asegúrate de tener esta imagen en la carpeta correcta
 
-export default function RamoHotWheelsTemplate(data) {
+export default function RamoHotWheelsTemplate({data}) {
   const [abierto, setAbierto] = useState(false);
   const [mostrarCarta, setMostrarCarta] = useState(false);
   const [textosFlotantes, setTextosFlotantes] = useState([]);
@@ -16,7 +16,7 @@ export default function RamoHotWheelsTemplate(data) {
     "Siempre juntos",
     "Mi Amor",
   ];
-  const nombre = data?.nombre || "Luis";
+  const nombre = data?.nombre || 'Luis';
 
   useEffect(() => {
     if (abierto) {

@@ -43,7 +43,6 @@ export default function Preview() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [generatedLink, setGeneratedLink] = useState("");
   const [previewData, setPreviewData] = useState({});
-
   const templateActual = templates.find((t) => t.id === id);
 
   if (!templateActual) {
@@ -56,7 +55,6 @@ export default function Preview() {
 
   const handleSaveConfig = async (datosPersonalizados) => {
     const uniqueId = Math.random().toString(36).substring(2, 9);
-
     // Guardamos en la base de datos real
     const { data, error } = await supabase
       .from("proyectos_creados")
@@ -80,22 +78,31 @@ export default function Preview() {
     switch (id) {
       case "dia-mujer":
         return <DiaMujerTemplate data={previewData} />;
+        
       case "rosa-virtual":
         return <RosaVirtualTemplate data={previewData} />;
+
       case "prueba-conex":
         return <PruebaConexTemplate data={previewData} />;
+
       case "flores-amarillas":
         return <FloresAmarillasTemplate data={previewData} />;
+        
       case "pregunta":
         return <NoviaPregunta data={previewData} />;
+
       case "flores-corazones":
         return <FloresCorazonesTemplate data={previewData} />;
+
       case "girasoles":
         return <GirasolesTemplate data={previewData} />;
+
       case "hot-wheels":
         return <RamoHotWheelsTemplate data={previewData} />;
+
       case "corazon-carrusel":
         return <CorazonCarruselTemplate data={previewData} />;
+
       default:
         return ( 
           <p>
@@ -119,51 +126,29 @@ export default function Preview() {
   };
 
   // Función para cuando cierra el modal de compartir
-  const handleCloseShare = () => {
-    setShowShareModal(false);
-    navigate("/"); // Lo mandamos al inicio
+  const handleCloseShare = () => { setShowShareModal(false); navigate("/"); // Lo mandamos al inicio
   };
 
   return (
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
 
-      <div className="preview-box">
-        {renderTemplate()}
-      </div>
+      <div className="preview-box">{renderTemplate()}</div>
 
-      <button
-        className="btn-personalizar"
-        onClick={() => setShowCustomizeModal(true)}
-      >
-        Personalizar
-      </button>
+      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)} >Personalizar</button>
 
-      <Link to="/" className="btn-volver">
-        Volver
-      </Link>
+      <Link to="/" className="btn-volver">Volver</Link>
 
       {/* Modal para rellenar datos */}
       {showCustomizeModal &&
         (id === "rosa-virtual" ? (
-          <RosaCreator
-            onClose={() => setShowCustomizeModal(false)}
-            onSave={handleSaveConfig}
-          />
+          <RosaCreator onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
         ) : (
-          <CustomizeModal
-            config={getConfig()}
-            onClose={() => setShowCustomizeModal(false)}
-            onSave={handleSaveConfig}
-          />
+          <CustomizeModal config={getConfig()} onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
         ))}
 
       {/* Modal final con el QR y el Link */}
-      <ShareModal
-        isOpen={showShareModal}
-        onClose={handleCloseShare}
-        shareLink={generatedLink}
-      />
+      <ShareModal isOpen={showShareModal} onClose={handleCloseShare} shareLink={generatedLink}/>
     </main>
   );
 }

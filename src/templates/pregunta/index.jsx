@@ -49,6 +49,7 @@ export default function NoviaPregunta({ data }) {
   const yesGrowRef   = useRef(null);
   const mouseInNoRef = useRef(false);
   const answeredRef  = useRef(false); // ref para acceder al valor actualizado dentro del loop
+  const novia_wrap = document.querySelector(".novia-wrap");
 
   // Loop infinito de SAD mientras no haya respondido
   useEffect(() => {
@@ -113,16 +114,13 @@ export default function NoviaPregunta({ data }) {
   function handleNoMove() {
     if (noMoving) return;
     setNoMoving(true);
-    const x = Math.random() * (document.documentElement.clientWidth  - 160);
-    const y = Math.random() * (document.documentElement.clientHeight -  80);
+    const x = Math.random() * (novia_wrap.clientWidth  - 160);
+    const y = Math.random() * (novia_wrap.clientHeight -  80);
     setNoPos({ x, y });
     setTimeout(() => setNoMoving(false), 520);
   }
 
-  const noStyle =
-    noPos.x !== null
-      ? { position: "fixed", left: noPos.x, top: noPos.y, transition: "all 0.5s" }
-      : {};
+  const noStyle = noPos.x !== null ? { position: "fixed", left: noPos.x, top: noPos.y, transition: "all 0.5s" } : {};
 
   return (
     <main className={`novia-wrap${answered ? " novia-wrap--yes" : ""}`}>
@@ -140,22 +138,8 @@ export default function NoviaPregunta({ data }) {
           <>
             <h1 className="novia-question">{pregunta}</h1>
             <div className="novia-btns">
-              <button
-                className="novia-btn novia-btn--si"
-                style={{ transform: `scale(${yesScale})` }}
-                onClick={handleYes}
-              >
-                Sí 💚
-              </button>
-              <button
-                className="novia-btn novia-btn--no"
-                style={noStyle}
-                onMouseEnter={handleNoEnter}
-                onMouseLeave={handleNoLeave}
-                onMouseMove={handleNoMove}
-              >
-                No
-              </button>
+              <button className="novia-btn novia-btn--si" style={{ transform: `scale(${yesScale})` }} onClick={handleYes}> Sí 💚</button>
+              <button className="novia-btn novia-btn--no" style={noStyle} onMouseEnter={handleNoEnter} onMouseLeave={handleNoLeave} onMouseMove={handleNoMove}>No</button>
             </div>
           </>
         ) : (

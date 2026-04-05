@@ -17,13 +17,16 @@
   box-sizing: border-box;
 }
 
-.regalo-virtual-container * { box-sizing: border-box; }
+.regalo-virtual-container * {
+  box-sizing: border-box;
+}
 
 .fondo-estrellas {
-  position: fixed; /* Esto hace que te sigan al hacer scroll hacia la carta */
-  top: 0; 
-  left: 0; 
-  width: 100%; 
+  position: fixed;
+  /* Esto hace que te sigan al hacer scroll hacia la carta */
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 0;
@@ -41,16 +44,33 @@
 }
 
 @keyframes flotar {
-  0% { transform: translateY(0) scale(1); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-100cqh) scale(1.5); opacity: 0; }
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100cqh) scale(1.5);
+    opacity: 0;
+  }
 }
 
 .pantalla-inicio {
-  height: 100cqh; width: 100%;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center; z-index: 10;
+  height: 100cqh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 .titulo-tocar {
@@ -68,28 +88,43 @@
   padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
   font-size: clamp(1.2rem, 5cqw, 1.5rem);
   font-family: 'Lora', serif;
-  font-weight: bold; color: #fff;
-  border-radius: 30px; cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
   box-shadow: 0 5px 20px rgba(0, 86, 163, 0.5);
   transition: transform 0.2s, box-shadow 0.2s;
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.boton-abrir:active { transform: scale(0.95); }
+.boton-abrir:active {
+  transform: scale(0.95);
+}
 
 @keyframes pulso {
-  from { transform: scale(1); opacity: 0.8; }
-  to { transform: scale(1.05); opacity: 1; }
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  to {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
 /* --- ESTILOS DE PALABRAS INTERACTIVAS ACTUALIZADOS --- */
 .contenido-abierto {
-  width: 100%; 
+  width: 100%;
   z-index: 10;
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  position: relative; /* Clave para posicionar las palabras */
-  cursor: pointer; /* Indica que la pantalla es interactiva */
+  position: relative;
+  /* Clave para posicionar las palabras */
+  cursor: pointer;
+  /* Indica que la pantalla es interactiva */
 }
 
 /* --- ESTILOS DE PALABRAS INTERACTIVAS (EXPLOSIÓN) ACTUALIZADOS --- */
@@ -97,7 +132,8 @@
   position: absolute;
   font-family: Arial, Helvetica, sans-serif;
   color: rgba(135, 206, 250, 0.9);
-  font-size: clamp(1rem, 4cqw, 1.8rem); /* Un poco más pequeñas por la cantidad */
+  font-size: clamp(1rem, 4cqw, 1.8rem);
+  /* Un poco más pequeñas por la cantidad */
   font-weight: 600;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -110,68 +146,147 @@
 }
 
 /* Asignamos una animación única a cada variante */
-.variante-0 { animation-name: estallarArriba; }          /* Eje Y (Arriba) */
-.variante-1 { animation-name: estallarDiagonalIzq; }     /* Eje X y Y (Arriba-Izquierda) */
-.variante-2 { animation-name: estallarDiagonalDer; }     /* Eje X y Y (Arriba-Derecha) */
-.variante-3 { animation-name: estallarAdelante; }       /* Simulación Eje Z (Se agranda mucho) */
-.variante-4 { animation-name: estallarAbajoDiagonal; }   /* Eje X y Y (Abajo-Izquierda) */
+.variante-0 {
+  animation-name: estallarArriba;
+}
+
+/* Eje Y (Arriba) */
+.variante-1 {
+  animation-name: estallarDiagonalIzq;
+}
+
+/* Eje X y Y (Arriba-Izquierda) */
+.variante-2 {
+  animation-name: estallarDiagonalDer;
+}
+
+/* Eje X y Y (Arriba-Derecha) */
+.variante-3 {
+  animation-name: estallarAdelante;
+}
+
+/* Simulación Eje Z (Se agranda mucho) */
+.variante-4 {
+  animation-name: estallarAbajoDiagonal;
+}
+
+/* Eje X y Y (Abajo-Izquierda) */
 
 /* --- DEFINICIÓN DE LAS 5 ANIMACIONES --- */
 
 /* 1. Variante 0: Movimiento principal hacia arriba (Eje Y) */
 @keyframes estallarArriba {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
-  100% { transform: translate(-50%, -130px) scale(1.5); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -130px) scale(1.5);
+    opacity: 0;
+  }
 }
 
 /* 2. Variante 1: Diagonal hacia arriba-izquierda (Eje X y Y) */
 @keyframes estallarDiagonalIzq {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
-  100% { transform: translate(-150px, -90px) scale(1.3); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-150px, -90px) scale(1.3);
+    opacity: 0;
+  }
 }
 
 /* 3. Variante 2: Diagonal hacia arriba-derecha (Eje X y Y) */
 @keyframes estallarDiagonalDer {
-  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
-  100% { transform: translate(110px, -90px) scale(1.3); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(110px, -90px) scale(1.3);
+    opacity: 0;
+  }
 }
 
 /* 4. Variante 3: Simulación Eje Z (Viene hacia adelante, se agranda y difumina) */
 @keyframes estallarAdelante {
-  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; filter: blur(3px); }
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+    filter: blur(3px);
+  }
 }
 
 /* 5. Variante 4: Diagonal hacia abajo-izquierda (Eje X y Y) */
 @keyframes estallarAbajoDiagonal {
-    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
-    100% { transform: translate(-130px, 60px) scale(1.2); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-130px, 60px) scale(1.2);
+    opacity: 0;
+  }
 }
 
 /* --- SECCIÓN DEL RAMO Y LEVITACIÓN --- */
 .seccion-ramo {
-  height: 100cqh; min-height: 400px;
-  position: relative; display: flex;
-  flex-direction: column; align-items: center; flex-shrink: 0;
-  pointer-events: none; /* Deja pasar los clics hacia el contenedor padre */
+  height: 100cqh;
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  pointer-events: none;
+  /* Deja pasar los clics hacia el contenedor padre */
 }
 
-.seccion-ramo * { pointer-events: none; } /* Todo es visual, no interactivo */
+.seccion-ramo * {
+  pointer-events: none;
+}
+
+/* Todo es visual, no interactivo */
 
 .titulo-principal {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(1.8rem, 9cqw, 3.5rem);
-  color: #00bfff; text-align: center;
-  margin-top: 10cqh; text-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
-  opacity: 0; animation: aparecerTexto 2s forwards 0.5s;
-  line-height: 1.2; padding: 0 10px;
+  color: #00bfff;
+  text-align: center;
+  margin-top: 10cqh;
+  text-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+  opacity: 0;
+  animation: aparecerTexto 2s forwards 0.5s;
+  line-height: 1.2;
+  padding: 0 10px;
 }
 
-@keyframes aparecerTexto { to { opacity: 1; transform: translateY(10px); } }
+@keyframes aparecerTexto {
+  to {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+}
 
 .ramo-wrapper {
-  position: absolute; bottom: 5%; width: 100%; max-width: 600px;
-  display: flex; justify-content: center; align-items: flex-end;
+  position: relative;
+  bottom: 5%;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 /* El wrapper que se encarga de TODO el movimiento y lleva la imagen dentro */
@@ -181,71 +296,119 @@
   justify-content: center;
   opacity: 0;
   /* Combina la aparición rápida con la levitación infinita */
-  animation: 
+  animation:
     popImage 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s,
     levitarInfinito 4s ease-in-out infinite 1.8s;
 }
 
 @keyframes popImage {
-  from { opacity: 0; transform: translateY(50px) scale(0.5); }
-  to { opacity: 1; transform: translateY(0px) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
 }
 
 @keyframes levitarInfinito {
-  0% { transform: translate(0px, 0px); }
-  50% { transform: translate(0px, -15px); }
-  100% { transform: translate(0px, 0px); }
+  0% {
+    transform: translate(0px, 0px);
+  }
+
+  50% {
+    transform: translate(0px, -15px);
+  }
+
+  100% {
+    transform: translate(0px, 0px);
+  }
 }
 
 .ramo-imagen {
-  width: 100%; height: auto; border-radius: 15px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
   /* El brillo neón azul solicitado aplicado directamente a la imagen */
-  filter: 
-  drop-shadow(0 10px 15px rgba(0,0,0,0.4))
-  drop-shadow(0 0 20px rgba(0,191,255,0.7))
-  drop-shadow(0 0 40px rgba(0,191,255,0.4));
+  filter:
+    drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(0, 191, 255, 0.7)) drop-shadow(0 0 40px rgba(0, 191, 255, 0.4));
 }
 
 .indicador-scroll {
-  position: absolute; bottom: 20px;
+  position: absolute;
+  bottom: 20px;
   font-size: clamp(0.8rem, 4cqw, 1rem);
-  color: rgba(255,255,255,0.6);
-  animation: pulso 1.5s infinite alternate; 
+  color: rgba(255, 255, 255, 0.6);
+  animation: pulso 1.5s infinite alternate;
 }
 
 /* --- SECCIÓN CARTA --- */
 .seccion-carta {
-  min-height: 100cqh; display: flex; flex-direction: column;
-  align-items: center; padding: 40px 15px;
+  min-height: 100cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 15px;
   background: transparent;
-  animation: fadeIn 1s forwards; pointer-events: none;
+  animation: fadeIn 1s forwards;
+  pointer-events: none;
 }
 
-.seccion-carta * { pointer-events: none; } 
+.seccion-carta * {
+  pointer-events: none;
+}
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
 
 .tarjeta-mensaje.blue-glow {
   background: transparent;
-  border-radius: 15px; padding: clamp(20px, 6cqw, 40px);
-  width: 95%; max-width: 500px;
-  box-shadow: 0 0 30px rgba(0, 191, 255, 0.2); backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: clamp(20px, 6cqw, 40px);
+  width: 95%;
+  max-width: 500px;
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .titulo-carta {
-  font-family: 'Dancing Script', cursive; color: #00bfff;
-  font-size: clamp(2rem, 8cqw, 2.5rem); text-align: center;
-  margin-top: 0; margin-bottom: 20px;
+  font-family: 'Dancing Script', cursive;
+  color: #00bfff;
+  font-size: clamp(2rem, 8cqw, 2.5rem);
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 .tarjeta-mensaje p {
-  line-height: 1.6; font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
-  margin-bottom: 15px; color: #e0e0e0;
+  line-height: 1.6;
+  font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
+  margin-bottom: 15px;
+  color: #e0e0e0;
 }
 
 .tarjeta-mensaje .firma {
-  text-align: right; font-weight: bold; color: #00bfff; margin-top: 25px;
+  text-align: right;
+  font-weight: bold;
+  color: #00bfff;
+  margin-top: 25px;
 }
 
-.detalle-final { margin-top: 60px; margin-bottom: 50px; }
-.car-emoji { font-size: clamp(2rem, 10cqw, 3rem); animation: latir 3s ease-in-out infinite alternate; }
+.detalle-final {
+  margin-top: 60px;
+  margin-bottom: 50px;
+}
+
+.car-emoji {
+  font-size: clamp(2rem, 10cqw, 3rem);
+  animation: latir 3s ease-in-out infinite alternate;
+}

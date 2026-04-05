@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 
-export default function GirasolesTemplate(data) {
+export default function GirasolesTemplate({data}) {
   const [abierto, setAbierto] = useState(false);
   const [mostrarCarta, setMostrarCarta] = useState(false);
   const particulas = Array.from({ length: 40 }); // Un poco más de partículas para la densidad

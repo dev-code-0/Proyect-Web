@@ -7,11 +7,8 @@ export default function Home() {
   return (
     <main className="home-container">
       <h1 className="main-title">CODES FREE</h1>
-      
       {/* Carrusel Dinámico */}
         <TemplateCarousel />
-      
-
       <ActionButtons />
     </main>
   );

@@ -395,7 +395,7 @@ img { max-width: 100%; display: block; }
 
 /* Cada panel ocupa toda la pantalla y permite scroll interno */
 .section-slide {
-  position: absolute;
+  position: relative;
   inset: 0;
   display: flex;
   flex-direction: column;
