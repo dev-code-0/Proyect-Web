@@ -47,5 +47,10 @@ export const templates = [
     id: "corazon-carrusel",
     title: "Corazón Carrusel",
     image: "/public/images/corazon-carrusel/preview.webp",
+  },
+  {
+    id: "corazon-animado",
+    title: "Corazón Animado",
+    image: "/public/images/corazon-animado/preview.webp",
   }
 ];

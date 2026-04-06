@@ -68,7 +68,7 @@ class Particle {
         this.age += deltaTime;
     }
     draw(context, image) {
-        function ease(t) {
+        function ease(t) { 
             return (--t) * t * t + 1;
         }
         var size = image.width * ease(this.age / settings.particles.duration);

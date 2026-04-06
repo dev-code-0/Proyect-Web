@@ -7,7 +7,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.851);
     border-radius: inherit;
-    overflow: hidden;
+    overflow: hidden; 
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 }

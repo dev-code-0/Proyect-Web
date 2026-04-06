@@ -34,6 +34,9 @@ import { hotWheelsConfig } from "../templates/hot-wheels/config.js";
 import CorazonCarruselTemplate from "../templates/corazon-carrusel/index.jsx";
 import { CorazonCarruselConfig } from "../templates/corazon-carrusel/config.js";
 
+import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
+import { corazonAnimadoConfig } from "../templates/corazon-animado/config.js";
+
 
 
 export default function Preview() {
@@ -103,6 +106,8 @@ export default function Preview() {
       case "corazon-carrusel":
         return <CorazonCarruselTemplate data={previewData} />;
 
+      case "corazon-animado":
+        return <CorazonAnimadoTemplate data={previewData} />;
       default:
         return ( 
           <p>
@@ -122,6 +127,7 @@ export default function Preview() {
     if (id === "girasoles") return girasolesConfig;
     if (id === "hot-wheels") return hotWheelsConfig;
     if (id === "corazon-carrusel") return CorazonCarruselConfig;
+    if (id === "corazon-animado") return corazonAnimadoConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 

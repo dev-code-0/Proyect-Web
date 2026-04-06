@@ -14,6 +14,7 @@ import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
 import GirasolesTemplate from "../templates/girasoles/index.jsx";
 import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
 import CorazonCaruselTemplate from "../templates/corazon-carrusel/index.jsx";
+import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -125,6 +126,14 @@ export default function ViewGift() {
           <CorazonCaruselTemplate data={projectData.user_data} />
         </div>
       );
+
+      case "corazon-animado":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <CorazonAnimadoTemplate data={projectData.user_data} />
+          </div>
+        );
+
 
     default:
       return <div style={{ color: "white" }}>Template no soportado.</div>;
