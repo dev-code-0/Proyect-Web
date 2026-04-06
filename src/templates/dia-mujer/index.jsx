@@ -9,7 +9,7 @@ import ILOVEYOUSO from "./song/I-love-you-so.mp3";
 import usePreloadImages from "../../hooks/usePreloadImages"; // Ajusta la ruta según dónde estés
 import LogoMovie from "./movie.svg";
 
-export default function DiaMujerTemplate({ data }) {
+export default function DiaMujerTemplate({ data }) { 
   // Datos dinámicos (si no hay, usamos valores por defecto para la previsualización)
   const nombre = data?.nombre || "Maria";
   const misFotos =
@@ -83,39 +83,39 @@ export default function DiaMujerTemplate({ data }) {
   }, []);
 
   return (
-    <div className="template-wrapper-dia-mujer">
+    <div className="template-wrapper-dm">
       {/* PANTALLA SOBRE */}
       <div
-        className={`pantalla-completa ${sobreAbierto ? "sobre-abierto" : ""}`}
-        id="sobre-pantalla"
+        className={`pantalla-completa-dm ${sobreAbierto ? "sobre-abierto-dm" : ""}`}
+        id="sobre-pantalla-dm"
         onClick={abrirSobre}
       >
-        <div className="sobre-contenido pulse">
-          <span className="icono-sobre">
+        <div className="sobre-contenido-dm pulse-dm">
+          <span className="icono-sobre-dm">
             {/* Importar el svg aqui */}
             <img src={IconoSobre} alt="" />
           </span>
-          <p className="txt">Tienes una sorpresa...</p>
-          <p className="txt toque-texto">Toca para abrir</p>
+          <p className="txt-dm">Tienes una sorpresa...</p>
+          <p className="txt-dm toque-texto-dm">Toca para abrir</p>
         </div>
       </div>
 
       {/* CARTA PRINCIPAL */}
-      <main id="carta-principal" className={!sobreAbierto ? "oculto" : ""}>
+      <main id="carta-principal-dm" className={!sobreAbierto ? "oculto-dm" : ""}>
         {srcMusica && <audio ref={audioRef} src={srcMusica} loop />}
 
-        <h1 className="anim-cascada">El 8 de Marzo...</h1>
-        <p className="subtitulo anim-cascada c1">Es Memoria y Gratitud.</p>
+        <h1 className="anim-cascada-dm">El 8 de Marzo...</h1>
+        <p className="subtitulo-dm anim-cascada-dm c1-dm">Es Memoria y Gratitud.</p>
 
         <div
-          className="ilustracion anim-respiracion c2"
+          className="ilustracion-dm anim-respiracion-dm c2-dm"
           style={{ fontSize: "4rem", margin: "20px 0" }}
         >
           {/* PEGA AQUÍ TU SVG DE LA ILUSTRACIÓN */}
           <img src={IconoMujer} alt="Ilustración" />
         </div>
 
-        <p className="texto-poema anim-cascada c2">
+        <p className="texto-poema-dm anim-cascada-dm c2-dm">
           Es el eco suave de mujeres
           <br />
           valientes que abrieron caminos
@@ -126,14 +126,14 @@ export default function DiaMujerTemplate({ data }) {
           elegir el tuyo.
         </p>
 
-        <p className="texto-poema anim-cascada c3">
+        <p className="texto-poema-dm anim-cascada-dm c3-dm">
           Siento orgullo de caminar a tu lado, <strong>{nombre}</strong>,<br />
           de tu fuerza serena y de esa luz
           <br />
           que transforma todo cuanto toca.
         </p>
 
-        <p className="texto-poema cita anim-cascada c3">
+        <p className="texto-poema-dm cita-dm anim-cascada-dm c3-dm">
           Porque..
           <br />
           "No se nace mujer,
@@ -147,8 +147,8 @@ export default function DiaMujerTemplate({ data }) {
         </p>
 
         <div
-          id="btn-play"
-          className="anim-cascada pulse-suave c3"
+          id="btn-play-dm"
+          className="anim-cascada-dm pulse-suave-dm c3-dm"
           onClick={iniciarCarrusel}
         >
           {/* Cambia esto por tu imagen de video si la tienes en la carpeta public */}
@@ -162,27 +162,27 @@ export default function DiaMujerTemplate({ data }) {
               justifyContent: "center",
             }}
           >
-            <img className="imagen-logo" src={LogoMovie} alt="" />
+            <img className="imagen-logo-dm" src={LogoMovie} alt="" />
           </div>
         </div>
       </main>
 
       {/* CARRUSEL */}
       {mostrarCarrusel && (
-        <div id="carrusel-lightbox" className="pantalla-completa">
+        <div id="carrusel-lightbox-dm" className="pantalla-completa-dm">
           {/* NUEVO BOTÓN DE CERRAR AQUÍ */}
-          <div className="btn-cerrar-carrusel" onClick={terminarCarrusel}>
+          <div className="btn-cerrar-carrusel-dm" onClick={terminarCarrusel}>
             ✖
           </div>
           <img
-            id="foto-actual"
+            id="foto-actual-dm"
             src={misFotos[indiceFoto]}
             alt="Recuerdo"
-            className="zoom-foto"
+            className="zoom-foto-dm"
             key={indiceFoto} // Obliga a React a reiniciar la animación al cambiar la foto
           />
           {indiceFoto === misFotos.length - 1 && (
-            <p id="texto-foto" className="anim-cascada">
+            <p id="texto-foto-dm" className="anim-cascada-dm">
               Gracias por ser tú
             </p>
           )}

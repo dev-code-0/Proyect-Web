@@ -67,10 +67,10 @@ export default function ShareModal({ isOpen, onClose, shareLink }) {
           <button onClick={copyToClipboard} className="btn-blue" style={{ width: '100%' }}>
             Copiar Enlace
           </button>
-          <button onClick={downloadQR} className="btn-white" style={{ width: '100%', border: '2px solid #52BFF2', color: '#52BFF2' }}>
+          <button onClick={downloadQR} className="btn-white-home" style={{ width: '100%', border: '2px solid #52BFF2', color: '#52BFF2' }}>
             Descargar QR
           </button>
-          <button onClick={onClose} className="btn-white" style={{ width: '100%', marginTop: '10px' }}>
+          <button onClick={onClose} className="btn-white-home" style={{ width: '100%', marginTop: '10px' }}>
             Cerrar y Volver al Inicio
           </button>
         </div>

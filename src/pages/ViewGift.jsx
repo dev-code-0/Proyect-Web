@@ -13,6 +13,7 @@ import NoviaPregunta from "../templates/pregunta/index.jsx";
 import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
 import GirasolesTemplate from "../templates/girasoles/index.jsx";
 import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
+import CorazonCaruselTemplate from "../templates/corazon-carrusel/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -115,6 +116,13 @@ export default function ViewGift() {
       return (
         <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
           <RamoHotWheelsTemplate data={projectData.user_data} />
+        </div>
+      );
+
+    case "corazon-carrusel":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <CorazonCaruselTemplate data={projectData.user_data} />
         </div>
       );
 

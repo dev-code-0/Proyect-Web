@@ -13,7 +13,7 @@
 }
 
 
-.main-title {
+.main-title-home {
   font-size: 2.5rem;
   letter-spacing: 2px;
   margin-bottom: 30px;
@@ -35,7 +35,7 @@
   margin-top: 40px;
 }
 
-.btn-white {
+.btn-white-home {
   background:
     radial-gradient(circle 25px at 10px 10px, #ffffff 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.1) 40%, transparent 80%) padding-box,
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
@@ -53,11 +53,11 @@
   transition: transform 0.2s, scale 0.2s;
 }
 
-.btn-white:hover {
+.btn-white-home:hover {
   transform: scale(1.1);
 }
 
-.btn-white:active {
+.btn-white-home:active {
   transform: scale(0.95);
 }
 

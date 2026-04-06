@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 
-.regalo-virtual-container {
+.regalo-virtual-container-hw {
   container-type: size;
   position: relative;
   width: 100%;
@@ -14,14 +14,14 @@
   border-radius: inherit;
   color: #fff;
   font-family: 'Lora', serif;
+  box-sizing: border-box; 
+}
+
+.regalo-virtual-container-hw * {
   box-sizing: border-box;
 }
 
-.regalo-virtual-container * {
-  box-sizing: border-box;
-}
-
-.fondo-estrellas {
+.fondo-estrellas-hw {
   position: fixed;
   /* Esto hace que te sigan al hacer scroll hacia la carta */
   top: 0;
@@ -32,7 +32,7 @@
   z-index: 0;
 }
 
-.particula.azul {
+.particula-hw.azul-hw {
   position: absolute;
   bottom: -10px;
   width: clamp(3px, 1.5cqw, 6px);
@@ -63,7 +63,7 @@
   }
 }
 
-.pantalla-inicio {
+.pantalla-inicio-hw {
   height: 100cqh;
   width: 100%;
   display: flex;
@@ -73,16 +73,19 @@
   z-index: 10;
 }
 
-.titulo-tocar {
+.titulo-tocar-hw {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(2rem, 10cqw, 3.5rem);
   color: #00bfff;
   text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
   margin-bottom: 30px;
   animation: pulso 2s infinite alternate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.boton-abrir.azul-gradient {
+.boton-abrir-hw.azul-gradient-hw {
   background: linear-gradient(45deg, #0056a3, #00bfff);
   border: none;
   padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
@@ -99,7 +102,7 @@
   gap: 10px;
 }
 
-.boton-abrir:active {
+.boton-abrir-hw:active {
   transform: scale(0.95);
 }
 
@@ -116,7 +119,7 @@
 }
 
 /* --- ESTILOS DE PALABRAS INTERACTIVAS ACTUALIZADOS --- */
-.contenido-abierto {
+.contenido-abierto-hw {
   width: 100%;
   z-index: 10;
   display: flex;
@@ -128,7 +131,7 @@
 }
 
 /* --- ESTILOS DE PALABRAS INTERACTIVAS (EXPLOSIÓN) ACTUALIZADOS --- */
-.texto-clic-interactivo {
+.texto-clic-interactivo-hw {
   position: absolute;
   font-family: Arial, Helvetica, sans-serif;
   color: rgba(135, 206, 250, 0.9);
@@ -146,27 +149,27 @@
 }
 
 /* Asignamos una animación única a cada variante */
-.variante-0 {
+.variante-0-hw {
   animation-name: estallarArriba;
 }
 
 /* Eje Y (Arriba) */
-.variante-1 {
+.variante-1-hw {
   animation-name: estallarDiagonalIzq;
 }
 
 /* Eje X y Y (Arriba-Izquierda) */
-.variante-2 {
+.variante-2-hw {
   animation-name: estallarDiagonalDer;
 }
 
 /* Eje X y Y (Arriba-Derecha) */
-.variante-3 {
+.variante-3-hw {
   animation-name: estallarAdelante;
 }
 
 /* Simulación Eje Z (Se agranda mucho) */
-.variante-4 {
+.variante-4-hw {
   animation-name: estallarAbajoDiagonal;
 }
 
@@ -241,7 +244,7 @@
 }
 
 /* --- SECCIÓN DEL RAMO Y LEVITACIÓN --- */
-.seccion-ramo {
+.seccion-ramo-hw {
   height: 100cqh;
   min-height: 400px;
   position: relative;
@@ -253,13 +256,13 @@
   /* Deja pasar los clics hacia el contenedor padre */
 }
 
-.seccion-ramo * {
+.seccion-ramo-hw * {
   pointer-events: none;
 }
 
 /* Todo es visual, no interactivo */
 
-.titulo-principal {
+.titulo-principal-hw {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(1.8rem, 9cqw, 3.5rem);
   color: #00bfff;
@@ -279,7 +282,7 @@
   }
 }
 
-.ramo-wrapper {
+.ramo-wrapper-hw {
   position: relative;
   bottom: 5%;
   width: 100%;
@@ -290,7 +293,7 @@
 }
 
 /* El wrapper que se encarga de TODO el movimiento y lleva la imagen dentro */
-.levitacion-wrapper {
+.levitacion-wrapper-hw {
   width: 90%;
   display: flex;
   justify-content: center;
@@ -327,7 +330,7 @@
   }
 }
 
-.ramo-imagen {
+.ramo-imagen-hw {
   width: 100%;
   height: auto;
   border-radius: 15px;
@@ -336,7 +339,7 @@
     drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(0, 191, 255, 0.7)) drop-shadow(0 0 40px rgba(0, 191, 255, 0.4));
 }
 
-.indicador-scroll {
+.indicador-scroll-hw {
   position: absolute;
   bottom: 20px;
   font-size: clamp(0.8rem, 4cqw, 1rem);
@@ -345,7 +348,7 @@
 }
 
 /* --- SECCIÓN CARTA --- */
-.seccion-carta {
+.seccion-carta-hw {
   min-height: 100cqh;
   display: flex;
   flex-direction: column;
@@ -356,7 +359,7 @@
   pointer-events: none;
 }
 
-.seccion-carta * {
+.seccion-carta-hw * {
   pointer-events: none;
 }
 
@@ -370,7 +373,7 @@
   }
 }
 
-.tarjeta-mensaje.blue-glow {
+.tarjeta-mensaje-hw.blue-glow-hw {
   background: transparent;
   border-radius: 15px;
   padding: clamp(20px, 6cqw, 40px);
@@ -380,7 +383,7 @@
   backdrop-filter: blur(10px);
 }
 
-.titulo-carta {
+.titulo-carta-hw {
   font-family: 'Dancing Script', cursive;
   color: #00bfff;
   font-size: clamp(2rem, 8cqw, 2.5rem);
@@ -389,26 +392,26 @@
   margin-bottom: 20px;
 }
 
-.tarjeta-mensaje p {
+.tarjeta-mensaje-hw p {
   line-height: 1.6;
   font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
   margin-bottom: 15px;
   color: #e0e0e0;
 }
 
-.tarjeta-mensaje .firma {
+.tarjeta-mensaje-hw .firma-hw {
   text-align: right;
   font-weight: bold;
   color: #00bfff;
   margin-top: 25px;
 }
 
-.detalle-final {
+.detalle-final-hw {
   margin-top: 60px;
   margin-bottom: 50px;
 }
 
-.car-emoji {
+.car-emoji-hw {
   font-size: clamp(2rem, 10cqw, 3rem);
   animation: latir 3s ease-in-out infinite alternate;
 }

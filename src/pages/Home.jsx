@@ -6,7 +6,7 @@ import '../styles/home.css';
 export default function Home() {
   return (
     <main className="home-container">
-      <h1 className="main-title">CODES FREE</h1>
+      <h1 className="main-title-home">CODES FREE</h1>
       {/* Carrusel Dinámico */}
         <TemplateCarousel />
       <ActionButtons />

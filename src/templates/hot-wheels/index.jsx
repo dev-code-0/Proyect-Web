@@ -13,7 +13,7 @@ export default function RamoHotWheelsTemplate({data}) {
     "Te amo",
     "Te quiero",
     "Te adoro",
-    "Siempre juntos",
+    "Siempre juntos", 
     "Mi Amor",
   ];
   const nombre = data?.nombre || 'Luis';
@@ -64,30 +64,30 @@ export default function RamoHotWheelsTemplate({data}) {
   };
 
   return (
-    <div className="regalo-virtual-container ramo-hotwheels-theme">
+    <div className="regalo-virtual-container-hw ramo-hotwheels-theme-hw">
       {!abierto ? (
-        <div className="pantalla-inicio">
-          <h1 className="titulo-tocar">
+        <div className="pantalla-inicio-hw">
+          <h1 className="titulo-tocar-hw">
             {" "}
             <strong>Hola {nombre}</strong>
-            <br /> Tengo un regalo para tí 🚙❤️
+            Tengo un regalo para tí 🚙❤️
           </h1>
           <button
-            className="boton-abrir azul-gradient"
+            className="boton-abrir-hw azul-gradient-hw"
             onClick={() => setAbierto(true)}
           >
-            <span className="icono-boton">💙</span> Abrir
+            <span className="icono-boton-hw">💙</span> Abrir
           </button>
         </div>
       ) : (
         // Contenedor principal abierto, recibe TODOS los clics
-        <div className="contenido-abierto" onClick={handleClicPantalla}>
+        <div className="contenido-abierto-hw" onClick={handleClicPantalla}>
           {/* Fondo de luces/partículas azules */}
-          <div className="fondo-estrellas">
+          <div className="fondo-estrellas-hw">
             {particulas.map((_, i) => (
               <div
                 key={i}
-                className="particula azul"
+                className="particula-hw azul-hw"
                 style={{
                   left: `${Math.random() * 100}%`,
                   animationDelay: `${Math.random() * 5}s`,
@@ -102,38 +102,38 @@ export default function RamoHotWheelsTemplate({data}) {
             <div 
               key={item.id} 
               // Añadimos la clase de variante dinámicamente
-              className={`texto-clic-interactivo variante-${item.variante}`}
+              className={`texto-clic-interactivo-hw variante-${item.variante}-hw`}
               style={{ left: item.x, top: item.y }}
             >
               {item.texto}
             </div>
           ))}
 
-          <div className="seccion-ramo">
-            <h1 className="titulo-principal">
+          <div className="seccion-ramo-hw">
+            <h1 className="titulo-principal-hw">
               ¡Feliz Día del Novio <br /> 💙!
             </h1>
 
-            <div className="ramo-wrapper">
+            <div className="ramo-wrapper-hw">
               {/* Contenedor que maneja la entrada y levitación al mismo tiempo */}
-              <div className="levitacion-wrapper">
+              <div className="levitacion-wrapper-hw">
                 <img
                   src={RamoAzul}
                   alt="Ramo de Hot Wheels"
-                  className="ramo-imagen"
+                  className="ramo-imagen-hw"
                 />
               </div>
             </div>
 
             {mostrarCarta && (
-              <div className="indicador-scroll">↓ Desliza hacia abajo ↓</div>
+              <div className="indicador-scroll-hw">↓ Desliza hacia abajo ↓</div>
             )}
           </div>
 
           {mostrarCarta && (
-            <div className="seccion-carta">
-              <div className="tarjeta-mensaje blue-glow">
-                <h2 className="titulo-carta">Para ti, {nombre} 💙</h2>
+            <div className="seccion-carta-hw">
+              <div className="tarjeta-mensaje-hw blue-glow-hw">
+                <h2 className="titulo-carta-hw">Para ti, {nombre} 💙</h2>
                 <p>
                   Dicen que los verdaderos tesoros se encuentran donde menos lo
                   esperas... Desde que llegaste a mi vida, me di cuenta de que
@@ -152,10 +152,10 @@ export default function RamoHotWheelsTemplate({data}) {
                   Gracias por tu amor, por ser mi compañero de ruta y por hacer
                   que mi mundo sea un lugar mejor. Eres mi persona favorita.
                 </p>
-                <p className="firma">Te quiero con todo mi corazón. 🫶🏼💙🚙</p>
+                <p className="firma-hw">Te quiero con todo mi corazón. 🫶🏼💙🚙</p>
               </div>
-              <div className="detalle-final">
-                <span className="car-emoji">🚙💨</span>
+              <div className="detalle-final-hw">
+                <span className="car-emoji-hw">🚙💨</span>
               </div>
             </div>
           )}

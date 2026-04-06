@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;900&display=swap');
 
 /* ---- Root / fondo ----------------------------------------- */
-.novia-root {
+.novia-root-pr {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -13,18 +13,18 @@
     radial-gradient(circle at 80% 70%, #ffb3c6 0%, transparent 40%);
   transition: background 0.8s ease;
   font-family: 'Nunito', sans-serif;
-  overflow: hidden;
+  overflow: hidden; 
   position: relative;
 }
 
-.novia-root--yes {
+.novia-root--yes-pr {
   background: #fff0f6;
   background-image:
     radial-gradient(circle at 20% 20%, #ffd6e7 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, #ffb3c6 0%, transparent 50%);
 }
 
-.novia-wrap {
+.novia-wrap-pr {
   height: 100%;
   width: 100%;
   display: flex;
@@ -35,7 +35,7 @@
 }
 
 /* ---- Card -------------------------------------------------- */
-.novia-card {
+.novia-card-pr {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -60,7 +60,7 @@
 }
 
 /* ---- GIF --------------------------------------------------- */
-.novia-gif-wrap {
+.novia-gif-wrap-pr {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -68,7 +68,7 @@
   align-items: center;
 }
 
-.novia-gif {
+.novia-gif-pr {
   width: 62%;
   border-radius: 18px;
   animation: gifPop 0.4s cubic-bezier(.34,1.56,.64,1) both;
@@ -80,7 +80,7 @@
 }
 
 /* ---- Pregunta --------------------------------------------- */
-.novia-question {
+.novia-question-pr {
   font-family: 'Pacifico', cursive;
   font-size: clamp(1.4rem, 6vw, 2rem);
   color: #d6336c;
@@ -90,7 +90,7 @@
 }
 
 /* ---- Botones ----------------------------------------------- */
-.novia-btns {
+.novia-btns-pr {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -98,7 +98,7 @@
   margin-top: 0.5rem;
 }
 
-.novia-btn {
+.novia-btn-pr {
   padding: 14px 34px;
   font-size: 1.2rem;
   font-family: 'Nunito', sans-serif;
@@ -117,32 +117,32 @@
 }
 
 /* Sí */
-.novia-btn--si {
+.novia-btn--si-pr {
   background: linear-gradient(135deg, #00b894, #00cec9);
   transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
               box-shadow 0.25s,
               background 0.2s;
 }
-.novia-btn--si:hover {
+.novia-btn--si-pr:hover {
   background: linear-gradient(135deg, #009e7a, #00b4b0);
   box-shadow: 0 8px 24px rgba(0, 184, 148, 0.35);
 }
-.novia-btn--si:active {
+.novia-btn--si-pr:active {
   transform: scale(0.96) !important;
 }
 
 /* No */
-.novia-btn--no {
+.novia-btn--no-pr {
   background: linear-gradient(135deg, #e17055, #d63031);
   z-index: 100;
 }
-.novia-btn--no:hover {
+.novia-btn--no-pr:hover {
   background: linear-gradient(135deg, #c0392b, #96281b);
   box-shadow: 0 8px 24px rgba(214, 48, 49, 0.35);
 }
 
 /* ---- Mensaje de respuesta ---------------------------------- */
-.novia-message {
+.novia-message-pr {
   font-family: 'Pacifico', cursive;
   font-size: clamp(1.2rem, 5vw, 1.6rem);
   color: #d6336c;
@@ -158,7 +158,7 @@
 }
 
 /* ---- Corazones flotantes ----------------------------------- */
-.hearts-overlay {
+.hearts-overlay-pr {
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -166,7 +166,7 @@
   overflow: hidden;
 }
 
-.heart-particle {
+.heart-particle-pr {
   position: absolute;
   bottom: -2rem;
   animation: floatUp linear infinite both;
@@ -182,10 +182,10 @@
 
 /* ---- Responsive ------------------------------------------- */
 @media (max-width: 420px) {
-  .novia-card {
+  .novia-card-pr {
     padding: 1.8rem 1.2rem 1.5rem;
   }
-  .novia-gif {
+  .novia-gif-pr {
     width: 72%;
   }
 }

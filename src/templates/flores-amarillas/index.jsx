@@ -3,7 +3,7 @@ import bouquetImage from "./images/ramo.svg";
 import Corazon from "./images/corazon.svg";
 import Corazon1 from "./images/flores_2.svg";
 import Ilustracion from "./images/flores.svg"
-import Fotos from "./images/couple-photo.jpg";
+import Fotos from "./images/couple-photo.jpg"; 
 import "./style.css";
 
 // ─────────────────────────────────────────
@@ -103,12 +103,12 @@ function HeartSVG({ color, letter, rotate = 0 }) {
 // ─────────────────────────────────────────
 function PolaroidStack({ photoUrl, caption }) {
   return (
-    <div className="polaroid-stack">
-      <figure className="polaroid-card">
-        <div className="polaroid-photo">
-          <img src={photoUrl} alt={caption || "Recuerdo especial"} className="polaroid-img" />
+    <div className="polaroid-stack-fl">
+      <figure className="polaroid-card-fl">
+        <div className="polaroid-photo-fl">
+          <img src={photoUrl} alt={caption || "Recuerdo especial"} className="polaroid-img-fl" />
         </div>
-        {caption && <figcaption className="polaroid-caption">{caption}</figcaption>}
+        {caption && <figcaption className="polaroid-caption-fl">{caption}</figcaption>}
       </figure>
     </div>
   );
@@ -120,7 +120,7 @@ function ArrowButton({ onClick, visible, direction = "down", ariaLabel }) {
   const isUp = direction === "up";
   return (
     <button
-      className={`arrow-btn${visible ? " arrow-btn--visible" : ""}${isUp ? " arrow-btn--up" : ""}`}
+      className={`arrow-btn-fl${visible ? " arrow-btn--visible-fl" : ""}${isUp ? " arrow-btn--up-fl" : ""}`}
       onClick={onClick}
       aria-label={ariaLabel || (isUp ? "Regresar a la sección anterior" : "Continuar a la siguiente sección")}
     >
@@ -138,12 +138,12 @@ function ArrowButton({ onClick, visible, direction = "down", ariaLabel }) {
 function HeroPanel({ recipientName, recipientInitial, senderInitial, giftImage, onNext, active }) {
   const scrollRef = useRef(null);
   return (
-    <section ref={scrollRef} className={`panel panel-hero section-slide${active ? " section-slide--in" : " section-slide--out"}`} aria-label="Portada">
-      <div className="floating-hearts" aria-hidden="true">
+    <section ref={scrollRef} className={`panel-fl panel-hero-fl section-slide-fl${active ? " section-slide--in-fl" : " section-slide--out-fl"}`} aria-label="Portada">
+      <div className="floating-hearts-fl" aria-hidden="true">
         {FLOATING_HEARTS_POSITIONS.map((left, idx) => (
           <span
             key={left}
-            className="floating-heart"
+            className="floating-heart-fl"
             style={{ left: `${left}%`, animationDelay: `${idx * 0.55}s` }}
           >
             ♥
@@ -151,17 +151,17 @@ function HeroPanel({ recipientName, recipientInitial, senderInitial, giftImage, 
         ))}
       </div>
 
-      <div className="hero-content">
-        <p className="hero-label hero-anim" style={{ animationDelay: "0.1s" }}>Para</p>
-        <h1 className="hero-name hero-anim" style={{ animationDelay: "0.4s" }}>{recipientName}</h1>
+      <div className="hero-content-fl">
+        <p className="hero-label-fl hero-anim-fl" style={{ animationDelay: "0.1s" }}>Para</p>
+        <h1 className="hero-name-fl hero-anim-fl" style={{ animationDelay: "0.4s" }}>{recipientName}</h1>
 
-        <div className="hero-hearts hero-anim" aria-hidden="true" style={{ animationDelay: "0.75s" }}>
+        <div className="hero-hearts-fl hero-anim-fl" aria-hidden="true" style={{ animationDelay: "0.75s" }}>
           <HeartSVG color="rgb(255, 30, 0)" letter={recipientInitial} rotate={15} />
           <HeartSVG color="rgb(229, 195, 0)" letter={senderInitial} rotate={-15} />
         </div>
 
-        <div className="hero-gift-wrap hero-anim" style={{ animationDelay: "1.05s" }}>
-          <img src={giftImage} alt="Ilustración de regalo" className="hero-gift-img" />
+        <div className="hero-gift-wrap-fl hero-anim-fl" style={{ animationDelay: "1.05s" }}>
+          <img src={giftImage} alt="Ilustración de regalo" className="hero-gift-img-fl" />
         </div>
       </div>
 
@@ -178,18 +178,18 @@ function DistancePanel({ message, onNext, onPrev, active }) {
   const displayed = useTypewriter(message, active, 22);
 
   return (
-    <section ref={scrollRef} className={`panel panel-distance section-slide${active ? " section-slide--in" : " section-slide--out"}`} aria-label="Mensaje de distancia">
+    <section ref={scrollRef} className={`panel-fl panel-distance-fl section-slide-fl${active ? " section-slide--in-fl" : " section-slide--out-fl"}`} aria-label="Mensaje de distancia">
       <ArrowButton onClick={onPrev} visible={active} direction="up" ariaLabel="Volver a la sección anterior" />
       
-      <div className="distance-content">
-        <blockquote className="distance-text">
+      <div className="distance-content-fl">
+        <blockquote className="distance-text-fl">
           {displayed}
           {active && displayed.length < message.length && (
-            <span className="typewriter-cursor">|</span>
+            <span className="typewriter-cursor-fl">|</span>
           )}
         </blockquote>
-        <div className={`bouquet-wrap${active ? " bouquet-visible" : ""}`} aria-hidden="true">
-          <img src={bouquetImage} alt="" className="bouquet-img" />
+        <div className={`bouquet-wrap-fl${active ? " bouquet-visible-fl" : ""}`} aria-hidden="true">
+          <img src={bouquetImage} alt="" className="bouquet-img-fl" />
         </div>
       </div>
 
@@ -205,36 +205,36 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
   const scrollRef = useRef(null);
 
   return (
-    <section ref={scrollRef} className={`panel panel-letter section-slide${active ? " section-slide--in" : " section-slide--out"}`} aria-label="Carta de amor">
+    <section ref={scrollRef} className={`panel-fl panel-letter-fl section-slide-fl${active ? " section-slide--in-fl" : " section-slide--out-fl"}`} aria-label="Carta de amor">
       <ArrowButton onClick={onPrev} visible={active} direction="up" ariaLabel="Volver a la sección anterior" />
-      <div className="letter-shell">
+      <div className="letter-shell-fl">
 
-        <article className={`letter-card letter-card-anim${active ? " letter-card-anim--in" : ""}`}>
-          <img className="letter-deco letter-deco--top" src={Corazon} alt="" aria-hidden="true" />
+        <article className={`letter-card-fl letter-card-anim-fl${active ? " letter-card-anim--in-fl" : ""}`}>
+          <img className="letter-deco-fl letter-deco--top-fl" src={Corazon} alt="" aria-hidden="true" />
 
-          <header className="letter-header">
+          <header className="letter-header-fl">
             <p><strong>De:</strong> {senderName}</p>
             <p><strong>Para:</strong> {recipientName}</p>
-            <p className="letter-header__sub">Con todo mi amor</p>
+            <p className="letter-header__sub-fl">Con todo mi amor</p>
           </header>
 
-          <div className="letter-body">
+          <div className="letter-body-fl">
             <p>{loveLetter}</p>
-            <img className="letter-deco letter-deco--bottom" src={Corazon1} alt="" aria-hidden="true" />
+            <img className="letter-deco-fl letter-deco--bottom-fl" src={Corazon1} alt="" aria-hidden="true" />
           </div>
 
-          <footer className="letter-footer">
-            <p className="letter-signature">{senderName}</p>
+          <footer className="letter-footer-fl">
+            <p className="letter-signature-fl">{senderName}</p>
           </footer>
         </article>
 
-        <div className="memory-section">
-          <p className={`memory-title memory-anim${active ? " memory-anim--in" : ""}`}>Nuestro recuerdo especial</p>
-          <div className="polaroid-row">
+        <div className="memory-section-fl">
+          <p className={`memory-title-fl memory-anim-fl${active ? " memory-anim--in-fl" : ""}`}>Nuestro recuerdo especial</p>
+          <div className="polaroid-row-fl">
             {photoUrls.map((url, index) => (
               <div
                 key={`${url}-${index}`}
-                className={`polaroid-item polaroid-item-anim${active ? " polaroid-item-anim--in" : ""}`}
+                className={`polaroid-item-fl polaroid-item-anim-fl${active ? " polaroid-item-anim--in-fl" : ""}`}
                 style={{
                   "--rot": POLAROID_ROTATIONS[index % POLAROID_ROTATIONS.length],
                   "--anim-delay": `${0.2 + index * 0.15}s`
@@ -290,19 +290,19 @@ export default function FloresAmarillasTemplate({ data = {} }) {
   }
 
   return (
-    <div className="gift-root">
-      <div className="progress-indicator" aria-label={`Seccion ${current + 1} de ${TOTAL_SECTIONS}`}>
+    <div className="gift-root-fl">
+      <div className="progress-indicator-fl" aria-label={`Seccion ${current + 1} de ${TOTAL_SECTIONS}`}>
         {Array.from({ length: TOTAL_SECTIONS }).map((_, idx) => (
           <span
             key={idx}
-            className={`progress-dot${current === idx ? " progress-dot--active" : ""}`}
+            className={`progress-dot-fl${current === idx ? " progress-dot--active-fl" : ""}`}
             aria-hidden="true"
           />
         ))}
       </div>
 
       {/* Todas las secciones existen en el DOM pero solo la activa es visible */}
-      <div className={`section-wrapper${transitioning ? " section-wrapper--fading" : ""}`}>
+      <div className={`section-wrapper-fl${transitioning ? " section-wrapper--fading-fl" : ""}`}>
         {current === 0 && (
           <HeroPanel
             key={current}

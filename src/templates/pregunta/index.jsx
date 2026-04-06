@@ -9,7 +9,7 @@ import Mocha6Final from "./images/mocha6final.gif";
 import Mocha7Final from "./images/mocha7final.gif";
 import Mocha9Final from "./images/mocha9final.gif";
 
-const GIF = {
+const GIF = { 
   initial: Mocha,
   sad1:    Mocha2,
   sad2:    Mocha3,
@@ -49,7 +49,6 @@ export default function NoviaPregunta({ data }) {
   const yesGrowRef   = useRef(null);
   const mouseInNoRef = useRef(false);
   const answeredRef  = useRef(false); // ref para acceder al valor actualizado dentro del loop
-  const novia_wrap = document.querySelector(".novia-wrap");
 
   // Loop infinito de SAD mientras no haya respondido
   useEffect(() => {
@@ -114,8 +113,8 @@ export default function NoviaPregunta({ data }) {
   function handleNoMove() {
     if (noMoving) return;
     setNoMoving(true);
-    const x = Math.random() * (novia_wrap.clientWidth  - 160);
-    const y = Math.random() * (novia_wrap.clientHeight -  80);
+    const x = Math.random() * (document.documentElement.clientWidth  - 160);
+    const y = Math.random() * (document.documentElement.clientHeight -  80);
     setNoPos({ x, y });
     setTimeout(() => setNoMoving(false), 520);
   }
@@ -123,27 +122,27 @@ export default function NoviaPregunta({ data }) {
   const noStyle = noPos.x !== null ? { position: "fixed", left: noPos.x, top: noPos.y, transition: "all 0.5s" } : {};
 
   return (
-    <main className={`novia-wrap${answered ? " novia-wrap--yes" : ""}`}>
-      <div className="novia-card">
-        <div className="novia-gif-wrap">
+    <main className={`novia-wrap-pr${answered ? " novia-wrap--yes-pr" : ""}`}>
+      <div className="novia-card-pr">
+        <div className="novia-gif-wrap-pr">
           <img
             key={currentGif}
             src={GIF[currentGif]}
             alt="osito"
-            className="novia-gif"
+            className="novia-gif-pr"
           />
         </div>
 
         {!answered ? (
           <>
-            <h1 className="novia-question">{pregunta}</h1>
-            <div className="novia-btns">
-              <button className="novia-btn novia-btn--si" style={{ transform: `scale(${yesScale})` }} onClick={handleYes}> Sí 💚</button>
-              <button className="novia-btn novia-btn--no" style={noStyle} onMouseEnter={handleNoEnter} onMouseLeave={handleNoLeave} onMouseMove={handleNoMove}>No</button>
+            <h1 className="novia-question-pr">{pregunta}</h1>
+            <div className="novia-btns-pr">
+              <button className="novia-btn-pr novia-btn--si-pr" style={{ transform: `scale(${yesScale})` }} onClick={handleYes}> Sí 💚</button>
+              <button className="novia-btn-pr novia-btn--no-pr" style={noStyle} onMouseEnter={handleNoEnter} onMouseLeave={handleNoLeave} onMouseMove={handleNoMove}>No</button>
             </div>
           </>
         ) : (
-          <div className="novia-message">
+          <div className="novia-message-pr">
             ¡Oh Sí! Sabía que ibas a decir que sí<br />
             Te quiero ver ya... xd 🥰
           </div>

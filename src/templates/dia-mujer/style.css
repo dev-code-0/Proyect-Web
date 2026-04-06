@@ -1,4 +1,4 @@
-.template-wrapper-dia-mujer {
+.template-wrapper-dm {
   --color-fondo: #fcfbf9;
   --color-texto: #1a1a1a;
   --color-acento: #8e7cc3;
@@ -18,15 +18,15 @@
   overflow-x: hidden;
 }
 
-.template-wrapper-dia-mujer::-webkit-scrollbar {
+.template-wrapper-dm::-webkit-scrollbar {
   display: none;
 }
 
-.template-wrapper-dia-mujer * {
+.template-wrapper-dm * {
   box-sizing: border-box;
 }
 
-.template-wrapper-dia-mujer .pantalla-completa {
+.template-wrapper-dm .pantalla-completa-dm {
   position: absolute;
   /* Cambiado de fixed a absolute para que se quede dentro del cuadro de previsualización */
   top: 0;
@@ -41,7 +41,7 @@
   transition: opacity 1s ease, transform 1s ease;
 }
 
-.template-wrapper-dia-mujer .txt {
+.template-wrapper-dm .txt-dm {
   font-size: 1.5rem;
   /* Reducido para que quepa en la previsualización */
   margin-top: 10px;
@@ -49,12 +49,12 @@
 
 }
 
-.template-wrapper-dia-mujer .toque-texto {
+.template-wrapper-dm .toque-texto-dm {
   font-size: 1rem;
   font-weight: 300;
 }
 
-.template-wrapper-dia-mujer #sobre-pantalla {
+.template-wrapper-dm #sobre-pantalla-dm {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   cursor: pointer;
@@ -62,7 +62,7 @@
 }
 
 /* Agrega esta nueva regla justo debajo */
-.template-wrapper-dia-mujer .sobre-contenido {
+.template-wrapper-dm .sobre-contenido-dm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,13 +71,13 @@
   width: 100%;
 }
 
-.template-wrapper-dia-mujer .sobre-abierto {
+.template-wrapper-dm .sobre-abierto-dm {
   opacity: 0;
   transform: translateY(-50px);
   pointer-events: none;
 }
 
-.template-wrapper-dia-mujer main {
+.template-wrapper-dm main {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -88,52 +88,52 @@
   /* justify-content: center; (Opcional: descomenta esto si quieres que todo quede centrado verticalmente) */
 }
 
-.template-wrapper-dia-mujer h1 {
+.template-wrapper-dm h1 {
   font-size: 1.8rem;
   color: var(--color-texto);
   margin-bottom: 10px;
 }
 
-.template-wrapper-dia-mujer .subtitulo {
+.template-wrapper-dm .subtitulo-dm {
   font-size: 1rem;
   margin-bottom: 20px;
 }
 
-.template-wrapper-dia-mujer .texto-poema {
+.template-wrapper-dm .texto-poema-dm {
   font-size: 0.85rem;
   line-height: 1.5;
   margin-bottom: 15px;
   width: 95%;
 }
 
-.template-wrapper-dia-mujer .cita {
+.template-wrapper-dm .cita-dm {
   font-style: italic;
   font-weight: 600;
 }
 
-.template-wrapper-dia-mujer .oculto {
+.template-wrapper-dm .oculto-dm {
   opacity: 0;
   pointer-events: none;
   display: none !important;
 }
 
 /* Animaciones */
-.template-wrapper-dia-mujer .anim-cascada {
+.template-wrapper-dm .anim-cascada-dm {
   opacity: 1;
   transform: translateY(20px);
   animation: cascadaVisible 1s ease forwards;
   z-index: 10;
 }
 
-.template-wrapper-dia-mujer .c1 {
+.template-wrapper-dm .c1-dm {
   animation-delay: 0.3s;
 }
 
-.template-wrapper-dia-mujer .c2 {
+.template-wrapper-dm .c2-dm {
   animation-delay: 0.6s;
 }
 
-.template-wrapper-dia-mujer .c3 {
+.template-wrapper-dm .c3-dm {
   animation-delay: 0.9s;
 }
 
@@ -144,7 +144,11 @@
   }
 }
 
-.template-wrapper-dia-mujer .pulse-suave {
+.template-wrapper-dm .pulse-suave-dm {
+  animation: latido 3s infinite;
+}
+
+.template-wrapper-dm .pulse-dm {
   animation: latido 3s infinite;
 }
 
@@ -160,12 +164,12 @@
   }
 }
 
-.template-wrapper-dia-mujer .imagen-logo{
+.template-wrapper-dm .imagen-logo-dm {
   width: 50px;
   cursor: pointer;
 }
 
-.template-wrapper-dia-mujer .anim-respiracion {
+.template-wrapper-dm .anim-respiracion-dm {
   animation: respirar 4s ease-in-out infinite; 
   width: 100px;
   height: auto;
@@ -183,7 +187,7 @@
   }
 }
 
-.template-wrapper-dia-mujer #carrusel-lightbox {
+.template-wrapper-dm #carrusel-lightbox-dm {
   position: fixed;  /* ← Cambia solo este a fixed */
   top: 0;
   left: 0;
@@ -193,19 +197,19 @@
   z-index: 200;
 }
 
-.template-wrapper-dia-mujer #foto-actual {
+.template-wrapper-dm #foto-actual-dm {
   max-width: 90%;
   max-height: 80%;
   border-radius: 10px;
 }
 
-.template-wrapper-dia-mujer #texto-foto {
+.template-wrapper-dm #texto-foto-dm {
   color: white;
   margin-top: 15px;
   font-size: 1.5rem;
 }
 
-.template-wrapper-dia-mujer .zoom-foto {
+.template-wrapper-dm .zoom-foto-dm {
   animation: zoomInFade 4s forwards;
 }
 
@@ -232,7 +236,7 @@
 }
 
 /* Botón para cerrar el carrusel */
-.template-wrapper-dia-mujer .btn-cerrar-carrusel {
+.template-wrapper-dm .btn-cerrar-carrusel-dm {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -250,7 +254,7 @@
   transition: transform 0.2s, background-color 0.2s;
 }
 
-.template-wrapper-dia-mujer .btn-cerrar-carrusel:hover {
+.template-wrapper-dm .btn-cerrar-carrusel-dm:hover {
   background-color: rgba(0, 0, 0, 0.8);
   transform: scale(1.1);
 }

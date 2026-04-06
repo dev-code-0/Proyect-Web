@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 
 /* --- Contenedor Principal (Actúa como el Viewport) --- */
-.regalo-virtual-container {
+.regalo-virtual-container-gi {
   container-type: size;
   position: relative;
   width: 100%;
@@ -12,18 +12,18 @@
   align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
-  border-radius: inherit;
+  border-radius: inherit; 
   color: #fff;
   font-family: 'Lora', serif;
   box-sizing: border-box;
 }
 
-.regalo-virtual-container * {
+.regalo-virtual-container-gi * {
   box-sizing: border-box;
 }
 
 /* --- Fondo animado --- */
-.fondo-estrellas {
+.fondo-estrellas-gi {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
@@ -31,7 +31,7 @@
   overflow: hidden;
 }
 
-.particula {
+.particula-gi {
   position: absolute;
   bottom: -10px;
   width: clamp(4px, 2cqw, 8px);
@@ -50,7 +50,7 @@
 }
 
 /* --- Pantalla de Inicio --- */
-.pantalla-inicio {
+.pantalla-inicio-gi {
   height: 100cqh;
   width: 100%;
   display: flex;
@@ -60,7 +60,7 @@
   z-index: 10;
 }
 
-.titulo-tocar {
+.titulo-tocar-gi {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(2rem, 10cqw, 3.5rem);
   color: #ffcc00;
@@ -70,7 +70,7 @@
   text-align: center;
 }
 
-.boton-abrir {
+.boton-abrir-gi {
   background: linear-gradient(45deg, #ff8c00, #ffcc00);
   border: none;
   padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
@@ -87,7 +87,7 @@
   gap: 10px;
 }
 
-.boton-abrir:active { transform: scale(0.95); }
+.boton-abrir-gi:active { transform: scale(0.95); }
 
 @keyframes pulso {
   from { transform: scale(1); opacity: 0.8; }
@@ -95,14 +95,14 @@
 }
 
 /* --- Contenido Principal --- */
-.contenido-abierto {
+.contenido-abierto-gi {
   width: 100%;
   z-index: 10;
   display: flex;
   flex-direction: column;
 }
 
-.seccion-flores {
+.seccion-flores-gi {
   height: 100cqh;
   min-height: 400px;
   position: relative;
@@ -112,7 +112,7 @@
   flex-shrink: 0;
 }
 
-.titulo-principal {
+.titulo-principal-gi {
   font-family: 'Dancing Script', cursive;
   font-size: clamp(1.8rem, 9cqw, 3.5rem);
   color: #ffcc00;
@@ -130,7 +130,7 @@
 }
 
 /* --- Sistema de Girasoles Responsive --- */
-.jardin-girasoles {
+.jardin-girasoles-gi {
   position: absolute;
   bottom: 10%;
   width: 100%;
@@ -141,7 +141,7 @@
   align-items: flex-end;
 }
 
-.girasol-wrapper {
+.girasol-wrapper-gi {
   position: absolute;
   bottom: 0;
   display: flex;
@@ -151,32 +151,32 @@
 }
 
 /* Posicionamiento y densidad para 10 girasoles */
-.girasol-5, .girasol-6 { left: 45%; transform: translateX(-50%) scale(1.1); z-index: 5; }
-.girasol-6 { left: 55%; }
-.girasol-4 { left: 30%; transform: scale(0.9) rotate(-5deg); }
-.girasol-7 { right: 30%; transform: scale(0.9) rotate(5deg); }
-.girasol-3 { left: 20%; transform: scale(0.7) rotate(-10deg); }
-.girasol-8 { right: 20%; transform: scale(0.7) rotate(10deg); }
-.girasol-2 { left: 10%; transform: scale(0.5) rotate(-15deg); }
-.girasol-9 { right: 10%; transform: scale(0.5) rotate(15deg); }
-.girasol-1 { left: 0%; transform: scale(0.4) rotate(-20deg); }
-.girasol-10 { right: 0%; transform: scale(0.4) rotate(20deg); }
+.girasol-5-gi, .girasol-6-gi { left: 45%; transform: translateX(-50%) scale(1.1); z-index: 5; }
+.girasol-6-gi { left: 55%; }
+.girasol-4-gi { left: 30%; transform: scale(0.9) rotate(-5deg); }
+.girasol-7-gi { right: 30%; transform: scale(0.9) rotate(5deg); }
+.girasol-3-gi { left: 20%; transform: scale(0.7) rotate(-10deg); }
+.girasol-8-gi { right: 20%; transform: scale(0.7) rotate(10deg); }
+.girasol-2-gi { left: 10%; transform: scale(0.5) rotate(-15deg); }
+.girasol-9-gi { right: 10%; transform: scale(0.5) rotate(15deg); }
+.girasol-1-gi { left: 0%; transform: scale(0.4) rotate(-20deg); }
+.girasol-10-gi { right: 0%; transform: scale(0.4) rotate(20deg); }
 
 /* --- RESPONSIVIDAD ESPECÍFICA (Apegarse más en pantalla chica) --- */
 @container (max-width: 600px) {
-  .girasol-5, .girasol-6 { left: 48%; transform: translateX(-50%) scale(1); z-index: 5; }
-  .girasol-6 { left: 52%; }
-  .girasol-4 { left: 40%; transform: scale(0.8) rotate(-5deg); }
-  .girasol-7 { right: 40%; transform: scale(0.8) rotate(5deg); }
-  .girasol-3 { left: 32%; transform: scale(0.6) rotate(-10deg); }
-  .girasol-8 { right: 32%; transform: scale(0.6) rotate(10deg); }
-  .girasol-2 { left: 25%; transform: scale(0.5) rotate(-15deg); }
-  .girasol-9 { right: 25%; transform: scale(0.5) rotate(15deg); }
-  .girasol-1 { left: 18%; transform: scale(0.4) rotate(-20deg); }
-  .girasol-10 { right: 18%; transform: scale(0.4) rotate(20deg); }
+  .girasol-5-gi, .girasol-6-gi { left: 48%; transform: translateX(-50%) scale(1); z-index: 5; }
+  .girasol-6-gi { left: 52%; }
+  .girasol-4-gi { left: 40%; transform: scale(0.8) rotate(-5deg); }
+  .girasol-7-gi { right: 40%; transform: scale(0.8) rotate(5deg); }
+  .girasol-3-gi { left: 32%; transform: scale(0.6) rotate(-10deg); }
+  .girasol-8-gi { right: 32%; transform: scale(0.6) rotate(10deg); }
+  .girasol-2-gi { left: 25%; transform: scale(0.5) rotate(-15deg); }
+  .girasol-9-gi { right: 25%; transform: scale(0.5) rotate(15deg); }
+  .girasol-1-gi { left: 18%; transform: scale(0.4) rotate(-20deg); }
+  .girasol-10-gi { right: 18%; transform: scale(0.4) rotate(20deg); }
 }
 
-.tallo {
+.tallo-gi {
   width: clamp(6px, 2cqw, 12px);
   height: 0;
   background: linear-gradient(to right, #2d5a27, #4ca646, #2d5a27);
@@ -186,17 +186,17 @@
 }
 
 /* Retrasos escalonados para 10 girasoles */
-.girasol-5 .tallo, .girasol-6 .tallo { animation-delay: 1s; }
-.girasol-4 .tallo, .girasol-7 .tallo { animation-delay: 1.2s; }
-.girasol-3 .tallo, .girasol-8 .tallo { animation-delay: 1.4s; }
-.girasol-2 .tallo, .girasol-9 .tallo { animation-delay: 1.6s; }
-.girasol-1 .tallo, .girasol-10 .tallo { animation-delay: 1.8s; }
+.girasol-5-gi .tallo-gi, .girasol-6-gi .tallo-gi { animation-delay: 1s; }
+.girasol-4-gi .tallo-gi, .girasol-7-gi .tallo-gi { animation-delay: 1.2s; }
+.girasol-3-gi .tallo-gi, .girasol-8-gi .tallo-gi { animation-delay: 1.4s; }
+.girasol-2-gi .tallo-gi, .girasol-9-gi .tallo-gi { animation-delay: 1.6s; }
+.girasol-1-gi .tallo-gi, .girasol-10-gi .tallo-gi { animation-delay: 1.8s; }
 
 @keyframes crecerTallo {
   to { height: clamp(150px, 35cqh, 350px); }
 }
 
-.cabeza-girasol {
+.cabeza-girasol-gi {
   position: absolute;
   top: 0;
   transform: translateY(-50%) scale(0);
@@ -209,17 +209,17 @@
 }
 
 /* Retrasos de aparición escalonados */
-.girasol-5 .cabeza-girasol, .girasol-6 .cabeza-girasol { animation-delay: 2.5s; }
-.girasol-4 .cabeza-girasol, .girasol-7 .cabeza-girasol { animation-delay: 2.7s; }
-.girasol-3 .cabeza-girasol, .girasol-8 .cabeza-girasol { animation-delay: 2.9s; }
-.girasol-2 .cabeza-girasol, .girasol-9 .cabeza-girasol { animation-delay: 3.1s; }
-.girasol-1 .cabeza-girasol, .girasol-10 .cabeza-girasol { animation-delay: 3.3s; }
+.girasol-5-gi .cabeza-girasol-gi, .girasol-6-gi .cabeza-girasol-gi { animation-delay: 2.5s; }
+.girasol-4-gi .cabeza-girasol-gi, .girasol-7-gi .cabeza-girasol-gi { animation-delay: 2.7s; }
+.girasol-3-gi .cabeza-girasol-gi, .girasol-8-gi .cabeza-girasol-gi { animation-delay: 2.9s; }
+.girasol-2-gi .cabeza-girasol-gi, .girasol-9-gi .cabeza-girasol-gi { animation-delay: 3.1s; }
+.girasol-1-gi .cabeza-girasol-gi, .girasol-10-gi .cabeza-girasol-gi { animation-delay: 3.3s; }
 
 @keyframes popFlor {
   to { transform: translateY(-50%) scale(1); }
 }
 
-.centro-girasol {
+.centro-girasol-gi {
   width: 75%;
   height: 75%;
   background: radial-gradient(circle, #5c3a21 0%, #291500 100%);
@@ -228,9 +228,9 @@
   box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 }
 
-.petalos { position: absolute; width: 100%; height: 100%; z-index: 1; }
+.petalos-gi { position: absolute; width: 100%; height: 100%; z-index: 1; }
 
-.petalo {
+.petalo-gi {
   position: absolute;
   top: -50%;
   left: 50%;
@@ -244,7 +244,7 @@
   box-shadow: 0 0 10px rgba(255, 234, 0, 0.8), 0 0 20px rgba(255, 157, 0, 0.5);
 }
 
-.indicador-scroll {
+.indicador-scroll-gi {
   position: absolute;
   bottom: 20px;
   font-size: clamp(0.8rem, 4cqw, 1rem);
@@ -253,7 +253,7 @@
 }
 
 /* --- Sección Carta --- */
-.seccion-carta {
+.seccion-carta-gi {
   min-height: 100cqh;
   display: flex;
   flex-direction: column;
@@ -268,7 +268,7 @@
   to { opacity: 1; }
 }
 
-.tarjeta-mensaje {
+.tarjeta-mensaje-gi {
   background: rgba(15, 15, 15, 0.85);
   border: 1px solid #ffcc00;
   border-radius: 15px;
@@ -279,7 +279,7 @@
   backdrop-filter: blur(10px);
 }
 
-.titulo-carta {
+.titulo-carta-gi {
   font-family: 'Dancing Script', cursive;
   color: #ffcc00;
   font-size: clamp(2rem, 8cqw, 2.5rem);
@@ -288,23 +288,23 @@
   margin-bottom: 20px;
 }
 
-.tarjeta-mensaje p {
+.tarjeta-mensaje-gi p {
   line-height: 1.6;
   font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
   margin-bottom: 15px;
   color: #e0e0e0;
 }
 
-.tarjeta-mensaje .firma {
+.tarjeta-mensaje-gi .firma-gi {
   text-align: right;
   font-weight: bold;
   color: #ffcc00;
   margin-top: 25px;
 }
 
-.girasol-final { margin-top: 60px; margin-bottom: 50px; }
+.girasol-final-gi { margin-top: 60px; margin-bottom: 50px; }
 
-.cabeza-girasol.grande {
+.cabeza-girasol-gi.grande {
   position: relative;
   transform: scale(1.5);
   animation: latir 3s ease-in-out infinite alternate;
