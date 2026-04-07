@@ -378,7 +378,7 @@ export default function CorazonCaruselTemplate({ data }) {
     };
 
     const handleModalClick = (e) => {
-        if (e.target.closest('.swiper') || e.target.closest('.close-btn-cc')) return;
+        if (e.target.closest('.swiper .swiper-cc') || e.target.closest('.close-btn-cc')) return;
         createFloatingElements(e.clientX, e.clientY);
     };
 
@@ -435,12 +435,12 @@ export default function CorazonCaruselTemplate({ data }) {
                             En cada latido de mi corazón encuentro la melodía perfecta que compone nuestra historia de amor. Eres la luz que ilumina mis días más oscuros y la razón por la cual cada amanecer tiene sentido. Tu sonrisa es mi refugio, tu abrazo mi hogar, y tu amor la fuerza que me impulsa a ser mejor cada día. 🌟
                         </p>
 
-                        <div className="swiper mySwiper" ref={swiperContainerRef}>
+                        <div className="swiper swiper-cc mySwiper" ref={swiperContainerRef}>
                             <div className="swiper-wrapper">
                                 {fotos.map((src, index) => (
                                     <div
                                         key={index}
-                                        className="swiper-slide"
+                                        className="swiper-slide swiper-slide-cc"
                                         style={{ backgroundImage: `url(${src})` }}
                                     />
                                 ))}

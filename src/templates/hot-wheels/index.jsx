@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 import RamoAzul from "./ramo-azul.png"; // Asegúrate de tener esta imagen en la carpeta correcta
+import HotWheelsSVG from "./card.svg"; // Asegúrate de tener esta imagen en la carpeta correcta
 
 export default function RamoHotWheelsTemplate({data}) {
   const [abierto, setAbierto] = useState(false);
@@ -70,7 +71,7 @@ export default function RamoHotWheelsTemplate({data}) {
           <h1 className="titulo-tocar-hw">
             {" "}
             <strong>Hola {nombre}</strong>
-            Tengo un regalo para tí 🚙❤️
+            Tengo un regalo para tí <img className="svg-hw" src={HotWheelsSVG} alt="" />
           </h1>
           <button
             className="boton-abrir-hw azul-gradient-hw"
@@ -152,10 +153,10 @@ export default function RamoHotWheelsTemplate({data}) {
                   Gracias por tu amor, por ser mi compañero de ruta y por hacer
                   que mi mundo sea un lugar mejor. Eres mi persona favorita.
                 </p>
-                <p className="firma-hw">Te quiero con todo mi corazón. 🫶🏼💙🚙</p>
+                <p className="firma-hw">Te quiero con todo mi corazón. 💙</p>
               </div>
               <div className="detalle-final-hw">
-                <span className="car-emoji-hw">🚙💨</span>
+                <span className="car-emoji-hw"><img src={HotWheelsSVG} alt="" /></span>
               </div>
             </div>
           )}

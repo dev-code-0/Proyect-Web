@@ -246,13 +246,13 @@
 
 .close-btn-cc:hover { background: rgba(189, 0, 255, 0.5); }
 
-.swiper {
+.swiper-cc {
     width: 100%;
     padding-bottom: clamp(30px, 8cqh, 70px) !important;
     flex-shrink: 0;
 }
 
-.swiper-slide {
+.swiper-slide-cc {
     background-position: center;
     background-size: cover;
     width: clamp(110px, 35cqw, 240px) !important;
@@ -264,7 +264,7 @@
     transition: border-color 0.4s, box-shadow 0.4s;
 }
 
-.swiper-slide.swiper-slide-active {
+.swiper-slide-cc.swiper-slide-active {
     border-color: #bd00ff;
     box-shadow: 0 0 25px rgba(189, 0, 255, 0.8);
 }

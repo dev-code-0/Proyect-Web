@@ -29,28 +29,23 @@ export const templates = [
     image: "/public/images/flores-corazones/cajita.webp",
   },
   {
-    id: "hypebox-misteriosa",
-    title: "Hypebox Misteriosa",
-    image: "/public/images/hypebox-misteriosa/preview.webp",
-  },
-  {
     id: "girasoles",
     title: "Girasoles",
-    image: "/public/images/girasoles/preview.webp",
+    image: "/public/images/girasoles/girasoles.svg",
   }, 
   {
     id: "hot-wheels",
     title: "Ramo Hot Wheels",
-    image: "/public/images/hot-wheels/preview.webp",
+    image: "/public/images/hot-wheels/hot-wheels.svg",
   },
   {
     id: "corazon-carrusel",
     title: "Corazón Carrusel",
-    image: "/public/images/corazon-carrusel/preview.webp",
+    image: "/public/images/corazon-carrusel/corazon.svg",
   },
   {
     id: "corazon-animado",
     title: "Corazón Animado",
-    image: "/public/images/corazon-animado/preview.webp",
+    image: "/public/images/corazon-animado/corazon-animado.svg",
   }
 ];

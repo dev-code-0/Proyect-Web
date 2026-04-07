@@ -4,7 +4,7 @@
   --color-acento: #8e7cc3;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  font-family: 'Lora', serif;
+  font-family: 'Lora', serif; 
 
   /* EL TRUCO ESTÁ AQUÍ */
   width: 100%;

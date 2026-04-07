@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import IconoSobre from "./icoCarta.svg";
 import IconoMujer from "./icoMujer.svg";
-import Imagen1 from "./images/foto1.jpeg";
+import Imagen1 from "./images/foto1.jpeg"; 
 import Imagen2 from "./images/foto2.jpeg";
 import Imagen3 from "./images/foto3.jpeg";
 import ILOVEYOUSO from "./song/I-love-you-so.mp3";
