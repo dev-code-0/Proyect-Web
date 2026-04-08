@@ -13,7 +13,7 @@ export default function GirasolesTemplate({data}) {
         setMostrarCarta(true);
       }, 4500); // Retraso mayor para 10 girasoles (4.5s)
     }
-  }, [abierto]);
+  }, [abierto]); 
 
   return (
     <div className="regalo-virtual-container-gi">

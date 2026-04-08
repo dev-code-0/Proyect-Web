@@ -428,7 +428,7 @@ export default function CorazonMagicotemplate({data}) {
 
                         <button className="close-card-btn" onClick={() => setIsLetterOpen(false)}>
                             Cerrar Carta
-                        </button>
+                        </button> 
                     </div>
                 </div>
             </div>

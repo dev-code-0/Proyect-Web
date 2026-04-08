@@ -7,7 +7,7 @@ import Fotos from "./images/couple-photo.jpg";
 import "./style.css";
 
 // ─────────────────────────────────────────
-// HOOKS
+// HOOKS 
 // ─────────────────────────────────────────
 
 // Efecto máquina de escribir — devuelve el texto visible hasta el momento

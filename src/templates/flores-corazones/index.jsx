@@ -318,7 +318,7 @@ export default function FloresCorazonesTemplate({ data }) {
               </div>
             ))}
           </div>
-        </section>
+        </section> 
       )}
     </main>
   );

@@ -37,6 +37,9 @@ import { CorazonCarruselConfig } from "../templates/corazon-carrusel/config.js";
 import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
 import { corazonAnimadoConfig } from "../templates/corazon-animado/config.js";
 
+import LibroPopUpTemplate from "../templates/libro-pop/index.jsx";
+import { libroPopConfig } from "../templates/libro-pop/config.js";
+
 
 
 export default function Preview() {
@@ -108,6 +111,10 @@ export default function Preview() {
 
       case "corazon-animado":
         return <CorazonAnimadoTemplate data={previewData} />;
+
+      case "libro-pop":
+        return <LibroPopUpTemplate data={previewData} />
+        ;
       default:
         return ( 
           <p>
@@ -128,6 +135,7 @@ export default function Preview() {
     if (id === "hot-wheels") return hotWheelsConfig;
     if (id === "corazon-carrusel") return CorazonCarruselConfig;
     if (id === "corazon-animado") return corazonAnimadoConfig;
+    if (id === "libro-pop") return libroPopConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 

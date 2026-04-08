@@ -47,5 +47,10 @@ export const templates = [
     id: "corazon-animado",
     title: "Corazón Animado",
     image: "/public/images/corazon-animado/corazon-animado.svg",
+  },
+  {
+    id: "libro-pop",
+    title: "Libro Pop-up",
+    image: "/public/images/libro-pop/libro-pop.svg",
   }
 ];

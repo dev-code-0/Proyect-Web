@@ -4,7 +4,7 @@
                     /* ======================================================== */
                     container-type: size;
                     position: relative;
-                    width: 100%;
+                    width: 100%; 
                     height: 100%;
                     /* Cambiado a 100% para respetar .preview-box */
                     overflow: hidden;

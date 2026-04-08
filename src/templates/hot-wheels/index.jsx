@@ -12,7 +12,7 @@ export default function RamoHotWheelsTemplate({data}) {
   // Añadimos las frases exactas de tu referencia
   const frases = [
     "Te amo",
-    "Te quiero",
+    "Te quiero", 
     "Te adoro",
     "Siempre juntos", 
     "Mi Amor",

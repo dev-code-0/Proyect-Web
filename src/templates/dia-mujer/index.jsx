@@ -7,7 +7,7 @@ import Imagen2 from "./images/foto2.jpeg";
 import Imagen3 from "./images/foto3.jpeg";
 import ILOVEYOUSO from "./song/I-love-you-so.mp3";
 import usePreloadImages from "../../hooks/usePreloadImages"; // Ajusta la ruta según dónde estés
-import LogoMovie from "./movie.svg";
+import LogoMovie from "./movie.svg"; 
 
 export default function DiaMujerTemplate({ data }) { 
   // Datos dinámicos (si no hay, usamos valores por defecto para la previsualización)

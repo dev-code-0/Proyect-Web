@@ -9,7 +9,7 @@ import Mocha6Final from "./images/mocha6final.gif";
 import Mocha7Final from "./images/mocha7final.gif";
 import Mocha9Final from "./images/mocha9final.gif";
 
-const GIF = { 
+const GIF = {  
   initial: Mocha,
   sad1:    Mocha2,
   sad2:    Mocha3,

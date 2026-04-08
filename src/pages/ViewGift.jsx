@@ -15,6 +15,7 @@ import GirasolesTemplate from "../templates/girasoles/index.jsx";
 import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
 import CorazonCaruselTemplate from "../templates/corazon-carrusel/index.jsx";
 import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
+import LibroPopTemplate from "../templates/libro-pop/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -45,7 +46,7 @@ export default function ViewGift() {
   if (error) {
     return (
       <div style={{ textAlign: "center", padding: "50px", color: "white" }}>
-        <h2>Oops...</h2>
+        <h2>...</h2>
         <p>{error}</p>
         <Link to="/" style={{ color: "white", textDecoration: "underline" }}>
           Ir al inicio
@@ -134,6 +135,12 @@ export default function ViewGift() {
           </div>
         );
 
+    case "libro-pop":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <LibroPopTemplate data={projectData.user_data} />
+        </div>
+      );
 
     default:
       return <div style={{ color: "white" }}>Template no soportado.</div>;
