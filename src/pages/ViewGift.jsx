@@ -17,6 +17,8 @@ import CorazonCaruselTemplate from "../templates/corazon-carrusel/index.jsx";
 import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
 import LibroPopTemplate from "../templates/libro-pop/index.jsx";
 import CajaMusicalTemplate from "../templates/caja-musical/index.jsx";
+import FuegosAmorTemplate from "../templates/corazon-mensaje/index.jsx";
+import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -149,7 +151,18 @@ export default function ViewGift() {
           <CajaMusicalTemplate data={projectData.user_data} />
         </div>
       );
-
+      case "corazon-mensaje":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <FuegosAmorTemplate data={projectData.user_data} />
+          </div>
+        );
+      case "flores-para-ti":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <FloresParaTiTemplate data={projectData.user_data} />
+          </div>
+        );
     default:
       return <div style={{ color: "white" }}>Template no soportado.</div>;
   }

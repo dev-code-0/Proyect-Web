@@ -57,5 +57,15 @@ export const templates = [
     id: "caja-musical",
     title: "Caja Musical",
     image: "/public/images/caja-musical/caja-musical.svg",
+  },
+  {
+    id: "corazon-mensaje",
+    title: "Corazón Mensaje",
+    image: "/public/images/corazon-mensaje/corazon-mensaje.svg",
+  },
+  {
+    id: "flores-para-ti",
+    title: "Flores Para Ti",
+    image: "/public/images/flores-para-ti/flores-para-ti.svg",
   }
 ];

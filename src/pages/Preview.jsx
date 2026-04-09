@@ -43,6 +43,12 @@ import { libroPopConfig } from "../templates/libro-pop/config.js";
 import CajaMusicalTemplate from "../templates/caja-musical/index.jsx";
 import { cajaMusicalConfig } from "../templates/caja-musical/config.js";
 
+import FuegosAmorTemplate from "../templates/corazon-mensaje/index.jsx";
+import { fuegosAmorConfig } from "../templates/corazon-mensaje/config.js";
+
+import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
+import { floresParaTiConfig } from "../templates/flores-para-ti/config.js";
+
 
 
 export default function Preview() {
@@ -120,6 +126,11 @@ export default function Preview() {
         ;
       case "caja-musical":
         return <CajaMusicalTemplate data={previewData} />;
+
+      case "corazon-mensaje":
+        return <FuegosAmorTemplate data={previewData} />;
+      case "flores-para-ti":
+        return <FloresParaTiTemplate data={previewData} />;
       default:
         return ( 
           <p>
@@ -142,6 +153,9 @@ export default function Preview() {
     if (id === "corazon-animado") return corazonAnimadoConfig;
     if (id === "libro-pop") return libroPopConfig;
     if (id === "caja-musical") return cajaMusicalConfig;
+    if (id === "corazon-mensaje") return fuegosAmorConfig;
+    if (id === "flores-para-ti") return floresParaTiConfig;
+
     return { name: "Proyecto genérico", fields: [] };
   };
 

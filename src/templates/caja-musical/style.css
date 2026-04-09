@@ -1,0 +1,826 @@
+/* --- FUENTES GLOBALES (SI ES NECESARIO) --- */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@500&display=swap');
+
+/* --- CONTENEDOR RAÍZ --- */
+.template-wrapper-c3d {
+    container-type: size;
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    background: radial-gradient(circle at center, #3b1c32 0%, #0c0510 100%);
+    font-family: 'Georgia', serif;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: background 2.5s ease;
+
+    /* VARIABLES MAESTRAS (Responsivas) */
+    --box-size: clamp(90px, 30cqw, 160px);
+    --box-h: calc(var(--box-size) * 0.85);
+    --lid-h: calc(var(--box-size) * 0.28);
+
+    /* Paleta Coquette / Fairycore */
+    --color-box: #c9184a;
+    /* Terciopelo Rosa */
+    --color-box-dark: #590d22;
+    --color-ribbon: #ffb5a7;
+    /* Rose Gold Clara */
+    --color-ribbon-dark: #fcd5ce;
+    --color-glow: rgba(255, 181, 167, 0.7);
+}
+
+.template-wrapper-c3d.is-open-c3d {
+    background: radial-gradient(circle at center, #2e0f21 0%, #050108 100%);
+}
+
+.template-wrapper-c3d * {
+    box-sizing: border-box;
+}
+
+/* --- POLVO DE HADAS (Mouse Trail) --- */
+.fairy-dust-c3d {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    animation: fadeShrink 1s ease-out forwards;
+}
+
+@keyframes fadeShrink {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+/* --- BOTÓN DE VINILO --- */
+.vinyl-btn-c3d {
+    position: absolute;
+    top: clamp(10px, 4cqh, 20px);
+    right: clamp(10px, 4cqw, 20px);
+    width: clamp(40px, 12cqw, 55px);
+    height: clamp(40px, 12cqw, 55px);
+    background: #111;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #555;
+    transition: transform 0.3s;
+}
+
+.vinyl-btn-c3d:hover {
+    transform: scale(1.1);
+    border-color: var(--color-ribbon);
+}
+
+.vinyl-grooves-c3d {
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    border: 1px solid #333;
+    box-shadow: inset 0 0 0 4px #111, inset 0 0 0 5px #222;
+}
+
+.vinyl-label-c3d {
+    width: 40%;
+    height: 40%;
+    background: #ff758f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: clamp(0.5rem, 2cqw, 0.8rem);
+    z-index: 2;
+    border: 1px solid var(--color-ribbon);
+}
+
+.spinning-c3d {
+    animation: spinVinyl 3s linear infinite;
+}
+
+@keyframes spinVinyl {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- MARIPOSAS CSS MÁGICAS --- */
+.butterfly-c3d {
+    position: absolute;
+    z-index: 15;
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    transform-style: preserve-3d;
+    animation: flyAround 15s linear infinite;
+}
+
+.b-one {
+    top: 30%;
+    left: -10%;
+    animation-duration: 20s;
+    animation-delay: 0s;
+}
+
+.b-two {
+    top: 60%;
+    right: -10%;
+    animation-duration: 25s;
+    animation-delay: 5s;
+    animation-direction: reverse;
+}
+
+.wing-l,
+.wing-r {
+    position: absolute;
+    top: 0;
+    width: 12px;
+    height: 18px;
+    background: radial-gradient(circle at bottom right, rgba(255, 181, 167, 0.9), transparent);
+    border-radius: 50% 20% 0 50%;
+    box-shadow: 0 0 5px var(--color-glow);
+    transform-origin: right center;
+    animation: flapL 0.2s ease-in-out infinite alternate;
+}
+
+.wing-r {
+    left: 12px;
+    border-radius: 20% 50% 50% 0;
+    transform-origin: left center;
+    animation: flapR 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes flapL {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(60deg);
+    }
+}
+
+@keyframes flapR {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(-60deg);
+    }
+}
+
+@keyframes flyAround {
+    0% {
+        transform: translate(0, 0) scale(0.6) rotateZ(10deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(120cqw, -50px) scale(1) rotateZ(-10deg) rotateX(20deg);
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(200cqw, -100px) scale(0.6) rotateZ(10deg);
+        opacity: 0;
+    }
+}
+
+.is-open-c3d .butterfly-c3d {
+    opacity: 0 !important;
+    transition: opacity 1s;
+}
+
+/* --- CANVAS --- */
+.magic-canvas-c3d {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* --- TÍTULO DE FONDO --- */
+.title-layer-c3d {
+    position: absolute;
+    top: 8%;
+    width: 100%;
+    text-align: center;
+    transition: opacity 1s, transform 1s;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.is-open-c3d .title-layer-c3d {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.main-title-c3d {
+    font-family: 'Dancing Script', cursive, serif;
+    font-size: clamp(2rem, 9cqw, 4rem);
+    margin: 0;
+    background: linear-gradient(45deg, #fff, #ffb5a7, #fff);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+    animation: shineGlow 3s linear infinite;
+}
+
+@keyframes shineGlow {
+    to {
+        background-position: 200% center;
+    }
+}
+
+.subtitle-c3d {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.6rem, 2.5cqw, 1rem);
+    color: var(--color-ribbon);
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    animation: pulseAlpha 1.5s infinite alternate;
+    font-weight: bold;
+}
+
+@keyframes pulseAlpha {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 10px var(--color-glow);
+    }
+}
+
+/* --- ESCENA Y CÁMARA 3D --- */
+.scene-c3d {
+    width: 100%;
+    height: 100%;
+    perspective: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(10%);
+}
+
+/* --- CONTENEDOR DE LA CAJA (CON PARALLAX) --- */
+.box-wrapper-c3d {
+    position: relative;
+    width: var(--box-size);
+    height: var(--box-h);
+    transform-style: preserve-3d;
+    transform: rotateX(calc(-15deg + (var(--my) * -15deg))) rotateY(calc(30deg + (var(--mx) * 25deg)));
+    transition: transform 0.3s ease-out;
+    cursor: pointer;
+}
+
+.is-open-c3d .box-wrapper-c3d {
+    transform: rotateX(-5deg) rotateY(20deg) translateY(15px);
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: default;
+}
+
+/* --- AURA MÁGICA DE LA CAJA --- */
+.box-aura-c3d {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160%;
+    height: 160%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-glow) 0%, transparent 60%);
+    opacity: 0.6;
+    animation: breathAura 2s ease-in-out infinite alternate;
+    pointer-events: none;
+    filter: blur(20px);
+}
+
+.is-open-c3d .box-aura-c3d {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+@keyframes breathAura {
+    0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.15);
+        opacity: 0.8;
+    }
+}
+
+/* --- SOMBRA EN EL SUELO --- */
+.box-shadow-c3d {
+    position: absolute;
+    bottom: -35px;
+    left: -20%;
+    width: 140%;
+    height: 70px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.9) 0%, transparent 70%);
+    transform: rotateX(90deg);
+    transition: opacity 1s, transform 1s;
+}
+
+/* ==========================================
+           CONSTRUCCIÓN GEOMÉTRICA DE LA CAJA
+           ========================================== */
+.box-body-c3d,
+.box-lid-c3d {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+}
+
+.side-c3d {
+    position: absolute;
+    width: var(--box-size);
+    height: var(--box-h);
+    background: linear-gradient(135deg, var(--color-box), var(--color-box-dark));
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
+}
+
+.front-c3d {
+    transform: translateZ(calc(var(--box-size) / 2));
+}
+
+.back-c3d {
+    transform: rotateY(180deg) translateZ(calc(var(--box-size) / 2));
+}
+
+.right-c3d {
+    transform: rotateY(90deg) translateZ(calc(var(--box-size) / 2));
+}
+
+.left-c3d {
+    transform: rotateY(-90deg) translateZ(calc(var(--box-size) / 2));
+}
+
+.bottom-c3d {
+    height: var(--box-size);
+    transform: rotateX(-90deg) translateZ(calc(var(--box-h) - (var(--box-size)/2)));
+    background: #050000;
+    box-shadow: 0 0 20px #000;
+}
+
+.inner-bottom-c3d {
+    height: var(--box-size);
+    transform: rotateX(90deg) translateZ(calc(var(--box-size) / 2));
+    background: #111;
+}
+
+.inner-glow-c3d {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 181, 167, 0.9) 0%, transparent 80%);
+    opacity: 0;
+    transition: opacity 1s 0.5s;
+    filter: blur(10px);
+}
+
+.is-open-c3d .inner-glow-c3d {
+    opacity: 1;
+}
+
+/* Cerradura de corazón brillante en el frente */
+.heart-lock-c3d {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffd700;
+    font-size: clamp(1rem, 3cqw, 1.5rem);
+    text-shadow: 0 0 10px #ffd700;
+    z-index: 5;
+    transition: opacity 0.5s;
+}
+
+.pulse-glow-c3d {
+    animation: lockPulse 1.5s infinite alternate;
+}
+
+@keyframes lockPulse {
+    0% {
+        text-shadow: 0 0 5px #ffd700;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    100% {
+        text-shadow: 0 0 20px #ffb5a7, 0 0 30px #ffb5a7;
+        transform: translate(-50%, -50%) scale(1.1);
+        color: #fff;
+    }
+}
+
+.is-open-c3d .heart-lock-c3d {
+    opacity: 0;
+}
+
+/* --- LAZOS --- */
+.ribbon-v-c3d {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14%;
+    height: 100%;
+    background: linear-gradient(to right, var(--color-ribbon-dark), #fff, var(--color-ribbon-dark));
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.ribbon-h-c3d {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 14%;
+    background: linear-gradient(to bottom, var(--color-ribbon-dark), #fff, var(--color-ribbon-dark));
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================
+           LA TAPA DE LA CAJA (LID)
+           ========================================== */
+.box-lid-c3d {
+    transform: translateY(calc(var(--lid-h) * -1 + 1px)) translateX(-1%) translateZ(1%);
+    width: 102%;
+    height: var(--lid-h);
+    transition: transform 1.5s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 1.2s ease 0.3s;
+    transform-origin: bottom right;
+    z-index: 10;
+}
+
+.is-open-c3d .box-lid-c3d {
+    transform: translateY(-250px) translateX(80px) translateZ(-150px) rotateX(85deg) rotateY(70deg) rotateZ(45deg);
+    opacity: 0;
+}
+
+.lid-side-c3d {
+    position: absolute;
+    background: linear-gradient(135deg, #ff4d6d, #8b0032);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.lid-top-c3d {
+    width: 100%;
+    height: var(--box-size);
+    transform: rotateX(90deg) translateZ(calc(var(--box-size) / 2));
+}
+
+.lid-front-c3d {
+    width: 100%;
+    height: 100%;
+    transform: translateZ(calc(var(--box-size) / 2));
+}
+
+.lid-back-c3d {
+    width: 100%;
+    height: 100%;
+    transform: rotateY(180deg) translateZ(calc(var(--box-size) / 2));
+}
+
+.lid-right-c3d {
+    width: var(--box-size);
+    height: 100%;
+    transform: rotateY(90deg) translateZ(calc(var(--box-size) / 2));
+    left: 50%;
+    margin-left: calc(var(--box-size) / -2);
+}
+
+.lid-left-c3d {
+    width: var(--box-size);
+    height: 100%;
+    transform: rotateY(-90deg) translateZ(calc(var(--box-size) / 2));
+    left: 50%;
+    margin-left: calc(var(--box-size) / -2);
+}
+
+/* MOÑO EN LA TAPA */
+.bow-c3d {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 45%;
+    transform-style: preserve-3d;
+}
+
+.bow-loop-c3d {
+    position: absolute;
+    top: 50%;
+    width: 85%;
+    height: 65%;
+    background: radial-gradient(ellipse, transparent 35%, #fff 36%, var(--color-ribbon-dark) 100%);
+    border-radius: 50%;
+    transform-origin: center;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5), 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.loop-left-c3d {
+    right: 35%;
+    transform: translateY(-50%) rotateY(45deg) rotateZ(-25deg);
+}
+
+.loop-right-c3d {
+    left: 35%;
+    transform: translateY(-50%) rotateY(-45deg) rotateZ(25deg);
+}
+
+.bow-center-c3d {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(8px);
+    width: 25%;
+    height: 35%;
+    background: linear-gradient(135deg, #fff, var(--color-ribbon-dark));
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================
+           CARRUSEL TIPO MÓVIL DE CUNA CON CRISTAL
+           ========================================== */
+.carousel-wrapper-c3d {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform-style: preserve-3d;
+    transform: translateX(-50%) translateY(30px) scale(0.1);
+    transition: transform 1.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+    opacity: 0;
+    z-index: 5;
+}
+
+.is-open-c3d .carousel-wrapper-c3d {
+    transform: translateX(-50%) translateY(calc(var(--box-h) * -2.2)) scale(1);
+    opacity: 1;
+}
+
+.carousel-pillar-c3d {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: calc(var(--box-h) * 2.5);
+    background: linear-gradient(to right, #ffd700, #fff, #ffd700);
+    border-radius: 2px;
+    box-shadow: 0 0 15px var(--color-glow);
+}
+
+.pillar-top-orb-c3d {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ffd700, inset -2px -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* NÚCLEO MAGICO (Corazón brillante rotando inversamente) */
+.crystal-core-c3d {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(2rem, 8cqw, 3rem);
+    color: #fff;
+    text-shadow: 0 0 20px #ffb5a7, 0 0 40px #ff758f, 0 0 60px #fff;
+    animation: floatCrystal 3s ease-in-out infinite alternate, spinCore 10s linear infinite reverse;
+}
+
+@keyframes floatCrystal {
+    0% {
+        transform: translate(-50%, -40%) scale(0.9);
+    }
+
+    100% {
+        transform: translate(-50%, -60%) scale(1.1);
+    }
+}
+
+@keyframes spinCore {
+    100% {
+        transform: translate(-50%, -50%) rotateY(360deg);
+    }
+}
+
+.carousel-spinner-c3d {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    animation: spinCarousel 20s linear infinite;
+}
+
+@keyframes spinCarousel {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.carousel-panel-c3d {
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: calc(var(--box-size) * 0.95);
+    height: calc(var(--box-size) * 1.15);
+    transform: rotateY(var(--rotY)) translateZ(calc(var(--box-size) * 1.2));
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hanging-string-c3d {
+    width: 1px;
+    height: 35px;
+    background: rgba(255, 215, 0, 0.8);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+    transform: rotateX(5deg);
+}
+
+.photo-frame-c3d {
+    width: 100%;
+    height: calc(100% - 35px);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 5px 5px 15px 5px;
+    border-radius: 6px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 181, 167, 0.4);
+    animation: swing 4s ease-in-out infinite alternate;
+    transform-origin: top center;
+}
+
+@keyframes swing {
+    0% {
+        transform: rotateX(-5deg);
+    }
+
+    100% {
+        transform: rotateX(5deg);
+    }
+}
+
+.photo-frame-c3d img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* ==========================================
+           CARTA HOLOGRÁFICA Y SELLO DE CERA
+           ========================================== */
+.message-card-c3d {
+    position: absolute;
+    bottom: 6%;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px) scale(0.9);
+    width: 92%;
+    max-width: 340px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: clamp(20px, 6cqw, 30px);
+    text-align: center;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.8s, opacity 1s ease 1.8s;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 181, 167, 0.1);
+    z-index: 100;
+}
+
+.is-open-c3d .message-card-c3d {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Sello de Cera (Wax Seal) */
+.wax-seal-c3d {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    background: #c9184a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), inset 0 0 10px #590d22;
+    border: 2px solid #a80a35;
+    z-index: 10;
+}
+
+.rose-gold-text-c3d {
+    font-family: 'Dancing Script', cursive, serif;
+    color: transparent;
+    background: linear-gradient(to right, #ffb5a7, #fff, #ffb5a7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-size: clamp(1.8rem, 8cqw, 2.5rem);
+    margin: 5px 0 5px 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.divider-c3d {
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ffb5a7, transparent);
+    margin: 10px auto;
+}
+
+.message-card-c3d p {
+    font-size: clamp(0.8rem, 3.8cqw, 1rem);
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    color: #fdf5e6;
+    text-shadow: 0 1px 3px #000;
+    min-height: 70px;
+    font-family: 'Cinzel', serif;
+}
+
+.cursor-c3d {
+    animation: blinkCursor 0.8s infinite;
+    color: var(--color-ribbon);
+    font-weight: bold;
+}
+
+@keyframes blinkCursor {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.signature-c3d {
+    display: block;
+    font-weight: bold;
+    color: #ffb5a7;
+    font-size: clamp(0.7rem, 3cqw, 0.9rem);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transition: opacity 1s ease;
+    text-shadow: 0 0 10px rgba(255, 181, 167, 0.5);
+    font-family: 'Cinzel', serif;
+}
