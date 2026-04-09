@@ -52,5 +52,10 @@ export const templates = [
     id: "libro-pop",
     title: "Libro Pop-up",
     image: "/public/images/libro-pop/libro-pop.svg",
+  },
+  {
+    id: "caja-musical",
+    title: "Caja Musical",
+    image: "/public/images/caja-musical/caja-musical.svg",
   }
 ];

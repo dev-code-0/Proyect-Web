@@ -40,6 +40,9 @@ import { corazonAnimadoConfig } from "../templates/corazon-animado/config.js";
 import LibroPopUpTemplate from "../templates/libro-pop/index.jsx";
 import { libroPopConfig } from "../templates/libro-pop/config.js";
 
+import CajaMusicalTemplate from "../templates/caja-musical/index.jsx";
+import { cajaMusicalConfig } from "../templates/caja-musical/config.js";
+
 
 
 export default function Preview() {
@@ -115,6 +118,8 @@ export default function Preview() {
       case "libro-pop":
         return <LibroPopUpTemplate data={previewData} />
         ;
+      case "caja-musical":
+        return <CajaMusicalTemplate data={previewData} />;
       default:
         return ( 
           <p>
@@ -136,6 +141,7 @@ export default function Preview() {
     if (id === "corazon-carrusel") return CorazonCarruselConfig;
     if (id === "corazon-animado") return corazonAnimadoConfig;
     if (id === "libro-pop") return libroPopConfig;
+    if (id === "caja-musical") return cajaMusicalConfig;
     return { name: "Proyecto genérico", fields: [] };
   };
 
