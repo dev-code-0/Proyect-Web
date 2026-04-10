@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
+import Song from './song.mp3';
 
 export default function CajaMusicalTemplate({ data }) {
   // ==========================================
   // DATOS Y FALLBACKS
   // ==========================================
+  const musica = data?.musica || Song;
   const nombre = data?.nombre || "Mi Princesa";
   const titulo = data?.titulo || "Magia para ti";
   const mensaje = data?.mensaje || "En esta cajita de cristal guardo nuestros recuerdos más hermosos. Eres la magia que transformó mi vida en un cuento de hadas. Te amo.";
   
-  const fotos = data?.fotos?.length >= 4 
+  const fotos = data?.fotos?.length >= 4  
     ? data.fotos.slice(0, 4) 
     : [
         "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop",
@@ -254,6 +256,10 @@ export default function CajaMusicalTemplate({ data }) {
   useEffect(() => {
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      // Agregar esto para apagar la música si cambian de vista
+      if (audioRef.current) {
+          audioRef.current.pause();
+      }
     };
   }, []);
 
@@ -288,7 +294,7 @@ export default function CajaMusicalTemplate({ data }) {
 
       {/* MÚSICA ROMÁNTICA */}
       <audio ref={audioRef} loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/01/26/audio_d0c6ff1bc8.mp3?filename=romantic-piano-10192.mp3" type="audio/mp3" />
+        <source src={musica} type="audio/mp3" />
       </audio>
 
       {/* BOTÓN DE VINILO (MÚSICA) */}

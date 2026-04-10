@@ -1,14 +1,22 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import './style.css'
+import Music from './songs/musica.mp3'; // Música predeterminada
+import Exposion1 from './songs/explosion1.mp3'; // Sonido de explosión 1
+import Exposion2 from './songs/explosion2.mp3'; // Sonido de explosión 2
+import Exposion3 from './songs/explosion3.mp3'; // Sonido de explosión 3
+import Explocion4 from './songs/explosion4.mp3'; // Sonido de explosión 4
+
 
 export default function FuegosAmorTemplate({ data }) {
   // ==========================================
   // DATOS Y ESTADOS
   // ==========================================
   const nombre = data?.nombre || "Mi Amor";
-  const musicaURL = data?.musicaURL || "./musica.mp3"; // URL de la música personalizada o predeterminada
+  const musicaURL = data?.musicaURL || Music; // URL de la música personalizada o predeterminada
+  const explosionSounds = [Exposion1, Exposion2, Exposion3, Explocion4]; // Array de sonidos de explosión
   
   const mensajesEspeciales = [
-    "Flores amarillas para la amistad que ilumina mis días ✨",
+    "Flores amarillas para la amistad que ilumina mis días",
     "Un detalle amarillo para la persona que siempre me acompaña 💛",
     "La amistad verdadera también florece en amarillo 🌻",
     "Eres luz en mi vida, por eso estas flores son para ti 🌟",
@@ -26,7 +34,7 @@ export default function FuegosAmorTemplate({ data }) {
   
   // Referencias
   const containerRef = useRef(null);
-  const canvasRef = useRef(null);
+  const canvasRef = useRef(null); 
   const audioRef = useRef(null);
   const fireworksRef = useRef([]);
   const textIdCounter = useRef(0);
@@ -40,7 +48,7 @@ export default function FuegosAmorTemplate({ data }) {
   // Usamos una referencia para que la clase Firework pueda llamarla sin problemas de dependencias
   const addFloatingTextRef = useRef((x, y, color) => {
     const id = textIdCounter.current++;
-    const text = Math.random() < 0.7 ? "TE QUIERO" : "💛🌻";
+    const text = Math.random() < 0.7 ? "TE QUIERO" : "TE ADORO";
     
     setFloatingTexts(prev => [...prev, { id, x, y, color, text }]);
     
@@ -85,6 +93,14 @@ export default function FuegosAmorTemplate({ data }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationId;
+
+    // Pre-cargar audios de explosión
+    const preloadedExplosions = explosionSounds.map(src => {
+      const audio = new Audio(src);
+      audio.preload = "auto";
+      return audio;
+    });
+
 
     // Ajustar al tamaño del contenedor
     const resizeCanvas = () => {
@@ -203,6 +219,16 @@ export default function FuegosAmorTemplate({ data }) {
 
       explode() {
         this.exploded = true;
+
+        // --- REPRODUCIR SONIDO DE EXPLOSIÓN ---
+        if (preloadedExplosions.length > 0) {
+          const randomAudio = preloadedExplosions[Math.floor(random(0, preloadedExplosions.length))];
+          // Clonamos el nodo para que los sonidos se puedan superponer si explotan varios a la vez
+          const soundClone = randomAudio.cloneNode();
+          soundClone.volume = 0.6;
+          soundClone.play().catch(e => console.log("Audio play error:", e));
+        }
+        // --------------------------------------
         
         // 1. Explosión en forma circular básica
         for (let a = 0; a < Math.PI * 2; a += 0.1) {
@@ -388,7 +414,7 @@ export default function FuegosAmorTemplate({ data }) {
           NOMBRE INFERIOR
           ========================================== */}
       {isStarted && (
-        <div className="bottom-name-fa">Para {nombre}</div>
+        <div className="bottom-name-fa"><p>Para {nombre}</p></div>
       )}
 
       {/* ==========================================
@@ -403,99 +429,7 @@ export default function FuegosAmorTemplate({ data }) {
       {/* ==========================================
           ESTILOS CSS
           ========================================== */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap');
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .wrapper-fa {
-          container-type: size;
-          position: relative;
-          width: 100%; height: 100%; min-height: 400px;
-          background: radial-gradient(ellipse at center, #332100 0%, #000000 100%);
-          overflow: hidden; touch-action: manipulation;
-          font-family: sans-serif;
-          /* Desactiva selección para evitar bugs táctiles */
-          user-select: none; -webkit-user-select: none;
-        }
-
-        /* --- CANVAS --- */
-        .fireworks-canvas-fa {
-          position: absolute; inset: 0; z-index: 0; pointer-events: none;
-        }
-
-        /* --- ESTRELLAS DE FONDO --- */
-        .star-fa {
-          position: absolute; background-color: #fff; border-radius: 50%;
-          pointer-events: none; z-index: 1;
-          animation: twinkle-fa 4s infinite alternate;
-        }
-        @keyframes twinkle-fa {
-          0%, 100% { opacity: 0.1; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 5px #fff; }
-        }
-
-        /* --- TEXTOS "TE QUIERO" EXPLOSIVOS --- */
-        .floating-text-fa {
-          position: absolute;
-          font-family: 'Dancing Script', cursive;
-          font-size: clamp(1.2rem, 6cqw, 2rem);
-          font-weight: bold;
-          text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-          pointer-events: none; z-index: 5;
-          transform-origin: center;
-          /* Centrar el punto exacto de la explosión */
-          transform: translate(-50%, -50%);
-          animation: floatUp-fa 8s ease-out forwards;
-        }
-
-        @keyframes floatUp-fa {
-          0% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); opacity: 1; }
-          40% { transform: translate(-50%, calc(-50% - 60px)) scale(1.2) rotate(5deg); opacity: 0.9; }
-          100% { transform: translate(-50%, calc(-50% - 150px)) scale(1.5) rotate(0); opacity: 0; }
-        }
-
-        /* --- MENSAJE CENTRAL (PACIFICO) --- */
-        .center-message-fa {
-          position: absolute; top: 40%; left: 0; width: 100%;
-          transform: translateY(-50%); text-align: center;
-          font-family: 'Pacifico', cursive;
-          font-size: clamp(1.5rem, 8cqw, 3rem); line-height: 1.4;
-          color: #ffd966; padding: 0 20px; box-sizing: border-box;
-          text-shadow: 0 0 10px #ffcc33, 0 0 20px #ffb700, 0 0 30px #ffb700;
-          pointer-events: none; z-index: 10;
-          animation: fadeInOut-fa 6s ease-in-out forwards;
-        }
-
-        @keyframes fadeInOut-fa {
-          0% { opacity: 0; transform: translateY(-50%) scale(0.8); }
-          20% { opacity: 1; transform: translateY(-50%) scale(1.05); }
-          30%, 80% { opacity: 1; transform: translateY(-50%) scale(1); }
-          100% { opacity: 0; transform: translateY(-50%) scale(0.8); }
-        }
-
-        /* --- NOMBRE INFERIOR --- */
-        .bottom-name-fa {
-          position: absolute; bottom: 20px; left: 20px;
-          z-index: 10; font-family: 'Pacifico', cursive;
-          font-size: clamp(1.2rem, 5cqw, 2rem); color: white;
-          text-shadow: 0 0 10px #ffcc00; opacity: 0.8; pointer-events: none;
-        }
-
-        /* --- BOTÓN DE INICIO --- */
-        .play-btn-fa {
-          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-          z-index: 100; background: #ffcc00; color: #332200;
-          border: none; border-radius: 50px; padding: 15px 30px;
-          font-size: clamp(1rem, 4cqw, 1.2rem); font-family: 'Pacifico', cursive;
-          cursor: pointer; box-shadow: 0 0 20px #ffb700; transition: transform 0.2s;
-        }
-        .pulse-btn-fa { animation: btnPulse-fa 1.5s infinite alternate; }
-        
-        @keyframes btnPulse-fa {
-          0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 15px #ffb700; }
-          100% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 30px #ffb700, 0 0 40px #ffcc00; }
-        }
-      `}</style>
+      
     </div>
   );
 }
