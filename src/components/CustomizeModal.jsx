@@ -3,6 +3,50 @@ import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
 import '../styles/modal.css';
 
+const MAX_IMAGE_SIZE_MB = 8;
+const MAX_AUDIO_SIZE_MB = 15;
+
+const matchesAccept = (file, accept = '') => {
+  if (!accept) return true;
+
+  const rules = accept
+    .split(',')
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (!rules.length) return true;
+
+  const fileType = (file.type || '').toLowerCase();
+  const fileName = (file.name || '').toLowerCase();
+
+  return rules.some((rule) => {
+    if (rule.endsWith('/*')) {
+      const baseType = rule.slice(0, -1);
+      return fileType.startsWith(baseType);
+    }
+
+    if (rule.startsWith('.')) {
+      return fileName.endsWith(rule);
+    }
+
+    return fileType === rule;
+  });
+};
+
+const exceedsSizeLimit = (file, accept = '') => {
+  const fileSizeMB = file.size / (1024 * 1024);
+
+  if (accept.includes('audio/')) {
+    return fileSizeMB > MAX_AUDIO_SIZE_MB;
+  }
+
+  if (accept.includes('image/')) {
+    return fileSizeMB > MAX_IMAGE_SIZE_MB;
+  }
+
+  return fileSizeMB > MAX_IMAGE_SIZE_MB;
+};
+
 export default function CustomizeModal({ config, onClose, onSave }) {
   const [formData, setFormData] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
@@ -15,6 +59,22 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     const uploadedUrls = [];
 
     for (const file of files) {
+      if (!matchesAccept(file, field.accept || '')) {
+        setProgreso('');
+        alert(`Tipo de archivo no permitido para ${field.label}.`);
+        continue;
+      }
+
+      if (exceedsSizeLimit(file, field.accept || '')) {
+        setProgreso('');
+        alert(
+          `Archivo demasiado grande para ${field.label}. Maximo: ${
+            (field.accept || '').includes('audio/') ? MAX_AUDIO_SIZE_MB : MAX_IMAGE_SIZE_MB
+          }MB.`,
+        );
+        continue;
+      }
+
       let fileToUpload = file;
 
       // 1. COMPRESIÓN Y CONVERSIÓN A WEBP (Solo si es imagen)
@@ -39,12 +99,13 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       const fileName = `${Math.random().toString(36).substring(2, 10)}_${Date.now()}.${fileExt}`;
       const filePath = `${config.id}/${fileName}`; // Lo guarda ordenado por proyecto
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('archivos_usuarios')
         .upload(filePath, fileToUpload);
 
       if (error) {
         console.error("Error subiendo archivo:", error);
+        setProgreso(`Error subiendo archivo: ${error.message || 'intenta de nuevo.'}`);
         continue;
       }
 
@@ -52,6 +113,11 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       const { data: publicData } = supabase.storage
         .from('archivos_usuarios')
         .getPublicUrl(filePath);
+
+      if (!publicData?.publicUrl) {
+        setProgreso('No se pudo obtener URL publica del archivo.');
+        continue;
+      }
       
       uploadedUrls.push(publicData.publicUrl);
     }
@@ -63,7 +129,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       setFormData({ ...formData, [field.name]: uploadedUrls[0] });
     }
     
-    setProgreso('');
+    setProgreso(uploadedUrls.length ? '' : 'No se subio ningun archivo valido.');
     setIsProcessing(false);
   };
 

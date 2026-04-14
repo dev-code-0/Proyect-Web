@@ -69,7 +69,10 @@ export default function Preview() {
   }
 
   const handleSaveConfig = async (datosPersonalizados) => {
-    const uniqueId = Math.random().toString(36).substring(2, 9);
+    const uniqueId =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
     // Guardamos en la base de datos real
     const { data, error } = await supabase
       .from("proyectos_creados")
