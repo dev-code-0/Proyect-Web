@@ -1,15 +1,18 @@
 import React from 'react';
 import ActionButtons from '../components/ActionButtons';
 import TemplateCarousel from '../components/TemplateCarousel';
+import { AntiInspectGuard } from '../lib/antiInspect';
 import '../styles/home.css';
 
 export default function Home() {
   return (
-    <main className="home-container">
-      <h1 className="main-title-home">CODES FREE</h1>
-      {/* Carrusel Dinámico */}
-        <TemplateCarousel />
-      <ActionButtons />
-    </main>
+    <AntiInspectGuard>
+      <main className="home-container">
+        <h1 className="main-title-home">CODES FREE</h1>
+        {/* Carrusel Dinámico */}
+          <TemplateCarousel />
+        <ActionButtons />
+      </main>
+    </AntiInspectGuard>
   );
 }

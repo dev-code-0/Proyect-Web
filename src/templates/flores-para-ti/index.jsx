@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Musica from './sound.mp3';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 import './style.css'
 
 export default function FloresParaTiTemplate({ data }) {
@@ -134,6 +135,7 @@ export default function FloresParaTiTemplate({ data }) {
     };
 
     return (
+        <AntiInspectGuard>
         <div className={`body-fpt ${!isLoaded ? 'not-loaded-fpt' : ''}`} ref={containerRef}>
             <div id="falling-flower-container-fpt" ref={fallingContainerRef}></div>
             <div id="particle-container-fpt" ref={particleContainerRef}></div>
@@ -319,5 +321,6 @@ export default function FloresParaTiTemplate({ data }) {
 
          
         </div>
+        </AntiInspectGuard>
     );
 }
