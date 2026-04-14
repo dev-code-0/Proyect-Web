@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style.css'; 
+import Music from './music.mp3'
 
 export default function CorazonMagicotemplate({data}) {
     const nombre = data?.nombre || "María";
@@ -371,7 +372,7 @@ export default function CorazonMagicotemplate({data}) {
             
             {/* Reproductor de música (Pista relajante de dominio público para probar) */}
             <audio ref={audioRef} loop id="bg-music">
-                <source src="https://cdn.pixabay.com/download/audio/2022/01/26/audio_d0c6ff1bc8.mp3?filename=romantic-piano-10192.mp3" type="audio/mp3" />
+                <source src={Music} type="audio/mp3" />
             </audio>
 
             
@@ -408,7 +409,7 @@ export default function CorazonMagicotemplate({data}) {
                 className={`action-btn ${(showButton && !isLetterOpen) ? 'visible' : ''}`}
                 onClick={() => setIsLetterOpen(true)}
             >
-                Abrir Sorpresa
+                Abrir
             </button>
 
             {/* Modal Glassmorphism con Parallax */}

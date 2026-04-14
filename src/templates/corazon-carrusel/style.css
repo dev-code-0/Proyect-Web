@@ -53,7 +53,7 @@
     position: absolute;
     top: 10%; width: 100%;
     text-align: center;
-    color: #ff1a8c;
+    color: #FFD6E8;
     font-family: 'Dancing Script', cursive;
     font-size: clamp(2rem, 8cqh, 3.5rem);
     text-shadow: 0 0 10px #ff1a8c, 0 0 20px #ff1a8c;
@@ -95,7 +95,7 @@
     transform: translateX(-50%);
     padding: clamp(8px, 2cqh, 12px) clamp(25px, 8cqw, 45px);
     background: rgba(10, 0, 5, 0.5);
-    color: #ff1a8c;
+    color: #FFD6E8;
     border: 1px solid #ff1a8c;
     border-radius: 25px;
     font-weight: 700;
@@ -211,7 +211,7 @@
 }
 
 .modal-header-cc {
-    color: #bd00ff;
+    color: #E6CCFF;
     font-weight: 700;
     font-size: clamp(1.4rem, 4cqh, 2.5rem);
     margin-bottom: clamp(10px, 2cqh, 25px);

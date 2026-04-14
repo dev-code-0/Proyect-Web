@@ -70,7 +70,6 @@ export default function RamoHotWheelsTemplate({data}) {
         <div className="pantalla-inicio-hw">
           <h1 className="titulo-tocar-hw">
             {" "}
-            <strong>Hola {nombre}</strong>
             Tengo un regalo para tí <img className="svg-hw" src={HotWheelsSVG} alt="" />
           </h1>
           <button
@@ -112,7 +111,7 @@ export default function RamoHotWheelsTemplate({data}) {
 
           <div className="seccion-ramo-hw">
             <h1 className="titulo-principal-hw">
-              ¡Feliz Día del Novio <br /> 💙!
+              Para mi amor {nombre} <br /> 💙
             </h1>
 
             <div className="ramo-wrapper-hw">
@@ -142,7 +141,7 @@ export default function RamoHotWheelsTemplate({data}) {
                 </p>
                 <p>
                   Sino el amor que compartimos, la complicidad de cada aventura
-                  y el motor que me impulsa a ser mejor cada día. ✨💙
+                  y el motor que me impulsa a ser mejor cada día.💙
                 </p>
                 <p>
                   Este detalle es para recordarte lo mucho que significas para

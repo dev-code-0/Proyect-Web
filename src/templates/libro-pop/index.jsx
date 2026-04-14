@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css'
+import Image1 from './images/image1.avif'
+import Image2 from './images/image2.avif'
+import Image3 from './images/image3.avif'
 
 export default function LibroPopUpTemplate({ data }) {
   // ==========================================
   // DATOS Y ESTADOS
   // ==========================================
-  const nombre = data?.nombre || "Mi Amor";
   const titulo = data?.titulo || "Nuestra Historia";
-  const foto1 = data?.foto || data?.fotos?.[0] || "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop";
-  const foto2 = data?.fotos?.[1] || "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=600&auto=format&fit=crop";
+  const nombre = data?.nombre || "María";
+  const fotos = data?.fotos && data.fotos.length > 0? data.fotos
+      : [Image1, Image2, Image3]; // Array de fotos para el libro
 
   const maxSpreads = 3; // 0: Portada, 1: Intro, 2: Memorias, 3: Pop-Up
   const [currentSpread, setCurrentSpread] = useState(0);
   const [animatingLeaf, setAnimatingLeaf] = useState(null); 
   const [showParticles, setShowParticles] = useState(false);
-  const audioRef = useRef(null);
+  const audioRef = useRef(null); 
 
   // ==========================================
   // LÓGICA DE INTERACCIÓN Y FÍSICA 3D
@@ -176,7 +179,7 @@ export default function LibroPopUpTemplate({ data }) {
                 <div className="polaroid-lpu tilt-right-lpu anim-pic-lpu" style={{'--delay': '0.8s', '--rot': '4deg'}}>
                   <div className="polaroid-pin-lpu"></div>
                   <div className="img-wrapper-lpu">
-                    <img src={foto1} alt="Momento 1" />
+                    <img src={fotos[0]} alt="Momento 1" />
                   </div>
                   <span>Nuestro inicio</span>
                 </div>
@@ -195,7 +198,7 @@ export default function LibroPopUpTemplate({ data }) {
                 <div className="polaroid-lpu tilt-left-lpu anim-pic-lpu" style={{'--delay': '0.5s', '--rot': '-4deg'}}>
                   <div className="polaroid-tape-lpu"></div>
                   <div className="img-wrapper-lpu">
-                    <img src={foto2} alt="Momento 2" />
+                    <img src={fotos[1]} alt="Momento 2" />
                   </div>
                   <span>Cada instante cuenta</span>
                 </div>
@@ -276,7 +279,7 @@ export default function LibroPopUpTemplate({ data }) {
 
                 <div className={`popup-layer-lpu layer-mid-lpu ${currentSpread === maxSpreads ? 'is-popped-lpu' : ''}`}>
                   <div className="photo-frame-lpu gold-border-lpu">
-                    <img src={foto1} alt="Final" className="popup-img-lpu" />
+                    <img src={fotos[2]} alt="Final" className="popup-img-lpu" />
                   </div>
                 </div>
 

@@ -30,6 +30,7 @@ body {
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(3px);
+  color : #000;
 }
 
 .rc-container {
@@ -188,8 +189,8 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(3px);
-  background: rgba(0,0,0,0.15);
+  background:  rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(30px) saturate(180%) brightness(0.85);
 }
 
 @keyframes fadeIn {
@@ -240,7 +241,7 @@ button {
   border: none;
   align-self: center;
   width: calc(100% - 46px);
-  margin: 0 auto;
+  margin: 10px auto;
   height: 150px;
   background: #ffc7c7;
   display: flex;

@@ -15,7 +15,7 @@ const GIF = {
   sad2:    Mocha3,
   sad3:    Mocha4,
   happy1:  Mocha5Final,
-  happy2:  Mocha6Final,
+  happy2:  Mocha6Final, 
   happy3:  Mocha7Final,
   happy4:  Mocha9Final,
 };
@@ -44,7 +44,7 @@ export default function NoviaPregunta({ data }) {
   const [yesScale, setYesScale]     = useState(1);
   const [noPos, setNoPos]           = useState({ x: null, y: null });
   const [noMoving, setNoMoving]     = useState(false);
-
+  const containerRef = useRef(null);
   const timerRef     = useRef(null);
   const yesGrowRef   = useRef(null);
   const mouseInNoRef = useRef(false);
@@ -113,17 +113,17 @@ export default function NoviaPregunta({ data }) {
   function handleNoMove() {
     if (noMoving) return;
     setNoMoving(true);
-    const x = Math.random() * (document.documentElement.clientWidth  - 160);
-    const y = Math.random() * (document.documentElement.clientHeight -  80);
+    const x = Math.random() * (containerRef.current?.clientWidth  - 160);
+    const y = Math.random() * (containerRef.current?.clientHeight -  80);
     setNoPos({ x, y });
     setTimeout(() => setNoMoving(false), 520);
   }
 
-  const noStyle = noPos.x !== null ? { position: "fixed", left: noPos.x, top: noPos.y, transition: "all 0.5s" } : {};
+  const noStyle = noPos.x !== null ? { position: "absolute", left: noPos.x, top: noPos.y, transition: "all 0.5s" } : {};
 
   return (
-    <main className={`novia-wrap-pr${answered ? " novia-wrap--yes-pr" : ""}`}>
-      <div className="novia-card-pr">
+    <main  className={`novia-wrap-pr${answered ? " novia-wrap--yes-pr" : ""}`}>
+      <div ref={containerRef} className="novia-card-pr">
         <div className="novia-gif-wrap-pr">
           <img
             key={currentGif}

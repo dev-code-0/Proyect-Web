@@ -148,7 +148,7 @@ export default function FloresParaTiTemplate({ data }) {
                     )}
                 </button>
                 <div className="progress-container-fpt">
-                    <div className="song-info-fpt">Nuestra Canción ❤️</div>
+                    <div className="song-info-fpt">Feliz Día 🌻</div>
                     <div className="progress-bar-fpt" id="progressBar-fpt" ref={progressBarRef} onClick={handleProgressClick}>
                         <div className="progress-fill-fpt" id="progressFill-fpt" style={{ width: `${progress}%` }}></div>
                     </div>

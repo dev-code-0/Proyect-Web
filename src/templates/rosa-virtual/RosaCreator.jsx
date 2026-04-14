@@ -515,7 +515,7 @@ export default function RosaCreator({ onSave, onClose }) {
             {/* Zona superior: video opcional */}
             <div
               className="image-container"
-              style={{ backgroundColor: formData.bgLight, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', borderRadius: '20px', width: 'calc(100% - 46px)', margin: '10px auto', height: '150px' }}
+              style={{ backgroundColor: formData.bgLight, display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', borderRadius: '20px', width: 'calc(100% - 46px)', margin: '10px auto', height: '150px' }}
             >
               <div style={{ textAlign: 'center', marginBottom: 6, fontWeight: 600, color: '#555', fontSize: 14 }}>
                 {videoSaved ? `✅ Video guardado` : '¿Deseas agregar un video? (Opcional)'}
@@ -550,7 +550,7 @@ export default function RosaCreator({ onSave, onClose }) {
                   maxLength={300}
                   style={{
                     height: 120, fontSize: 16, padding: 14,
-                    width: 'calc(100% - 82px)',
+                    width: 'calc(90%)',
                     border: `3px solid ${formData.colorHex}`,
                     caretColor: formData.colorHex,
                     transition: 'border-color 0.3s',

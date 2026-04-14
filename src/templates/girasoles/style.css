@@ -185,16 +185,111 @@
   animation: crecerTallo 2s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
 }
 
-/* Retrasos escalonados para 10 girasoles */
-.girasol-5-gi .tallo-gi, .girasol-6-gi .tallo-gi { animation-delay: 1s; }
-.girasol-4-gi .tallo-gi, .girasol-7-gi .tallo-gi { animation-delay: 1.2s; }
-.girasol-3-gi .tallo-gi, .girasol-8-gi .tallo-gi { animation-delay: 1.4s; }
-.girasol-2-gi .tallo-gi, .girasol-9-gi .tallo-gi { animation-delay: 1.6s; }
-.girasol-1-gi .tallo-gi, .girasol-10-gi .tallo-gi { animation-delay: 1.8s; }
-
 @keyframes crecerTallo {
   to { height: clamp(150px, 35cqh, 350px); }
 }
+
+.hoja-gi {
+  position: absolute;
+  top: 60%;
+  width: clamp(20px, 5cqw, 35px);
+  height: clamp(12px, 3cqw, 20px);
+  background: linear-gradient(to right, #2d5a27, #4ca646);
+  box-shadow: 0 0 8px rgba(76, 166, 70, 0.4);
+  transform: scale(0);
+  /* Añadida la animación de brillo infinito junto con la de crecimiento */
+  animation: 
+    popHoja-gi 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+    brillo-hoja-gi 2.5s ease-in-out infinite alternate;
+}
+
+.hoja-izq-gi { 
+  left: -180%; 
+  border-radius: 50% 0 50% 0; 
+  transform-origin: right center; 
+}
+
+.hoja-der-gi { 
+  right: -180%; 
+  border-radius: 0 50% 0 50%; 
+  transform-origin: left center; 
+  top: 45%; /* Ligeramente más arriba para asimetría natural */
+}
+@keyframes popHoja-gi {
+  to { transform: scale(1); }
+}
+/* NUEVO: Las hojas palpitan con un brillo sutil mágico */
+@keyframes brillo-hoja-gi {
+  0% { box-shadow: 0 0 4px rgba(76, 166, 70, 0.2); filter: brightness(1); }
+  100% { box-shadow: 0 0 15px rgba(135, 255, 127, 0.8); filter: brightness(1.3); }
+}
+/* NUEVO: Rotación continua de los pétalos */
+@keyframes giro-lento-petalos-gi {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+        /* --- NUEVO: OPCIÓN 1 - Balanceo de la brisa --- */
+        .girasol-balanceo-gi {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transform-origin: bottom center;
+          animation: balanceo-brisa-gi ease-in-out infinite alternate;
+        }
+        
+        @keyframes balanceo-brisa-gi {
+          0% { transform: rotate(-4deg); }
+          100% { transform: rotate(4deg); }
+        }
+
+        /* --- NUEVO: OPCIÓN 2 - Hover que duplica el brillo neón --- */
+        .girasol-wrapper-gi:hover .petalo-gi {
+          box-shadow: 0 0 20px rgba(255, 234, 0, 1), 0 0 40px rgba(255, 157, 0, 0.8);
+          filter: brightness(1.3);
+        }
+        
+        /* Transición suave para el hover (agregado a los pétalos) */
+        .petalo-gi {
+          transition: box-shadow 0.4s ease, filter 0.4s ease;
+        }
+
+        /* --- NUEVO: OPCIÓN 4 - Rocío de Neón Parpadeante --- */
+        .rocio-gi {
+          position: absolute;
+          top: 25%;
+          right: 25%;
+          width: 6px;
+          height: 6px;
+          background-color: #fff;
+          border-radius: 50%;
+          box-shadow: 0 0 8px #fff, 0 0 15px #0ff; /* Brillo celeste/blanco tipo diamante */
+          z-index: 5;
+          animation: parpadeo-rocio-gi linear infinite;
+        }
+
+        @keyframes parpadeo-rocio-gi {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50% { opacity: 1; transform: scale(1.2); }
+        }
+
+/* Retrasos de las hojas coordinados con los tallos */
+.girasol-5-gi .hoja-gi, .girasol-6-gi .hoja-gi { animation-delay: 1s; }
+.girasol-4-gi .hoja-gi, .girasol-7-gi .hoja-gi { animation-delay: 1.2s; }
+.girasol-3-gi .hoja-gi, .girasol-8-gi .hoja-gi { animation-delay: 1.4s; }
+.girasol-2-gi .hoja-gi, .girasol-9-gi .hoja-gi { animation-delay: 1.6s; }
+.girasol-1-gi .hoja-gi, .girasol-10-gi .hoja-gi { animation-delay: 1.8s; }
+/* 2. LATIDO MÁGICO EN EL CENTRO DEL GIRASOL */
+.centro-girasol-gi {
+  animation: latido-centro-gi 3s infinite ease-in-out alternate;
+  animation-delay: 1.5s; /* Empieza a latir después de nacer */
+}
+
+@keyframes latido-centro-gi {
+  0% { box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 5px rgba(92, 58, 33, 0); }
+  100% { box-shadow: inset 0 0 15px rgba(0,0,0,0.9), 0 0 20px rgba(255, 157, 0, 0.6); }
+}
+
 
 .cabeza-girasol-gi {
   position: absolute;
@@ -209,11 +304,11 @@
 }
 
 /* Retrasos de aparición escalonados */
-.girasol-5-gi .cabeza-girasol-gi, .girasol-6-gi .cabeza-girasol-gi { animation-delay: 2.5s; }
-.girasol-4-gi .cabeza-girasol-gi, .girasol-7-gi .cabeza-girasol-gi { animation-delay: 2.7s; }
-.girasol-3-gi .cabeza-girasol-gi, .girasol-8-gi .cabeza-girasol-gi { animation-delay: 2.9s; }
-.girasol-2-gi .cabeza-girasol-gi, .girasol-9-gi .cabeza-girasol-gi { animation-delay: 3.1s; }
-.girasol-1-gi .cabeza-girasol-gi, .girasol-10-gi .cabeza-girasol-gi { animation-delay: 3.3s; }
+.girasol-5-gi .cabeza-girasol-gi, .girasol-6-gi .cabeza-girasol-gi { animation-delay: 1.5s; }
+.girasol-4-gi .cabeza-girasol-gi, .girasol-7-gi .cabeza-girasol-gi { animation-delay: 1.7s; }
+.girasol-3-gi .cabeza-girasol-gi, .girasol-8-gi .cabeza-girasol-gi { animation-delay: 1.9s; }
+.girasol-2-gi .cabeza-girasol-gi, .girasol-9-gi .cabeza-girasol-gi { animation-delay: 2.1s; }
+.girasol-1-gi .cabeza-girasol-gi, .girasol-10-gi .cabeza-girasol-gi { animation-delay: 2.3s; }
 
 @keyframes popFlor {
   to { transform: translateY(-50%) scale(1); }
@@ -259,7 +354,6 @@
   flex-direction: column;
   align-items: center;
   padding: 40px 15px;
-  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.9) 20%);
   animation: fadeIn 1s forwards;
 }
 
@@ -269,7 +363,6 @@
 }
 
 .tarjeta-mensaje-gi {
-  background: rgba(15, 15, 15, 0.85);
   border: 1px solid #ffcc00;
   border-radius: 15px;
   padding: clamp(20px, 6cqw, 40px);

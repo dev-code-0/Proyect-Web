@@ -17,6 +17,7 @@
 }
 
 .preview-box {
+  position: relative;
   background: white;
   width: 320px;
   height: 550px;

@@ -51,6 +51,7 @@
                     z-index: 90;
                     transition: all 0.3s ease;
                     box-shadow: 0 0 15px rgba(255, 26, 140, 0.3);
+                    padding: 0;
                 }
 
                 .music-btn:hover {
@@ -76,14 +77,17 @@
                    ======================= */
                 .center-text {
                     position: absolute;
-                    top: 50%;
+                    top: 20%;
                     left: 50%;
                     transform: translate(-50%, -50%);
                     font-family: 'Dancing Script', cursive;
                     font-size: clamp(2.5rem, 12cqw, 6rem);
                     /* Escalado dinámico con cqw */
-                    color: #fff;
-                    text-shadow: 0 0 20px #ff1a8c, 0 0 40px #bd00ff, 0 0 60px #ff1a8c;
+                    color: #EAD6FF;
+                    text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 4px 8px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.7);
                     pointer-events: none;
                     animation: heartBeatText 1.5s infinite alternate, textEntry 3s ease-out forwards;
                     transition: opacity 0.5s ease;
@@ -177,7 +181,6 @@
                     font-weight: 700;
                     font-size: clamp(0.9rem, 4cqw, 1.3rem);
                     letter-spacing: 2px;
-                    text-transform: uppercase;
                     cursor: pointer;
                     box-shadow: 0 0 25px rgba(255, 26, 140, 0.5), inset 0 0 15px rgba(189, 0, 255, 0.3);
                     opacity: 0;
@@ -254,8 +257,7 @@
 
                 .glass-card {
                     width: 100%;
-                    background: linear-gradient(135deg, rgba(30, 0, 40, 0.65), rgba(15, 0, 20, 0.85));
-                    backdrop-filter: blur(25px);
+                    backdrop-filter: blur(5px);
                     -webkit-backdrop-filter: blur(25px);
                     border: 1px solid rgba(255, 255, 255, 0.25);
                     border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -275,10 +277,9 @@
                     position: absolute;
                     inset: -2px;
                     border-radius: 26px;
-                    background: linear-gradient(45deg, #ff1a8c, #bd00ff, #ff1a8c);
                     z-index: -1;
                     opacity: 0.3;
-                    filter: blur(20px);
+                    filter: blur(10px);
                     animation: auraPulse 3s infinite alternate;
                 }
 
