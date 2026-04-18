@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 import usePreloadImages from "../../hooks/usePreloadImages";
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 import Image1 from './Images/Image1.avif';
 import Image2 from './Images/Image2.avif';
 import Image3 from './Images/Image3.avif';
@@ -141,23 +143,9 @@ export default function CorazonCaruselTemplate({ data }) {
     const currentBaseColorRef = useRef(COLOR_PINK);
 
     // ==========================================
-    // CARGA DE SCRIPTS Y SIMULADOR DE BARRA
+    // SIMULADOR DE BARRA
     // ==========================================
     useEffect(() => {
-        if (!document.getElementById('swiper-css')) {
-            const link = document.createElement('link');
-            link.id = 'swiper-css';
-            link.rel = 'stylesheet';
-            link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-            document.head.appendChild(link);
-        }
-        if (!document.getElementById('swiper-js')) {
-            const script = document.createElement('script');
-            script.id = 'swiper-js';
-            script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-            document.body.appendChild(script);
-        }
-
         const loadingInterval = setInterval(() => {
             setProgress(prev => {
                 if (prev >= 100) {
@@ -176,9 +164,9 @@ export default function CorazonCaruselTemplate({ data }) {
         if (!isModalOpen || swiperInstanceRef.current) return;
 
         const initTimer = setTimeout(() => {
-            if (!window.Swiper || !swiperContainerRef.current) return;
+            if (!swiperContainerRef.current) return;
 
-            swiperInstanceRef.current = new window.Swiper(swiperContainerRef.current, {
+            swiperInstanceRef.current = new Swiper(swiperContainerRef.current, {
                 effect: "coverflow",
                 grabCursor: true,
                 centeredSlides: true,
@@ -196,6 +184,15 @@ export default function CorazonCaruselTemplate({ data }) {
 
         return () => clearTimeout(initTimer);
     }, [isModalOpen]);
+
+    useEffect(() => {
+        return () => {
+            if (swiperInstanceRef.current) {
+                swiperInstanceRef.current.destroy(true, true);
+                swiperInstanceRef.current = null;
+            }
+        };
+    }, []);
 
 
     // ==========================================
