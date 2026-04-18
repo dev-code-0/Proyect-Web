@@ -15,7 +15,7 @@ export default function RosaVirtual({ data }) {
 
   // 2. Mapas de colores exactos a tus diseños
   const colorMap = {
-    red:    { hex: '#e23535', bg: '#ffdada', letter: '/src/templates/rosa-virtual/images/letter-red.webp',    rose: '/src/templates/rosa-virtual/images/rose-red.webp' },
+    red:    { hex: '#e23535', bg: '#ffdada', letter: '/src/templates/rosa-virtual/images/letter-red.webp',    rose: { src: RosaRed } },
     orange: { hex: '#ff9c24', bg: '#ffe3c1', letter: '/src/templates/rosa-virtual/images/letter-orange.webp', rose: '/src/templates/rosa-virtual/images/rose-orange.webp' },
     violet: { hex: '#6e16e3', bg: '#cfcee7', letter: '/src/templates/rosa-virtual/images/letter-violet.webp', rose: '/src/templates/rosa-virtual/images/rose-violet.webp' },
     yellow: { hex: '#fdd300', bg: '#fef4a7', letter: '/src/templates/rosa-virtual/images/letter-yellow.webp', rose: '/src/templates/rosa-virtual/images/rose-yellow.webp' },
