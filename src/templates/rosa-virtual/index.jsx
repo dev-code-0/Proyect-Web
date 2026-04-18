@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import './style.css';
 import RosaRed from './images/rose-red.webp';
+import RoseOrange from './images/rose-orange.webp';
 
 export default function RosaVirtual({ data }) {
   // 1. Extraemos los datos recibidos del primer componente
