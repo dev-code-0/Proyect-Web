@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import './style.css';
-import RosaRed from './images/rose-red.webp';
-import RoseOrange from './images/rose-orange.webp';
+import { ROSAS } from './rosaAssets';
 
 export default function RosaVirtual({ data }) {
   // 1. Extraemos los datos recibidos del primer componente
@@ -11,22 +10,20 @@ export default function RosaVirtual({ data }) {
     color = "red", 
     intencion = "para demostrarte mi amor", 
     mensaje = "Eres una persona muy especial para mí. ¡Espero que te guste este detalle!",
-    RosaRed, // Si viene del primer componente, lo usaremos
   } = data || {};
 
   // 2. Mapas de colores exactos a tus diseños
-  const colorMap = {
-    red:    { hex: '#e23535', bg: '#ffdada', letter: '/src/templates/rosa-virtual/images/letter-red.webp',    rose: { src: RosaRed } },
-    orange: { hex: '#ff9c24', bg: '#ffe3c1', letter: '/src/templates/rosa-virtual/images/letter-orange.webp', rose: '/src/templates/rosa-virtual/images/rose-orange.webp' },
-    violet: { hex: '#6e16e3', bg: '#cfcee7', letter: '/src/templates/rosa-virtual/images/letter-violet.webp', rose: '/src/templates/rosa-virtual/images/rose-violet.webp' },
-    yellow: { hex: '#fdd300', bg: '#fef4a7', letter: '/src/templates/rosa-virtual/images/letter-yellow.webp', rose: '/src/templates/rosa-virtual/images/rose-yellow.webp' },
-    blue:   { hex: '#2d95ff', bg: '#d3ebff', letter: '/src/templates/rosa-virtual/images/letter-blue.webp',   rose: '/src/templates/rosa-virtual/images/rose-lightblue.webp' },
-    white:  { hex: '#ff0000', bg: '#dcdcdc', letter: '/src/templates/rosa-virtual/images/letter-white.webp',  rose: '/src/templates/rosa-virtual/images/rose-white.webp' },
-    pink:   { hex: '#ff58ac', bg: '#f0c9dc', letter: '/src/templates/rosa-virtual/images/letter-pink.webp',   rose: '/src/templates/rosa-virtual/images/rose-pink.webp' }
-  };
+  const colorMap = ROSAS.reduce((acc, rosa) => {
+    acc[rosa.color] = {
+      hex: rosa.hex,
+      bg: rosa.bgLight,
+      letter: rosa.letter,
+      rose: rosa.img,
+    };
+    return acc;
+  }, {});
 
   const theme = colorMap[color] || colorMap.orange; // Fallback a naranja por defecto
-  const imagenRosa = RosaRed || theme.rose;
 
   // 3. Estados de la secuencia
   const [step, setStep] = useState(0); // 0=Cargando, 1=Rosa, 2=Carta
@@ -199,8 +196,6 @@ export default function RosaVirtual({ data }) {
 
 
   // ─── RENDER ─────────────────────────────────────────────────────────────────
-  const fullShortMsg = `${nombre}, ${intencion}`;
-
   return (
     <div id="contenedor">
 
@@ -223,7 +218,7 @@ export default function RosaVirtual({ data }) {
           <div className="gift-section" id="gift-rosa">
             <div id="rosa-animada" ref={rosaRef} className={`rosa-animada ${roseClasses}`} style={{ display: 'flex' }}>
               <div id="rosa-bg" className={`rosa-bg ${popout ? 'bg-popout' : ''}`} style={{ background: theme.bg }}></div>
-              <img id="img-rosa" src={imagenRosa} alt="Rosa" className={`rosa-img ${popout ? 'rosa-popout' : ''}`} />
+              <img id="img-rosa" src={theme.rose} alt="Rosa" className={`rosa-img ${popout ? 'rosa-popout' : ''}`} />
             </div>
           </div>
 

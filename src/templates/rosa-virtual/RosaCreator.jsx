@@ -4,18 +4,9 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './creator.css';
+import { ROSAS } from './rosaAssets';
 
 // ─── Datos ────────────────────────────────────────────────────────────────────
-
-const ROSAS = [
-  { color: 'red',       hex: '#e23535', bgLight: '#ffdada', img: 'rose-red.webp',       ramo: 'roses-red.webp',       alt: 'Rosa roja'     },
-  { color: 'orange',    hex: '#ff9c24', bgLight: '#ffe3c1', img: 'rose-orange.webp',    ramo: 'roses-orange.webp',    alt: 'Rosa naranja'  },
-  { color: 'violet',    hex: '#6e16e3', bgLight: '#cfcee7', img: 'rose-violet.webp',    ramo: 'roses-violet.webp',    alt: 'Rosa violeta'  },
-  { color: 'yellow',    hex: '#fdd300', bgLight: '#fef4a7', img: 'rose-yellow.webp',    ramo: 'roses-yellow.webp',    alt: 'Rosa amarilla' },
-  { color: 'lightblue', hex: '#2d95ff', bgLight: '#d3ebff', img: 'rose-lightblue.webp', ramo: 'roses-lightblue.webp', alt: 'Rosa azul'     },
-  { color: 'white',     hex: '#b0b0b0', bgLight: '#dcdcdc', img: 'rose-white.webp',     ramo: 'roses-white.webp',     alt: 'Rosa blanca'   },
-  { color: 'pink',      hex: '#ff58ac', bgLight: '#f0c9dc', img: 'rose-pink.webp',      ramo: 'roses-rose.webp',      alt: 'Rosa rosada'   },
-];
 
 const INTENCIONES = [   
   { sub: 'Mostrar',    main: 'Amor',          msg: ', te han regalado esta rosa para que sepas lo especial que eres para esa persona' },
@@ -35,8 +26,6 @@ const INTENCIONES = [
   { sub: 'Agradecer',  main: 'Amistad',       msg: ', te han regalado esta rosa para agradecer vuestra amistad' },
   { sub: 'Sín',        main: 'Razón',         msg: ', te han regalado esta rosa sin razón, porque eres importante' },
 ];
-
-const IMG_BASE = '/src/templates/rosa-virtual/images/';
 
 // ─── SVG Icono Rosa (reutilizable) ────────────────────────────────────────────
 
@@ -58,7 +47,7 @@ function RosaIcon({ color = 'currentColor', size = 44, style = {} }) {
 
 // ─── Componente Principal ──────────────────────────────────────────────────────
 
-export default function RosaCreator({ onSave, onClose }) {
+export default function RosaCreator({ onSave }) {
   const [step, setStep]                         = useState(1);
   const [animDir, setAnimDir]                   = useState('next');   // 'next' | 'prev'
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -67,17 +56,17 @@ export default function RosaCreator({ onSave, onClose }) {
   const [videoSaved, setVideoSaved]             = useState('');
   const [charCount, setCharCount]               = useState(0);
   const [intentionSelected, setIntentionSelected] = useState(null); // índice
-  const [rosaIndex, setRosaIndex]                   = useState(0);            // slide activo
+  const [_rosaIndex, setRosaIndex]                  = useState(0);            // slide activo
   const [isBouquet, setIsBouquet]                   = useState(false);
   const nameInputRef                                = useRef(null);
   const swiperRef                                   = useRef(null);
 
   const [formData, setFormData] = useState({
-    color:    'red',
-    colorHex: '#e23535',
-    bgLight:  '#ffdada',
-    roseImg:  `${IMG_BASE}rose-red.webp`,
-    ramoImg:  `${IMG_BASE}roses-red.webp`,
+    color:    ROSAS[0].color,
+    colorHex: ROSAS[0].hex,
+    bgLight:  ROSAS[0].bgLight,
+    roseImg:  ROSAS[0].img,
+    ramoImg:  ROSAS[0].ramo,
     nombre:   '',
     intencion: '',
     intencionMsg: '',
@@ -85,9 +74,6 @@ export default function RosaCreator({ onSave, onClose }) {
     isBouquet: false,
     videoLink: '',
   });
-
-  // Rosa activa
-  const activeRosa = ROSAS[rosaIndex];
 
   // Sincronizar color con el slide del Swiper
   const onSlideChange = (swiper) => {
@@ -99,8 +85,8 @@ export default function RosaCreator({ onSave, onClose }) {
       color:    rosa.color,
       colorHex: rosa.hex,
       bgLight:  rosa.bgLight,
-      roseImg:  `${IMG_BASE}${rosa.img}`,
-      ramoImg:  `${IMG_BASE}${rosa.ramo}`,
+      roseImg:  rosa.img,
+      ramoImg:  rosa.ramo,
     }));
   };
 
@@ -251,7 +237,7 @@ export default function RosaCreator({ onSave, onClose }) {
                 {ROSAS.map((rosa, idx) => (
                   <SwiperSlide key={idx} className="rc-swiper-slide">
                     <img
-                      src={`${IMG_BASE}${rosa.img}`}
+                      src={rosa.img}
                       alt={rosa.alt}
                       className="rc-rose-img"
                     />
