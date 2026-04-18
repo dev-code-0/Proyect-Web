@@ -135,6 +135,7 @@ export default function CorazonCaruselTemplate({ data }) {
     const appWrapperRef = useRef(null);
     const canvasRef = useRef(null);
     const swiperContainerRef = useRef(null);
+    const swiperInstanceRef = useRef(null);
 
     const isHeartExpandedRef = useRef(false);
     const currentBaseColorRef = useRef(COLOR_PINK);
@@ -154,24 +155,6 @@ export default function CorazonCaruselTemplate({ data }) {
             const script = document.createElement('script');
             script.id = 'swiper-js';
             script.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
-            script.onload = () => {
-                if (window.Swiper && swiperContainerRef.current) {
-                    new window.Swiper(swiperContainerRef.current, {
-                        effect: "coverflow",
-                        grabCursor: true,
-                        centeredSlides: true,
-                        slidesPerView: "auto",
-                        loop: true,
-                        coverflowEffect: {
-                            rotate: 25,
-                            stretch: 0,
-                            depth: 200,
-                            modifier: 1,
-                            slideShadows: true,
-                        },
-                    });
-                }
-            };
             document.body.appendChild(script);
         }
 
@@ -188,6 +171,31 @@ export default function CorazonCaruselTemplate({ data }) {
 
         return () => clearInterval(loadingInterval);
     }, []);
+
+    useEffect(() => {
+        if (!isModalOpen || swiperInstanceRef.current) return;
+
+        const initTimer = setTimeout(() => {
+            if (!window.Swiper || !swiperContainerRef.current) return;
+
+            swiperInstanceRef.current = new window.Swiper(swiperContainerRef.current, {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                loop: true,
+                coverflowEffect: {
+                    rotate: 25,
+                    stretch: 0,
+                    depth: 200,
+                    modifier: 1,
+                    slideShadows: true,
+                },
+            });
+        }, 100);
+
+        return () => clearTimeout(initTimer);
+    }, [isModalOpen]);
 
 
     // ==========================================
