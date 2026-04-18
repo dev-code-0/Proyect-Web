@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import './style.css';
+import RosaRed from './images/rose-red.webp';
 
 export default function RosaVirtual({ data }) {
   // 1. Extraemos los datos recibidos del primer componente
@@ -9,7 +10,7 @@ export default function RosaVirtual({ data }) {
     color = "red", 
     intencion = "para demostrarte mi amor", 
     mensaje = "Eres una persona muy especial para mí. ¡Espero que te guste este detalle!",
-    roseImg, // Si viene del primer componente, lo usaremos
+    RosaRed, // Si viene del primer componente, lo usaremos
   } = data || {};
 
   // 2. Mapas de colores exactos a tus diseños
@@ -24,7 +25,7 @@ export default function RosaVirtual({ data }) {
   };
 
   const theme = colorMap[color] || colorMap.orange; // Fallback a naranja por defecto
-  const imagenRosa = roseImg || theme.rose;
+  const imagenRosa = RosaRed || theme.rose;
 
   // 3. Estados de la secuencia
   const [step, setStep] = useState(0); // 0=Cargando, 1=Rosa, 2=Carta

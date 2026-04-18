@@ -13,7 +13,7 @@ export default function App({ data }) {
 
   useEffect(() => {
     if (abierto) {
-      setTimeout(() => { 
+      setTimeout(() => {  
         setMostrarCarta(true);
       }, 4500); // Retraso para que crezcan las flores
     }
