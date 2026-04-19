@@ -442,7 +442,7 @@ export default function CorazonMagicotemplate({data}) {
             )}
 
             {/* Texto central palpitante */}
-            <div className="center-text" style={{ opacity: isLetterOpen ? 0 : 1 }}>
+            <div className={`center-text ${isLetterOpen ? 'is-hidden' : ''}`}>
                 Para Tí, {nombre}
             </div>
 
