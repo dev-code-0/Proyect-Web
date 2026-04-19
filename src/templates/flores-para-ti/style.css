@@ -1,4 +1,4 @@
-.body-fpt {
+﻿.body-fpt {
     container-type: size;
     /* ESTO ES LA MAGIA PARA QUE cqmin FUNCIONE */
     width: 100%;
@@ -10,7 +10,7 @@
     overflow: hidden;
     perspective: 1000px;
     position: relative;
-    font-family: "Sour Gummy", system-ui, cursive;
+    font-family: var(--font-text);
     --dark-color: #000;
     --fl-speed: 0.8s;
     --speed-leaf: 2s;
@@ -55,7 +55,7 @@
     left: 50%;
     transform: translateX(-50%);
     color: #ffff00;
-    font-family: 'Sour Gummy', cursive;
+    font-family: var(--font-text);
     font-size: clamp(2rem, 8cqw, 4rem);
     font-weight: bold;
     text-align: center;

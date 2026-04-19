@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-
-.regalo-virtual-container-hw {
+﻿.regalo-virtual-container-hw {
   container-type: size;
   position: relative;
   width: 100%;
@@ -13,7 +11,7 @@
   overflow-x: hidden;
   border-radius: inherit;
   color: #fff;
-  font-family: 'Lora', serif;
+  font-family: var(--font-text);
   box-sizing: border-box;  
 }
 
@@ -74,7 +72,7 @@
 }
 
 .titulo-tocar-hw {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   font-size: clamp(2rem, 10cqw, 3.5rem);
   color: #00bfff;
   text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
@@ -96,7 +94,7 @@
   border: none;
   padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
   font-size: clamp(1.2rem, 5cqw, 1.5rem);
-  font-family: 'Lora', serif;
+  font-family: var(--font-text);
   font-weight: bold;
   color: #fff;
   border-radius: 30px;
@@ -136,25 +134,25 @@
   /* Indica que la pantalla es interactiva */
 }
 
-/* --- ESTILOS DE PALABRAS INTERACTIVAS (EXPLOSIÓN) ACTUALIZADOS --- */
+/* --- ESTILOS DE PALABRAS INTERACTIVAS (EXPLOSIÃ“N) ACTUALIZADOS --- */
 .texto-clic-interactivo-hw {
   position: absolute;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-text);
   color: rgba(135, 206, 250, 0.9);
   font-size: clamp(1rem, 4cqw, 1.8rem);
-  /* Un poco más pequeñas por la cantidad */
+  /* Un poco mÃ¡s pequeÃ±as por la cantidad */
   font-weight: 600;
   pointer-events: none;
   transform: translate(-50%, -50%);
   text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
   z-index: 9999;
-  /* Propiedades de animación comunes para todas las variantes */
+  /* Propiedades de animaciÃ³n comunes para todas las variantes */
   animation-duration: 2s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
 
-/* Asignamos una animación única a cada variante */
+/* Asignamos una animaciÃ³n Ãºnica a cada variante */
 .variante-0-hw {
   animation-name: estallarArriba;
 }
@@ -174,14 +172,14 @@
   animation-name: estallarAdelante;
 }
 
-/* Simulación Eje Z (Se agranda mucho) */
+/* SimulaciÃ³n Eje Z (Se agranda mucho) */
 .variante-4-hw {
   animation-name: estallarAbajoDiagonal;
 }
 
 /* Eje X y Y (Abajo-Izquierda) */
 
-/* --- DEFINICIÓN DE LAS 5 ANIMACIONES --- */
+/* --- DEFINICIÃ“N DE LAS 5 ANIMACIONES --- */
 
 /* 1. Variante 0: Movimiento principal hacia arriba (Eje Y) */
 @keyframes estallarArriba {
@@ -222,7 +220,7 @@
   }
 }
 
-/* 4. Variante 3: Simulación Eje Z (Viene hacia adelante, se agranda y difumina) */
+/* 4. Variante 3: SimulaciÃ³n Eje Z (Viene hacia adelante, se agranda y difumina) */
 @keyframes estallarAdelante {
   0% {
     transform: translate(-50%, -50%) scale(0.5);
@@ -249,7 +247,7 @@
   }
 }
 
-/* --- SECCIÓN DEL RAMO Y LEVITACIÓN --- */
+/* --- SECCIÃ“N DEL RAMO Y LEVITACIÃ“N --- */
 .seccion-ramo-hw {
   height: 100cqh;
   min-height: 400px;
@@ -269,7 +267,7 @@
 /* Todo es visual, no interactivo */
 
 .titulo-principal-hw {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   font-size: clamp(1.8rem, 9cqw, 3.5rem);
   color: #00bfff;
   text-align: center;
@@ -304,7 +302,7 @@
   display: flex;
   justify-content: center;
   opacity: 0;
-  /* Combina la aparición rápida con la levitación infinita */
+  /* Combina la apariciÃ³n rÃ¡pida con la levitaciÃ³n infinita */
   animation:
     popImage 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s,
     levitarInfinito 4s ease-in-out infinite 1.8s;
@@ -340,7 +338,7 @@
   width: 100%;
   height: auto;
   border-radius: 15px;
-  /* El brillo neón azul solicitado aplicado directamente a la imagen */
+  /* El brillo neÃ³n azul solicitado aplicado directamente a la imagen */
   filter:
     drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(0, 191, 255, 0.7)) drop-shadow(0 0 40px rgba(0, 191, 255, 0.4));
 }
@@ -353,7 +351,7 @@
   animation: pulso 1.5s infinite alternate;
 }
 
-/* --- SECCIÓN CARTA --- */
+/* --- SECCIÃ“N CARTA --- */
 .seccion-carta-hw {
   min-height: 100cqh;
   display: flex;
@@ -390,7 +388,7 @@
 }
 
 .titulo-carta-hw {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   color: #00bfff;
   font-size: clamp(2rem, 8cqw, 2.5rem);
   text-align: center;

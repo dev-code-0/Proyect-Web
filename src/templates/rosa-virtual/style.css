@@ -1,7 +1,7 @@
-body {
+﻿body {
   background: #fafafa;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-text);
   color: #212730;
   min-height: 100vh;
   width: 100vw;

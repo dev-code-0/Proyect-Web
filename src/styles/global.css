@@ -1,8 +1,53 @@
+:root {
+  --font-title: "Pacifico", cursive;
+  --font-button: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+  --font-text: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+}
+
+html,
+body {
+  font-family: var(--font-text) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+[class*="title"],
+[class*="titulo"],
+[class*="heading"],
+[class*="question"] {
+  font-family: var(--font-title) !important;
+}
+
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+[class*="btn"],
+[class*="button"] {
+  font-family: var(--font-button) !important;
+}
+
+p,
+span,
+li,
+label,
+small,
+strong,
+em,
+input,
+textarea,
+select {
+  font-family: var(--font-text) !important;
 }
 
 body {

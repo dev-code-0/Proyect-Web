@@ -1,14 +1,12 @@
-/* --- FUENTES GLOBALES (SI ES NECESARIO) --- */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@500&display=swap');
-
-/* --- CONTENEDOR RAÍZ --- */
+﻿/* --- FUENTES GLOBALES (SI ES NECESARIO) --- */
+/* --- CONTENEDOR RAÃZ --- */
 .template-wrapper-c3d {
     container-type: size;
     width: 100%; 
     height: 100%;
     min-height: 450px;
     background: radial-gradient(circle at center, #3b1c32 0%, #0c0510 100%);
-    font-family: 'Georgia', serif;
+    font-family: var(--font-text);
     overflow: hidden;
     position: relative;
     display: flex;
@@ -63,7 +61,7 @@
     }
 }
 
-/* --- BOTÓN DE VINILO --- */
+/* --- BOTÃ“N DE VINILO --- */
 .vinyl-btn-c3d {
     position: absolute;
     top: clamp(10px, 4cqh, 20px);
@@ -122,7 +120,7 @@
     }
 }
 
-/* --- MARIPOSAS CSS MÁGICAS --- */
+/* --- MARIPOSAS CSS MÃGICAS --- */
 .butterfly-c3d {
     position: absolute;
     z-index: 15;
@@ -228,7 +226,7 @@
     pointer-events: none;
 }
 
-/* --- TÍTULO DE FONDO --- */
+/* --- TÃTULO DE FONDO --- */
 .title-layer-c3d {
     position: absolute;
     top: 8%;
@@ -245,7 +243,7 @@
 }
 
 .main-title-c3d {
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     font-size: clamp(2rem, 9cqw, 4rem);
     margin: 0;
     background: linear-gradient(45deg, #fff, #ffb5a7, #fff);
@@ -263,7 +261,7 @@
 }
 
 .subtitle-c3d {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-text);
     font-size: clamp(0.6rem, 2.5cqw, 1rem);
     color: var(--color-ribbon);
     margin-top: 5px;
@@ -284,7 +282,7 @@
     }
 }
 
-/* --- ESCENA Y CÁMARA 3D --- */
+/* --- ESCENA Y CÃMARA 3D --- */
 .scene-c3d {
     width: 100%;
     height: 100%;
@@ -312,7 +310,7 @@
     cursor: default;
 }
 
-/* --- AURA MÁGICA DE LA CAJA --- */
+/* --- AURA MÃGICA DE LA CAJA --- */
 .box-aura-c3d {
     position: absolute;
     top: 50%;
@@ -358,7 +356,7 @@
 }
 
 /* ==========================================
-           CONSTRUCCIÓN GEOMÉTRICA DE LA CAJA
+           CONSTRUCCIÃ“N GEOMÃ‰TRICA DE LA CAJA
            ========================================== */
 .box-body-c3d,
 .box-lid-c3d {
@@ -418,7 +416,7 @@
     opacity: 1;
 }
 
-/* Cerradura de corazón brillante en el frente */
+/* Cerradura de corazÃ³n brillante en el frente */
 .heart-lock-c3d {
     position: absolute;
     top: 40%;
@@ -533,7 +531,7 @@
     margin-left: calc(var(--box-size) / -2);
 }
 
-/* MOÑO EN LA TAPA */
+/* MOÃ‘O EN LA TAPA */
 .bow-c3d {
     position: absolute;
     top: 50%;
@@ -578,7 +576,7 @@
 }
 
 /* ==========================================
-           CARRUSEL TIPO MÓVIL DE CUNA CON CRISTAL
+           CARRUSEL TIPO MÃ“VIL DE CUNA CON CRISTAL
            ========================================== */
 .carousel-wrapper-c3d {
     position: absolute;
@@ -620,7 +618,7 @@
     box-shadow: 0 0 15px #ffd700, inset -2px -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* NÚCLEO MAGICO (Corazón brillante rotando inversamente) */
+/* NÃšCLEO MAGICO (CorazÃ³n brillante rotando inversamente) */
 .crystal-core-c3d {
     position: absolute;
     top: 40%;
@@ -719,7 +717,7 @@
 }
 
 /* ==========================================
-           CARTA HOLOGRÁFICA Y SELLO DE CERA
+           CARTA HOLOGRÃFICA Y SELLO DE CERA
            ========================================== */
 .message-card-c3d {
     position: absolute;
@@ -771,7 +769,7 @@
 }
 
 .rose-gold-text-c3d {
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     color: transparent;
     background: linear-gradient(to right, #ffb5a7, #fff, #ffb5a7);
     -webkit-background-clip: text;
@@ -795,7 +793,7 @@
     color: #fdf5e6;
     text-shadow: 0 1px 3px #000;
     min-height: 70px;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-text);
 }
 
 .cursor-c3d {
@@ -825,5 +823,5 @@
     letter-spacing: 3px;
     transition: opacity 1s ease;
     text-shadow: 0 0 10px rgba(255, 181, 167, 0.5);
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-text);
 }

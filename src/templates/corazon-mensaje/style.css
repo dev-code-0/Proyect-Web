@@ -1,6 +1,4 @@
-
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap');
-
+﻿
         /* --- CONTENEDOR PRINCIPAL --- */
         .wrapper-fa {
           container-type: size;
@@ -8,8 +6,8 @@
           width: 100%; height: 100%; min-height: 400px;
           background: radial-gradient(ellipse at center, #332100 0%, #000000 100%);
           overflow: hidden; touch-action: manipulation;
-          font-family: sans-serif;
-          /* Desactiva selección para evitar bugs táctiles */
+          font-family: var(--font-text);
+          /* Desactiva selecciÃ³n para evitar bugs tÃ¡ctiles */
           user-select: none; -webkit-user-select: none;
         }
 
@@ -32,13 +30,13 @@
         /* --- TEXTOS "TE QUIERO" EXPLOSIVOS --- */
         .floating-text-fa {
           position: absolute;
-          font-family: 'Dancing Script', cursive;
+          font-family: var(--font-text);
           font-size: clamp(1.2rem, 6cqw, 2rem);
           font-weight: bold;
           text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
           pointer-events: none; z-index: 5;
           transform-origin: center;
-          /* Centrar el punto exacto de la explosión */
+          /* Centrar el punto exacto de la explosiÃ³n */
           transform: translate(-50%, -50%);
           animation: floatUp-fa 8s ease-out forwards;
         }
@@ -53,7 +51,7 @@
         .center-message-fa {
           position: absolute; top: 40%; left: 0; width: 100%;
           transform: translateY(-50%); text-align: center;
-          font-family: 'Pacifico', cursive;
+          font-family: var(--font-text);
           font-size: clamp(1.5rem, 8cqw, 3rem); line-height: 1.4;
           color: #ffd966; padding: 0 20px; box-sizing: border-box;
           text-shadow: 0 0 10px #ffcc33, 0 0 20px #ffb700, 0 0 30px #ffb700;
@@ -72,7 +70,7 @@
         .bottom-name-fa {
          
           position: absolute; bottom: 20px; left: 20px;
-          z-index: 10; font-family: 'Pacifico', cursive;
+          z-index: 10; font-family: var(--font-text);
           font-size: clamp(1.2rem, 5cqw, 2rem); color: white;
           text-shadow: 0 0 10px #ffcc00; opacity: 0.8; pointer-events: none;
         }
@@ -86,12 +84,12 @@
   0 0 80px rgba(255, 200, 0, 1);
         }
 
-        /* --- BOTÓN DE INICIO --- */
+        /* --- BOTÃ“N DE INICIO --- */
         .play-btn-fa {
           position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
           z-index: 100; background: #ffcc00; color: #332200;
           border: none; border-radius: 50px; padding: 15px 30px;
-          font-size: clamp(1rem, 4cqw, 1.2rem); font-family: 'Pacifico', cursive;
+          font-size: clamp(1rem, 4cqw, 1.2rem); font-family: var(--font-text);
           cursor: pointer; box-shadow: 0 0 20px #ffb700; transition: transform 0.2s;
         }
         .pulse-btn-fa { animation: btnPulse-fa 1.5s infinite alternate; }

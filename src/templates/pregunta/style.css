@@ -1,6 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700;900&display=swap');
-
+﻿
 /* ---- Root / fondo ----------------------------------------- */
 .novia-root-pr {
   min-height: 100vh;
@@ -12,7 +10,7 @@
     radial-gradient(circle at 20% 30%, #ffc2d4 0%, transparent 40%),
     radial-gradient(circle at 80% 70%, #ffb3c6 0%, transparent 40%);
   transition: background 0.8s ease;
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-text);
   overflow: hidden; 
   position: relative;
 }
@@ -81,7 +79,7 @@
 
 /* ---- Pregunta --------------------------------------------- */
 .novia-question-pr {
-  font-family: 'Pacifico', cursive;
+  font-family: var(--font-text);
   font-size: clamp(1.4rem, 6vw, 2rem);
   color: #d6336c;
   margin: 1rem 0 1.5rem;
@@ -101,7 +99,7 @@
 .novia-btn-pr {
   padding: 14px 34px;
   font-size: 1.2rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-text);
   font-weight: 900;
   border: none;
   border-radius: 50px;
@@ -116,7 +114,7 @@
   user-select: none;
 }
 
-/* Sí */
+/* SÃ­ */
 .novia-btn--si-pr {
   background: linear-gradient(135deg, #00b894, #00cec9);
   transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
@@ -143,8 +141,9 @@
 
 /* ---- Mensaje de respuesta ---------------------------------- */
 .novia-message-pr {
-  font-family: 'Pacifico', cursive;
+  font-family: var(--font-text);
   font-size: clamp(1.2rem, 5vw, 1.6rem);
+  font-weight: bold;
   color: #d6336c;
   margin-top: 1.2rem;
   line-height: 1.6;

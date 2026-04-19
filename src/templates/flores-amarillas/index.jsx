@@ -329,7 +329,7 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
 
             <footer className="letter-footer-fla">
               <span className="letter-sign-label-fla">Con el alma entera,</span>
-              <p className="letter-sign-name-fla">{senderName}</p>
+              <h2 className="letter-sign-name-fla">{senderName}</h2>
             </footer>
           </div>
           <div className="letter-glow-bottom-fla"></div>
@@ -338,7 +338,7 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
         <div className="gallery-wrap-fla">
           <div className="gallery-header-fla">
             <div className="gallery-line-fla"></div>
-            <h3 className="gallery-title-fla">Fragmentos de Amor</h3>
+            <p className="gallery-title-fla">Fragmentos de Amor</p>
             <div className="gallery-line-fla reverse-fla"></div>
           </div>
           

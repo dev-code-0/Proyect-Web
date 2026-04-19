@@ -1,4 +1,4 @@
-                .magical-container {
+﻿                .magical-container {
                     /* ======================================================== */
                     /* CRUCIAL PARA RESPONSIVIDAD: Define el contenedor de UI */
                     /* ======================================================== */
@@ -9,7 +9,7 @@
                     /* Cambiado a 100% para respetar .preview-box */
                     overflow: hidden;
                     background-color: #05000a;
-                    font-family: 'Montserrat', sans-serif;
+                    font-family: var(--font-text);
                     perspective: 1500px;
                 }
 
@@ -26,11 +26,11 @@
                     filter: blur(12px) saturate(2);
                     opacity: 0.3;
                     transform: scale(1.15);
-                    /* Expansión dramática al abrir */
+                    /* ExpansiÃ³n dramÃ¡tica al abrir */
                 }
 
                 /* =======================
-                   BOTÓN DE MÚSICA 
+                   BOTÃ“N DE MÃšSICA 
                    ======================= */
                 .music-btn {
                     position: absolute;
@@ -81,9 +81,9 @@
                     top: 20%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    font-family: 'Dancing Script', cursive;
+                    font-family: var(--font-text);
                     font-size: clamp(2.5rem, 12cqw, 6rem);
-                    /* Escalado dinámico con cqw */
+                    /* Escalado dinÃ¡mico con cqw */
                     color: #EAD6FF;
                     text-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.8),
@@ -131,7 +131,7 @@
                 }
 
                 /* =======================
-                   LUCIÉRNAGAS (Siempre de fondo)
+                   LUCIÃ‰RNAGAS (Siempre de fondo)
                    ======================= */
                 .firefly {
                     position: absolute;
@@ -170,7 +170,7 @@
                 }
 
                 /* =======================
-                   BOTÓN LEER CARTA 
+                   BOTÃ“N LEER CARTA 
                    ======================= */
                 .action-btn {
                     position: absolute;
@@ -184,7 +184,7 @@
                     -webkit-backdrop-filter: blur(12px);
                     border: 1px solid rgba(255, 255, 255, 0.4);
                     color: #fff;
-                    font-family: 'Montserrat', sans-serif;
+                    font-family: var(--font-text);
                     font-weight: 700;
                     font-size: clamp(0.9rem, 4cqw, 1.3rem);
                     letter-spacing: 2px;
@@ -320,7 +320,7 @@
                 }
 
                 .card-title {
-                    font-family: 'Dancing Script', cursive;
+                    font-family: var(--font-text);
                     font-size: clamp(2.5rem, 10cqw, 3.5rem);
                     color: #ffb3d9;
                     margin: 0 0 clamp(15px, 3cqh, 25px) 0;
@@ -347,7 +347,7 @@
                     border: 1px solid rgba(255, 255, 255, 0.4);
                     border-radius: 30px;
                     color: white;
-                    font-family: 'Montserrat', sans-serif;
+                    font-family: var(--font-text);
                     font-weight: 700;
                     font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
                     cursor: pointer;

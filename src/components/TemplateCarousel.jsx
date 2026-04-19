@@ -23,7 +23,7 @@ export default function TemplateCarousel() {
                 className="carousel-card"
               >
                 <img src={template.image} alt={template.title} className="carousel-img" />
-                <div className="carousel-title">{template.title}</div>
+                <p className="carousel-text">{template.title}</p>
               </Link>
             ))}
           </div>

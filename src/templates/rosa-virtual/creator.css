@@ -1,16 +1,15 @@
-/* ═══════════════════════════════════════════════════════════════
-   creator.css — CSS unificado de pag1 + pag2 + pag3
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   creator.css â€” CSS unificado de pag1 + pag2 + pag3
    Para React (Vite) con Swiper
-═══════════════════════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── Reset / Base ──────────────────────────────────────────── */
+/* â”€â”€ Reset / Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 * {
-  font-family: 'Cascadia Code', monospace;
-  -webkit-font-family: 'Cascadia Code', monospace;
-}
+  font-family: var(--font-text);
+  }
 
 body {
-  font-family: 'Cascadia Code', monospace;
+  font-family: var(--font-text);
   scroll-behavior: smooth;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -19,7 +18,7 @@ body {
   color: #000;
 }
 
-/* ── Overlay / Contenedor principal ───────────────────────── */
+/* â”€â”€ Overlay / Contenedor principal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-overlay {
   position: fixed;
   inset: 0;
@@ -42,7 +41,7 @@ body {
   overflow: hidden;
 }
 
-/* ── Páginas: animaciones de transición ───────────────────── */
+/* â”€â”€ PÃ¡ginas: animaciones de transiciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes page-from-right {
   from { opacity: 0; transform: translateX(150px); }
   to   { opacity: 1; transform: translateX(0); }
@@ -63,7 +62,7 @@ body {
   will-change: opacity, transform;
 }
 
-/* ── Página genérica ──────────────────────────────────────── */
+/* â”€â”€ PÃ¡gina genÃ©rica â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-page {
   width: 100%;
   min-height: 100vh;
@@ -78,7 +77,7 @@ body {
   grid-template-rows: 300px auto 120px;
 }
 
-/* ── PASO 1: Header ───────────────────────────────────────── */
+/* â”€â”€ PASO 1: Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-p1-header {
   text-align: center;
   padding-top: 24px;
@@ -94,7 +93,7 @@ body {
   font: italic small-caps bold 16px/2;
 }
 
-/* ── PASO 1: Swiper wrapper ───────────────────────────────── */
+/* â”€â”€ PASO 1: Swiper wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-swiper-wrapper {
   position: relative;
   margin-top: 50px;
@@ -155,7 +154,7 @@ body {
   transform: scale(1.3);
 }
 
-/* ── PASO 1: Botón wrap ───────────────────────────────────── */
+/* â”€â”€ PASO 1: BotÃ³n wrap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-p1-btn-wrap {
   padding-top: 50px;
   display: flex;
@@ -163,7 +162,7 @@ body {
   padding-bottom: 30px;
 }
 
-/* ── Botón base ───────────────────────────────────────────── */
+/* â”€â”€ BotÃ³n base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-btn,
 button {
   background-color: #e23535;
@@ -178,10 +177,10 @@ button {
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 16px;
-  font-family: 'Cascadia Code', monospace;
+  font-family: var(--font-text);
 }
 
-/* ── Modal de confirmación (Paso 1) ───────────────────────── */
+/* â”€â”€ Modal de confirmaciÃ³n (Paso 1) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -235,7 +234,7 @@ button {
   margin-top: 15px;
 }
 
-/* ── Barra de vista previa (Pasos 2-4) ───────────────────── */
+/* â”€â”€ Barra de vista previa (Pasos 2-4) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-preview-bar {
   border-radius: 20px;
   border: none;
@@ -308,7 +307,7 @@ button {
   to   { opacity: 1; }
 }
 
-/* ── Sección nombre (Paso 2) ──────────────────────────────── */
+/* â”€â”€ SecciÃ³n nombre (Paso 2) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-section-name {
   padding: 0;
 }
@@ -334,7 +333,7 @@ button {
 
 .rc-back-btn:hover { opacity: 0.7; }
 
-/* ── Input ────────────────────────────────────────────────── */
+/* â”€â”€ Input â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .input-rosify {
   width: calc(100% - 62px);
   margin: 0px 15px;
@@ -342,14 +341,14 @@ button {
   border-radius: 20px;
   border: 2px solid #d9d9d9;
   font-size: 18px;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-text);
   padding-left: 12px;
   transition: border-color 0.3s;
   outline: none;
   box-sizing: border-box;
 }
 
-/* ── Intenciones (Paso 3) ─────────────────────────────────── */
+/* â”€â”€ Intenciones (Paso 3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-intentions-scroll {
   overflow-y: auto;
   padding-bottom: 10px;
@@ -387,7 +386,7 @@ button {
 
 .elige-intencion { font-size: 30px; }
 
-/* ── Video modal (Paso 4) ─────────────────────────────────── */
+/* â”€â”€ Video modal (Paso 4) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-video-modal {
   display: block;
   position: fixed;
@@ -406,7 +405,7 @@ button {
   animation: fadeIn 0.7s ease;
 }
 
-/* ── Botones de acción reutilizables ──────────────────────── */
+/* â”€â”€ Botones de acciÃ³n reutilizables â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .button-bottom {
   border-radius: 20px;
   height: 60px;
@@ -417,7 +416,7 @@ button {
   transition: background-color 0.5s ease, transform 0.2s;
   text-align: center;
   cursor: pointer;
-  font-family: 'Cascadia Code', monospace;
+  font-family: var(--font-text);
 }
 
 .press-effect {
@@ -436,21 +435,21 @@ button {
   transform: scale(0.96);
 }
 
-/* ── Padding helpers ──────────────────────────────────────── */
+/* â”€â”€ Padding helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .rc-p24, .p-24  { padding: 24px; }
 .rc-pb0, .pb-0  { padding-bottom: 0 !important; }
 .label-float    { text-align: left; padding-left: 29px; }
 .flex           { display: flex; }
 .justify-between{ justify-content: space-between; }
 
-/* ── Animación icono rosa (seleccionado) ──────────────────── */
+/* â”€â”€ AnimaciÃ³n icono rosa (seleccionado) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes myAnim {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
 
-/* ── Animación de entrada del swiper: 1 → 1.2 → 1 ────────── */
+/* â”€â”€ AnimaciÃ³n de entrada del swiper: 1 â†’ 1.2 â†’ 1 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @keyframes swiperPulse {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.1); }
@@ -461,7 +460,7 @@ button {
   animation: swiperPulse 2s ease-in-out 1s 1;
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 600px) {
   .rc-p1-title      { font-size: 20px; }
   .rc-swiper-slide  { height: 200px; width: 200px !important; }

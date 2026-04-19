@@ -1,13 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Great+Vibes&family=Outfit:wght@200;300;400;600&display=swap');
-
-/* ───────────────────────────────────────── */
-/* VARIABLES Y CONTENEDOR RAÍZ */
+﻿/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* VARIABLES Y CONTENEDOR RAÃZ */
 /* Usamos container-type para que todo el CSS dependa del ancho del .preview-box y NO de la pantalla */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .gift-container-fla {
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-script: 'Great Vibes', cursive;
-  --font-sans: 'Outfit', sans-serif;
+  --font-serif: var(--font-text);
+  --font-script: var(--font-title);
+  --font-sans: var(--font-text);
 
   /* Container queries activados */
   container-type: size;
@@ -30,9 +28,9 @@
   box-sizing: border-box;
 }
 
-/* ───────────────────────────────────────── */
-/* NAVEGACIÓN Y PANELES */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* NAVEGACIÃ“N Y PANELES */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .panel-base-fla {
   position: absolute;
   inset: 0;
@@ -88,9 +86,9 @@
   animation: shine-fla 3s linear infinite;
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* PANTALLA DE DESBLOQUEO */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .unlock-screen-fla {
   position: absolute;
   inset: 0;
@@ -141,7 +139,7 @@
 
 .unlock-title-fla {
   font-size: clamp(1.5rem, 8cqw, 3rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   color: rgba(253, 230, 138, 0.8);
   letter-spacing: 0.025em;
   animation: pulse-slow-fla 4s ease-in-out infinite;
@@ -149,7 +147,7 @@
 }
 
 .unlock-subtitle-fla {
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-size: clamp(9px, 3cqw, 0.75rem);
   color: rgba(245, 158, 11, 0.5);
   text-transform: uppercase;
@@ -211,9 +209,9 @@
   height: auto;
 }
 
-/* ───────────────────────────────────────── */
-/* CURSOR, MÚSICA Y PETALOS */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* CURSOR, MÃšSICA Y PETALOS */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .magic-cursor-fla {
   position: absolute;
   pointer-events: none;
@@ -313,9 +311,9 @@
   }
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* HERO PANEL */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bg-glow-center-fla {
   position: absolute;
   top: 50%;
@@ -353,7 +351,7 @@
 }
 
 .hero-subtitle-fla {
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-size: clamp(9px, 3cqw, 0.75rem);
   color: rgba(252, 211, 77, 0.6);
   letter-spacing: 0.4em;
@@ -365,7 +363,7 @@
 
 .hero-title-fla {
   font-size: clamp(3rem, 15cqw, 6rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   margin: 0;
   padding: 0.5rem 0;
   background-image: linear-gradient(to bottom right, #fef3c7, #facc15, #b45309);
@@ -404,7 +402,7 @@
 }
 
 .heart-text-fla {
-  font-family: var(--font-serif);
+  font-family: var(--font-text);
   font-weight: bold;
   font-size: 220px;
 }
@@ -480,7 +478,7 @@
 }
 
 .hero-instruction-fla {
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-size: clamp(8px, 2.5cqw, 10px);
   color: rgba(253, 230, 138, 0.4);
   letter-spacing: 0.3em;
@@ -495,9 +493,9 @@
   }
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* DISTANCE PANEL */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bg-glow-top-right-fla {
   position: absolute;
   top: 0;
@@ -549,7 +547,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: clamp(10rem, 40cqw, 25rem);
-  font-family: var(--font-serif);
+  font-family: var(--font-text);
   color: rgba(245, 158, 11, 0.05);
   line-height: 1;
   pointer-events: none;
@@ -561,7 +559,7 @@
   position: relative;
   z-index: 10;
   font-size: clamp(1.2rem, 5.5cqw, 2.25rem);
-  font-family: var(--font-serif);
+  font-family: var(--font-text);
   line-height: 1.6;
   color: rgba(255, 251, 235, 0.9);
   font-weight: 300;
@@ -623,9 +621,9 @@
   height: clamp(7.5rem, 6cqw, 2.25rem);
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* LETTER PANEL */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .letter-texture-fla {
   position: absolute;
   inset: 0;
@@ -716,7 +714,7 @@
 
 .letter-date-fla {
   font-size: clamp(8px, 2cqw, 10px);
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   color: rgba(253, 230, 138, 0.5);
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -725,7 +723,7 @@
 
 .letter-title-fla {
   font-size: clamp(2.25rem, 10cqw, 3.75rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
   margin: 0;
   background-image: linear-gradient(to bottom right, #fef3c7, #facc15, #b45309);
@@ -752,8 +750,8 @@
   font-size: clamp(0.95rem, 4cqw, 1.5rem);
   line-height: clamp(1.8, 5cqw, 2.6);
   color: #d4d4d8;
-  font-family: var(--font-serif);
-  text-align: justify;
+  font-family: var(--font-text);
+  text-align: start;
   white-space: pre-line;
   padding: 0 0.25rem;
   font-weight: 300;
@@ -771,7 +769,7 @@
 
 .letter-sign-label-fla {
   font-size: clamp(8px, 2cqw, 10px);
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   color: rgba(253, 230, 138, 0.4);
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -780,7 +778,7 @@
 
 .letter-sign-name-fla {
   font-size: clamp(2rem, 12cqw, 4.5rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   margin: 0;
   background-image: linear-gradient(to right, #fde68a, #facc15, #d97706);
   -webkit-background-clip: text;
@@ -836,7 +834,7 @@
 
 .gallery-title-fla {
   font-size: clamp(9px, 2.5cqw, 12px);
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   color: rgba(253, 230, 138, 0.6);
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -924,7 +922,7 @@
   margin: clamp(0.5rem, 2cqh, 1.25rem) 0 0 0;
   text-align: center;
   color: rgba(253, 230, 138, 0.8);
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-size: clamp(7px, 2cqw, 10px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -952,9 +950,9 @@
   opacity: 1;
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* FINAL PANEL */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .final-glow-fla {
   position: absolute;
   top: 50%;
@@ -992,7 +990,7 @@
 }
 
 .final-subtitle-fla {
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-size: clamp(8px, 2cqw, 12px);
   color: rgba(253, 230, 138, 0.5);
   letter-spacing: 0.4em;
@@ -1004,7 +1002,7 @@
 
 .final-title-main-fla {
   font-size: clamp(2.5rem, 12cqw, 4.5rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   margin: 0;
   padding: 0.25rem 0;
   background-image: linear-gradient(to bottom right, #fef3c7, #facc15, #b45309);
@@ -1058,7 +1056,7 @@
 
 .timer-value-fla {
   font-size: clamp(1.25rem, 6cqw, 3rem);
-  font-family: var(--font-serif);
+  font-family: var(--font-text);
   font-weight: 300;
   color: #fef3c7;
 }
@@ -1068,7 +1066,7 @@
   color: rgba(251, 191, 36, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   margin-top: 0.25rem;
 }
 
@@ -1089,7 +1087,7 @@
   background-image: linear-gradient(to right, #d97706, #ca8a04);
   border-radius: 9999px;
   color: #000;
-  font-family: var(--font-sans);
+  font-family: var(--font-text);
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -1121,9 +1119,9 @@
   height: clamp(1rem, 3cqw, 1.25rem);
 }
 
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* EFECTOS Y PARTICULAS GLOBALES */
-/* ───────────────────────────────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .animate-explode-word-3d-fla {
   animation: explode-word-3d-fla 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
 }
@@ -1279,7 +1277,7 @@
 .floating-word-text-fla {
   position: absolute;
   font-size: clamp(1.25rem, 6cqw, 2.25rem);
-  font-family: var(--font-script);
+  font-family: var(--font-text);
   color: #fbbf24;
   white-space: nowrap;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(251, 191, 36, 0.5);

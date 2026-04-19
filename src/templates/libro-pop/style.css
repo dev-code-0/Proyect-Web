@@ -1,10 +1,10 @@
-.template-wrapper-lpu {
+﻿.template-wrapper-lpu {
     container-type: size;
     width: 100%;
     height: 100%;
     min-height: 400px;
     background: radial-gradient(circle at top right, #341235 0%, #15051a 60%, #08010a 100%);
-    font-family: 'Georgia', serif;
+    font-family: var(--font-text);
     overflow: hidden;
     position: relative;
     display: flex;
@@ -18,7 +18,7 @@
     --book-h: calc(var(--book-w) * 1.45);
     /* Aspect ratio perfecto */
 
-    /* Sistema de tipografía fluida basado en el ancho del libro */
+    /* Sistema de tipografÃ­a fluida basado en el ancho del libro */
     --fz-h1: calc(var(--book-w) * 0.15);
     --fz-h2: calc(var(--book-w) * 0.11);
     --fz-h3: calc(var(--book-w) * 0.09);
@@ -38,7 +38,7 @@
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     font-size: clamp(2rem, 8cqw, 4rem);
     transition: opacity 0.8s ease, transform 0.8s ease;
     animation: shine 3s linear infinite, floatTitle 4s ease-in-out infinite alternate;
@@ -75,7 +75,7 @@
     }
 }
 
-/* --- ESCENA Y CÁMARA 3D --- */
+/* --- ESCENA Y CÃMARA 3D --- */
 .scene-lpu {
     width: 100%;
     height: 100%;
@@ -160,7 +160,7 @@
     overflow: hidden;
 }
 
-/* Separación milimétrica para evitar Z-Fighting al rotar */
+/* SeparaciÃ³n milimÃ©trica para evitar Z-Fighting al rotar */
 .page-front-lpu {
     transform: rotateY(0deg) translateZ(1px);
 }
@@ -236,7 +236,7 @@
 }
 
 .cover-subtitle-lpu {
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     color: #e5c386;
     font-size: var(--fz-h3);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
@@ -311,7 +311,7 @@
     border-top: none;
 }
 
-/* --- SISTEMA DE ANIMACIÓN AL PASAR PÁGINAS --- */
+/* --- SISTEMA DE ANIMACIÃ“N AL PASAR PÃGINAS --- */
 .anim-el-lpu {
     opacity: 0;
     transform: translateY(10px) scale(0.95);
@@ -343,7 +343,7 @@
     color: rgba(92, 20, 46, 0.6);
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-family: sans-serif;
+    font-family: var(--font-text);
     pointer-events: none;
     font-weight: bold;
 }
@@ -382,7 +382,7 @@
     left: 8px;
 }
 
-/* --- TIPOGRAFÍA --- */
+/* --- TIPOGRAFÃA --- */
 .chapter-title-lpu {
     font-size: var(--fz-h2);
     border-bottom: 1px solid rgba(212, 175, 55, 0.5);
@@ -444,7 +444,7 @@
 }
 
 .final-text-lpu {
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     text-align: center;
     font-size: var(--fz-h3);
     color: #5c142e;
@@ -513,12 +513,12 @@
 
 .polaroid-lpu span {
     margin-top: 4px;
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     color: #4a363d;
     font-size: var(--fz-small);
 }
 
-/* --- BOTÓN DE CIERRE --- */
+/* --- BOTÃ“N DE CIERRE --- */
 .close-book-btn-lpu {
     position: absolute;
     top: 6px;
@@ -567,7 +567,7 @@
     transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
 }
 
-/* Elevación reducida y controlada para no salir del borde en Z */
+/* ElevaciÃ³n reducida y controlada para no salir del borde en Z */
 .popup-layer-lpu.is-popped-lpu.layer-back-lpu {
     transition-delay: 0.6s;
     transform: translateX(-50%) rotateX(0deg) translateZ(4px);
@@ -681,13 +681,13 @@
 .decor-text-lpu {
     font-size: var(--fz-h3);
     font-weight: bold;
-    font-family: 'Dancing Script', cursive, serif;
+    font-family: var(--font-text);
     margin: 0;
     padding: 0;
     line-height: 1;
 }
 
-/* --- PARTÍCULAS MÁGICAS --- */
+/* --- PARTÃCULAS MÃGICAS --- */
 .particles-wrapper-lpu {
     position: absolute;
     inset: 0;

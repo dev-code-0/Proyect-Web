@@ -1,12 +1,12 @@
-.template-wrapper-dm {
+﻿.template-wrapper-dm {
   --color-fondo: #fcfbf9;
   --color-texto: #1a1a1a;
   --color-acento: #8e7cc3;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  font-family: 'Lora', serif; 
+  font-family: var(--font-text); 
 
-  /* EL TRUCO ESTÁ AQUÍ */
+  /* EL TRUCO ESTÃ AQUÃ */
   width: 100%;
   height: 100%;
   /* 100% de la caja, NO 100vh */
@@ -28,7 +28,7 @@
 
 .template-wrapper-dm .pantalla-completa-dm {
   position: absolute;
-  /* Cambiado de fixed a absolute para que se quede dentro del cuadro de previsualización */
+  /* Cambiado de fixed a absolute para que se quede dentro del cuadro de previsualizaciÃ³n */
   top: 0;
   left: 0;
   width: 100%;
@@ -43,7 +43,7 @@
 
 .template-wrapper-dm .txt-dm {
   font-size: 1.5rem;
-  /* Reducido para que quepa en la previsualización */
+  /* Reducido para que quepa en la previsualizaciÃ³n */
   margin-top: 10px;
   font-weight: 900;
 
@@ -188,7 +188,7 @@
 }
 
 .template-wrapper-dm #carrusel-lightbox-dm {
-  position: fixed;  /* ← Cambia solo este a fixed */
+  position: fixed;  /* â† Cambia solo este a fixed */
   top: 0;
   left: 0;
   width: 100%;
@@ -235,7 +235,7 @@
   }
 }
 
-/* Botón para cerrar el carrusel */
+/* BotÃ³n para cerrar el carrusel */
 .template-wrapper-dm .btn-cerrar-carrusel-dm {
   position: absolute;
   top: 20px;

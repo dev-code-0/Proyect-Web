@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-
-/* --- Contenedor Principal (Actúa como el Viewport) --- */
+﻿/* --- Contenedor Principal (ActÃºa como el Viewport) --- */
 .regalo-virtual-container-gi {
   container-type: size;
   position: relative;
@@ -14,7 +12,7 @@
   overflow-x: hidden;
   border-radius: inherit; 
   color: #fff;
-  font-family: 'Lora', serif;
+  font-family: var(--font-text);
   box-sizing: border-box; 
 }
 
@@ -61,7 +59,7 @@
 }
 
 .titulo-tocar-gi {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   font-size: clamp(2rem, 10cqw, 3.5rem);
   color: #ffcc00;
   text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
@@ -75,7 +73,7 @@
   border: none;
   padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
   font-size: clamp(1.2rem, 5cqw, 1.5rem);
-  font-family: 'Lora', serif;
+  font-family: var(--font-text);
   font-weight: bold;
   color: #5c3a00;
   border-radius: 30px;
@@ -113,7 +111,7 @@
 }
 
 .titulo-principal-gi {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   font-size: clamp(1.8rem, 9cqw, 3.5rem);
   color: #ffcc00;
   text-align: center;
@@ -162,7 +160,7 @@
 .girasol-1-gi { left: 0%; transform: scale(0.4) rotate(-20deg); }
 .girasol-10-gi { right: 0%; transform: scale(0.4) rotate(20deg); }
 
-/* --- RESPONSIVIDAD ESPECÍFICA (Apegarse más en pantalla chica) --- */
+/* --- RESPONSIVIDAD ESPECÃFICA (Apegarse mÃ¡s en pantalla chica) --- */
 @container (max-width: 600px) {
   .girasol-5-gi, .girasol-6-gi { left: 48%; transform: translateX(-50%) scale(1); z-index: 5; }
   .girasol-6-gi { left: 52%; }
@@ -197,7 +195,7 @@
   background: linear-gradient(to right, #2d5a27, #4ca646);
   box-shadow: 0 0 8px rgba(76, 166, 70, 0.4);
   transform: scale(0);
-  /* Añadida la animación de brillo infinito junto con la de crecimiento */
+  /* AÃ±adida la animaciÃ³n de brillo infinito junto con la de crecimiento */
   animation: 
     popHoja-gi 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
     brillo-hoja-gi 2.5s ease-in-out infinite alternate;
@@ -213,23 +211,23 @@
   right: -180%; 
   border-radius: 0 50% 0 50%; 
   transform-origin: left center; 
-  top: 45%; /* Ligeramente más arriba para asimetría natural */
+  top: 45%; /* Ligeramente mÃ¡s arriba para asimetrÃ­a natural */
 }
 @keyframes popHoja-gi {
   to { transform: scale(1); }
 }
-/* NUEVO: Las hojas palpitan con un brillo sutil mágico */
+/* NUEVO: Las hojas palpitan con un brillo sutil mÃ¡gico */
 @keyframes brillo-hoja-gi {
   0% { box-shadow: 0 0 4px rgba(76, 166, 70, 0.2); filter: brightness(1); }
   100% { box-shadow: 0 0 15px rgba(135, 255, 127, 0.8); filter: brightness(1.3); }
 }
-/* NUEVO: Rotación continua de los pétalos */
+/* NUEVO: RotaciÃ³n continua de los pÃ©talos */
 @keyframes giro-lento-petalos-gi {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-        /* --- NUEVO: OPCIÓN 1 - Balanceo de la brisa --- */
+        /* --- NUEVO: OPCIÃ“N 1 - Balanceo de la brisa --- */
         .girasol-balanceo-gi {
           display: flex;
           flex-direction: column;
@@ -243,18 +241,18 @@
           100% { transform: rotate(4deg); }
         }
 
-        /* --- NUEVO: OPCIÓN 2 - Hover que duplica el brillo neón --- */
+        /* --- NUEVO: OPCIÃ“N 2 - Hover que duplica el brillo neÃ³n --- */
         .girasol-wrapper-gi:hover .petalo-gi {
           box-shadow: 0 0 20px rgba(255, 234, 0, 1), 0 0 40px rgba(255, 157, 0, 0.8);
           filter: brightness(1.3);
         }
         
-        /* Transición suave para el hover (agregado a los pétalos) */
+        /* TransiciÃ³n suave para el hover (agregado a los pÃ©talos) */
         .petalo-gi {
           transition: box-shadow 0.4s ease, filter 0.4s ease;
         }
 
-        /* --- NUEVO: OPCIÓN 4 - Rocío de Neón Parpadeante --- */
+        /* --- NUEVO: OPCIÃ“N 4 - RocÃ­o de NeÃ³n Parpadeante --- */
         .rocio-gi {
           position: absolute;
           top: 25%;
@@ -279,10 +277,10 @@
 .girasol-3-gi .hoja-gi, .girasol-8-gi .hoja-gi { animation-delay: 1.4s; }
 .girasol-2-gi .hoja-gi, .girasol-9-gi .hoja-gi { animation-delay: 1.6s; }
 .girasol-1-gi .hoja-gi, .girasol-10-gi .hoja-gi { animation-delay: 1.8s; }
-/* 2. LATIDO MÁGICO EN EL CENTRO DEL GIRASOL */
+/* 2. LATIDO MÃGICO EN EL CENTRO DEL GIRASOL */
 .centro-girasol-gi {
   animation: latido-centro-gi 3s infinite ease-in-out alternate;
-  animation-delay: 1.5s; /* Empieza a latir después de nacer */
+  animation-delay: 1.5s; /* Empieza a latir despuÃ©s de nacer */
 }
 
 @keyframes latido-centro-gi {
@@ -303,7 +301,7 @@
   animation: popFlor 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Retrasos de aparición escalonados */
+/* Retrasos de apariciÃ³n escalonados */
 .girasol-5-gi .cabeza-girasol-gi, .girasol-6-gi .cabeza-girasol-gi { animation-delay: 1.5s; }
 .girasol-4-gi .cabeza-girasol-gi, .girasol-7-gi .cabeza-girasol-gi { animation-delay: 1.7s; }
 .girasol-3-gi .cabeza-girasol-gi, .girasol-8-gi .cabeza-girasol-gi { animation-delay: 1.9s; }
@@ -335,7 +333,7 @@
   background: linear-gradient(to bottom, #ffea00, #ff9d00);
   border-radius: 50% 50% 20% 20%;
   transform-origin: 50% 100%;
-  /* --- Brillo Neón Amarillo/Naranja Solicitado --- */
+  /* --- Brillo NeÃ³n Amarillo/Naranja Solicitado --- */
   box-shadow: 0 0 10px rgba(255, 234, 0, 0.8), 0 0 20px rgba(255, 157, 0, 0.5);
 }
 
@@ -347,7 +345,7 @@
   animation: pulso 1.5s infinite alternate;
 }
 
-/* --- Sección Carta --- */
+/* --- SecciÃ³n Carta --- */
 .seccion-carta-gi {
   min-height: 100cqh;
   display: flex;
@@ -373,7 +371,7 @@
 }
 
 .titulo-carta-gi {
-  font-family: 'Dancing Script', cursive;
+  font-family: var(--font-text);
   color: #ffcc00;
   font-size: clamp(2rem, 8cqw, 2.5rem);
   text-align: center;
@@ -401,7 +399,7 @@
   position: relative;
   transform: scale(1.5);
   animation: latir 3s ease-in-out infinite alternate;
-  /* Brillo neón para el girasol final */
+  /* Brillo neÃ³n para el girasol final */
   box-shadow: 0 0 15px rgba(255, 234, 0, 0.8), 0 0 25px rgba(255, 157, 0, 0.5);
 }
 
