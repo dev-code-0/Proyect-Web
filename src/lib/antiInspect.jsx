@@ -2,6 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const DEFAULT_DEVTOOLS_THRESHOLD = 160;
 
+const isConsoleLikelyOpen = () => {
+  let opened = false;
+  const bait = new Image();
+
+  Object.defineProperty(bait, 'id', {
+    get() {
+      opened = true;
+      return 'anti-inspect';
+    },
+    configurable: true,
+  });
+
+  try {
+    console.debug(bait);
+  } catch {
+    return false;
+  }
+
+  return opened;
+};
+
 const shouldBlockShortcut = (event) => {
   const key = String(event.key || '').toLowerCase();
   const ctrlOrCmd = event.ctrlKey || event.metaKey;
@@ -19,6 +40,10 @@ const isDevtoolsLikelyOpen = (threshold) => {
   return widthGap > threshold || heightGap > threshold;
 };
 
+const isAnyDevtoolsLikelyOpen = (threshold) => {
+  return isDevtoolsLikelyOpen(threshold) || isConsoleLikelyOpen();
+};
+
 const useAntiInspect = ({
   enabled = true,
   blockContextMenu = true,
@@ -31,7 +56,13 @@ const useAntiInspect = ({
   devtoolsThreshold = DEFAULT_DEVTOOLS_THRESHOLD,
   onDetect,
 } = {}) => {
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(() => {
+    if (!enabled || !detectDevtools || !lockOnDetect || typeof window === 'undefined') {
+      return false;
+    }
+
+    return isAnyDevtoolsLikelyOpen(devtoolsThreshold);
+  });
   const detectedRef = useRef(false);
   const unlockTimerRef = useRef(null);
 
@@ -49,12 +80,23 @@ const useAntiInspect = ({
 
       event.preventDefault();
       event.stopPropagation();
+
+      if (lockOnDetect) {
+        setIsBlocked(true);
+      }
+
+      if (!detectedRef.current) {
+        detectedRef.current = true;
+        if (typeof onDetect === 'function') {
+          onDetect();
+        }
+      }
     };
 
     const detect = () => {
       if (!detectDevtools) return;
 
-      const isOpen = isDevtoolsLikelyOpen(devtoolsThreshold);
+      const isOpen = isAnyDevtoolsLikelyOpen(devtoolsThreshold);
 
       if (!isOpen) {
         if (unlockTimerRef.current) {
@@ -90,6 +132,10 @@ const useAntiInspect = ({
 
     window.addEventListener('contextmenu', handleContextMenu);
     window.addEventListener('keydown', handleKeyDown, true);
+    window.addEventListener('resize', detect);
+    window.addEventListener('focus', detect);
+    window.addEventListener('pageshow', detect);
+    document.addEventListener('visibilitychange', detect);
 
     detect();
     const timerId = window.setInterval(detect, checkIntervalMs);
@@ -97,6 +143,10 @@ const useAntiInspect = ({
     return () => {
       window.removeEventListener('contextmenu', handleContextMenu);
       window.removeEventListener('keydown', handleKeyDown, true);
+      window.removeEventListener('resize', detect);
+      window.removeEventListener('focus', detect);
+      window.removeEventListener('pageshow', detect);
+      document.removeEventListener('visibilitychange', detect);
       if (unlockTimerRef.current) {
         window.clearTimeout(unlockTimerRef.current);
         unlockTimerRef.current = null;
@@ -128,6 +178,9 @@ export const InspectBlockScreen = ({
       style={{
         minHeight: '100vh',
         width: '100%',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 2147483647,
         display: 'grid',
         placeItems: 'center',
         background:
@@ -135,6 +188,9 @@ export const InspectBlockScreen = ({
         color: '#f8f8f8',
         textAlign: 'center',
         padding: '24px',
+        pointerEvents: 'all',
+        userSelect: 'none',
+        touchAction: 'none',
       }}
     >
       <div style={{ maxWidth: '460px' }}>
@@ -158,7 +214,9 @@ export const AntiInspectGuard = ({
     detectDevtools: true,
     lockOnDetect: true,
     autoUnlockOnClose: true,
-    unlockDelayMs: 1000,
+    unlockDelayMs: 250,
+    checkIntervalMs: 450,
+    devtoolsThreshold: 120,
     ...options,
   });
 

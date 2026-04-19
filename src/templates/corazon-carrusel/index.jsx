@@ -434,7 +434,7 @@ export default function CorazonCaruselTemplate({ data }) {
             <div className={`modal-overlay-cc ${isModalOpen ? 'active-cc' : ''}`} onClick={handleModalClick}>
                 <div className="modal-wrapper-cc">
                     <div className="modal-content-cc">
-                        <button className="close-btn-cc" onClick={handleCloseModal}>✕</button>
+                        <button className="close-btn-cc" onClick={handleCloseModal}>✕</button> 
                         <h2 className="modal-header-cc">Para {nombre}</h2>
                         <p className="modal-text-cc">
                             En cada latido de mi corazón encuentro la melodía perfecta que compone nuestra historia de amor. Eres la luz que ilumina mis días más oscuros y la razón por la cual cada amanecer tiene sentido. Tu sonrisa es mi refugio, tu abrazo mi hogar, y tu amor la fuerza que me impulsa a ser mejor cada día. 🌟

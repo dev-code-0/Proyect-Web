@@ -401,7 +401,7 @@ function FinalPanel({ startDate, whatsappNumber, active }) {
               </span>
             </div>
           ))}
-        </div>
+        </div> 
 
         <div className="wsp-wrap-fla">
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="wsp-btn-fla">

@@ -1,8 +1,8 @@
 export const templates = [
   {
     id: "prueba-conex",
-    title: "Prubea Conex",
-    image: "./images/flowers/favicon.svg",
+    title: "Viernes 13",
+    image: "./images/viernes-13/friday.svg",
   },
   {
     id: "dia-mujer",
@@ -67,5 +67,10 @@ export const templates = [
     id: "flores-para-ti",
     title: "Flores Para Ti",
     image: "./images/flores-para-ti/flores-para-ti.svg",
-  }
+  },
+  {
+    id: "app-recuerdos",
+    title: "App Recuerdos",
+    image: "./images/app-recuerdos/app-recuerdos.svg",
+  },
 ];

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { templates } from "../lib/templates";
 import "../styles/preview.css";
+import { AntiInspectGuard } from '../lib/antiInspect';
 
 import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
 import { diaMujerConfig } from "../templates/dia-mujer/config.js";
@@ -48,6 +49,9 @@ import { fuegosAmorConfig } from "../templates/corazon-mensaje/config.js";
 
 import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
 import { floresParaTiConfig } from "../templates/flores-para-ti/config.js";
+
+import SanValentinApp from "../templates/app-recuerdos/index.jsx";
+import { sanValentinConfig } from "../templates/app-recuerdos/config.js";
 
 
 
@@ -134,6 +138,8 @@ export default function Preview() {
         return <FuegosAmorTemplate data={previewData} />;
       case "flores-para-ti":
         return <FloresParaTiTemplate data={previewData} />;
+      case "app-recuerdos":
+        return <SanValentinApp data={previewData} />;
       default:
         return ( 
           <p>
@@ -158,6 +164,7 @@ export default function Preview() {
     if (id === "caja-musical") return cajaMusicalConfig;
     if (id === "corazon-mensaje") return fuegosAmorConfig;
     if (id === "flores-para-ti") return floresParaTiConfig;
+    if (id === "app-recuerdos") return sanValentinConfig;
 
     return { name: "Proyecto genérico", fields: [] };
   };
@@ -167,6 +174,7 @@ export default function Preview() {
   };
 
   return (
+    <AntiInspectGuard>
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
 
@@ -187,5 +195,6 @@ export default function Preview() {
       {/* Modal final con el QR y el Link */}
       <ShareModal isOpen={showShareModal} onClose={handleCloseShare} shareLink={generatedLink}/>
     </main>
+        </AntiInspectGuard>
   );
 }

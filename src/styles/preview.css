@@ -30,6 +30,7 @@
   padding: 20px;
   box-shadow: 1px 0px 8px 4px rgb(167 161 161 / 98%);
   margin-bottom: 30px;
+  overflow: hidden !important;
 }
 
 .btn-personalizar {
