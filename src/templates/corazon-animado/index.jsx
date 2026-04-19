@@ -7,6 +7,7 @@ export default function CorazonMagicotemplate({data}) {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const audioRef = useRef(null);
+    const isLetterOpenRef = useRef(false);
     
     // Estados
     const [isLetterOpen, setIsLetterOpen] = useState(false);
@@ -44,6 +45,10 @@ export default function CorazonMagicotemplate({data}) {
         }
     }, [isLetterOpen]);
 
+    useEffect(() => {
+        isLetterOpenRef.current = isLetterOpen;
+    }, [isLetterOpen]);
+
     // Efecto 3D Parallax para la carta (Responsivo al contenedor)
     const handleMouseMove = (e) => {
         if (!isLetterOpen || !containerRef.current) return;
@@ -60,14 +65,64 @@ export default function CorazonMagicotemplate({data}) {
     const handleMouseLeave = () => setCardTilt({ x: 0, y: 0 });
 
     // Reproductor de Música
-    const toggleMusic = () => {
-        if (isPlaying) {
-            audioRef.current.pause();
-        } else {
-            audioRef.current.play();
+    const playMusic = async () => {
+        const audio = audioRef.current;
+        if (!audio) return false;
+
+        try {
+            await audio.play();
+            setIsPlaying(true);
+            return true;
+        } catch {
+            setIsPlaying(false);
+            return false;
         }
-        setIsPlaying(!isPlaying);
     };
+
+    const pauseMusic = () => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        audio.pause();
+        setIsPlaying(false);
+    };
+
+    const toggleMusic = async () => {
+        if (isPlaying) {
+            pauseMusic();
+            return;
+        }
+
+        await playMusic();
+    };
+
+    const handleOpenLetter = async () => {
+        setIsLetterOpen(true);
+        if (!isPlaying) {
+            await playMusic();
+        }
+    };
+
+    const handleCloseLetter = () => {
+        setIsLetterOpen(false);
+        setCardTilt({ x: 0, y: 0 });
+    };
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
+
+        audio.addEventListener('play', handlePlay);
+        audio.addEventListener('pause', handlePause);
+
+        return () => {
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('pause', handlePause);
+        };
+    }, []);
 
     // ==========================================
     // MOTOR DEL CANVAS (CORAZÓN + POLVO + ONDAS + ESTRELLAS)
@@ -129,7 +184,7 @@ export default function CorazonMagicotemplate({data}) {
         // 3. ESTELAS DEL RATÓN (Polvo de hadas adaptado al contenedor)
         const mouseTrail = [];
         const handleCanvasMouseMove = (e) => {
-            if(isLetterOpen) return; // Pausar estelas si la carta está abierta
+            if (isLetterOpenRef.current) return; // Pausar estelas si la carta está abierta
             const rect = container.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -149,19 +204,6 @@ export default function CorazonMagicotemplate({data}) {
         };
         container.addEventListener('mousemove', handleCanvasMouseMove);
         container.addEventListener('touchmove', handleCanvasMouseMove);
-
-        // 4. CORAZÓN MATEMÁTICO
-        class Point {
-            constructor(x = 0, y = 0) { this.x = x; this.y = y; }
-            clone() { return new Point(this.x, this.y); }
-            length(length) {
-                if (typeof length == 'undefined') return Math.sqrt(this.x * this.x + this.y * this.y);
-                this.normalize(); this.x *= length; this.y *= length; return this;
-            }
-            normalize() {
-                var len = this.length(); this.x /= len; this.y /= len; return this;
-            }
-        }
 
         const heartPosition = function (rad) {
             return [
@@ -371,7 +413,7 @@ export default function CorazonMagicotemplate({data}) {
         >
             
             {/* Reproductor de música (Pista relajante de dominio público para probar) */}
-            <audio ref={audioRef} loop id="bg-music">
+            <audio ref={audioRef} loop preload="auto" playsInline id="bg-music">
                 <source src={Music} type="audio/mp3" />
             </audio>
 
@@ -407,13 +449,13 @@ export default function CorazonMagicotemplate({data}) {
             {/* Botón de apertura Glassmorphism */}
             <button 
                 className={`action-btn ${(showButton && !isLetterOpen) ? 'visible' : ''}`}
-                onClick={() => setIsLetterOpen(true)}
+                onClick={handleOpenLetter}
             >
                 Abrir
             </button>
 
             {/* Modal Glassmorphism con Parallax */}
-            <div className={`letter-modal ${isLetterOpen ? 'active' : ''}`} onClick={() => setIsLetterOpen(false)}>
+            <div className={`letter-modal ${isLetterOpen ? 'active' : ''}`} onClick={handleCloseLetter}>
                 <div 
                     className="card-3d-wrapper" 
                     style={{ transform: `rotateX(${cardTilt.x}deg) rotateY(${cardTilt.y}deg)` }}
@@ -427,7 +469,7 @@ export default function CorazonMagicotemplate({data}) {
                             <span style={{ borderRight: '2px solid #fff', animation: 'blink 1s infinite' }}></span>
                         </p>
 
-                        <button className="close-card-btn" onClick={() => setIsLetterOpen(false)}>
+                        <button className="close-card-btn" onClick={handleCloseLetter}>
                             Cerrar Carta
                         </button> 
                     </div>

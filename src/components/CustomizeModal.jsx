@@ -166,7 +166,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                 accept={field.accept || ''}
                 multiple={field.multiple || false}
                 onChange={(e) => handleChange(e, field)}
-                required={!field.label.includes('(Opcional)')}
+                required={field.required ?? !field.label.includes('(Opcional)')}
               />
             </div>
           ))}

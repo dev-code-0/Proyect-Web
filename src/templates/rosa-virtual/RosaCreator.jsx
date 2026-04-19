@@ -45,6 +45,22 @@ function RosaIcon({ color = 'currentColor', size = 44, style = {} }) {
   );
 }
 
+// ─── Sub-componente Botón Volver ─────────────────────────────────────────────
+function BackButton({ onClick, color, text = "Volver al paso anterior" }) {
+  return (
+    <div
+      className="rc-back-btn"
+      style={{ color: color, marginTop: 10 }}
+      onClick={onClick}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor" style={{ width: 12, height: 20, marginRight: 6 }}>
+        <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
+      </svg>
+      {text}
+    </div>
+  );
+}
+
 // ─── Componente Principal ──────────────────────────────────────────────────────
 
 export default function RosaCreator({ onSave }) {
@@ -55,11 +71,15 @@ export default function RosaCreator({ onSave }) {
   const [videoUrl, setVideoUrl]                 = useState('');
   const [videoSaved, setVideoSaved]             = useState('');
   const [charCount, setCharCount]               = useState(0);
-  const [intentionSelected, setIntentionSelected] = useState(null); // índice
-  const [_rosaIndex, setRosaIndex]                  = useState(0);            // slide activo
-  const [isBouquet, setIsBouquet]                   = useState(false);
-  const nameInputRef                                = useRef(null);
-  const swiperRef                                   = useRef(null);
+  const [intentionSelected, setIntentionSelected] = useState(null); // ahora guarda ID en vez de índice
+  const [_rosaIndex, setRosaIndex]              = useState(0);            // slide activo
+  const [isBouquet, setIsBouquet]               = useState(false);
+  const nameInputRef                            = useRef(null);
+  const swiperRef                               = useRef(null);
+  
+  // Refs para corregir el bug de animación
+  const timerRef = useRef(null);
+  const userInteracted = useRef(false);
 
   const [formData, setFormData] = useState({
     color:    ROSAS[0].color,
@@ -92,19 +112,26 @@ export default function RosaCreator({ onSave }) {
 
   const [nameFocused, setNameFocused] = useState(false);
 
-  // Animación de entrada del carrusel: 0→1→2→3→0
+  // Animación de entrada del carrusel corregida (no fuga memoria y respeta interacción)
   useEffect(() => {
     const sequence = [0, 1, 2, 3, 0];
     let i = 0;
+    let mounted = true;
+
     const run = () => {
-      if (!swiperRef.current) return;
+      if (!mounted || !swiperRef.current || userInteracted.current) return;
       i++;
       if (i >= sequence.length) return;
       swiperRef.current.slideTo(sequence[i]);
-      setTimeout(run, 700);
+      timerRef.current = setTimeout(run, 700);
     };
-    const init = setTimeout(run, 1000);
-    return () => clearTimeout(init);
+    
+    timerRef.current = setTimeout(run, 1000);
+    
+    return () => {
+      mounted = false;
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, []);
 
   // Navegar entre pasos con animación
@@ -115,6 +142,7 @@ export default function RosaCreator({ onSave }) {
 
   // Confirmar rosa y pasar al paso 2
   const confirmarRosa = () => {
+    userInteracted.current = true;
     setShowConfirmModal(false);
     goTo(2);
   };
@@ -180,6 +208,9 @@ export default function RosaCreator({ onSave }) {
 
   // ─── Clases de animación ──────────────────────────────────────────────────────
   const animClass = animDir === 'next' ? 'page-enter-next' : 'page-enter-prev';
+  
+  // Buscar la intención seleccionada de forma robusta para el Preview Header
+  const selectedIntentionObj = INTENCIONES.find(int => `${int.sub}-${int.main}` === intentionSelected);
 
   // ─── RENDER ──────────────────────────────────────────────────────────────────
   return (
@@ -220,8 +251,9 @@ export default function RosaCreator({ onSave }) {
                 slidesPerView="auto"
                 spaceBetween={10}
                 grabCursor={true}
-                initialSlide={0}
+                initialSlide={_rosaIndex}
                 speed={600}
+                onTouchStart={() => { userInteracted.current = true; }} // Cancela la animación si el usuario toca
                 pagination={{
                   clickable: true,
                   renderBullet: (index, className) =>
@@ -262,7 +294,6 @@ export default function RosaCreator({ onSave }) {
               <div className="rc-modal-backdrop">
                 <div className="rc-modal-content animated">
                   
-
                   <h2>Confirmar selección</h2>
                   <p>
                     Has seleccionado una rosa de color:{' '}
@@ -298,30 +329,30 @@ export default function RosaCreator({ onSave }) {
             PASOS 2‑3 — Header compartido: vista previa
         ════════════════════════════════════════════════ */}
         {step >= 2 && step <= 3 && (
-  <div
-    className="rc-preview-bar"
-    style={{ backgroundColor: formData.bgLight }}
-  >
-    <img
-      src={formData.roseImg}
-      alt="rosa"
-      className={`rc-preview-rose ${nameFocused ? 'rc-preview-rose--shifted' : ''}`}
-    />
-    <div className={`rc-preview-text ${nameFocused ? 'rc-preview-text--visible' : ''}`}>
-      <span style={{ color: formData.colorHex }}>{formData.nombre || ''}</span>
-      {intentionSelected !== null
-        ? <span>{INTENCIONES[intentionSelected].msg}</span>
-        : <span>, <br />elige una intención (siguiente)</span>
-      }
-    </div>
-    <div
-      className={`rc-preview-label ${nameFocused ? 'rc-preview-label--visible' : ''}`}
-      style={{ backgroundColor: formData.colorHex }}
-    >
-      Vista previa
-    </div>
-  </div>
-)}
+          <div
+            className="rc-preview-bar"
+            style={{ backgroundColor: formData.bgLight }}
+          >
+            <img
+              src={formData.roseImg}
+              alt="rosa"
+              className={`rc-preview-rose ${nameFocused ? 'rc-preview-rose--shifted' : ''}`}
+            />
+            <div className={`rc-preview-text ${nameFocused ? 'rc-preview-text--visible' : ''}`}>
+              <span style={{ color: formData.colorHex }}>{formData.nombre || ''}</span>
+              {selectedIntentionObj
+                ? <span>{selectedIntentionObj.msg}</span>
+                : <span>, <br />elige una intención (siguiente)</span>
+              }
+            </div>
+            <div
+              className={`rc-preview-label ${nameFocused ? 'rc-preview-label--visible' : ''}`}
+              style={{ backgroundColor: formData.colorHex }}
+            >
+              Vista previa
+            </div>
+          </div>
+        )}
 
 
         {/* ════════════════════════════════════════════════
@@ -340,28 +371,19 @@ export default function RosaCreator({ onSave }) {
               <div>
                 <div className="label-float">Nombre:</div>
                 <input
-  ref={nameInputRef}
-  id="name_gift"
-  className="input-rosify"
-  maxLength={16}
-  value={formData.nombre}
-  style={{ borderColor: formData.colorHex, caretColor: formData.colorHex }}
-  onChange={(e) => setFormData(fd => ({ ...fd, nombre: e.target.value }))}
-  onFocus={() => setNameFocused(true)}
-  onBlur={() => { if (!formData.nombre) setNameFocused(false); }}
-/>
+                  ref={nameInputRef}
+                  id="name_gift"
+                  className="input-rosify"
+                  maxLength={16}
+                  value={formData.nombre}
+                  style={{ borderColor: formData.colorHex, caretColor: formData.colorHex }}
+                  onChange={(e) => setFormData(fd => ({ ...fd, nombre: e.target.value }))}
+                  onFocus={() => setNameFocused(true)}
+                  onBlur={() => { if (!formData.nombre) setNameFocused(false); }}
+                />
               </div>
 
-              <div
-                className="rc-back-btn"
-                style={{ color: formData.colorHex }}
-                onClick={() => goTo(1, 'prev')}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor" style={{ width: 12, height: 20, marginRight: 4 }}>
-                  <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
-                </svg>
-                Cambiar Color Rosa
-              </div>
+              <BackButton onClick={() => goTo(1, 'prev')} color={formData.colorHex} text="Cambiar Color Rosa" />
             </div>
 
             <div className="rc-p24">
@@ -375,7 +397,6 @@ export default function RosaCreator({ onSave }) {
             </div>
           </div>
         )}
-
 
        
         {/* ════════════════════════════════════════════════
@@ -391,64 +412,39 @@ export default function RosaCreator({ onSave }) {
             </div>
 
             <div className="rc-intentions-scroll">
-              {/* Fila 1: Amor, Ánimos, Gracias */}
-              <div className="intention-container">
-                {[0, 2, 11].map(i => (
-                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { 
-                      setIntentionSelected(i); 
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
-                    }} 
-                  />
-                ))}
-              </div>
-              {/* Fila 2 */}
-              <div className="intention-container">
-                {[12, 10, 9].map(i => (
-                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { 
-                      setIntentionSelected(i); 
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
-                    }} 
-                  />
-                ))}
-              </div>
-              {/* Fila 3 */}
-              <div className="intention-container">
-                {[3, 1, 5].map(i => (
-                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { 
-                      setIntentionSelected(i); 
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
-                    }} 
-                  />
-                ))}
-              </div>
-              {/* Fila 4 */}
-              <div className="intention-container">
-                {[6, 7, 8].map(i => (
-                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { 
-                      setIntentionSelected(i); 
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
-                    }} 
-                  />
-                ))}
-              </div>
-              {/* Fila 5 */}
-              <div className="intention-container">
-                {[13, 14, 15].map(i => (
-                  <IntentionCard key={i} idx={i} color={formData.colorHex} selected={intentionSelected === i}
-                    onSelect={() => { 
-                      setIntentionSelected(i); 
-                      setFormData(fd => ({ ...fd, intencion: INTENCIONES[i].msg.replace(', ', ''), intencionCorta: INTENCIONES[i].main })); 
-                    }} 
-                  />
-                ))}
-              </div>
-            </div>
+  {[
+    [0, 2, 11],   // Fila 1: Amor, Ánimos, Gracias
+    [12, 10, 9],  // Fila 2
+    [3, 1, 5],    // Fila 3
+    [6, 7, 8],    // Fila 4
+    [13, 14, 15], // Fila 5
+  ].map((row, rowIdx) => (
+    <div className="intention-container" key={`row-${rowIdx}`}>
+      {row.map((i) => {
+        const intencion = INTENCIONES[i];
+        const intentionId = `${intencion.sub}-${intencion.main}`;
+        return (
+          <IntentionCard
+            key={intentionId}
+            intencion={intencion}
+            color={formData.colorHex}
+            selected={intentionSelected === intentionId}
+            onSelect={() => {
+              setIntentionSelected(intentionId);
+              setFormData(fd => ({
+                ...fd,
+                intencion: intencion.msg.replace(', ', ''),
+                intencionCorta: intencion.main
+              }));
+            }}
+          />
+        );
+      })}
+    </div>
+  ))}
+</div>
 
-            <div className="rc-p24">
+            <div className="rc-p24" style={{ paddingTop: 0 }}>
               <div
                 className="button-bottom press-effect"
                 style={{ backgroundColor: formData.colorHex }}
@@ -456,6 +452,7 @@ export default function RosaCreator({ onSave }) {
               >
                 Continuar
               </div>
+              <BackButton onClick={() => goTo(2, 'prev')} color={formData.colorHex} />
             </div>
           </div>
         )}
@@ -488,7 +485,7 @@ export default function RosaCreator({ onSave }) {
                     <div
                       key={label}
                       className="button-bottom grow-click"
-                      style={{ backgroundColor: formData.colorHex, color: '#fff', fontSize: 15, height: 54, lineHeight: '54px', textAlign: 'center', cursor: 'pointer', borderRadius: 10 }}
+                      style={{ backgroundColor: formData.colorHex, color: '#fff', fontSize: 15, height: 54, lineHeight: '54px', textAlign: 'center', cursor: 'pointer', borderRadius: 10, margin: '5px 20px' }}
                       onClick={action}
                     >
                       {label}
@@ -501,14 +498,14 @@ export default function RosaCreator({ onSave }) {
             {/* Zona superior: video opcional */}
             <div
               className="image-container"
-              style={{ backgroundColor: formData.bgLight, display: 'none', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', borderRadius: '20px', width: 'calc(100% - 46px)', margin: '10px auto', height: '150px' }}
+              style={{ display:'none'}}
             >
               <div style={{ textAlign: 'center', marginBottom: 6, fontWeight: 600, color: '#555', fontSize: 14 }}>
                 {videoSaved ? `✅ Video guardado` : '¿Deseas agregar un video? (Opcional)'}
               </div>
               <div
                 className="button-bottom grow-click"
-                style={{ backgroundColor: formData.colorHex, color: '#fff', borderRadius: 11, fontSize: 15, display: 'flex', padding: '8px 16px', alignItems: 'center', gap: 8, cursor: 'pointer' }}
+                style={{ backgroundColor: formData.colorHex, color: '#fff', borderRadius: 11, fontSize: 15, display: 'flex', padding: '8px 16px', alignItems: 'center', gap: 8, cursor: 'pointer', height: 'auto', lineHeight: 'normal' }}
                 onClick={() => setShowVideoModal(true)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
@@ -555,15 +552,16 @@ export default function RosaCreator({ onSave }) {
               </div>
             </div>
 
-            <div className="rc-p24">
+            <div className="rc-p24" style={{ paddingTop: 0 }}>
               <div
                 id="btn-letter"
                 className="button-bottom grow-click"
-                style={{ margin: 20, backgroundColor: formData.colorHex }}
+                style={{ backgroundColor: formData.colorHex }}
                 onClick={handleSaveLetter}
               >
                 Continuar
               </div>
+              <BackButton onClick={() => goTo(3, 'prev')} color={formData.colorHex} />
             </div>
           </div>
         )}
@@ -618,6 +616,9 @@ export default function RosaCreator({ onSave }) {
                   No
                 </button>
               </div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: 15 }}>
+                <BackButton onClick={() => goTo(4, 'prev')} color={formData.colorHex} />
+              </div>
             </div>
           </div>
         )}
@@ -627,7 +628,7 @@ export default function RosaCreator({ onSave }) {
             PASO 6 — Resumen final
         ════════════════════════════════════════════════ */}
         {step === 6 && (
-          <div className={`rc-page ${animClass}`} style={{ maxWidth: 420, paddingBottom: 40, marginTop: 20 }}>
+          <div className={`rc-page ${animClass}`} style={{ maxWidth: 420, paddingBottom: 40, marginTop: 20, margin: 'auto' }}>
             <h2 style={{ textAlign: 'center', fontWeight: 700, fontSize: 24, marginBottom: 15, marginTop: 0, color: formData.colorHex }}>
               Resumen de tu Selección
             </h2>
@@ -636,7 +637,7 @@ export default function RosaCreator({ onSave }) {
               {[
                 { label: 'Nombre',             value: formData.nombre },
                 { label: 'Intención',          value: formData.intencionCorta || formData.intencion },
-                { label: 'Mensaje Adicional',  value: formData.mensaje },
+                // { label: 'Mensaje Adicional',  value: formData.mensaje },
                 { label: 'Enlace de Video',    value: videoSaved || 'No especificado' },
               ].map(({ label, value }) => (
                 <div key={label} className="summary-card" style={{ display: 'flex', flexDirection: 'column', margin: '0 15px', padding: 10, border: '2px solid #eee', boxShadow: '0px 0px 12px 2px #bebebe', borderRadius: 12, textAlign: 'left' }}>
@@ -656,7 +657,7 @@ export default function RosaCreator({ onSave }) {
 
             <button
               style={{
-                margin: '20px auto', display: 'block', padding: '15px 30px',
+                margin: '20px auto 10px auto', display: 'block', padding: '15px 30px',
                 fontSize: 18, fontWeight: 'bold', border: 'none', borderRadius: 30,
                 cursor: 'pointer', backgroundColor: formData.colorHex, color: 'white',
                 transition: 'transform 0.3s',
@@ -667,6 +668,9 @@ export default function RosaCreator({ onSave }) {
             >
               Finalizar y Generar Link
             </button>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+               <BackButton onClick={() => goTo(5, 'prev')} color={formData.colorHex} />
+            </div>
           </div>
         )}
 
@@ -677,8 +681,8 @@ export default function RosaCreator({ onSave }) {
 
 // ─── Sub-componente: tarjeta de intención ─────────────────────────────────────
 
-function IntentionCard({ idx, color, selected, onSelect }) {
-  const { sub, main } = INTENCIONES[idx];
+function IntentionCard({ intencion, color, selected, onSelect }) {
+  const { sub, main } = intencion;
   return (
     <div
       className={`select-intention ${selected ? 'selected-intention' : ''}`}
