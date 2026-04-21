@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./style.css";
 import RamoAzul from "./ramo-azul.png"; // Asegúrate de tener esta imagen en la carpeta correcta
 import HotWheelsSVG from "./card.svg"; // Asegúrate de tener esta imagen en la carpeta correcta
+import { AntiInspectGuard } from "../../lib/antiInspect";
 
 export default function RamoHotWheelsTemplate({data}) {
   const [abierto, setAbierto] = useState(false);
@@ -65,6 +66,7 @@ export default function RamoHotWheelsTemplate({data}) {
   };
 
   return (
+    <AntiInspectGuard>
     <div className="regalo-virtual-container-hw ramo-hotwheels-theme-hw">
       {!abierto ? (
         <div className="pantalla-inicio-hw">
@@ -162,5 +164,6 @@ export default function RamoHotWheelsTemplate({data}) {
         </div>
       )}
     </div>
+    </AntiInspectGuard>
   );
 }

@@ -9,6 +9,7 @@ import Image3 from './Images/Image3.avif';
 import Image4 from './Images/Image4.avif';
 import Image5 from './Images/Image5.avif';
 import Image6 from './Images/Image6.avif';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 // ==========================================
 // CONFIGURACIÓN DE PARTÍCULAS
@@ -404,6 +405,8 @@ export default function CorazonCaruselTemplate({ data }) {
     };
 
     return (
+
+        <AntiInspectGuard>
         <div className="app-wrapper-cc" ref={appWrapperRef}>
             {/* Radar */}
             <div className={`radar-line-cc ${isModalOpen ? 'modal-open-cc' : ''}`} />
@@ -455,5 +458,6 @@ export default function CorazonCaruselTemplate({ data }) {
                 </div>
             </div>
         </div>
+        </AntiInspectGuard>
     );
 }

@@ -8,6 +8,7 @@ import Mocha5Final from "./images/mocha5final.gif";
 import Mocha6Final from "./images/mocha6final.gif";
 import Mocha7Final from "./images/mocha7final.gif";
 import Mocha9Final from "./images/mocha9final.gif";
+import { AntiInspectGuard } from "../../lib/antiInspect";
 
 const GIF = {  
   initial: Mocha,
@@ -122,6 +123,7 @@ export default function NoviaPregunta({ data }) {
   const noStyle = noPos.x !== null ? { position: "absolute", left: noPos.x, top: noPos.y, transition: "all 0.5s" } : {};
 
   return (
+    <AntiInspectGuard>
     <main  className={`novia-wrap-pr${answered ? " novia-wrap--yes-pr" : ""}`}>
       <div ref={containerRef} className="novia-card-pr">
         <div className="novia-gif-wrap-pr">
@@ -149,5 +151,6 @@ export default function NoviaPregunta({ data }) {
         )}
       </div>
     </main>
+    </AntiInspectGuard>
   );
 }

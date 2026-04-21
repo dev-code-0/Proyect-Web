@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import Song from './song.mp3';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function CajaMusicalTemplate({ data }) {
   // ==========================================
@@ -264,6 +265,7 @@ export default function CajaMusicalTemplate({ data }) {
   }, []);
 
   return (
+    <AntiInspectGuard>
     <div 
       className={`template-wrapper-c3d ${isOpen ? 'is-open-c3d' : ''}`} 
       ref={containerRef}
@@ -404,5 +406,6 @@ export default function CajaMusicalTemplate({ data }) {
       </div>
       
     </div>
+    </AntiInspectGuard>
   );
 }

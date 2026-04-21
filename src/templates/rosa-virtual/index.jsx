@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import './style.css';
 import { ROSAS } from './rosaAssets';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function RosaVirtual({ data }) {
   // 1. Extraemos los datos recibidos del primer componente
@@ -197,6 +198,7 @@ export default function RosaVirtual({ data }) {
 
   // ─── RENDER ─────────────────────────────────────────────────────────────────
   return (
+    <AntiInspectGuard>
     <div id="contenedor">
 
       {/* ════ PANTALLA 0: CARGANDO ════ */}
@@ -277,5 +279,6 @@ export default function RosaVirtual({ data }) {
       )}
 
     </div>
+    </AntiInspectGuard>
   );
 }

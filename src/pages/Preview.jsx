@@ -104,7 +104,7 @@ export default function Preview() {
       case "rosa-virtual":
         return <RosaVirtualTemplate data={previewData} />;
 
-      case "prueba-conex":
+      case "viernes-13":
         return <PruebaConexTemplate data={previewData} />;
 
       case "flores-amarillas":
@@ -152,7 +152,7 @@ export default function Preview() {
 
   const getConfig = () => {
     if (id === "dia-mujer") return diaMujerConfig;
-    if (id === "prueba-conex") return pruebaConexConfig;
+    if (id === "viernes-13") return pruebaConexConfig;
     if (id === "flores-amarillas") return floresAmarillasConfig;
     if (id === "pregunta") return preguntaConfig;
     if (id === "flores-corazones") return floresCorazonesConfig;

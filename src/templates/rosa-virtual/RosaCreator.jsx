@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import './creator.css';
 import { ROSAS } from './rosaAssets';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 // ─── Datos ────────────────────────────────────────────────────────────────────
 
@@ -214,6 +215,7 @@ export default function RosaCreator({ onSave }) {
 
   // ─── RENDER ──────────────────────────────────────────────────────────────────
   return (
+    <AntiInspectGuard>
     <div className="rc-overlay">
       <div className="rc-container">
 
@@ -676,6 +678,7 @@ export default function RosaCreator({ onSave }) {
 
       </div>
     </div>
+    </AntiInspectGuard>
   );
 }
 

@@ -1,6 +1,6 @@
 export const templates = [
   {
-    id: "prueba-conex",
+    id: "viernes-13",
     title: "Viernes 13",
     image: "./images/viernes-13/friday.svg",
   },
@@ -50,7 +50,7 @@ export const templates = [
   },
   {
     id: "libro-pop",
-    title: "Libro Pop-up",
+    title: "Libro Pop-up", 
     image: "./images/libro-pop/libro-pop.svg",
   },
   {

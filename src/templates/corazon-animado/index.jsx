@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './style.css'; 
 import Music from './music.mp3'
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function CorazonMagicotemplate({data}) {
     const nombre = data?.nombre || "María";
@@ -405,6 +406,7 @@ export default function CorazonMagicotemplate({data}) {
     ));
 
     return (
+        <AntiInspectGuard>
         <div 
             ref={containerRef}
             className="magical-container" 
@@ -483,5 +485,6 @@ export default function CorazonMagicotemplate({data}) {
             `}</style>
 
         </div>
+        </AntiInspectGuard>
     );
 }

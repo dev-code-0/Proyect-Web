@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import cajitaImage from "./cajita.webp";
 import "./flores-corazones.css"; 
+import { AntiInspectGuard } from "../../lib/antiInspect";
 
 const flowersSceneMarkup = `
   <div class="night-fc"></div>
@@ -281,6 +282,7 @@ export default function FloresCorazonesTemplate({ data }) {
   }, [showScene]);
 
   return (
+    <AntiInspectGuard>
     <main className="fc-template-fc">
       {!showScene ? (
         <section className="fc-intro-fc">
@@ -321,5 +323,6 @@ export default function FloresCorazonesTemplate({ data }) {
         </section> 
       )}
     </main>
+    </AntiInspectGuard>
   );
 }

@@ -5,6 +5,8 @@ import CorazonSVG from "./images/logo.svg";
 import AudioMusic from './audioMusic.mp3';
 import Ramo from "./images/ramo.svg";
 import Rosas from "./images/flores_2.svg";
+import { AntiInspectGuard } from "../../lib/antiInspect";
+import usePreloadImages from "../../hooks/usePreloadImages"; // Ajusta la ruta según dónde estés
 
 // ─────────────────────────────────────────
 // HOOKS
@@ -432,6 +434,7 @@ export default function FloresAmarillasTemplate({ data }) {
     "https://images.unsplash.com/photo-1522673607200-164883eecd4c?auto=format&fit=crop&q=80&w=800",
     "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800"
   ];
+  usePreloadImages([giftImage, ...photosToShow]);
   const startDate = data?.startDate ?? new Date(2025, 9, 1); // October 2025
   const photoCaption = data?.photoCaption ?? data?.caption ?? "Nuestro momento";
   const distanceMessage = data?.distanceMessage ?? DEFAULT_DISTANCE_MESSAGE;
@@ -508,6 +511,7 @@ export default function FloresAmarillasTemplate({ data }) {
   const navHandlers = useGlobalNavigation({ onNext: goNext, onPrev: goPrev, transitioning, isUnlocked });
 
   return (
+    <AntiInspectGuard>
     <div 
       ref={containerRef}
       {...navHandlers} 
@@ -569,5 +573,6 @@ export default function FloresAmarillasTemplate({ data }) {
         </>
       )}
     </div>
+    </AntiInspectGuard>
   );
 }

@@ -5,6 +5,8 @@ import Exposion1 from './songs/explosion1.mp3'; // Sonido de explosión 1
 import Exposion2 from './songs/explosion2.mp3'; // Sonido de explosión 2
 import Exposion3 from './songs/explosion3.mp3'; // Sonido de explosión 3
 import Explocion4 from './songs/explosion4.mp3'; // Sonido de explosión 4
+import { AntiInspectGuard } from '../../lib/antiInspect';
+
 
 
 export default function FuegosAmorTemplate({ data }) {
@@ -355,6 +357,7 @@ export default function FuegosAmorTemplate({ data }) {
   }));
 
   return (
+    <AntiInspectGuard>
     <div 
       className="wrapper-fa" 
       ref={containerRef}
@@ -431,5 +434,6 @@ export default function FuegosAmorTemplate({ data }) {
           ========================================== */}
       
     </div>
+    </AntiInspectGuard>
   );
 }

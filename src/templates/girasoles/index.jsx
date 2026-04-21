@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import Music from './musica.mp3'; // Asegúrate de tener un archivo de música en esta ruta o cambia el src en el audio
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function App({ data }) {
   const [abierto, setAbierto] = useState(false);
@@ -31,6 +32,7 @@ export default function App({ data }) {
   };
 
   return (
+    <AntiInspectGuard>
     <div className="regalo-virtual-container-gi">
       
       <audio 
@@ -147,5 +149,6 @@ export default function App({ data }) {
         </div>
       )}
     </div>
+    </AntiInspectGuard>
   );
 }

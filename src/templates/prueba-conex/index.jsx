@@ -6,6 +6,8 @@ import Image2 from './images/Image2.avif';
 import Image3 from './images/Image3.avif';
 import Image4 from './images/Image4.avif';
 import Image5 from './images/Image5.avif';
+import { AntiInspectGuard } from '../../lib/antiInspect';
+import usePreloadImages from '../../hooks/usePreloadImages'; // Ajusta la ruta según dónde estés
 
 // ==========================================
 // CONFIGURACIÓN AVANZADA
@@ -196,6 +198,7 @@ export default function App({ data }) {
 
   const fotos = data?.fotos && data.fotos.length > 0? data.fotos
       : [Image1, Image2, Image3, Image4, Image5];
+usePreloadImages(fotos); // Pre-cargar las imágenes al entrar a la página
     useEffect(() => {
         let i = 0;
         const interval = setInterval(() => {
@@ -393,6 +396,7 @@ export default function App({ data }) {
     }, []);
 
     return (
+        <AntiInspectGuard>
         <div className="v13-container" ref={containerRef}>
             <audio ref={audioRef} src={Audio} loop autoPlay preload="auto" />
 
@@ -458,5 +462,6 @@ export default function App({ data }) {
                 </div>
             )}
         </div>
+        </AntiInspectGuard>
     );
 }

@@ -3,6 +3,8 @@ import './style.css'
 import Image1 from './images/image1.avif'
 import Image2 from './images/image2.avif'
 import Image3 from './images/image3.avif'
+import { AntiInspectGuard } from '../../lib/antiInspect';
+import usePreloadImages from '../../hooks/usePreloadImages'; // Ajusta la ruta según dónde estés
 
 export default function LibroPopUpTemplate({ data }) {
   // ==========================================
@@ -12,6 +14,7 @@ export default function LibroPopUpTemplate({ data }) {
   const nombre = data?.nombre || "María";
   const fotos = data?.fotos && data.fotos.length > 0? data.fotos
       : [Image1, Image2, Image3]; // Array de fotos para el libro
+  usePreloadImages(fotos); // Pre-cargar las imágenes al entrar a la página
 
   const maxSpreads = 3; // 0: Portada, 1: Intro, 2: Memorias, 3: Pop-Up
   const [currentSpread, setCurrentSpread] = useState(0);
@@ -105,6 +108,7 @@ export default function LibroPopUpTemplate({ data }) {
   const isBackActive = (index) => currentSpread === index + 1;
 
   return (
+    <AntiInspectGuard>
     <div className="template-wrapper-lpu">
       <audio ref={audioRef} preload="auto">
         <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_b293e5066a.mp3?filename=page-turn-1-101416.mp3" type="audio/mp3" />
@@ -304,5 +308,6 @@ export default function LibroPopUpTemplate({ data }) {
 
 
     </div>
+    </AntiInspectGuard>
   );
 }

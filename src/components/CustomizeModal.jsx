@@ -154,7 +154,10 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content custom-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Personaliza tu Regalo</h2>
-        <p>Llena los datos para <strong>{config.name}</strong></p>
+        <a href="https://google.com" target="_blank" rel="noopener noreferrer">
+          <i className="fas fa-external-link-alt">  a</i>
+        </a>
+        <p>Llena los datos para <strong className='title-name-proyect'>{config.name}</strong></p>
 
         <form onSubmit={handleSubmit} className="custom-form">
           {config.fields.map((field, index) => (

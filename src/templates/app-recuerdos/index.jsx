@@ -6,6 +6,7 @@ import Image1 from './images/Image1.avif';
 import Image2 from './images/Image2.avif';
 import Image3 from './images/Image3.avif';
 import Image4 from './images/Image4.avif';
+import { AntiInspectGuard } from '../../lib/antiInspect';
 
 // ==========================================
 // COMPONENTE: FONDO ETÉREO Y POLVO DE ESTRELLAS
@@ -15,6 +16,7 @@ const DeepSpaceBackground = () => {
     const stars = Array.from({ length: 40 });
 
     return (
+
         <div className="ar-ethereal-bg">
             <div className="ar-gradient-mesh"></div>
             
@@ -369,6 +371,7 @@ const config = {
 
     
     return (
+        <AntiInspectGuard>
         <div className="ar-app-container" onClick={handleScreenClick}>
             <DeepSpaceBackground />
             
@@ -510,5 +513,6 @@ const config = {
                 </div>
             )}
         </div>
+        </AntiInspectGuard>
     );
 }

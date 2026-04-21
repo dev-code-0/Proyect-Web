@@ -7,7 +7,7 @@ import { AntiInspectGuard } from '../lib/antiInspect';
 
 export default function Home() {
   return (
-    <AntiInspectGuard>
+    <AntiInspectGuard> 
       <div>
       <main className="home-container">
         <h1 className="main-title-home">CODES FREE</h1>
