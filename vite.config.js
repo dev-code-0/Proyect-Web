@@ -1,11 +1,39 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   build: {
+    outDir: 'dist',
     sourcemap: false,
-    cssMinify: true,
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        // Keep vendor libraries in stable chunks for better long-term browser caching.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (
+            id.includes('react-router-dom') ||
+            id.includes('/react/') ||
+            id.includes('/react-dom/')
+          ) {
+            return 'react-vendor';
+          }
+          if (id.includes('@supabase')) {
+            return 'supabase-vendor';
+          }
+          if (
+            id.includes('/swiper/') ||
+            id.includes('/three/') ||
+            id.includes('/canvas-confetti/') ||
+            id.includes('/qrcode.react/')
+          ) {
+            return 'ui-vendor';
+          }
+          return 'vendor';
+        },
+      },
+    },
   },
-})
+});
