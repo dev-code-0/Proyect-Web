@@ -10,6 +10,7 @@ import Image4 from './Images/Image4.avif';
 import Image5 from './Images/Image5.avif';
 import Image6 from './Images/Image6.avif';
 import { AntiInspectGuard } from '../../lib/antiInspect';
+import Song from './song.mp3';
 
 // ==========================================
 // CONFIGURACIÓN DE PARTÍCULAS
@@ -127,6 +128,7 @@ export default function CorazonCaruselTemplate({ data }) {
     const nombre = data?.nombre || "Luz";
     const fotos = data?.fotos && data.fotos.length > 0 ? data.fotos : [Image1, Image2, Image3, Image4, Image5, Image6];
     usePreloadImages(fotos);
+    const music = data?.music || Song;
 
     const COLOR_PINK = '#ff1a8c';
     const COLOR_PURPLE = '#bd00ff';
@@ -134,11 +136,13 @@ export default function CorazonCaruselTemplate({ data }) {
     const [progress, setProgress] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
     const appWrapperRef = useRef(null);
     const canvasRef = useRef(null);
     const swiperContainerRef = useRef(null);
     const swiperInstanceRef = useRef(null);
+    const audioRef = useRef(null);
 
     const isHeartExpandedRef = useRef(false);
     const currentBaseColorRef = useRef(COLOR_PINK);
@@ -192,6 +196,111 @@ export default function CorazonCaruselTemplate({ data }) {
                 swiperInstanceRef.current.destroy(true, true);
                 swiperInstanceRef.current = null;
             }
+        };
+    }, []);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        audio.loop = true;
+        audio.volume = 0.65;
+        audio.playsInline = true;
+        audio.autoplay = true;
+
+        const MAX_RETRIES = 20;
+        const RETRY_MS = 300;
+        let retryCount = 0;
+        let retryTimer = null;
+
+        const syncAsPlaying = () => setIsAudioPlaying(true);
+        const syncAsPaused = () => setIsAudioPlaying(false);
+
+        const startOnEntry = async () => {
+            if (!audio.paused) {
+                setIsAudioPlaying(true);
+                return true;
+            }
+
+            try {
+                await audio.play();
+                setIsAudioPlaying(true);
+                return true;
+            } catch {
+                try {
+                    audio.muted = true;
+                    await audio.play();
+                    audio.muted = false;
+                    setIsAudioPlaying(true);
+                    return true;
+                } catch {
+                    audio.muted = false;
+                    setIsAudioPlaying(false);
+                    return false;
+                }
+            }
+        };
+
+        const stopRetryLoop = () => {
+            if (!retryTimer) return;
+            window.clearInterval(retryTimer);
+            retryTimer = null;
+        };
+
+        const startRetryLoop = () => {
+            if (retryTimer) return;
+
+            retryTimer = window.setInterval(() => {
+                retryCount += 1;
+
+                startOnEntry().then((started) => {
+                    if (started || retryCount >= MAX_RETRIES) {
+                        stopRetryLoop();
+                    }
+                });
+            }, RETRY_MS);
+        };
+
+        const handleCanPlay = () => {
+            startOnEntry().then((started) => {
+                if (started) {
+                    stopRetryLoop();
+                } else {
+                    startRetryLoop();
+                }
+            });
+        };
+
+        const handleWindowLoad = () => {
+            handleCanPlay();
+        };
+
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible' && audio.paused) {
+                handleCanPlay();
+            }
+        };
+
+        audio.addEventListener('play', syncAsPlaying);
+        audio.addEventListener('pause', syncAsPaused);
+        audio.addEventListener('loadeddata', handleCanPlay);
+        audio.addEventListener('canplaythrough', handleCanPlay);
+
+        window.addEventListener('load', handleWindowLoad);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        handleCanPlay();
+
+        return () => {
+            stopRetryLoop();
+            audio.removeEventListener('play', syncAsPlaying);
+            audio.removeEventListener('pause', syncAsPaused);
+            audio.removeEventListener('loadeddata', handleCanPlay);
+            audio.removeEventListener('canplaythrough', handleCanPlay);
+            window.removeEventListener('load', handleWindowLoad);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            audio.pause();
+            audio.currentTime = 0;
         };
     }, []);
 
@@ -404,10 +513,41 @@ export default function CorazonCaruselTemplate({ data }) {
         currentBaseColorRef.current = COLOR_PINK;
     };
 
+    const handleToggleMusic = async (e) => {
+        e.stopPropagation();
+
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        if (audio.paused) {
+            try {
+                await audio.play();
+                setIsAudioPlaying(true);
+            } catch {
+                setIsAudioPlaying(false);
+            }
+            return;
+        }
+
+        audio.pause();
+        setIsAudioPlaying(false);
+    };
+
     return (
 
         <AntiInspectGuard>
         <div className="app-wrapper-cc" ref={appWrapperRef}>
+            <audio ref={audioRef} src={music} preload="auto" autoPlay />
+
+            <button
+                className="music-btn-cc"
+                onClick={handleToggleMusic}
+                aria-label={isAudioPlaying ? '⏸' : '♪'}
+                type="button"
+            >
+                {isAudioPlaying ? '⏸' : '♪'}
+            </button>
+
             {/* Radar */}
             <div className={`radar-line-cc ${isModalOpen ? 'modal-open-cc' : ''}`} />
 

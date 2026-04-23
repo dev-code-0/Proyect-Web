@@ -6,7 +6,10 @@ import AudioMusic from './audioMusic.mp3';
 import Ramo from "./images/ramo.svg";
 import Rosas from "./images/flores_2.svg";
 import { AntiInspectGuard } from "../../lib/antiInspect";
-import usePreloadImages from "../../hooks/usePreloadImages"; // Ajusta la ruta según dónde estés
+import usePreloadImages from "../../hooks/usePreloadImages";
+import Image1 from "./images/image1.avif"
+import Image2 from "./images/image2.avif"
+import Image3 from "./images/image3.avif"
 
 // ─────────────────────────────────────────
 // HOOKS
@@ -259,7 +262,7 @@ function HeroPanel({ recipientName, recipientInitial, senderInitial, giftImage, 
 
       <div className="hero-content-fla">
         <div className="hero-titles-wrap-fla">
-          <span className="hero-subtitle-fla">Una sorpresa para</span>
+          <span className="hero-subtitle-fla">Una sorpresa para</span> 
           <h1 className="hero-title-fla">{recipientName}</h1>
         </div>
 
@@ -347,7 +350,7 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
           <div className="gallery-grid-fla">
             {photoUrls.map((url, i) => (
               <div key={i} style={{ transform: `rotate(${POLAROID_ROTATIONS[i % POLAROID_ROTATIONS.length]})` }} className="polaroid-item-fla">
-                <PolaroidStack photoUrl={url} caption={i === 0 ? photoCaption : null} />
+                <PolaroidStack photoUrl={url} caption={i === 1 ? photoCaption : null} />
               </div>
             ))}
           </div>
@@ -430,10 +433,7 @@ export default function FloresAmarillasTemplate({ data }) {
   const audioUrl = data?.audioUrl ?? AudioMusic; 
   const rawPhotoInput = data?.photoUrls ?? data?.photos ?? data?.fotos ?? data?.photoUrl ?? data?.foto;
   const photoUrls = normalizePhotoUrls(rawPhotoInput);
-  const photosToShow = photoUrls.length > 0 ? photoUrls : [
-    "https://images.unsplash.com/photo-1522673607200-164883eecd4c?auto=format&fit=crop&q=80&w=800",
-    "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800"
-  ];
+  const photosToShow = photoUrls.length > 0 ? photoUrls : [Image1, Image2];
   usePreloadImages([giftImage, ...photosToShow]);
   const startDate = data?.startDate ?? new Date(2025, 9, 1); // October 2025
   const photoCaption = data?.photoCaption ?? data?.caption ?? "Nuestro momento";

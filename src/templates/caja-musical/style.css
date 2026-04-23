@@ -309,6 +309,15 @@
     transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
     cursor: default;
 }
+/* Ocultar la caja cuando se abre (Desvanecimiento) - NUEVO */
+.is-open-c3d .box-body-c3d,
+.is-open-c3d .box-lid-c3d,
+.is-open-c3d .box-shadow-c3d,
+.is-open-c3d .box-aura-c3d {
+    opacity: 0 !important;
+    transition: opacity 1.5s ease 0.5s !important;
+    pointer-events: none;
+}
 
 /* --- AURA MÃGICA DE LA CAJA --- */
 .box-aura-c3d {
@@ -742,11 +751,11 @@
     z-index: 100;
 }
 
-.is-open-c3d .message-card-c3d {
+/* .is-open-c3d .message-card-c3d {
     transform: translateX(-50%) translateY(0) scale(1);
     opacity: 1;
     pointer-events: auto;
-}
+} */
 
 /* Sello de Cera (Wax Seal) */
 .wax-seal-c3d {
@@ -825,3 +834,4 @@
     text-shadow: 0 0 10px rgba(255, 181, 167, 0.5);
     font-family: var(--font-text);
 }
+

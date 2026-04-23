@@ -471,6 +471,9 @@
   height: 100%;
   object-fit: cover;
   transition: transform 2s;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none; /* opcional */
 }
 
 .hero-gift-wrap-fla:hover .hero-gift-img-fla {
@@ -480,7 +483,7 @@
 .hero-instruction-fla {
   font-family: var(--font-text);
   font-size: clamp(8px, 2.5cqw, 10px);
-  color: rgba(253, 230, 138, 0.4);
+  color: rgba(207, 167, 5, 0.89);
   letter-spacing: 0.3em;
   text-transform: uppercase;
   animation: pulse-slow-fla 4s ease-in-out infinite;
@@ -493,9 +496,6 @@
   }
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-/* DISTANCE PANEL */
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .bg-glow-top-right-fla {
   position: absolute;
   top: 0;

@@ -7,25 +7,59 @@ export default function CajaMusicalTemplate({ data }) {
   // ==========================================
   // DATOS Y FALLBACKS
   // ==========================================
-  const musica = data?.musica || Song;
+  const musica = data?.musica || Song; 
   const nombre = data?.nombre || "Mi Princesa";
   const titulo = data?.titulo || "Magia para ti";
   const mensaje = data?.mensaje || "En esta cajita de cristal guardo nuestros recuerdos más hermosos. Eres la magia que transformó mi vida en un cuento de hadas. Te amo.";
   
-  const fotos = data?.fotos?.length >= 4  
-    ? data.fotos.slice(0, 4) 
-    : [
+ // Lógica para manejar la cantidad de fotos subidas por el usuario
+  const getFotos = () => {
+    const userFotos = data?.fotos || [];
+    
+    // Si no hay fotos, usar las de por defecto
+    if (userFotos.length === 0) {
+      return [
         "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=400&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1494774157365-9e04c6720e47?q=80&w=400&auto=format&fit=crop",
         "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=400&auto=format&fit=crop"
       ];
+    }
+    
+    // Si sube 1 foto, multiplicarla por 4
+    if (userFotos.length === 1) {
+      return [userFotos[0], userFotos[0], userFotos[0], userFotos[0]];
+    }
+    
+    // Si sube 2 fotos, multiplicarlas por 2 (1,2,1,2)
+    if (userFotos.length === 2) {
+      return [userFotos[0], userFotos[1], userFotos[0], userFotos[1]];
+    }
+    
+    // Si sube 3 fotos, repetir la primera para completar 4 (1,2,3,1)
+    if (userFotos.length === 3) {
+      return [userFotos[0], userFotos[1], userFotos[2], userFotos[0]];
+    }
+    
+    // Si sube 4 o más, tomar las primeras 4
+    return userFotos.slice(0, 4);
+  };
+
+  const fotos = getFotos();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [typedText, setTypedText] = useState("");
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [trailDots, setTrailDots] = useState([]);
+  // ==========================================
+  // NUEVOS ESTADOS (Progreso y Modal)
+  // ==========================================
+  const [progress, setProgress] = useState(0);
+  const [isProgressing, setIsProgressing] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   
   const audioRef = useRef(null);
   const canvasRef = useRef(null);
@@ -87,23 +121,43 @@ export default function CajaMusicalTemplate({ data }) {
     }
 
     triggerExplosion();
+    
+    // INICIAR LA BARRA DE PROGRESO AL ABRIR LA CAJA
+    setIsProgressing(true); 
   };
 
-  // Efecto Máquina de Escribir
+// Efecto Máquina de Escribir (ahora se ejecuta al abrir el modal)
   useEffect(() => {
-    if (isOpen) {
+    if (isModalOpen) {
       let i = 0;
-      const startTimer = setTimeout(() => {
-        const typingInterval = setInterval(() => {
-          setTypedText(mensaje.slice(0, i));
-          i++;
-          if (i > mensaje.length) clearInterval(typingInterval);
-        }, 40);
-        return () => clearInterval(typingInterval);
-      }, 2500);
-      return () => clearTimeout(startTimer);
+      const typingInterval = setInterval(() => {
+        setTypedText(mensaje.slice(0, i));
+        i++;
+        if (i > mensaje.length) clearInterval(typingInterval);
+      }, 40);
+      return () => clearInterval(typingInterval);
+    } else {
+      setTypedText(""); // Reinicia el texto si cierran el modal
     }
-  }, [isOpen, mensaje]);
+  }, [isModalOpen, mensaje]);
+
+  // Efecto para la Barra de Progreso
+  useEffect(() => {
+    if (isProgressing) {
+        const interval = setInterval(() => {
+            setProgress(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    setIsProgressing(false);
+                    setShowButton(true);
+                    return 100;
+                }
+                return prev + 2; // Velocidad de carga (2% cada 60ms)
+            });
+        }, 60);
+        return () => clearInterval(interval);
+    }
+  }, [isProgressing]);
 
   // ==========================================
   // MOTOR CANVAS: PÉTALOS, CORAZONES Y ESTRELLAS
@@ -277,6 +331,148 @@ export default function CajaMusicalTemplate({ data }) {
         '--my': mousePos.y
       }}
     >
+      {/* ==========================================
+          NUEVA ZONA: PROGRESO, BOTÓN, MODAL Y ESTILOS CSS INCRUSTADOS
+          ========================================== */}
+      
+      {/* Estilos dinámicos inyectados directamente en el JSX */}
+      <style>
+        {`
+          /* Ocultar la caja cuando se abre (Desvanecimiento) */
+          .is-open-c3d .box-body-c3d,
+          .is-open-c3d .box-lid-c3d,
+          .is-open-c3d .box-shadow-c3d,
+          .is-open-c3d .box-aura-c3d {
+              opacity: 0 !important;
+              transition: opacity 1.5s ease 0.5s !important;
+              pointer-events: none;
+          }
+
+          /* Barra de Progreso */
+          .progress-container-c3d {
+              position: absolute;
+              bottom: 15%;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 70%;
+              max-width: 400px;
+              height: 8px;
+              background: rgba(255, 255, 255, 0.1);
+              border-radius: 10px;
+              overflow: hidden;
+              z-index: 60;
+              border: 1px solid rgba(255, 255, 255, 0.2);
+          }
+
+          .progress-bar-c3d {
+              height: 100%;
+              background: linear-gradient(90deg, #ff758f, #ffb5a7);
+              box-shadow: 0 0 10px #ffb5a7;
+              transition: width 0.1s linear;
+          }
+
+          .progress-text-c3d {
+              position: absolute;
+              bottom: calc(15% + 15px);
+              left: 50%;
+              transform: translateX(-50%);
+              color: #ffb5a7;
+              font-size: 0.9rem;
+              letter-spacing: 2px;
+              z-index: 60;
+              font-weight: bold;
+              animation: pulseAlpha 1.5s infinite alternate;
+          }
+
+          /* Botones del Modal */
+          .open-modal-btn-c3d {
+              position: absolute;
+              bottom: 12%;
+              left: 50%;
+              transform: translateX(-50%);
+              padding: 12px 30px;
+              background: linear-gradient(135deg, #c9184a, #590d22);
+              color: white;
+              border: 2px solid #ffb5a7;
+              border-radius: 30px;
+              font-size: 1.1rem;
+              cursor: pointer;
+              z-index: 60;
+              box-shadow: 0 5px 20px rgba(201, 24, 74, 0.6);
+              transition: transform 0.3s, box-shadow 0.3s;
+              font-family: var(--font-text);
+              font-weight: bold;
+          }
+
+          .open-modal-btn-c3d:hover {
+              transform: translateX(-50%) scale(1.05);
+              box-shadow: 0 5px 25px rgba(201, 24, 74, 0.9);
+          }
+
+          .close-btn-c3d {
+              position: absolute;
+              top: 10px;
+              right: 15px;
+              background: transparent;
+              border: none;
+              color: #ffb5a7;
+              font-size: 1.5rem;
+              cursor: pointer;
+              font-weight: bold;
+              transition: transform 0.2s, color 0.2s;
+              z-index: 10;
+          }
+
+          .close-btn-c3d:hover {
+              transform: scale(1.2);
+              color: #fff;
+          }
+
+          /* Modificar la transición del modal original para que responda al nuevo estado */
+          .message-card-c3d {
+              transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease !important;
+          }
+
+          /* NUEVA clase para mostrar el modal */
+          .message-card-c3d.show-modal-c3d {
+              transform: translateX(-50%) translateY(0) scale(1) !important;
+              opacity: 1 !important;
+              pointer-events: auto !important;
+          }
+        `}
+      </style>
+
+      {/* BARRA DE PROGRESO */}
+      {isProgressing && (
+        <>
+            <div className="progress-text-c3d">CARGANDO MAGIA {progress}%</div>
+            <div className="progress-container-c3d">
+                <div className="progress-bar-c3d" style={{ width: `${progress}%` }}></div>
+            </div>
+        </>
+      )}
+
+      {/* BOTÓN PARA ABRIR MODAL */}
+      {showButton && !isModalOpen && (
+        <button className="open-modal-btn-c3d" onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}>
+            Abrir
+        </button>
+      )}
+
+      {/* MENSAJE FINAL (Carta Glassmorphism con Sello de Cera) */}
+      <div className={`message-card-c3d ${isModalOpen ? 'show-modal-c3d' : ''}`}>
+        <button className="close-btn-c3d" onClick={(e) => { e.stopPropagation(); setIsModalOpen(false); }}>✖</button>
+        <div className="wax-seal-c3d">❤</div>
+        <h2 className="rose-gold-text-c3d">Para {nombre}</h2>
+        <div className="divider-c3d"></div>
+        <p>
+          {typedText}
+          {isModalOpen && typedText.length < mensaje.length && <span className="cursor-c3d">|</span>}
+        </p>
+        <span className="signature-c3d" style={{ opacity: typedText.length === mensaje.length ? 1 : 0 }}>
+          Con todo mi amor 💖
+        </span>
+      </div>
       
       {/* POLVO DE HADAS (MOUSE TRAIL) */}
       {trailDots.map(dot => (

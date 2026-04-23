@@ -36,7 +36,7 @@ export default function App({ data }) {
     <div className="regalo-virtual-container-gi">
       
       <audio 
-        ref={audioRef} 
+        ref={audioRef}  
         src={Music} 
       />
 

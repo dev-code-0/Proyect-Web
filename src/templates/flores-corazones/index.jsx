@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import cajitaImage from "./cajita.webp";
 import "./flores-corazones.css"; 
 import { AntiInspectGuard } from "../../lib/antiInspect";
+import Song from "./musica.mp3";
 
 const flowersSceneMarkup = `
   <div class="night-fc"></div>
@@ -268,6 +269,7 @@ export default function FloresCorazonesTemplate({ data }) {
   const nombre = data?.nombre || "María";
   const [showScene, setShowScene] = useState(false);
   const [animationsReady, setAnimationsReady] = useState(false);
+  const audioRef = useRef(null);
 
   const nombreChars = useMemo(() => Array.from(String(nombre).toUpperCase()), [nombre]);
 
@@ -281,9 +283,23 @@ export default function FloresCorazonesTemplate({ data }) {
     return () => window.clearTimeout(timer);
   }, [showScene]);
 
+  const handleEnter = () => {
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {
+        // Ignora bloqueos de autoplay del navegador.
+      });
+    }
+
+    setShowScene(true);
+  };
+
   return (
     <AntiInspectGuard>
     <main className="fc-template-fc">
+      <audio ref={audioRef} src={Song} loop preload="auto" />
       {!showScene ? (
         <section className="fc-intro-fc">
           <img className="img-fc" src={cajitaImage} alt="Caja de regalo" />
@@ -301,7 +317,7 @@ export default function FloresCorazonesTemplate({ data }) {
           </div>
 
           <div className="button-fc">
-            <button type="button" onClick={() => setShowScene(true)}>
+            <button type="button" onClick={handleEnter}>
               Entrar
             </button>
           </div>

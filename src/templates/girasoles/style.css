@@ -20,6 +20,10 @@
   box-sizing: border-box;
 }
 
+.regalo-virtual-container-gi::-webkit-scrollbar {
+  display: none;
+}
+
 /* --- Fondo animado --- */
 .fondo-estrellas-gi {
   position: absolute;

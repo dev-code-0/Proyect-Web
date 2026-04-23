@@ -174,7 +174,7 @@ export default function Preview() {
   };
 
   return (
-    <AntiInspectGuard>
+    // <AntiInspectGuard>
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
 
@@ -195,6 +195,6 @@ export default function Preview() {
       {/* Modal final con el QR y el Link */}
       <ShareModal isOpen={showShareModal} onClose={handleCloseShare} shareLink={generatedLink}/>
     </main>
-        </AntiInspectGuard>
+        // </AntiInspectGuard>
   );
 }

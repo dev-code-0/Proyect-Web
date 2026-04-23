@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import './styles.css'
 import LogoDisk from './descarga.png'
 import Music from './music.mp3';
@@ -7,6 +7,7 @@ import Image2 from './images/Image2.avif';
 import Image3 from './images/Image3.avif';
 import Image4 from './images/Image4.avif';
 import { AntiInspectGuard } from '../../lib/antiInspect';
+import usePreloadImages from '../../hooks/usePreloadImages';
 
 // ==========================================
 // COMPONENTE: FONDO ETÉREO Y POLVO DE ESTRELLAS
@@ -208,6 +209,8 @@ export default function SanValentinApp({ data }) {
     : data?.fotos && data.fotos.length > 0
         ? data.fotos
         : [Image1, Image2, Image3, Image4];
+    
+        usePreloadImages(photos);
 
 const logoTime = typeof data?.logoTime === 'string' && data.logoTime.trim()
     ? data.logoTime
@@ -230,7 +233,7 @@ const config = {
     nombre: data?.apodo || 'Mi niña',
     targetDate: targetDateValue,
     lockCode: data?.lockCode || fallbackLockCode,
-    pista: data?.pista || 'La por defecto es 26/06/23, pero puedes cambiarla a tu fecha especial :)',
+    pista: data?.pista || 'La fecha por defecto es 26/06/23, pero puedes cambiarla a tu fecha especial :)',
     photos,
     mainPhoto: data?.mainPhoto || LogoDisk,
     logoTime,

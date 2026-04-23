@@ -343,6 +343,7 @@
     font-weight: 300;
     color: var(--text-muted);
     letter-spacing: 1px;
+    text-align: start;
 }
 
 /* Animación Apertura Cinemática */

@@ -639,8 +639,8 @@ export default function RosaCreator({ onSave }) {
               {[
                 { label: 'Nombre',             value: formData.nombre },
                 { label: 'Intención',          value: formData.intencionCorta || formData.intencion },
-                // { label: 'Mensaje Adicional',  value: formData.mensaje },
-                { label: 'Enlace de Video',    value: videoSaved || 'No especificado' },
+                { label: 'Mensaje Adicional',  value: formData.mensaje },
+                // { label: 'Enlace de Video',    value: videoSaved || 'No especificado' },
               ].map(({ label, value }) => (
                 <div key={label} className="summary-card" style={{ display: 'flex', flexDirection: 'column', margin: '0 15px', padding: 10, border: '2px solid #eee', boxShadow: '0px 0px 12px 2px #bebebe', borderRadius: 12, textAlign: 'left' }}>
                   <h2 style={{ margin: '0 0 5px', fontSize: 17, fontWeight: 600, color: formData.colorHex }}>{label}</h2>
