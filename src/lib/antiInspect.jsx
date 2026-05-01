@@ -7,8 +7,11 @@ const shouldBlockShortcut = (event) => {
   const ctrlOrCmd = event.ctrlKey || event.metaKey;
 
   if (event.key === 'F12') return true;
-  if (ctrlOrCmd && event.shiftKey && ['i', 'j', 'c', 'k', 's'].includes(key)) return true;
-  if (ctrlOrCmd && ['u', 's', 'p'].includes(key)) return true;
+  // Ctrl+Shift+I/J/C/K — abrir DevTools
+  if (ctrlOrCmd && event.shiftKey && ['i', 'j', 'c', 'k'].includes(key)) return true;
+  // Ctrl+U — ver fuente (disuasión cosmética)
+  if (ctrlOrCmd && key === 'u') return true;
+  // NO bloquear Ctrl+S (guardar), Ctrl+P (imprimir), Ctrl+Shift+S — son acciones legítimas del usuario
 
   return false;
 };

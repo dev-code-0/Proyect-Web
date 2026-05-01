@@ -2,18 +2,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  padding: 40px 20px 60px;
   min-height: 100vh;
-    overflow-x: auto;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .preview-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
   text-align: center;
-  color: rgb(0, 241, 255);
-
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-dim);
 }
 
 .preview-box {
@@ -21,37 +22,120 @@
   background: white;
   width: 320px;
   height: 550px;
-  border-radius: 10px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #333;
   text-align: center;
   padding: 20px;
-  box-shadow: 1px 0px 8px 4px rgb(167 161 161 / 98%);
+  box-shadow:
+    0 0 0 3px var(--surface),
+    -4px -4px 12px var(--shadow-lift),
+    8px 8px 20px var(--shadow-drop);
   margin-bottom: 30px;
   overflow: hidden !important;
 }
 
 .btn-personalizar {
-  background:
-    radial-gradient(circle 25px at 10px 10px, #ffffff 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.1) 40%, transparent 80%) padding-box,
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) padding-box,
-    linear-gradient(to bottom right, #7e7e7e, #363636, #363636, #363636, #363636) border-box;
-
-  color: rgb(0,241,255);
+  background: var(--surface);
+  color: var(--accent);
   border: none;
   border-radius: 20px;
   padding: 15px 40px;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   margin-bottom: 15px;
+  box-shadow:
+    -4px -4px 10px var(--shadow-lift),
+    5px 5px 14px var(--shadow-drop);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-personalizar:hover {
+  transform: scale(1.03);
+  box-shadow:
+    -5px -5px 12px var(--shadow-lift),
+    6px 6px 18px var(--shadow-drop),
+    0 0 20px var(--accent-dim);
+}
+
+.btn-personalizar:active {
+  transform: scale(0.97);
+  box-shadow:
+    inset 3px 3px 8px var(--shadow-drop),
+    inset -2px -2px 6px var(--shadow-lift);
 }
 
 .btn-volver {
-  color: rgb(0,241,255);
-  font-size: 1.1rem;
+  color: var(--cyan);
+  font-size: 1rem;
   text-decoration: none;
-  font-weight: bold;}
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.btn-volver:hover {
+  opacity: 1;
+}
+
+/* ───── Responsive: tablet ≥600px ───── */
+@media (min-width: 600px) {
+  .preview-container {
+    padding: 60px 30px 80px;
+  }
+
+  .preview-title {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+  }
+
+  .btn-personalizar {
+    padding: 16px 50px;
+    font-size: 1.15rem;
+  }
+}
+
+/* ───── Responsive: desktop ≥1024px ───── */
+@media (min-width: 1024px) {
+  .preview-container {
+    padding: 70px 40px 100px;
+  }
+
+  .preview-title {
+    font-size: 2.6rem;
+    margin-bottom: 40px;
+  }
+
+  .preview-box {
+    margin-bottom: 40px;
+  }
+
+  .btn-personalizar {
+    padding: 18px 60px;
+    font-size: 1.25rem;
+  }
+
+  .btn-volver {
+    font-size: 1.1rem;
+  }
+}
+
+/* ───── Responsive: pantallas chicas <360px ───── */
+@media (max-width: 360px) {
+  .preview-container {
+    padding: 30px 8px 50px;
+  }
+
+  .preview-title {
+    font-size: 1.5rem;
+  }
+
+  .btn-personalizar {
+    padding: 13px 30px;
+    font-size: 1rem;
+  }
+}

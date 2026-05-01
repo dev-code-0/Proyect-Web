@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem -Name)",
-      "Bash(powershell -c '$input | ForEach-Object {$_}')"
+      "Bash(powershell -c '$input | ForEach-Object {$_}')",
+      "Bash(Get-ChildItem -Path \"d:\\\\Visual-Studio-Code\\\\React\\\\code-free\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(grep -E \"^d:\\\\\\\\Visual-Studio-Code\\\\\\\\React\\\\\\\\code-free\\\\\\\\src\")",
+      "Bash(Get-ChildItem -Path \"d:\\\\Visual-Studio-Code\\\\React\\\\code-free\" -Recurse -Include \"*.jsx\", \"*.js\", \".env*\", \"vite.config.js\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "mcp__claude_ai_Context7__resolve-library-id"
     ]
   }
 }

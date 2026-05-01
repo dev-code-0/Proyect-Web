@@ -1,0 +1,115 @@
+.bg-anim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Campo de estrellas estático con twinkle suave */
+.bg-anim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at  8% 12%, rgba(255,255,255,0.55) 1px,   transparent 1px),
+    radial-gradient(circle at 23%  5%, rgba(255,255,255,0.40) 1px,   transparent 1px),
+    radial-gradient(circle at 38% 18%, rgba(255,255,255,0.50) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 52%  7%, rgba(255,255,255,0.35) 1px,   transparent 1px),
+    radial-gradient(circle at 67% 15%, rgba(255,255,255,0.60) 1px,   transparent 1px),
+    radial-gradient(circle at 82%  4%, rgba(255,255,255,0.40) 1px,   transparent 1px),
+    radial-gradient(circle at 91% 22%, rgba(255,255,255,0.50) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 96% 48%, rgba(255,255,255,0.35) 1px,   transparent 1px),
+    radial-gradient(circle at 89% 68%, rgba(255,255,255,0.55) 1px,   transparent 1px),
+    radial-gradient(circle at 76% 82%, rgba(255,255,255,0.40) 1px,   transparent 1px),
+    radial-gradient(circle at 58% 91%, rgba(255,255,255,0.50) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 43% 76%, rgba(255,255,255,0.35) 1px,   transparent 1px),
+    radial-gradient(circle at 28% 88%, rgba(255,255,255,0.60) 1px,   transparent 1px),
+    radial-gradient(circle at 12% 70%, rgba(255,255,255,0.40) 1px,   transparent 1px),
+    radial-gradient(circle at  4% 48%, rgba(255,255,255,0.50) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 16% 35%, rgba(255,255,255,0.35) 1px,   transparent 1px),
+    radial-gradient(circle at 35% 42%, rgba(255,255,255,0.55) 1px,   transparent 1px),
+    radial-gradient(circle at 73% 55%, rgba(255,255,255,0.40) 1px,   transparent 1px),
+    radial-gradient(circle at 85% 35%, rgba(255,255,255,0.50) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 50% 58%, rgba(255,255,255,0.35) 1px,   transparent 1px);
+  animation: starTwinkle 5s ease-in-out infinite alternate;
+}
+
+@keyframes starTwinkle {
+  from { opacity: 0.45; }
+  to   { opacity: 1; }
+}
+
+/* ── Orbs ───────────────────────────────────────────────── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.orb-1 {
+  width:  clamp(240px, 42vw, 440px);
+  height: clamp(240px, 42vw, 440px);
+  background: radial-gradient(circle at center, rgba(217,70,239,0.50) 0%, transparent 70%);
+  top: -15%;
+  left: -12%;
+  animation: floatOrb1 24s ease-in-out infinite;
+}
+
+.orb-2 {
+  width:  clamp(170px, 32vw, 340px);
+  height: clamp(170px, 32vw, 340px);
+  background: radial-gradient(circle at center, rgba(244,114,182,0.45) 0%, transparent 70%);
+  bottom: -8%;
+  right: -8%;
+  animation: floatOrb2 20s ease-in-out infinite;
+}
+
+.orb-3 {
+  width:  clamp(110px, 20vw, 210px);
+  height: clamp(110px, 20vw, 210px);
+  background: radial-gradient(circle at center, rgba(168,85,247,0.40) 0%, transparent 70%);
+  top: 42%;
+  left: 38%;
+  animation: floatOrb3 30s ease-in-out infinite;
+}
+
+.orb-4 {
+  width:  clamp(90px, 16vw, 170px);
+  height: clamp(90px, 16vw, 170px);
+  background: radial-gradient(circle at center, rgba(236,72,153,0.40) 0%, transparent 70%);
+  top: 14%;
+  right: 14%;
+  animation: floatOrb4 17s ease-in-out infinite;
+}
+
+@keyframes floatOrb1 {
+  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
+  35%     { transform: translate( 70px,  90px) scale(1.06); }
+  65%     { transform: translate(-30px, 130px) scale(0.94); }
+}
+
+@keyframes floatOrb2 {
+  0%,100% { transform: translate(  0px,  0px) scale(1.00); }
+  45%     { transform: translate(-90px,-70px) scale(1.10); }
+}
+
+@keyframes floatOrb3 {
+  0%,100% { transform: translate( 0px,  0px); }
+  30%     { transform: translate(60px,-80px); }
+  70%     { transform: translate(-50px, 60px); }
+}
+
+@keyframes floatOrb4 {
+  0%,100% { transform: translate(  0px,  0px) scale(1.00); }
+  50%     { transform: translate(-40px, 70px) scale(1.08); }
+}
+
+/* Respeta la preferencia de accesibilidad del usuario */
+@media (prefers-reduced-motion: reduce) {
+  .bg-anim::before,
+  .orb {
+    animation: none;
+  }
+}

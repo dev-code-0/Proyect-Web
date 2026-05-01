@@ -5,47 +5,85 @@ import '../styles/modal.css';
 
 const MAX_IMAGE_SIZE_MB = 8;
 const MAX_AUDIO_SIZE_MB = 15;
+const MAX_FILES_PER_UPLOAD = 5;
+
+// Firmas de formatos permitidos. Cada entrada: { bytes, offset }
+// Validamos por CATEGORÍA (imagen/audio), no por MIME declarado:
+// el navegador a veces miente con formatos modernos (.avif, .heic).
+const IMAGE_SIGNATURES = [
+  { bytes: [0xFF, 0xD8, 0xFF], offset: 0 },                   // JPEG / JPG
+  { bytes: [0x89, 0x50, 0x4E, 0x47], offset: 0 },             // PNG
+  { bytes: [0x47, 0x49, 0x46, 0x38], offset: 0 },             // GIF (87a / 89a)
+  { bytes: [0x52, 0x49, 0x46, 0x46], offset: 0 },             // WEBP (contenedor RIFF)
+  { bytes: [0x66, 0x74, 0x79, 0x70], offset: 4 },             // AVIF / HEIC / HEIF (ftyp box)
+  { bytes: [0x42, 0x4D], offset: 0 },                         // BMP
+  { bytes: [0x49, 0x49, 0x2A, 0x00], offset: 0 },             // TIFF little-endian
+  { bytes: [0x4D, 0x4D, 0x00, 0x2A], offset: 0 },             // TIFF big-endian
+  { bytes: [0x00, 0x00, 0x01, 0x00], offset: 0 },             // ICO
+  { bytes: [0x38, 0x42, 0x50, 0x53], offset: 0 },             // PSD (Photoshop)
+];
+
+const AUDIO_SIGNATURES = [
+  { bytes: [0x49, 0x44, 0x33], offset: 0 },                   // MP3 con tag ID3
+  { bytes: [0xFF, 0xFB], offset: 0 },                         // MP3 frame
+  { bytes: [0xFF, 0xF3], offset: 0 },                         // MP3 frame
+  { bytes: [0xFF, 0xF2], offset: 0 },                         // MP3 frame
+  { bytes: [0x4F, 0x67, 0x67, 0x53], offset: 0 },             // OGG
+  { bytes: [0x66, 0x74, 0x79, 0x70], offset: 4 },             // M4A / MP4 audio (ftyp)
+  { bytes: [0x66, 0x4C, 0x61, 0x43], offset: 0 },             // FLAC
+  { bytes: [0x52, 0x49, 0x46, 0x46], offset: 0 },             // WAV (RIFF)
+];
+
+const readMagicBytes = (file, count = 16) =>
+  new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = (e) => resolve(new Uint8Array(e.target.result));
+    reader.readAsArrayBuffer(file.slice(0, count));
+  });
+
+const matchesSignature = (bytes, { bytes: sig, offset }) =>
+  sig.every((byte, i) => bytes[offset + i] === byte);
+
+const validateMagicNumber = async (file, accept = '') => {
+  const bytes = await readMagicBytes(file);
+  const acceptLower = accept.toLowerCase();
+
+  // Si el campo acepta imágenes, validamos contra firmas de imagen
+  if (acceptLower.includes('image/') || acceptLower.includes('image')) {
+    if (IMAGE_SIGNATURES.some((sig) => matchesSignature(bytes, sig))) return true;
+  }
+
+  // Si el campo acepta audio
+  if (acceptLower.includes('audio/') || acceptLower.includes('audio')) {
+    if (AUDIO_SIGNATURES.some((sig) => matchesSignature(bytes, sig))) return true;
+  }
+
+  return false;
+};
 
 const matchesAccept = (file, accept = '') => {
   if (!accept) return true;
-
-  const rules = accept
-    .split(',')
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean);
-
+  const rules = accept.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
   if (!rules.length) return true;
-
   const fileType = (file.type || '').toLowerCase();
   const fileName = (file.name || '').toLowerCase();
-
   return rules.some((rule) => {
-    if (rule.endsWith('/*')) {
-      const baseType = rule.slice(0, -1);
-      return fileType.startsWith(baseType);
-    }
-
-    if (rule.startsWith('.')) {
-      return fileName.endsWith(rule);
-    }
-
+    if (rule.endsWith('/*')) return fileType.startsWith(rule.slice(0, -1));
+    if (rule.startsWith('.')) return fileName.endsWith(rule);
     return fileType === rule;
   });
 };
 
 const exceedsSizeLimit = (file, accept = '') => {
   const fileSizeMB = file.size / (1024 * 1024);
-
-  if (accept.includes('audio/')) {
-    return fileSizeMB > MAX_AUDIO_SIZE_MB;
-  }
-
-  if (accept.includes('image/')) {
-    return fileSizeMB > MAX_IMAGE_SIZE_MB;
-  }
-
+  if (accept.includes('audio/')) return fileSizeMB > MAX_AUDIO_SIZE_MB;
   return fileSizeMB > MAX_IMAGE_SIZE_MB;
 };
+
+const randomId = () =>
+  Array.from(crypto.getRandomValues(new Uint8Array(8)))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 
 export default function CustomizeModal({ config, onClose, onSave }) {
   const [formData, setFormData] = useState({});
@@ -55,7 +93,8 @@ export default function CustomizeModal({ config, onClose, onSave }) {
   const handleFileUpload = async (e, field) => {
     setIsProcessing(true);
     setProgreso(`Procesando ${field.label}...`);
-    const files = Array.from(e.target.files);
+    const rawFiles = Array.from(e.target.files);
+    const files = rawFiles.slice(0, MAX_FILES_PER_UPLOAD);
     const uploadedUrls = [];
 
     for (const file of files) {
@@ -68,10 +107,19 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       if (exceedsSizeLimit(file, field.accept || '')) {
         setProgreso('');
         alert(
-          `Archivo demasiado grande para ${field.label}. Maximo: ${
+          `Archivo demasiado grande para ${field.label}. Máximo: ${
             (field.accept || '').includes('audio/') ? MAX_AUDIO_SIZE_MB : MAX_IMAGE_SIZE_MB
           }MB.`,
         );
+        continue;
+      }
+
+      // Validación de magic number (verifica bytes reales, no solo la extensión)
+      setProgreso('Verificando archivo...');
+      const magicOk = await validateMagicNumber(file, field.accept || '');
+      if (!magicOk) {
+        setProgreso('');
+        alert(`El archivo "${file.name}" no es válido o su tipo no está permitido.`);
         continue;
       }
 
@@ -96,7 +144,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       // 2. SUBIDA A SUPABASE
       setProgreso(`Subiendo archivo a la nube...`);
       const fileExt = fileToUpload.type === 'image/webp' ? 'webp' : file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 10)}_${Date.now()}.${fileExt}`;
+      const fileName = `${randomId()}.${fileExt}`;
       const filePath = `${config.id}/${fileName}`; // Lo guarda ordenado por proyecto
 
       const { error } = await supabase.storage
@@ -104,7 +152,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
         .upload(filePath, fileToUpload);
 
       if (error) {
-        console.error("Error subiendo archivo:", error);
+        if (import.meta.env.DEV) console.error("Error subiendo archivo:", error);
         setProgreso(`Error subiendo archivo: ${error.message || 'intenta de nuevo.'}`);
         continue;
       }
@@ -133,11 +181,17 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     setIsProcessing(false);
   };
 
+  const sanitizeText = (value, maxLength = 200) =>
+    value
+      .replace(/[<>"'`]/g, '') // elimina caracteres XSS básicos
+      .slice(0, maxLength);
+
   const handleChange = (e, field) => {
     if (field.type === 'file') {
       handleFileUpload(e, field);
     } else {
-      setFormData({ ...formData, [field.name]: e.target.value });
+      const maxLength = field.maxLength || 200;
+      setFormData({ ...formData, [field.name]: sanitizeText(e.target.value, maxLength) });
     }
   };
 
@@ -147,17 +201,55 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       alert("Espera un segundito a que los archivos terminen de subir...");
       return;
     }
+
+    // Verifica que todos los campos de archivo requeridos tengan URLs subidas
+    const camposFaltantes = config.fields.filter((field) => {
+      if (field.type !== 'file') return false;
+      const isOptional = field.required === false || (field.label || '').toLowerCase().includes('(opcional)');
+      if (isOptional) return false;
+      const value = formData[field.name];
+      if (field.multiple) return !Array.isArray(value) || value.length === 0;
+      return !value;
+    });
+
+    if (camposFaltantes.length) {
+      alert(`Falta subir: ${camposFaltantes.map((f) => f.label).join(', ')}`);
+      return;
+    }
+
     onSave(formData);
   };
+
+  const needsAudio = config.fields.some((f) => {
+    const accept = (f.accept || '').toLowerCase();
+    const label = (f.label || '').toLowerCase();
+    const name = (f.name || '').toLowerCase();
+    return accept.includes('audio')
+      || /canci[oó]n|m[uú]sica|audio|song/.test(label)
+      || /musica|audio|song/.test(name);
+  });
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content custom-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Personaliza tu Regalo</h2>
-        <a href="https://google.com" target="_blank" rel="noopener noreferrer">
-          <i className="fas fa-external-link-alt">  a</i>
-        </a>
         <p>Llena los datos para <strong className='title-name-proyect'>{config.name}</strong></p>
+
+        {needsAudio && (
+          <a
+            href="https://download-tik-tok.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tiktok-cta"
+          >
+            <span className="tiktok-cta-icon" aria-hidden="true">🎵</span>
+            <span className="tiktok-cta-text">
+              <strong>¿Necesitas un audio de TikTok?</strong>
+              <span>Descárgalo gratis aquí y súbelo</span>
+            </span>
+            <span className="tiktok-cta-arrow" aria-hidden="true">↗</span>
+          </a>
+        )}
 
         <form onSubmit={handleSubmit} className="custom-form">
           {config.fields.map((field, index) => (
@@ -174,7 +266,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
             </div>
           ))}
 
-          {progreso && <p style={{color: '#52BFF2', fontSize: '0.85rem', margin: '5px 0'}}>{progreso}</p>}
+          {progreso && <p style={{color: 'var(--accent)', fontSize: '0.85rem', margin: '5px 0'}}>{progreso}</p>}
 
           <div className="modal-actions">
             <button type="button" onClick={onClose} className="btn-gray">Cancelar</button>

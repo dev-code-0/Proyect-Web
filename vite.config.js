@@ -27,7 +27,7 @@ export default defineConfig({
             id.includes('/swiper/') ||
             id.includes('/three/') ||
             id.includes('/canvas-confetti/') ||
-            id.includes('/qrcode.react/')
+            id.includes('/qr-code-styling/')
           ) {
             return 'ui-vendor';
           }

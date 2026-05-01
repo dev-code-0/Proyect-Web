@@ -1,7 +1,28 @@
 :root {
+  --accent: #d946ef;
+  --accent-dim: rgba(217, 70, 239, 0.3);
+  --accent-pink: #f472b6;
+  --bg: #0f0c1d;
+  --surface: #17142a;
+  --shadow-lift: rgba(160, 100, 255, 0.15);
+  --shadow-drop: rgba(0, 0, 0, 0.65);
+
+  /* legacy alias para referencias antiguas */
+  --cyan: #d946ef;
+  --cyan-dim: rgba(217, 70, 239, 0.3);
+
   --font-title: "Pacifico", cursive;
   --font-button: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
   --font-text: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--cyan-dim);
+  color: #fff;
 }
 
 * {
@@ -51,7 +72,7 @@ select {
 }
 
 body {
-  background-color: rgb(33 33 33); /* El azul de tu imagen */
+  background-color: var(--bg);
   min-height: 100vh;
 }
 

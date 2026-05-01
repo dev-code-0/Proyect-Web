@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { templates } from "../lib/templates";
 import "../styles/preview.css";
 import { AntiInspectGuard } from '../lib/antiInspect';
+import BackgroundAnimation from "../components/BackgroundAnimation";
 
 import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
 import { diaMujerConfig } from "../templates/dia-mujer/config.js";
@@ -181,6 +182,8 @@ export default function Preview() {
 
   return (
     // <AntiInspectGuard>
+    <>
+    <BackgroundAnimation />
     <main className="preview-container">
       <h2 className="preview-title">{templateActual.title}</h2>
 
@@ -201,6 +204,7 @@ export default function Preview() {
       {/* Modal final con el QR y el Link */}
       <ShareModal isOpen={showShareModal} onClose={handleCloseShare} shareLink={generatedLink}/>
     </main>
-        // </AntiInspectGuard>
+    {/* </AntiInspectGuard> */}
+    </>
   );
 }
