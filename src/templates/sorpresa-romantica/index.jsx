@@ -7,6 +7,17 @@ import Image3 from './Images/Image3.avif'
 import Image4 from './Images/Image4.avif'
 import Song from './song.mp3'
 
+// Renderiza texto con saltos de línea de forma segura
+const TextWithLineBreaks = ({ text }) => {
+  const lines = text.split('\n');
+  return lines.map((line, i) => (
+    <React.Fragment key={i}>
+      {line}
+      {i < lines.length - 1 && <br />}
+    </React.Fragment>
+  ));
+};
+
 export default function App({ data }) {
   /* ================= CONFIGURACIÓN DE PROPS (DATA) ================= */
   const nombre = data?.nombre || "Mi Amor";
@@ -411,10 +422,9 @@ export default function App({ data }) {
             {/* Sección Inferior: Texto Tipo Máquina de Escribir */}
             <div className="modal-bottom-section-sr">
               <h2 className="font-script-sr text-gradient-sr modal-title-sr">Mi lugar seguro...</h2>
-              <div
-                className="modal-text-sr"
-                dangerouslySetInnerHTML={{ __html: typewriterText.replace(/\n/g, "<br/>") }}
-              ></div>
+              <div className="modal-text-sr">
+                <TextWithLineBreaks text={typewriterText} />
+              </div>
             </div>
           </div>
         </div>
