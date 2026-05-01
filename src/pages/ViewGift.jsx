@@ -20,6 +20,7 @@ import CajaMusicalTemplate from "../templates/caja-musical/index.jsx";
 import FuegosAmorTemplate from "../templates/corazon-mensaje/index.jsx";
 import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
 import SanValentinApp from "../templates/app-recuerdos/index.jsx";
+import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -150,6 +151,12 @@ export default function ViewGift() {
       return (
         <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
           <CajaMusicalTemplate data={projectData.user_data} />
+        </div>
+      );
+    case "sorpresa-romantica":
+      return (
+        <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+          <SorpresaRomantica data={projectData.user_data} />
         </div>
       );
       case "corazon-mensaje":

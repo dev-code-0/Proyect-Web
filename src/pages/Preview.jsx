@@ -53,6 +53,9 @@ import { floresParaTiConfig } from "../templates/flores-para-ti/config.js";
 import SanValentinApp from "../templates/app-recuerdos/index.jsx";
 import { sanValentinConfig } from "../templates/app-recuerdos/config.js";
 
+import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
+import { sorpresaRomanticaConfig } from "../templates/sorpresa-romantica/config.js";
+
 
 
 export default function Preview() {
@@ -140,6 +143,8 @@ export default function Preview() {
         return <FloresParaTiTemplate data={previewData} />;
       case "app-recuerdos":
         return <SanValentinApp data={previewData} />;
+      case "sorpresa-romantica":
+        return <SorpresaRomantica data={previewData} />;
       default:
         return ( 
           <p>
@@ -165,6 +170,7 @@ export default function Preview() {
     if (id === "corazon-mensaje") return fuegosAmorConfig;
     if (id === "flores-para-ti") return floresParaTiConfig;
     if (id === "app-recuerdos") return sanValentinConfig;
+    if (id === "sorpresa-romantica") return sorpresaRomanticaConfig;
 
     return { name: "Proyecto genérico", fields: [] };
   };

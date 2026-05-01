@@ -73,4 +73,9 @@ export const templates = [
     title: "App Recuerdos",
     image: "./images/app-recuerdos/app-recuerdos.svg",
   },
+  {
+    id: "sorpresa-romantica",
+    title: "Sorpresa Romántica",
+    image: "./images/sorpresa-romantica/sorpresa-romantica.svg",
+  },
 ];
