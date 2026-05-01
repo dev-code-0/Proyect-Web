@@ -1,78 +1,100 @@
-import React, { useState } from 'react';
-import { supabase } from '../lib/supabase.js';
+import React, { useState, useRef } from 'react';
+import '../styles/modal.css';
+
+const MAX_LENGTH = 500;
+const COOLDOWN_MS = 30_000;
+const SUPABASE_PROJECT_ID = 'smxvjtnlnblxksdcbdhd';
+const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/submit-feedback`;
 
 export default function FeedbackModal({ onClose }) {
   const [mensaje, setMensaje] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [exito, setExito] = useState(false);
+  const lastSentRef = useRef(0);
 
   const enviarSugerencia = async () => {
-    if (!mensaje.trim()) {
+    const texto = mensaje.trim();
+
+    if (!texto) {
       alert("Por favor escribe algo antes de enviar.");
       return;
     }
-    
-    setEnviando(true);
 
-    // Insertamos el mensaje en Supabase
-    const { error } = await supabase
-      .from('sugerencias')
-      .insert([{ mensaje: mensaje }]);
+    if (texto.length > MAX_LENGTH) {
+      alert(`El mensaje no puede superar ${MAX_LENGTH} caracteres.`);
+      return;
+    }
+
+    const ahora = Date.now();
+    if (ahora - lastSentRef.current < COOLDOWN_MS) {
+      const segundos = Math.ceil((COOLDOWN_MS - (ahora - lastSentRef.current)) / 1000);
+      alert(`Espera ${segundos} segundos antes de enviar otra sugerencia.`);
+      return;
+    }
+
+    setEnviando(true);
+    lastSentRef.current = ahora;
+
+    try {
+      const res = await fetch(EDGE_FUNCTION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mensaje: texto }),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 429) {
+        alert("Demasiadas solicitudes. Espera una hora antes de enviar más sugerencias.");
+      } else if (!res.ok) {
+        alert("Hubo un error al enviar. Intenta de nuevo.");
+        if (import.meta.env.DEV) console.error(data);
+      } else {
+        setExito(true);
+        setTimeout(onClose, 2000);
+      }
+    } catch (error) {
+      alert("Error de conexión. Intenta de nuevo.");
+      if (import.meta.env.DEV) console.error(error);
+    }
 
     setEnviando(false);
-
-    if (error) {
-      alert("Hubo un error al enviar. Intenta de nuevo.");
-      console.error(error);
-    } else {
-      setExito(true);
-      // Cerramos el modal automáticamente después de 2 segundos
-      setTimeout(() => {
-        onClose();
-      }, 2000);
-    }
   };
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, padding: '20px', boxSizing: 'border-box' }}>
-      <div style={{ backgroundColor: '#222', borderRadius: '20px', padding: '25px', width: '100%', maxWidth: '400px', textAlign: 'center', color: 'white', border: '1px solid #444' }}>
-        
+    <div className="feedback-overlay">
+      <div className="feedback-box">
         {exito ? (
-          <div>
-            <h2 style={{ color: '#2ba52e' }}>¡Enviado!</h2>
+          <div className="feedback-success">
+            <h2>¡Enviado!</h2>
             <p>Gracias por tu sugerencia.</p>
           </div>
         ) : (
           <>
-            <h2 style={{ marginTop: 0 }}>Enviar Sugerencia</h2>
-            <p style={{ fontSize: '14px', color: '#aaa', marginBottom: '20px' }}>Escribe tu idea, queja o recomendación para mejorar la plataforma.</p>
-            
-            <textarea 
+            <h2>Enviar Sugerencia</h2>
+            <p className="feedback-subtitle">
+              Escribe tu idea, queja o recomendación para mejorar la plataforma.
+            </p>
+            <textarea
               value={mensaje}
-              onChange={(e) => setMensaje(e.target.value)}
+              onChange={(e) => setMensaje(e.target.value.slice(0, MAX_LENGTH))}
               placeholder="Escribe aquí..."
-              style={{ width: '100%', height: '120px', borderRadius: '15px', padding: '15px', boxSizing: 'border-box', backgroundColor: '#333', color: 'white', border: 'none', resize: 'none', marginBottom: '20px', fontSize: '16px' }}
+              className="feedback-textarea"
+              maxLength={MAX_LENGTH}
             />
-            
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button 
-                onClick={onClose} 
-                disabled={enviando}
-                style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: '#555', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}
-              >
+            <small style={{ opacity: 0.6, fontSize: '0.75rem' }}>
+              {mensaje.length}/{MAX_LENGTH}
+            </small>
+            <div className="feedback-buttons">
+              <button onClick={onClose} disabled={enviando} className="btn-feedback-cancel">
                 Cancelar
               </button>
-              <button 
-                onClick={enviarSugerencia} 
-                disabled={enviando}
-                style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: '#ff1e68', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}
-              >
+              <button onClick={enviarSugerencia} disabled={enviando} className="btn-feedback-send">
                 {enviando ? 'Enviando...' : 'Enviar'}
               </button>
             </div>
           </>
         )}
-
       </div>
     </div>
   );
