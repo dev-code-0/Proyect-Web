@@ -14,17 +14,17 @@ export default function ActionButtons() {
       
       {/* Botón 1: Enviar Sugerencia (Abre el Modal) */}
       <button onClick={() => setShowFeedback(true)} className="btn-white-home">
-        💡 Enviar sugerencia
+        Enviar sugerencia
       </button>
 
       {/* Botón 2: Apóyanos (Abre Yape) */}
       <button onClick={() => setShowYape(true)} className="btn-white-home">
-        ❤️ Apóyanos
+        Apóyanos
       </button>
 
       {/* Botón 3: Comunidad */}
       <a href={whatsappComunidad} target="_blank" rel="noreferrer" className="btn-white-home">
-        💬 Comunidad de WhatsApp
+        Comunidad de WhatsApp
       </a>
 
       {/* Renderizamos los modales solo si sus estados son true */}
