@@ -72,7 +72,7 @@ export default function FeedbackModal({ onClose }) {
         ) : (
           <>
             <h2>Enviar Sugerencia</h2>
-            <p className="feedback-subtitle">
+            <p className="feedback-sub"> 
               Escribe tu idea, queja o recomendación para mejorar la plataforma.
             </p>
             <textarea

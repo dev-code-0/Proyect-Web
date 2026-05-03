@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import './style.css'
 import usePreloadImages from "../../hooks/usePreloadImages";
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 import Image1 from './Images/Image1.avif'
 import Image2 from './Images/Image2.avif'
 import Image3 from './Images/Image3.avif'
@@ -82,7 +84,7 @@ export default function App({ data }) {
 
   /* ================= EFECTOS (LÓGICA) ================= */
 
-  // 1. Inyectar fuentes de Google y CDN de Swiper al montar
+  // 1. Inyectar fuentes de Google al montar
   useEffect(() => {
     const linkFonts = document.createElement("link");
     linkFonts.href =
@@ -90,20 +92,8 @@ export default function App({ data }) {
     linkFonts.rel = "stylesheet";
     document.head.appendChild(linkFonts);
 
-    const linkSwiper = document.createElement("link");
-    linkSwiper.href = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css";
-    linkSwiper.rel = "stylesheet";
-    document.head.appendChild(linkSwiper);
-
-    const scriptSwiper = document.createElement("script");
-    scriptSwiper.src = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
-    scriptSwiper.async = true;
-    document.body.appendChild(scriptSwiper);
-
     return () => {
       document.head.removeChild(linkFonts);
-      document.head.removeChild(linkSwiper);
-      document.body.removeChild(scriptSwiper);
     };
   }, []);
 
@@ -236,27 +226,25 @@ export default function App({ data }) {
       }, 35);
 
       const initTimer = setTimeout(() => {
-        if (window.Swiper) {
-          swiperInstanceRef.current = new window.Swiper(".swiper-sr", {
-            effect: "coverflow",
-            grabCursor: true,
-            centeredSlides: true,
-            slidesPerView: "auto",
-            spaceBetween: 15,
-            loop: true,
-            observer: true,
-            observeParents: true,
-            autoplay: { delay: 2000, disableOnInteraction: false,},
-            coverflowEffect: {
-              rotate: 35,
-              stretch: 0,
-              depth: 150,
-              modifier: 1,
-              slideShadows: true,
-            },
-            pagination: { el: ".swiper-pagination-sr", dynamicBullets: true },
-          });
-        }
+        swiperInstanceRef.current = new Swiper(".swiper-sr", {
+          effect: "coverflow",
+          grabCursor: true,
+          centeredSlides: true,
+          slidesPerView: "auto",
+          spaceBetween: 15,
+          loop: true,
+          observer: true,
+          observeParents: true,
+          autoplay: { delay: 2000, disableOnInteraction: false,},
+          coverflowEffect: {
+            rotate: 35,
+            stretch: 0,
+            depth: 150,
+            modifier: 1,
+            slideShadows: true,
+          },
+          pagination: { el: ".swiper-pagination-sr", dynamicBullets: true },
+        });
       }, 100);
 
       return () => clearTimeout(initTimer);

@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="canopyGrad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffc2d1"/>
+      <stop offset="60%" stop-color="#ff8fab"/>
+      <stop offset="100%" stop-color="#fb6f92"/>
+    </radialGradient>
+    <radialGradient id="petalGrad" cx="40%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#ffe5ec"/>
+      <stop offset="100%" stop-color="#ffb3c6"/>
+    </radialGradient>
+    <radialGradient id="heartGrad" cx="40%" cy="25%" r="65%">
+      <stop offset="0%" stop-color="#ff6b9d"/>
+      <stop offset="100%" stop-color="#c9184a"/>
+    </radialGradient>
+    <radialGradient id="trunkGrad" cx="30%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#704214"/>
+      <stop offset="100%" stop-color="#3e2723"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Trunk -->
+  <path d="M88,198 C88,178 85,160 79,140 C70,115 57,102 42,92
+           C57,103 72,120 81,142
+           C80,120 76,98 68,76
+           C76,90 83,108 88,130
+           C94,106 99,78 113,54
+           C109,76 105,98 106,122
+           C112,103 121,89 132,76
+           C124,98 120,120 119,142
+           C128,120 143,103 158,92
+           C143,102 130,115 121,140
+           C115,160 112,178 112,198 Z"
+        fill="url(#trunkGrad)"/>
+
+  <!-- Shadow/depth on trunk -->
+  <path d="M95,198 C95,175 92,155 88,135 C88,130 89,122 88,130
+           C94,106 99,78 113,54
+           C109,76 105,98 106,122
+           C107,130 107,133 106,138 C110,158 112,178 112,198 Z"
+        fill="#2e1a0a" opacity="0.35"/>
+
+  <!-- Canopy base (back clusters) -->
+  <ellipse cx="100" cy="78" rx="63" ry="52" fill="url(#canopyGrad)" opacity="0.85"/>
+  <circle cx="58" cy="88" r="38" fill="#ff8fab" opacity="0.9"/>
+  <circle cx="142" cy="88" r="38" fill="#ff8fab" opacity="0.9"/>
+  <circle cx="80" cy="55" r="34" fill="#ffc2d1" opacity="0.92"/>
+  <circle cx="120" cy="55" r="34" fill="#ffc2d1" opacity="0.92"/>
+  <circle cx="100" cy="44" r="38" fill="#ffb3c6" opacity="0.95"/>
+
+  <!-- Front clusters for depth -->
+  <circle cx="65" cy="78" r="30" fill="#ffc2d1" opacity="0.8"/>
+  <circle cx="135" cy="78" r="30" fill="#ffc2d1" opacity="0.8"/>
+  <circle cx="100" cy="95" r="28" fill="#ffb3c6" opacity="0.75"/>
+
+  <!-- Individual sakura flowers - top center -->
+  <g transform="translate(100, 40)" filter="url(#glow)">
+    <ellipse cx="0" cy="-11" rx="6.5" ry="8" fill="#ffe5ec"/>
+    <ellipse cx="10" cy="-4" rx="6.5" ry="8" transform="rotate(72, 10, -4)" fill="#ffe5ec"/>
+    <ellipse cx="7" cy="8" rx="6.5" ry="8" transform="rotate(144, 7, 8)" fill="#ffe5ec"/>
+    <ellipse cx="-7" cy="8" rx="6.5" ry="8" transform="rotate(216, -7, 8)" fill="#ffe5ec"/>
+    <ellipse cx="-10" cy="-4" rx="6.5" ry="8" transform="rotate(288, -10, -4)" fill="#ffe5ec"/>
+    <circle cx="0" cy="0" r="4" fill="#ffb3c6"/>
+    <circle cx="0" cy="0" r="2" fill="#fb6f92"/>
+  </g>
+
+  <!-- Sakura flower - left side -->
+  <g transform="translate(63, 68)">
+    <ellipse cx="0" cy="-8" rx="5" ry="7" fill="#fff0f3"/>
+    <ellipse cx="8" cy="-3" rx="5" ry="7" transform="rotate(72, 8, -3)" fill="#fff0f3"/>
+    <ellipse cx="5" cy="6" rx="5" ry="7" transform="rotate(144, 5, 6)" fill="#fff0f3"/>
+    <ellipse cx="-5" cy="6" rx="5" ry="7" transform="rotate(216, -5, 6)" fill="#fff0f3"/>
+    <ellipse cx="-8" cy="-3" rx="5" ry="7" transform="rotate(288, -8, -3)" fill="#fff0f3"/>
+    <circle cx="0" cy="0" r="3.5" fill="#ffb3c6"/>
+    <circle cx="0" cy="0" r="1.5" fill="#fb6f92"/>
+  </g>
+
+  <!-- Sakura flower - right side -->
+  <g transform="translate(137, 68)">
+    <ellipse cx="0" cy="-8" rx="5" ry="7" fill="#fff0f3"/>
+    <ellipse cx="8" cy="-3" rx="5" ry="7" transform="rotate(72, 8, -3)" fill="#fff0f3"/>
+    <ellipse cx="5" cy="6" rx="5" ry="7" transform="rotate(144, 5, 6)" fill="#fff0f3"/>
+    <ellipse cx="-5" cy="6" rx="5" ry="7" transform="rotate(216, -5, 6)" fill="#fff0f3"/>
+    <ellipse cx="-8" cy="-3" rx="5" ry="7" transform="rotate(288, -8, -3)" fill="#fff0f3"/>
+    <circle cx="0" cy="0" r="3.5" fill="#ffb3c6"/>
+    <circle cx="0" cy="0" r="1.5" fill="#fb6f92"/>
+  </g>
+
+  <!-- Sakura flower - lower left -->
+  <g transform="translate(78, 90)">
+    <ellipse cx="0" cy="-6" rx="4" ry="5.5" fill="#ffe5ec"/>
+    <ellipse cx="6" cy="-2" rx="4" ry="5.5" transform="rotate(72, 6, -2)" fill="#ffe5ec"/>
+    <ellipse cx="4" cy="5" rx="4" ry="5.5" transform="rotate(144, 4, 5)" fill="#ffe5ec"/>
+    <ellipse cx="-4" cy="5" rx="4" ry="5.5" transform="rotate(216, -4, 5)" fill="#ffe5ec"/>
+    <ellipse cx="-6" cy="-2" rx="4" ry="5.5" transform="rotate(288, -6, -2)" fill="#ffe5ec"/>
+    <circle cx="0" cy="0" r="3" fill="#ffc2d1"/>
+  </g>
+
+  <!-- Sakura flower - lower right -->
+  <g transform="translate(122, 90)">
+    <ellipse cx="0" cy="-6" rx="4" ry="5.5" fill="#ffe5ec"/>
+    <ellipse cx="6" cy="-2" rx="4" ry="5.5" transform="rotate(72, 6, -2)" fill="#ffe5ec"/>
+    <ellipse cx="4" cy="5" rx="4" ry="5.5" transform="rotate(144, 4, 5)" fill="#ffe5ec"/>
+    <ellipse cx="-4" cy="5" rx="4" ry="5.5" transform="rotate(216, -4, 5)" fill="#ffe5ec"/>
+    <ellipse cx="-6" cy="-2" rx="4" ry="5.5" transform="rotate(288, -6, -2)" fill="#ffe5ec"/>
+    <circle cx="0" cy="0" r="3" fill="#ffc2d1"/>
+  </g>
+
+  <!-- Heart in center of canopy -->
+  <path d="M100,108
+           C100,108 80,93 80,82
+           C80,73 87,69 93,75
+           C96,78 98,81 100,85
+           C102,81 104,78 107,75
+           C113,69 120,73 120,82
+           C120,93 100,108 100,108 Z"
+        fill="url(#heartGrad)" filter="url(#glow)"/>
+
+  <!-- Heart highlight -->
+  <path d="M92,79 C91,76 89,75 91,77 Q93,82 95,82 C94,80 93,77 92,79 Z"
+        fill="white" opacity="0.45"/>
+
+  <!-- Falling petals -->
+  <ellipse cx="28" cy="145" rx="5" ry="8" fill="#ffb3c6" transform="rotate(-35, 28, 145)" opacity="0.85"/>
+  <ellipse cx="168" cy="138" rx="4" ry="7" fill="#ffc2d1" transform="rotate(22, 168, 138)" opacity="0.8"/>
+  <ellipse cx="18" cy="172" rx="4" ry="6" fill="#ffe5ec" transform="rotate(55, 18, 172)" opacity="0.65"/>
+  <ellipse cx="180" cy="165" rx="5" ry="7" fill="#ff8fab" transform="rotate(-18, 180, 165)" opacity="0.75"/>
+  <ellipse cx="148" cy="158" rx="3.5" ry="6" fill="#ffe5ec" transform="rotate(40, 148, 158)" opacity="0.65"/>
+  <ellipse cx="45" cy="162" rx="3" ry="5" fill="#ffc2d1" transform="rotate(-45, 45, 162)" opacity="0.6"/>
+  <ellipse cx="160" cy="185" rx="3" ry="5" fill="#ffb3c6" transform="rotate(30, 160, 185)" opacity="0.55"/>
+
+  <!-- Small sparkle dots (estrellas románticas) -->
+  <circle cx="35" cy="120" r="2" fill="#ffe5ec" opacity="0.7"/>
+  <circle cx="165" cy="115" r="1.5" fill="#ffe5ec" opacity="0.65"/>
+  <circle cx="25" cy="105" r="1.5" fill="#ffc2d1" opacity="0.6"/>
+  <circle cx="175" cy="100" r="2" fill="#ffc2d1" opacity="0.65"/>
+  <circle cx="42" cy="135" r="1.5" fill="#ff8fab" opacity="0.55"/>
+  <circle cx="158" cy="128" r="1.5" fill="#ff8fab" opacity="0.55"/>
+</svg>

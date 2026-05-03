@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(Get-ChildItem \"C:\\\\Visual_Studio_Code\\\\React\\\\Proyect-web\\\\src\\\\lib\\\\images\" -Recurse)",
+      "PowerShell(Get-ChildItem \"C:\\\\Visual_Studio_Code\\\\React\\\\Proyect-web\\\\src\\\\lib\\\\images\" -Recurse | ForEach-Object { $_.FullName })"
     ]
   }
 }
