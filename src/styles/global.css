@@ -12,8 +12,8 @@
   --cyan-dim: rgba(217, 70, 239, 0.3);
 
   --font-title: "Pacifico", cursive;
-  --font-button: "Nunito",  sans-serif;
-  --font-text: "Nunito", sans-serif;
+  --font-button: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
+  --font-text: "Chalkboard SE", "Chalkboard", cursive, sans-serif;
 }
 
 html {

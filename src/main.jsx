@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './styles/fonts.css'
+import '@fontsource/pacifico'
 import App from './App.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
