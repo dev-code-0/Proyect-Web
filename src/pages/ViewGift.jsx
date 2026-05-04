@@ -21,6 +21,7 @@ import FuegosAmorTemplate from "../templates/corazon-mensaje/index.jsx";
 import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
 import SanValentinApp from "../templates/app-recuerdos/index.jsx";
 import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
+import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -175,6 +176,12 @@ export default function ViewGift() {
         return (
           <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
             <SanValentinApp data={projectData.user_data} />
+          </div>
+        );
+      case "galaxia-momentos":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <GalaxyMomentos data={projectData.user_data} />
           </div>
         );
     default:

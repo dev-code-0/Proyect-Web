@@ -57,6 +57,9 @@ import { sanValentinConfig } from "../templates/app-recuerdos/config.js";
 import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
 import { sorpresaRomanticaConfig } from "../templates/sorpresa-romantica/config.js";
 
+import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
+import { galaxiaMomentosConfig } from "../templates/galaxia-momentos/config.js";
+
 
 
 export default function Preview() {
@@ -146,6 +149,8 @@ export default function Preview() {
         return <SanValentinApp data={previewData} />;
       case "sorpresa-romantica":
         return <SorpresaRomantica data={previewData} />;
+      case "galaxia-momentos":
+        return <GalaxyMomentos data={previewData} />;
       default:
         return ( 
           <p>
@@ -172,6 +177,7 @@ export default function Preview() {
     if (id === "flores-para-ti") return floresParaTiConfig;
     if (id === "app-recuerdos") return sanValentinConfig;
     if (id === "sorpresa-romantica") return sorpresaRomanticaConfig;
+    if (id === "galaxia-momentos") return galaxiaMomentosConfig;
 
     return { name: "Proyecto genérico", fields: [] };
   };
