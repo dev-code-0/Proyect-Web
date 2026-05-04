@@ -61,18 +61,6 @@ function makeSaturnTexture(colorA, colorB) {
   return new THREE.CanvasTexture(c);
 }
 
-function makeDemoPortalTexture(hexColor) {
-  const c = document.createElement('canvas');
-  c.width = c.height = 128;
-  const ctx = c.getContext('2d');
-  const hex = '#' + hexColor.toString(16).padStart(6, '0');
-  const g = ctx.createRadialGradient(64, 64, 4, 64, 64, 64);
-  g.addColorStop(0, hex + 'ff'); g.addColorStop(0.6, hex + '99'); g.addColorStop(1, hex + '00');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, 128, 128);
-  return new THREE.CanvasTexture(c);
-}
-
 function generateSpiralGalaxy(count, maxR, primaryHex) {
   const positions = new Float32Array(count * 3);
   const colors    = new Float32Array(count * 3);
@@ -162,13 +150,11 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     let mounted = true;
 
     const tema         = THEMES[data.tema] || THEMES.romantica;
-    // GalaxyScene passes displayFotos (pre-duplicated to 8 slots)
+    // GalaxyScene passes displayFotos already duplicated (preview: 12, user: N*2)
     const displayFotos = Array.isArray(data.displayFotos) ? data.displayFotos : [];
     const rawFotos     = Array.isArray(data.fotos) ? data.fotos.slice(0, 8) : [];
     const fotos        = displayFotos.length > 0 ? displayFotos : rawFotos;
-    const isPreview    = fotos.length === 0;
-    const PORTAL_SLOTS = 8;
-    const DEMO_COLORS  = [tema.primary, 0xffffff, (tema.primary>>1)|0, 0xdde4ff, tema.primary, 0xffeeff, tema.primary, 0xdde4ff];
+    const PORTAL_SLOTS = Math.max(fotos.length, 1);
 
     // ── RENDERER ──────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -307,23 +293,18 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
       circle.position.copy(pos); circle.userData.index=i;
       portals.push(circle); scene.add(circle);
 
-      if (isPreview) {
-        circle.material.map=makeDemoPortalTexture(DEMO_COLORS[i%DEMO_COLORS.length]);
-        circle.material.needsUpdate=true; circle.userData.loaded=true;
-      } else {
-        loader.load(fotos[i % fotos.length], (tex) => {
-          if (!mounted) { tex.dispose(); return; }
-          tex.minFilter=tex.magFilter=THREE.LinearFilter;
-          tex.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
-          const img=tex.image;
-          if (img?.width && img?.height) {
-            const R=img.width/img.height;
-            if (R>1.05) { tex.repeat.set(1/R,1); tex.offset.set((1-1/R)/2,0); }
-            else if (R<0.95) { tex.repeat.set(1,R); tex.offset.set(0,(1-R)/2); }
-          }
-          circle.material.map=tex; circle.material.needsUpdate=true; circle.userData.loaded=true;
-        });
-      }
+      loader.load(fotos[i % fotos.length], (tex) => {
+        if (!mounted) { tex.dispose(); return; }
+        tex.minFilter=tex.magFilter=THREE.LinearFilter;
+        tex.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
+        const img=tex.image;
+        if (img?.width && img?.height) {
+          const R=img.width/img.height;
+          if (R>1.05) { tex.repeat.set(1/R,1); tex.offset.set((1-1/R)/2,0); }
+          else if (R<0.95) { tex.repeat.set(1,R); tex.offset.set(0,(1-R)/2); }
+        }
+        circle.material.map=tex; circle.material.needsUpdate=true; circle.userData.loaded=true;
+      });
     }
 
     // ── FLOATING PHRASES ─────────────────────────────────────────────────
@@ -366,20 +347,40 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     // ── STATE ─────────────────────────────────────────────────────────────
     let phase='wormhole', wormT=0, introT=0;
 
-    // ── RAYCASTER ─────────────────────────────────────────────────────────
+    // ── RAYCASTER (click + hover) ─────────────────────────────────────────
     const raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2();
-    const handlePointer=(e)=>{
-      if (phase!=='explore') return;
+    let hoveredIdx = -1;
+
+    const updatePointer=(e)=>{
       const rect=renderer.domElement.getBoundingClientRect();
       const cx=e.touches?e.touches[0].clientX:e.clientX;
       const cy=e.touches?e.touches[0].clientY:e.clientY;
       pointer.x=((cx-rect.left)/rect.width)*2-1;
       pointer.y=-((cy-rect.top)/rect.height)*2+1;
+    };
+
+    const handlePointerDown=(e)=>{
+      if (phase!=='explore') return;
+      updatePointer(e);
       raycaster.setFromCamera(pointer,camera);
       const hits=raycaster.intersectObjects(portals);
       if (hits.length>0) onPortalClickRef.current?.(hits[0].object.userData.index);
     };
-    renderer.domElement.addEventListener('pointerdown',handlePointer);
+
+    const handlePointerMove=(e)=>{
+      if (phase!=='explore') { hoveredIdx=-1; return; }
+      updatePointer(e);
+      raycaster.setFromCamera(pointer,camera);
+      const hits=raycaster.intersectObjects(portals);
+      const newHover = hits.length>0 ? hits[0].object.userData.index : -1;
+      if (newHover !== hoveredIdx) {
+        hoveredIdx = newHover;
+        renderer.domElement.style.cursor = newHover >= 0 ? 'pointer' : 'default';
+      }
+    };
+
+    renderer.domElement.addEventListener('pointerdown',handlePointerDown);
+    renderer.domElement.addEventListener('pointermove',handlePointerMove);
 
     // ── RESIZE ────────────────────────────────────────────────────────────
     const handleResize=()=>{
@@ -453,7 +454,18 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
         const p=new THREE.Vector3(radius*Math.cos(a),height+Math.sin(time*0.4+i*1.1)*0.8,radius*Math.sin(a));
         portals[i].position.copy(p); portalRings[i].position.copy(p);
         portals[i].lookAt(camera.position); portalRings[i].lookAt(camera.position);
-        portalRings[i].material.opacity=0.28+0.38*Math.sin(time*1.3+portalRings[i].userData.phase);
+
+        const isHover = i === hoveredIdx;
+        const ringPulse = 0.28 + 0.38 * Math.sin(time*1.3 + portalRings[i].userData.phase);
+        portalRings[i].material.opacity = isHover ? Math.min(ringPulse + 0.45, 1) : ringPulse;
+
+        // Smooth scale toward 1.0 (idle) or 1.15 (hover) — independent per portal
+        const targetScale = isHover ? 1.15 : 1.0;
+        const cur = portals[i].scale.x;
+        const next = cur + (targetScale - cur) * 0.18;
+        portals[i].scale.setScalar(next);
+        portalRings[i].scale.setScalar(next);
+
         if (portals[i].userData.loaded && portals[i].material.opacity<1)
           portals[i].material.opacity=Math.min(portals[i].material.opacity+0.01,1);
       }
@@ -484,7 +496,8 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     return ()=>{
       mounted=false; cancelAnimationFrame(raf);
       window.removeEventListener('resize',handleResize);
-      renderer.domElement.removeEventListener('pointerdown',handlePointer);
+      renderer.domElement.removeEventListener('pointerdown',handlePointerDown);
+      renderer.domElement.removeEventListener('pointermove',handlePointerMove);
       if (fadeTimer) clearInterval(fadeTimer);
       if (audio) { audio.pause(); audio.src=''; }
       controls.dispose();

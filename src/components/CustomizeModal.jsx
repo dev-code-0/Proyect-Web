@@ -86,7 +86,13 @@ const randomId = () =>
     .join('');
 
 export default function CustomizeModal({ config, onClose, onSave }) {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(() => {
+    const defaults = {};
+    (config.fields || []).forEach((f) => {
+      if (f.defaultValue !== undefined) defaults[f.name] = f.defaultValue;
+    });
+    return defaults;
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [progreso, setProgreso] = useState(''); // Para mostrarle al usuario qué está pasando
 
@@ -271,6 +277,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   placeholder={field.placeholder || ''}
                   maxLength={field.maxLength || 500}
                   rows={4}
+                  value={formData[field.name] ?? ''}
                   onChange={(e) => handleChange(e, field)}
                   required={field.required ?? !field.label.includes('(Opcional)')}
                 />
@@ -280,6 +287,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   placeholder={field.placeholder || ''}
                   accept={field.accept || ''}
                   multiple={field.multiple || false}
+                  value={field.type === 'file' ? undefined : (formData[field.name] ?? '')}
                   onChange={(e) => handleChange(e, field)}
                   required={field.required ?? !field.label.includes('(Opcional)')}
                 />

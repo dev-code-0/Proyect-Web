@@ -1,8 +1,48 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useGalaxy } from './useGalaxy';
 import './galaxia.css';
-import inicioGif   from './inicio.gif';
+import inicioGif    from './inicio.gif';
 import musicaDefault from './Music.mp3';
+import Image1 from './Images/Image1.avif';
+import Image2 from './Images/Image2.avif';
+import Image3 from './Images/Image3.avif';
+import Image4 from './Images/Image4.avif';
+import Image5 from './Images/Image5.avif';
+import Image6 from './Images/Image6.avif';
+
+const PREVIEW_FOTOS = [Image1, Image2, Image3, Image4, Image5, Image6];
+
+// ─── SVG icons (fill="currentColor" — adapt to theme) ────────────────────────
+const IconSparkle = ({ size = 48 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
+    <path d="M12 0l1.6 9 9.4 3-9.4 3-1.6 9-1.6-9-9.4-3 9.4-3z" />
+  </svg>
+);
+
+const IconReplay = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <path d="M21 12a9 9 0 1 1-3.5-7.13" />
+    <polyline points="21 3 21 9 15 9" />
+  </svg>
+);
+
+const IconFullscreen = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M21 15v4a2 2 0 0 1-2 2h-4" />
+  </svg>
+);
+
+const IconHeart = ({ size = 22 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z" />
+  </svg>
+);
+
+const IconClose = ({ size = 12 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" width={size} height={size} aria-hidden="true">
+    <path d="M6 6l12 12M18 6L6 18" />
+  </svg>
+);
 
 // ─── Theme helpers ────────────────────────────────────────────────────────────
 const TEMA_BG = {
@@ -143,11 +183,17 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
   const containerRef = useRef(null);
   const [activePortal, setActivePortal] = useState(null);
 
-  // Duplicate user photos to always fill 8 slots
-  const rawFotos = Array.isArray(data?.fotos) ? data.fotos.slice(0, 8) : [];
-  const displayFotos = rawFotos.length > 0
-    ? Array.from({ length: 8 }, (_, i) => rawFotos[i % rawFotos.length])
-    : [];
+  // Photo duplication rule:
+  //   • No upload (preview) → 6 local images × 2 = 12 portals
+  //   • N uploads (1-8)     → N × 2 portals (each photo appears twice)
+  // Stable across renders: only changes when photos actually change.
+  const fotosKey = Array.isArray(data?.fotos) ? data.fotos.join('|') : '';
+  const displayFotos = useMemo(() => {
+    const arr = Array.isArray(data?.fotos) ? data.fotos.slice(0, 8) : [];
+    return arr.length === 0
+      ? [...PREVIEW_FOTOS, ...PREVIEW_FOTOS]
+      : [...arr, ...arr];
+  }, [fotosKey]);
 
   // Per-portal content
   const portalTitle   = activePortal !== null ? PHOTO_TITLES[activePortal % PHOTO_TITLES.length]   : '';
@@ -162,12 +208,12 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
     onPortalClickRef.current = (idx) => setActivePortal((prev) => (prev === idx ? null : idx));
   }, []); // setActivePortal is stable
 
-  // Enrich data with default music
-  const enrichedData = {
-    ...data,
-    musica: data?.musica || musicaDefault,
+  // Enrich data — memoized so the Three.js effect doesn't restart on every render
+  const enrichedData = useMemo(() => ({
+    tema:    data?.tema,
+    musica:  data?.musica || musicaDefault,
     displayFotos,
-  };
+  }), [data?.tema, data?.musica, displayFotos, musicaDefault]);
 
   const { replayIntro } = useGalaxy(containerRef, enrichedData, onPortalClickRef);
 
@@ -193,10 +239,10 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Empty state — fallback only; with PREVIEW_FOTOS this never shows */}
       {displayFotos.length === 0 && (
-        <div className="gm-empty">
-          <span className="gm-empty-icon">✨</span>
+        <div className="gm-empty" style={{ color: glow }}>
+          <span className="gm-empty-icon"><IconSparkle /></span>
           <p>Personaliza tu regalo para ver tus fotos entre las estrellas</p>
         </div>
       )}
@@ -207,8 +253,8 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
 
       {/* Controls */}
       <div className="gm-controls">
-        <button className="gm-btn" onClick={replayIntro} title="Reiniciar animación">↩</button>
-        <button className="gm-btn" onClick={handleFullscreen} title="Pantalla completa">⛶</button>
+        <button className="gm-btn" onClick={replayIntro} title="Reiniciar animación" aria-label="Reiniciar"><IconReplay /></button>
+        <button className="gm-btn" onClick={handleFullscreen} title="Pantalla completa" aria-label="Pantalla completa"><IconFullscreen /></button>
       </div>
 
       {/* Photo overlay */}
@@ -217,8 +263,8 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
           <div className="gm-overlay-card" onClick={(e) => e.stopPropagation()}>
 
             {/* Heart accent */}
-            <span className="gm-overlay-heart" style={{ color: glow, filter: `drop-shadow(0 0 8px ${glow})` }}>
-              ♥
+            <span className="gm-overlay-heart" style={{ color: glow, filter: `drop-shadow(0 0 8px ${glow})` }} aria-hidden="true">
+              <IconHeart />
             </span>
 
             {/* Circular photo */}
@@ -247,7 +293,8 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
               className="gm-overlay-cerrar"
               onClick={() => setActivePortal(null)}
             >
-              Cerrar +
+              <span>Cerrar</span>
+              <IconClose />
             </button>
           </div>
         </div>
