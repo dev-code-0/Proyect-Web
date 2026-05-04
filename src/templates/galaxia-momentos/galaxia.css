@@ -1,0 +1,230 @@
+@import '@fontsource/dancing-script/700.css';
+
+/* ─── Wrapper ─────────────────────────────────────────────────────────── */
+.gm-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #020b18;
+  font-family: system-ui, sans-serif;
+}
+
+/* ─── Canvas ──────────────────────────────────────────────────────────── */
+.gm-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Constellation title ─────────────────────────────────────────────── */
+.gm-titulo {
+  position: absolute;
+  top: clamp(16px, 4vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 4.5vw, 3rem);
+  color: #ffffff;
+  text-align: center;
+  text-shadow:
+    0 0 18px rgba(255, 255, 255, 0.55),
+    0 0 40px rgba(79, 172, 254, 0.4),
+    0 0 80px rgba(79, 172, 254, 0.15);
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: gm-fade-in 1.2s ease forwards;
+}
+
+/* ─── Empty state ─────────────────────────────────────────────────────── */
+.gm-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  pointer-events: none;
+  animation: gm-fade-in 1.5s ease forwards;
+}
+
+.gm-empty-icon {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px rgba(79, 172, 254, 0.8));
+  animation: gm-pulse 2.5s ease-in-out infinite;
+}
+
+.gm-empty p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  text-align: center;
+  max-width: 260px;
+  line-height: 1.5;
+}
+
+/* ─── Tap hint ────────────────────────────────────────────────────────── */
+.gm-tap-hint {
+  position: absolute;
+  bottom: clamp(64px, 10vh, 80px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 10;
+  animation: gm-fade-in 3s ease forwards;
+}
+
+/* ─── Controls ────────────────────────────────────────────────────────── */
+.gm-controls {
+  position: absolute;
+  bottom: clamp(16px, 3vh, 24px);
+  right: clamp(16px, 3vw, 24px);
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+
+.gm-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.gm-btn:hover {
+  background: rgba(79, 172, 254, 0.25);
+  border-color: rgba(79, 172, 254, 0.6);
+  color: #ffffff;
+}
+
+/* ─── Photo overlay ───────────────────────────────────────────────────── */
+.gm-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: gm-fade-in 0.3s ease forwards;
+  padding: 20px;
+}
+
+.gm-overlay-card {
+  position: relative;
+  background: rgba(10, 15, 30, 0.9);
+  border: 1px solid rgba(79, 172, 254, 0.3);
+  border-radius: 16px;
+  padding: 20px 20px 18px;
+  max-width: min(360px, 88vw);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow:
+    0 0 40px rgba(79, 172, 254, 0.15),
+    0 24px 60px rgba(0, 0, 0, 0.6);
+  animation: gm-slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.gm-overlay-img {
+  width: 100%;
+  max-height: 38vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 24px rgba(79, 172, 254, 0.2);
+}
+
+.gm-overlay-mensaje {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  text-align: center;
+  line-height: 1.65;
+  font-style: italic;
+  margin: 0;
+}
+
+.gm-overlay-firma {
+  color: rgba(79, 172, 254, 0.85);
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  margin: 0;
+}
+
+.gm-overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.gm-overlay-close:hover {
+  color: #ffffff;
+}
+
+/* ─── Keyframes ───────────────────────────────────────────────────────── */
+@keyframes gm-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes gm-slide-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes gm-pulse {
+  0%, 100% { opacity: 0.7;  transform: scale(1);    }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
+/* ─── Responsive tweaks ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .gm-overlay-card {
+    padding: 20px 16px 18px;
+  }
+
+  .gm-controls {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .gm-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}

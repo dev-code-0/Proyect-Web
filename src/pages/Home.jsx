@@ -8,7 +8,7 @@ import { AntiInspectGuard } from '../lib/antiInspect';
 
 export default function Home() {
   return (
-    <AntiInspectGuard>
+    <main>
       <BackgroundAnimation />
       <main className="home-container">
         <div>
@@ -18,6 +18,6 @@ export default function Home() {
         <TemplateCarousel />
         <ActionButtons />
       </main>
-    </AntiInspectGuard>
+    </main>
   );
 }

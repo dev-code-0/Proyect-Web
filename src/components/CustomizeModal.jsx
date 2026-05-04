@@ -94,7 +94,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     setIsProcessing(true);
     setProgreso(`Procesando ${field.label}...`);
     const rawFiles = Array.from(e.target.files);
-    const files = rawFiles.slice(0, MAX_FILES_PER_UPLOAD);
+    const files = rawFiles.slice(0, field.maxFiles || MAX_FILES_PER_UPLOAD);
     const uploadedUrls = [];
 
     for (const file of files) {
@@ -255,14 +255,35 @@ export default function CustomizeModal({ config, onClose, onSave }) {
           {config.fields.map((field, index) => (
             <div key={index} className="form-group">
               <label>{field.label}</label>
-              <input
-                type={field.type}
-                placeholder={field.placeholder || ''}
-                accept={field.accept || ''}
-                multiple={field.multiple || false}
-                onChange={(e) => handleChange(e, field)}
-                required={field.required ?? !field.label.includes('(Opcional)')}
-              />
+              {field.type === 'select' ? (
+                <select
+                  onChange={(e) => handleChange(e, field)}
+                  required={field.required ?? !field.label.includes('(Opcional)')}
+                  defaultValue=""
+                >
+                  <option value="" disabled>Selecciona una opción...</option>
+                  {field.options?.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              ) : field.type === 'textarea' ? (
+                <textarea
+                  placeholder={field.placeholder || ''}
+                  maxLength={field.maxLength || 500}
+                  rows={4}
+                  onChange={(e) => handleChange(e, field)}
+                  required={field.required ?? !field.label.includes('(Opcional)')}
+                />
+              ) : (
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder || ''}
+                  accept={field.accept || ''}
+                  multiple={field.multiple || false}
+                  onChange={(e) => handleChange(e, field)}
+                  required={field.required ?? !field.label.includes('(Opcional)')}
+                />
+              )}
             </div>
           ))}
 

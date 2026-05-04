@@ -78,4 +78,9 @@ export const templates = [
     title: "Sorpresa Romántica",
     image: "./images/sorpresa-romantica/sorpresa-romantica.svg",
   },
+  {
+    id: "galaxia-momentos",
+    title: "Galaxia de Momentos",
+    image: "./images/galaxia-momentos/preview.svg",
+  },
 ];
