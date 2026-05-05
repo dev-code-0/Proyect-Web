@@ -254,6 +254,36 @@ Content:
 
 ---
 
+## Critical Three.js Implementation Constraints
+
+### 1. Texture Alignment Offset
+The Nominatim lat/lng coordinate system will not visually align with the default sphere mapping. After building the globe, apply a Y-axis rotation offset so the texture's prime meridian matches the mathematical coordinate system:
+```js
+globe.rotation.y = -Math.PI / 2   // starting point; fine-tune if needed
+```
+The GeoJSON border layer must apply the **same** rotation so borders stay locked to the texture. Test visually by checking that Lima, Perú renders at the correct position on the continent before proceeding with flight animation.
+
+### 2. Trail — No Per-Vertex Fading (LineBasicMaterial Limitation)
+`LineBasicMaterial` does not support per-vertex opacity natively. Do NOT implement a fading gradient trail — it requires a custom shader and adds fragility. Use one of these stable alternatives instead:
+- **Fixed opacity:** Single `THREE.Line` with last 40 points, `opacity: 0.6`, disappears abruptly at tail (preferred — simplest)
+- **Segmented array:** Array of short `THREE.Line` segments with stepped opacity (0.6 → 0.3 → 0.1) across 3 groups
+
+Stability over visual polish. The glow color from the theme is sufficient differentiation.
+
+### 3. OrbitControls — Disable During Cinematic Tweens
+Simultaneous tween + OrbitControls causes severe camera jitter. Enforce this strict rule:
+```js
+// Before any cinematic tween starts:
+controls.enabled = false
+
+// After tween completes (in the tween's onComplete callback):
+controls.enabled = true   // only re-enable if in preview mode
+// In ViewGift mode: controls stay disabled for the full cinematic sequence
+```
+OrbitControls are only active in Preview mode when no tween is running. In ViewGift mode, controls remain permanently disabled.
+
+---
+
 ## Bundle & Performance
 
 - Three.js already in `ui-vendor` chunk — no additional cost
