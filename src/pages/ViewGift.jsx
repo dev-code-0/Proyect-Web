@@ -22,6 +22,7 @@ import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
 import SanValentinApp from "../templates/app-recuerdos/index.jsx";
 import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
 import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
+import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -182,6 +183,12 @@ export default function ViewGift() {
         return (
           <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
             <GalaxyMomentos data={projectData.user_data} />
+          </div>
+        );
+      case "vuelo-global":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <VueloGlobalTemplate isPreview={false} data={projectData.user_data} />
           </div>
         );
     default:

@@ -60,6 +60,8 @@ import { sorpresaRomanticaConfig } from "../templates/sorpresa-romantica/config.
 import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
 import { galaxiaMomentosConfig } from "../templates/galaxia-momentos/config.js";
 
+import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
+
 
 
 export default function Preview() {
@@ -151,6 +153,13 @@ export default function Preview() {
         return <SorpresaRomantica data={previewData} />;
       case "galaxia-momentos":
         return <GalaxyMomentos data={previewData} />;
+      case "vuelo-global":
+        return (
+          <VueloGlobalTemplate
+            isPreview={true}
+            onSave={handleSaveConfig}
+          />
+        );
       default:
         return ( 
           <p>
@@ -178,6 +187,7 @@ export default function Preview() {
     if (id === "app-recuerdos") return sanValentinConfig;
     if (id === "sorpresa-romantica") return sorpresaRomanticaConfig;
     if (id === "galaxia-momentos") return galaxiaMomentosConfig;
+    // vuelo-global manages its own UI — no CustomizeModal config needed
 
     return { name: "Proyecto genérico", fields: [] };
   };
@@ -195,7 +205,9 @@ export default function Preview() {
 
       <div className="preview-box">{renderTemplate()}</div>
 
-      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)} >Personalizar</button>
+      {id !== "vuelo-global" && (
+        <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>
+      )}
 
       <Link to="/" className="btn-volver">Volver</Link>
 

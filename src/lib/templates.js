@@ -83,4 +83,9 @@ export const templates = [
     title: "Galaxia de Momentos",
     image: "./images/galaxia-momentos/preview.svg",
   },
+  {
+    id: "vuelo-global",
+    title: "Vuelo Global",
+    image: "./images/vuelo-global/preview.svg",
+  },
 ];
