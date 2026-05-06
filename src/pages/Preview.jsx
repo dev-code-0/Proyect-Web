@@ -62,6 +62,12 @@ import { galaxiaMomentosConfig } from "../templates/galaxia-momentos/config.js";
 
 import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
 
+import ArbolMadre from "../templates/arbol-madre/index.jsx";
+import { arbolMadreConfig } from "../templates/arbol-madre/config.js";
+
+import JardinMadre from "../templates/jardin-madre/index.jsx";
+import { jardinMadreConfig } from "../templates/jardin-madre/config.js";
+
 
 
 export default function Preview() {
@@ -153,6 +159,10 @@ export default function Preview() {
         return <SorpresaRomantica data={previewData} />;
       case "galaxia-momentos":
         return <GalaxyMomentos data={previewData} />;
+      case "arbol-madre":
+        return <ArbolMadre data={previewData} />;
+      case "jardin-madre":
+        return <JardinMadre data={previewData} />;
       case "vuelo-global":
         return (
           <VueloGlobalTemplate
@@ -189,6 +199,8 @@ export default function Preview() {
     if (id === "app-recuerdos") return sanValentinConfig;
     if (id === "sorpresa-romantica") return sorpresaRomanticaConfig;
     if (id === "galaxia-momentos") return galaxiaMomentosConfig;
+    if (id === "arbol-madre") return arbolMadreConfig;
+    if (id === "jardin-madre") return jardinMadreConfig;
     // vuelo-global manages its own UI — no CustomizeModal config needed
 
     return { name: "Proyecto genérico", fields: [] };

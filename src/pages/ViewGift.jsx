@@ -23,6 +23,8 @@ import SanValentinApp from "../templates/app-recuerdos/index.jsx";
 import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
 import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
 import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
+import ArbolMadre from "../templates/arbol-madre/index.jsx";
+import JardinMadre from "../templates/jardin-madre/index.jsx";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -189,6 +191,18 @@ export default function ViewGift() {
         return (
           <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
             <VueloGlobalTemplate isPreview={false} data={projectData.user_data} />
+          </div>
+        );
+      case "arbol-madre":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <ArbolMadre data={projectData.user_data} />
+          </div>
+        );
+      case "jardin-madre":
+        return (
+          <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
+            <JardinMadre data={projectData.user_data} />
           </div>
         );
     default:

@@ -88,4 +88,14 @@ export const templates = [
     title: "Vuelo Global",
     image: "./images/vuelo-global/preview.svg",
   },
+  {
+    id: "arbol-madre",
+    title: "Árbol de Momentos — Mamá",
+    image: "./images/arbol-madre/preview.svg",
+  },
+  {
+    id: "jardin-madre",
+    title: "Jardín de Recuerdos — Mamá",
+    image: "./images/jardin-madre/preview.svg",
+  },
 ];

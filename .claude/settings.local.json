@@ -8,7 +8,19 @@
       "Bash(grep -E \"^d:\\\\\\\\Visual-Studio-Code\\\\\\\\React\\\\\\\\code-free\\\\\\\\src\")",
       "Bash(Get-ChildItem -Path \"d:\\\\Visual-Studio-Code\\\\React\\\\code-free\" -Recurse -Include \"*.jsx\", \"*.js\", \".env*\", \"vite.config.js\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object FullName)",
-      "mcp__claude_ai_Context7__resolve-library-id"
+      "mcp__claude_ai_Context7__resolve-library-id",
+      "Bash(cat > *)",
+      "Bash(Test-Path \"C:\\\\Visual_Studio_Code\\\\React\\\\Proyect-web\\\\.claude\\\\dia-madre-outputs\\\\1-marketing-ideas.md\")",
+      "Bash(ls /mnt/c/Visual_Studio_Code/React/Proyect-web/.claude/dia-madre-outputs/ 2>/dev/null || echo \"DIR_NOT_FOUND\")",
+      "Read(//mnt/c/Visual_Studio_Code/React/Proyect-web/.claude/**)",
+      "Bash(mkdir -p /mnt/c/Visual_Studio_Code/React/Proyect-web/.claude/dia-madre-outputs && echo \"OK\")",
+      "Bash(Test-Path \"C:\\\\Visual_Studio_Code\\\\React\\\\Proyect-web\\\\.claude\\\\dia-madre-outputs\")",
+      "Bash(Test-Path \"C:\\\\Visual_Studio_Code\\\\React\\\\Proyect-web\\\\.claude\\\\dia-madre-outputs\\\\3-ad-creative.md\")",
+      "Bash(npx vite *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Visual_Studio_Code\\React\\Proyect-web\\.claude",
+      "\\mnt\\c\\Visual_Studio_Code\\React\\Proyect-web\\.claude"
     ]
   }
 }
