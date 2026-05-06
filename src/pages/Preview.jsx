@@ -158,6 +158,8 @@ export default function Preview() {
           <VueloGlobalTemplate
             isPreview={true}
             onSave={handleSaveConfig}
+            showPanel={showCustomizeModal}
+            onPanelClose={() => setShowCustomizeModal(false)}
           />
         );
       default:
@@ -205,14 +207,12 @@ export default function Preview() {
 
       <div className="preview-box">{renderTemplate()}</div>
 
-      {id !== "vuelo-global" && (
-        <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>
-      )}
+      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>
 
       <Link to="/" className="btn-volver">Volver</Link>
 
-      {/* Modal para rellenar datos */}
-      {showCustomizeModal &&
+      {/* Modal para rellenar datos — vuelo-global lo gestiona internamente */}
+      {showCustomizeModal && id !== "vuelo-global" &&
         (id === "rosa-virtual" ? (
           <RosaCreator onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
         ) : (
