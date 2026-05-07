@@ -157,6 +157,39 @@ export default function VueloGlobal({ isPreview, data }) {
 
   const rootClass = `vg-root${!isPreview ? ' vg-root--fullscreen' : ''}`;
 
+  const onMapLoad = (e) => {
+    const map = e.target;
+    // Crear un patrón de estrellas en un canvas para usarlo nativamente en MapLibre
+    const canvas = document.createElement('canvas');
+    canvas.width = 300;
+    canvas.height = 300;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#03020a';
+    ctx.fillRect(0, 0, 300, 300);
+    
+    // Dibujar pequeñas estrellas
+    ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 60; i++) {
+      const x = Math.random() * 300;
+      const y = Math.random() * 300;
+      const radius = Math.random() * 1.2;
+      ctx.globalAlpha = Math.random() * 0.8 + 0.2;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    const dataUrl = canvas.toDataURL();
+    map.loadImage(dataUrl, (error, image) => {
+      if (error) return;
+      map.addImage('stars-pattern', image);
+      if (map.getLayer('background')) {
+        map.setPaintProperty('background', 'background-color', 'transparent'); // Quitamos color sólido
+        map.setPaintProperty('background', 'background-pattern', 'stars-pattern');
+      }
+    });
+  };
+
   return (
     <div className={rootClass}>
       <MapProvider>
@@ -175,7 +208,8 @@ export default function VueloGlobal({ isPreview, data }) {
           touchZoomRotate={isInteractive}
           attributionControl={false}
           interactiveLayerIds={[]}
-          style={{ width: '100%', height: '100%', background: 'transparent' }}
+          onLoad={onMapLoad}
+          style={{ width: '100%', height: '100%', background: '#000510' }}
         >
           <MapScene data={finalData} isPreview={isPreview} temaColors={temaColors} onArrival={() => setIsInteractive(true)} />
         </Map>

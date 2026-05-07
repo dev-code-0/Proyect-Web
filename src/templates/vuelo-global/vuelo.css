@@ -1,43 +1,14 @@
 @import '@fontsource/dancing-script';
 
-/* ── Preview mode: inline dentro del preview-box ─────── */
+/* ── Preview mode: inline dentro del preview-box ─ */
 .vg-root {
   position: relative;
   width: 100%;
   height: 520px;
   overflow: hidden;
-  background-color: #03020a;
-  background-image: 
-    radial-gradient(1.5px 1.5px at 5% 10%, #fff, transparent),
-    radial-gradient(1px 1px at 15% 30%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(2px 2px at 25% 5%, #fff, transparent),
-    radial-gradient(1px 1px at 35% 45%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 45% 15%, #fff, transparent),
-    radial-gradient(1.5px 1.5px at 55% 40%, rgba(255,255,255,0.9), transparent),
-    radial-gradient(2px 2px at 65% 10%, #fff, transparent),
-    radial-gradient(1px 1px at 75% 25%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(1px 1px at 85% 50%, #fff, transparent),
-    radial-gradient(1px 1px at 95% 15%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1.5px 1.5px at 10% 60%, rgba(255,255,255,0.7), transparent),
-    radial-gradient(2px 2px at 20% 80%, #fff, transparent),
-    radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1.5px 1.5px at 40% 90%, #fff, transparent),
-    radial-gradient(1px 1px at 50% 65%, rgba(255,255,255,0.5), transparent),
-    radial-gradient(2px 2px at 60% 85%, #fff, transparent),
-    radial-gradient(1px 1px at 70% 55%, rgba(255,255,255,0.9), transparent),
-    radial-gradient(1px 1px at 80% 95%, #fff, transparent),
-    radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(2px 2px at 100% 60%, #fff, transparent);
-  background-size: 300px 300px;
-  background-repeat: repeat;
-  animation: vg-stars-bg 150s linear infinite;
+  background: #000510;
   border-radius: 12px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
-}
-
-@keyframes vg-stars-bg {
-  from { background-position: 0 0; }
-  to { background-position: -300px 300px; }
 }
 
 /* ── View mode: pantalla completa ────────────────────── */
