@@ -235,6 +235,6 @@
 
 /* ── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .vg-root { height: 380px; }
+  .vg-root:not(.vg-root--fullscreen) { height: 380px; }
   .vg-btn-abrir { padding: 12px 28px; font-size: 0.9rem; }
 }
