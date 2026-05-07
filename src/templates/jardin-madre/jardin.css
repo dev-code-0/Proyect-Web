@@ -110,6 +110,14 @@
   color: #fff;
 }
 
+.jm-splash-loading {
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  animation: jm-pulse 1.5s ease-in-out infinite;
+}
+
 /* ─── Title (in scene) ───────────────────────────────────────────────── */
 .jm-titulo {
   position: absolute;

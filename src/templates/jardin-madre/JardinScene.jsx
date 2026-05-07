@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useJardin } from './useJardin';
 import './jardin.css';
+import defaultMusic from './music.mp3';
 
 // ─── Placeholder photos (canvas-generated) ───────────────────────────────────
 const PLACEHOLDER_PALETTES = {
@@ -59,6 +60,26 @@ const IconFlower = ({ size = 22 }) => (
 const IconClose = ({ size = 12 }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" width={size} height={size} aria-hidden="true">
     <path d="M6 6l12 12M18 6L6 18"/>
+  </svg>
+);
+
+const IconCamera = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width={size} height={size}>
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+    <circle cx="12" cy="13" r="4"/>
+  </svg>
+);
+
+const IconPlay = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size}>
+    <polygon points="5 3 19 12 5 21 5 3"/>
+  </svg>
+);
+
+const IconPause = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size}>
+    <rect x="6" y="4" width="4" height="16"/>
+    <rect x="14" y="4" width="4" height="16"/>
   </svg>
 );
 
@@ -127,7 +148,14 @@ function useTypewriter(text, speed = 35) {
 
 // ─── Splash screen ────────────────────────────────────────────────────────────
 function SplashScreen({ titulo, mensaje, para, glow, onStart }) {
+  const [loading, setLoading] = useState(true);
   const iconColor = glow.replace('rgba(', 'rgb(').replace(/,[^,)]+\)/, ')');
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 2400);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <div className="jm-splash">
       <div className="jm-splash-card">
@@ -147,10 +175,13 @@ function SplashScreen({ titulo, mensaje, para, glow, onStart }) {
           <p className="jm-splash-mensaje">{mensaje}</p>
         )}
 
-        <button className="jm-splash-btn" onClick={onStart}
-          style={{ borderColor: glow }}>
-          Entrar al jardín
-        </button>
+        {loading ? (
+          <p className="jm-splash-loading" style={{ color: glow }}>Cargando la magia...</p>
+        ) : (
+          <button className="jm-splash-btn" onClick={onStart} style={{ borderColor: glow }}>
+            Entrar al jardín
+          </button>
+        )}
       </div>
     </div>
   );
@@ -224,15 +255,38 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
 
   // Stable ref so Three.js never captures stale closure
   const onFlowerClickRef = useRef(null);
+  const [touring, setTouring] = useState(false);
+  const [tourIndex, setTourIndex] = useState(0);
+
   useEffect(() => {
-    onFlowerClickRef.current = (idx) =>
+    onFlowerClickRef.current = (idx) => {
+      setTouring(false); // Stop tour if user clicks manually
       setActiveFlower((prev) => (prev === idx ? null : idx));
+    };
   }, []);
+
+  // Tour logic
+  useEffect(() => {
+    let timer;
+    if (touring) {
+      if (activeFlower === null) {
+        timer = setTimeout(() => {
+          setActiveFlower(tourIndex);
+        }, 1500); // Wait 1.5s between flowers
+      } else {
+        timer = setTimeout(() => {
+          setActiveFlower(null);
+          setTourIndex((prev) => (prev + 1) % displayFotos.length);
+        }, 7500); // 7.5s to read the message
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [touring, activeFlower, tourIndex, displayFotos.length]);
 
   // Memoize so the Three.js effect only restarts on meaningful changes
   const enrichedData = useMemo(() => ({
     tema:         data?.tema,
-    musica:       data?.musica,
+    musica:       data?.musica || defaultMusic,
     displayFotos,
   }), [data?.tema, data?.musica, displayFotos]);
 
@@ -241,6 +295,12 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
   const handleFullscreen = () => {
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
+  };
+
+  const handleTakePhoto = () => {
+    if (containerRef.current?.takePhoto) {
+      containerRef.current.takePhoto();
+    }
   };
 
   return (
@@ -264,6 +324,12 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
 
       {/* Controls */}
       <div className="jm-controls">
+        <button className="jm-btn" onClick={() => setTouring(!touring)} title={touring ? "Pausar tour" : "Modo tour automático"} aria-label="Tour">
+          {touring ? <IconPause /> : <IconPlay />}
+        </button>
+        <button className="jm-btn" onClick={handleTakePhoto} title="Tomar foto" aria-label="Foto">
+          <IconCamera />
+        </button>
         <button className="jm-btn" onClick={replayIntro} title="Reiniciar animación" aria-label="Reiniciar">
           <IconReplay />
         </button>

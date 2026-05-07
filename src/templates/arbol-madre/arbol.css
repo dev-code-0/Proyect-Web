@@ -130,9 +130,7 @@
   pointer-events: none;
   z-index: 10;
   white-space: nowrap;
-  max-width: 65vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 85vw;
   animation: am-fade-in 1.2s ease forwards;
 }
 

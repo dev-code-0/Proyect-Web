@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import imageCompression from 'browser-image-compression';
 import { supabase } from '../lib/supabase';
+import CitySearch from '../templates/vuelo-global/CitySearch';
 import '../styles/modal.css';
 
 const MAX_IMAGE_SIZE_MB = 8;
@@ -280,6 +281,13 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   value={formData[field.name] ?? ''}
                   onChange={(e) => handleChange(e, field)}
                   required={field.required ?? !field.label.includes('(Opcional)')}
+                />
+              ) : field.type === 'city' ? (
+                <CitySearch
+                  value={formData[field.name]}
+                  onChange={(cityObj) => setFormData({ ...formData, [field.name]: cityObj })}
+                  placeholder={field.placeholder || ''}
+                  accentColor="var(--accent)"
                 />
               ) : (
                 <input

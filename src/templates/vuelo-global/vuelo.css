@@ -6,9 +6,38 @@
   width: 100%;
   height: 520px;
   overflow: hidden;
-  background: #000510;
+  background-color: #03020a;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 5% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 15% 30%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(2px 2px at 25% 5%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 45%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 45% 15%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 55% 40%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(2px 2px at 65% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 75% 25%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 85% 50%, #fff, transparent),
+    radial-gradient(1px 1px at 95% 15%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 10% 60%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 20% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 40% 90%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 65%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 60% 85%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 55%, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 80% 95%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 75%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(2px 2px at 100% 60%, #fff, transparent);
+  background-size: 300px 300px;
+  background-repeat: repeat;
+  animation: vg-stars-bg 150s linear infinite;
   border-radius: 12px;
   font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+@keyframes vg-stars-bg {
+  from { background-position: 0 0; }
+  to { background-position: -300px 300px; }
 }
 
 /* ── View mode: pantalla completa ────────────────────── */
@@ -18,277 +47,59 @@
   width: 100vw;
   height: 100vh;
   border-radius: 0;
+  z-index: 9999;
 }
 
-.vg-canvas-wrap {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.vg-canvas-wrap canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ── Overlay backdrop (panel modal en preview) ───────── */
-.vg-overlay {
-  position: absolute;
-  inset: 0;
+/* ── Pines de Origen y Destino ───────────────────────── */
+.vg-pin {
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid white;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 100;
-  animation: vg-fade-in 0.2s ease;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transform: translateY(12px); /* anchor bottom offset */
 }
 
-@keyframes vg-fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* ── Glassmorphism Panel ─────────────────────────────── */
-.vg-panel {
-  position: relative;
-  width: 310px;
-  max-height: 90%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(8, 10, 28, 0.88);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.06);
-  padding: 22px 18px 18px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.1) transparent;
-  animation: vg-panel-in 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes vg-panel-in {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-
-.vg-panel::-webkit-scrollbar { width: 4px; }
-.vg-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
-
-/* ── Panel Header ────────────────────────────────────── */
-.vg-panel-header {
+/* ── Vehículos ───────────────────────────────────────── */
+.vg-vehicle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
 }
 
-.vg-plane-icon {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-}
-
-.vg-panel-title {
-  flex: 1;
-  font-size: 1rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.02em;
-}
-
-.vg-panel-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: rgba(255,255,255,0.4);
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  transition: color 0.15s;
-}
-.vg-panel-close:hover { color: rgba(255,255,255,0.8); }
-
-/* ── Form Fields ─────────────────────────────────────── */
-.vg-field {
-  margin-bottom: 13px;
-  position: relative;
-}
-
-.vg-label {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  margin-bottom: 5px;
-}
-
-/* ── Inputs ──────────────────────────────────────────── */
-.vg-text-input {
-  width: 100%;
-  padding: 9px 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9px;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 0.85rem;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
-  box-sizing: border-box;
-}
-
-.vg-text-input:focus {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.09);
-}
-
-.vg-text-input::placeholder { color: rgba(255, 255, 255, 0.25); }
-
-.vg-textarea {
-  resize: none;
-  min-height: 68px;
-  line-height: 1.5;
-}
-
-.vg-char-count {
-  position: absolute;
-  right: 0;
-  bottom: -17px;
-  font-size: 0.64rem;
-  color: rgba(255,255,255,0.28);
-}
-
-/* ── City Search ─────────────────────────────────────── */
-.vg-city-wrap { position: relative; }
-
-.vg-input-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9px;
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.vg-input-row:focus-within {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.09);
-}
-
-.vg-input-row--loading { animation: vg-pulse-border 1s ease-in-out infinite; }
-
-@keyframes vg-pulse-border {
-  0%, 100% { border-color: rgba(255,255,255,0.1); }
-  50%       { border-color: rgba(255,255,255,0.32); }
-}
-
-.vg-pin-icon { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.9; }
-
-.vg-input-row .vg-text-input {
-  border: none;
-  background: transparent;
-  padding: 9px 0;
-}
-.vg-input-row .vg-text-input:focus {
-  border: none;
-  background: transparent;
-}
-
-.vg-dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0; right: 0;
-  background: rgba(10, 12, 30, 0.98);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  list-style: none;
-  margin: 0;
-  padding: 4px;
-  z-index: 300;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.7);
-}
-
-.vg-item {
-  display: flex;
-  flex-direction: column;
-  padding: 8px 11px;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.vg-item:hover { background: rgba(255, 255, 255, 0.07); }
-
-.vg-city-name { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.9); }
-.vg-country   { font-size: 0.7rem; color: rgba(255,255,255,0.38); margin-top: 1px; }
-
-.vg-no-results {
-  font-size: 0.76rem;
-  color: rgba(255,255,255,0.32);
-  text-align: center;
-  padding: 9px;
-  background: rgba(10,12,30,0.98);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 9px;
-  margin-top: 4px;
-}
-
-/* ── Theme Swatches ──────────────────────────────────── */
-.vg-swatches { display: flex; gap: 10px; align-items: center; margin-top: 2px; }
-
-.vg-swatch {
-  width: 26px; height: 26px;
+.vg-car {
+  font-size: 20px;
   border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform 0.18s, border-color 0.18s, box-shadow 0.18s;
-  outline: none;
-  padding: 0;
-}
-.vg-swatch:hover { transform: scale(1.1); }
-.vg-swatch--active {
-  border-color: white;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
-  transform: scale(1.15);
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid #fff;
+  box-shadow: 0 0 15px currentColor;
 }
 
-/* ── Save Button ─────────────────────────────────────── */
-.vg-btn-save {
-  width: 100%;
-  margin-top: 4px;
-  padding: 11px;
-  border: none;
-  border-radius: 11px;
-  background: var(--vg-accent, #e879f9);
-  color: white;
-  font-size: 0.88rem;
-  font-weight: 600;
-  font-family: inherit;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: opacity 0.18s, transform 0.14s;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+.vg-plane {
+  /* color se inyecta via react */
 }
-.vg-btn-save:hover  { opacity: 0.85; transform: translateY(-1px); }
-.vg-btn-save:active { transform: translateY(0); opacity: 1; }
 
-/* ── "Abrir mensaje" button (view mode, after arrival) ── */
-.vg-btn-abrir {
-  position: fixed;
+/* ── Contenedor del Botón Abrir ──────────────────────── */
+.vg-abrir-container {
+  position: absolute;
   bottom: 44px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 200;
+}
+
+/* ── "Abrir mensaje" button ── */
+.vg-btn-abrir {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -302,15 +113,14 @@
   font-family: inherit;
   letter-spacing: 0.04em;
   cursor: pointer;
-  z-index: 200;
   box-shadow: 0 0 36px var(--vg-glow, #7c3aed), 0 6px 24px rgba(0,0,0,0.6);
   animation: vg-abrir-appear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
              vg-abrir-pulse 2.5s 0.5s ease-in-out infinite;
 }
 
 @keyframes vg-abrir-appear {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.85); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1); }
+  from { opacity: 0; transform: translateY(20px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
 @keyframes vg-abrir-pulse {
@@ -426,6 +236,5 @@
 /* ── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {
   .vg-root { height: 380px; }
-  .vg-panel { width: 92vw; max-height: 80vh; }
-  .vg-btn-abrir { bottom: 30px; padding: 12px 28px; font-size: 0.9rem; }
+  .vg-btn-abrir { padding: 12px 28px; font-size: 0.9rem; }
 }

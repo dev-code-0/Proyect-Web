@@ -61,6 +61,7 @@ import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
 import { galaxiaMomentosConfig } from "../templates/galaxia-momentos/config.js";
 
 import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
+import { vueloGlobalConfig } from "../templates/vuelo-global/config.js";
 
 import ArbolMadre from "../templates/arbol-madre/index.jsx";
 import { arbolMadreConfig } from "../templates/arbol-madre/config.js";
@@ -164,14 +165,7 @@ export default function Preview() {
       case "jardin-madre":
         return <JardinMadre data={previewData} />;
       case "vuelo-global":
-        return (
-          <VueloGlobalTemplate
-            isPreview={true}
-            onSave={handleSaveConfig}
-            showPanel={showCustomizeModal}
-            onPanelClose={() => setShowCustomizeModal(false)}
-          />
-        );
+        return <VueloGlobalTemplate data={previewData} isPreview={true} />;
       default:
         return ( 
           <p>
@@ -201,7 +195,7 @@ export default function Preview() {
     if (id === "galaxia-momentos") return galaxiaMomentosConfig;
     if (id === "arbol-madre") return arbolMadreConfig;
     if (id === "jardin-madre") return jardinMadreConfig;
-    // vuelo-global manages its own UI — no CustomizeModal config needed
+    if (id === "vuelo-global") return vueloGlobalConfig;
 
     return { name: "Proyecto genérico", fields: [] };
   };
@@ -223,8 +217,8 @@ export default function Preview() {
 
       <Link to="/" className="btn-volver">Volver</Link>
 
-      {/* Modal para rellenar datos — vuelo-global lo gestiona internamente */}
-      {showCustomizeModal && id !== "vuelo-global" &&
+      {/* Modal para rellenar datos */}
+      {showCustomizeModal &&
         (id === "rosa-virtual" ? (
           <RosaCreator onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
         ) : (

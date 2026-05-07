@@ -1,6 +1,9 @@
 import { useEffect, useRef, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // ─── Theme palettes ──────────────────────────────────────────────────────────
 const THEMES = {
@@ -42,6 +45,26 @@ function shuffle(arr, rand) {
   return arr;
 }
 
+function playChime() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(660, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 1.2);
+  } catch(e) {}
+}
+
 // ─── Generate procedural tree branches ───────────────────────────────────────
 // Returns array of { start, end, radius } branch descriptors and tip positions
 function generateTree() {
@@ -61,21 +84,21 @@ function generateTree() {
 
     const numChildren = depth > 2 ? 3 : 2;
     for (let i = 0; i < numChildren; i++) {
-      const angle = (i / numChildren) * Math.PI * 2 + Math.random() * 0.5;
-      const tilt  = 0.38 + Math.random() * 0.28;
+      const angle = (i / numChildren) * Math.PI * 2 + (Math.random() - 0.5) * 1.5;
+      const tilt  = 0.45 + Math.random() * 0.4;
       const newDir = new THREE.Vector3(
         dir.x + Math.sin(angle) * tilt,
-        dir.y - 0.08 + Math.random() * 0.15,
+        dir.y - 0.05 + Math.random() * 0.15,
         dir.z + Math.cos(angle) * tilt,
       ).normalize();
-      branch(end, newDir, len * (0.64 + Math.random() * 0.1), radius * 0.62, depth - 1);
+      branch(end, newDir, len * (0.68 + Math.random() * 0.1), radius * 0.62, depth - 1);
     }
   }
 
   // Trunk
   const trunkStart = new THREE.Vector3(0, 0, 0);
   const trunkDir   = new THREE.Vector3(0, 1, 0);
-  branch(trunkStart, trunkDir, 4.5, 0.38, 4);
+  branch(trunkStart, trunkDir, 5.0, 0.45, 4);
 
   return { branches, tipPositions };
 }
@@ -189,10 +212,23 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     scene.add(fillLight);
 
     // ── GROUND PLANE ──────────────────────────────────────────────────────
-    const groundGeo  = new THREE.CircleGeometry(28, 48);
+    const groundCanvas = document.createElement('canvas');
+    groundCanvas.width = groundCanvas.height = 512;
+    const gctx = groundCanvas.getContext('2d');
+    const grd = gctx.createRadialGradient(256, 256, 0, 256, 256, 256);
+    grd.addColorStop(0, '#ffffff');
+    grd.addColorStop(0.7, '#444444');
+    grd.addColorStop(1, '#000000');
+    gctx.fillStyle = grd;
+    gctx.fillRect(0, 0, 512, 512);
+    const groundTex = new THREE.CanvasTexture(groundCanvas);
+
+    const groundGeo  = new THREE.CircleGeometry(35, 64);
     const groundMat  = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(tema.trunk).multiplyScalar(0.35),
+      color: new THREE.Color(tema.trunk).multiplyScalar(0.4),
+      map: groundTex,
       roughness: 1.0, metalness: 0.0,
+      transparent: true, opacity: 0.95
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
@@ -246,23 +282,35 @@ export function useArbol(containerRef, data, onLeafClickRef) {
 
     for (let i = 0; i < Math.min(tipPositions.length, actualLeafSlots); i++) {
       const { position } = tipPositions[order[i]];
+      const baseScale = 0.8 + Math.random() * 0.4;
 
-      // Placeholder while texture loads
+      const leafGroup = new THREE.Group();
+      leafGroup.position.copy(position);
+      leafGroup.userData.index     = i;
+      leafGroup.userData.basePos   = position.clone();
+      leafGroup.userData.phase     = (i / tipPositions.length) * Math.PI * 2;
+      leafGroup.userData.baseScale = baseScale;
+      leafGroup.scale.setScalar(baseScale);
+
+      const frameGeo = new THREE.TorusGeometry(LEAF_R + 0.03, 0.03, 16, 48);
+      const frameMat = new THREE.MeshBasicMaterial({ 
+        color: new THREE.Color(tema.leaf).lerp(new THREE.Color(0xffffff), 0.5) 
+      });
+      const frameMesh = new THREE.Mesh(frameGeo, frameMat);
+      leafGroup.add(frameMesh);
+
       const placeholderTex = makePlaceholderTexture(i % 8, tema.leaf);
       const mat  = new THREE.MeshBasicMaterial({
+        color: 0xcccccc, // Ligeramente oscuro para evitar que la foto brille
         map: placeholderTex, transparent: true, opacity: 0.0,
         side: THREE.DoubleSide, depthWrite: false,
       });
       const mesh = new THREE.Mesh(leafGeoBase, mat);
-      mesh.position.copy(position);
-      mesh.userData.index     = i;
-      mesh.userData.basePos   = position.clone();
-      mesh.userData.phase     = (i / tipPositions.length) * Math.PI * 2;
-      mesh.userData.loaded    = true; // placeholder is loaded
-      treeGroup.add(mesh);
-      leafMeshes.push(mesh);
+      leafGroup.add(mesh);
 
-      // Load real photo if available
+      treeGroup.add(leafGroup);
+      leafMeshes.push(leafGroup);
+
       const fotoSrc = fotos[i % fotos.length];
       if (fotoSrc) {
         loader.load(fotoSrc, (tex) => {
@@ -279,6 +327,42 @@ export function useArbol(containerRef, data, onLeafClickRef) {
         });
       }
     }
+
+    // ── FILLER LEAVES ─────────────────────────────────────────────────────
+    const fillerCount = 450;
+    const fillerGeo = new THREE.CircleGeometry(0.3, 7);
+    const fillerMat = new THREE.MeshStandardMaterial({
+      color: tema.leaf,
+      roughness: 0.6,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.85
+    });
+    const fillerInstanced = new THREE.InstancedMesh(fillerGeo, fillerMat, fillerCount);
+    const dummy = new THREE.Object3D();
+    
+    // Filtrar para colocar hojas solo en las ramas más delgadas (las altas)
+    const thinBranches = branches.filter(b => b.radius < 0.2);
+    const targetBranches = thinBranches.length > 0 ? thinBranches : branches;
+
+    for (let i = 0; i < fillerCount; i++) {
+        if (targetBranches.length === 0) break;
+        const b = targetBranches[Math.floor(Math.random() * targetBranches.length)];
+        const t = Math.random(); // punto aleatorio a lo largo de la rama
+        const pos = b.start.clone().lerp(b.end, t);
+        
+        // Offset esférico pequeño para que rodeen la rama
+        const offsetR = 0.1 + Math.random() * 0.7; 
+        const randDir = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+        pos.add(randDir.multiplyScalar(offsetR));
+
+        dummy.position.copy(pos);
+        dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+        dummy.scale.setScalar(0.3 + Math.random()*0.5);
+        dummy.updateMatrix();
+        fillerInstanced.setMatrixAt(i, dummy.matrix);
+    }
+    treeGroup.add(fillerInstanced);
 
     // ── FLOATING PARTICLES ────────────────────────────────────────────────
     const PART_COUNT  = 320;
@@ -357,16 +441,28 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       if (phase !== 'explore') return;
       updatePointer(e);
       raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects(leafMeshes);
-      if (hits.length > 0) onLeafClickRef.current?.(hits[0].object.userData.index);
+      const hits = raycaster.intersectObjects(leafMeshes, true);
+      if (hits.length > 0) {
+        let obj = hits[0].object;
+        while (obj.parent && obj.userData.index === undefined) obj = obj.parent;
+        if (obj.userData.index !== undefined) {
+          playChime();
+          onLeafClickRef.current?.(obj.userData.index);
+        }
+      }
     };
 
     const handlePointerMove = (e) => {
       if (phase !== 'explore') { hoveredIdx = -1; return; }
       updatePointer(e);
       raycaster.setFromCamera(pointer, camera);
-      const hits    = raycaster.intersectObjects(leafMeshes);
-      const newHov  = hits.length > 0 ? hits[0].object.userData.index : -1;
+      const hits    = raycaster.intersectObjects(leafMeshes, true);
+      let newHov = -1;
+      if (hits.length > 0) {
+        let obj = hits[0].object;
+        while (obj.parent && obj.userData.index === undefined) obj = obj.parent;
+        if (obj.userData.index !== undefined) newHov = obj.userData.index;
+      }
       if (newHov !== hoveredIdx) {
         hoveredIdx = newHov;
         renderer.domElement.style.cursor = newHov >= 0 ? 'pointer' : 'default';
@@ -376,12 +472,23 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
     renderer.domElement.addEventListener('pointermove', handlePointerMove);
 
+    // ── POST-PROCESSING (BLOOM) ───────────────────────────────────────────
+    const renderScene = new RenderPass(scene, camera);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
+    bloomPass.threshold = 0.85; // Alto umbral para que solo brille lo muy claro (el marco)
+    bloomPass.strength = 1.2; 
+    bloomPass.radius = 0.6;
+    const composer = new EffectComposer(renderer);
+    composer.addPass(renderScene);
+    composer.addPass(bloomPass);
+
     // ── RESIZE ────────────────────────────────────────────────────────────
     const handleResize = () => {
       if (!container) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
+      composer.setSize(container.clientWidth, container.clientHeight);
     };
     window.addEventListener('resize', handleResize);
 
@@ -429,8 +536,12 @@ export function useArbol(containerRef, data, onLeafClickRef) {
         camera.lookAt(0, 3 * s, 0);
 
         // Fade-in leaves as tree grows
-        leafMeshes.forEach(m => {
-          m.material.opacity = Math.min(m.material.opacity + 0.008, s * 0.9 + 0.1);
+        leafMeshes.forEach(grp => {
+          grp.children.forEach(c => {
+            if (c.material && c.material.transparent) {
+              c.material.opacity = Math.min(c.material.opacity + 0.008, s * 0.9 + 0.1);
+            }
+          });
         });
 
         if (growT >= 1) { phase = 'intro'; introT = 0; }
@@ -469,26 +580,30 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       partGeo.attributes.position.needsUpdate = true;
 
       // ── LEAF FLOAT & HOVER ────────────────────────────────────────────
-      leafMeshes.forEach((mesh, i) => {
-        const bp   = mesh.userData.basePos;
-        const ph   = mesh.userData.phase;
-        mesh.position.set(
-          bp.x + Math.sin(time * 0.5 + ph) * 0.12,
-          bp.y + Math.sin(time * 0.4 + ph + 1) * 0.08,
-          bp.z + Math.cos(time * 0.45 + ph) * 0.10,
+      leafMeshes.forEach((grp, i) => {
+        const bp   = grp.userData.basePos;
+        const ph   = grp.userData.phase;
+        const bs   = grp.userData.baseScale;
+        
+        grp.position.set(
+          bp.x + Math.sin(time * 0.5 + ph) * 0.15,
+          bp.y + Math.sin(time * 0.4 + ph + 1) * 0.1,
+          bp.z + Math.cos(time * 0.45 + ph) * 0.12,
         );
-        mesh.lookAt(camera.position);
+        grp.lookAt(camera.position);
+        
+        grp.rotation.z += Math.sin(time * 0.8 + ph) * 0.05;
 
         const isHover     = i === hoveredIdx;
-        const targetScale = isHover ? 1.22 : 1.0;
-        const cur         = mesh.scale.x;
-        mesh.scale.setScalar(cur + (targetScale - cur) * 0.15);
+        const targetScale = isHover ? bs * 1.25 : bs;
+        const cur         = grp.scale.x;
+        grp.scale.setScalar(cur + (targetScale - cur) * 0.15);
       });
 
       // Slow tree sway
       treeGroup.rotation.z = Math.sin(time * 0.18) * 0.012;
 
-      renderer.render(scene, camera);
+      composer.render();
     };
     raf = requestAnimationFrame(animate);
 

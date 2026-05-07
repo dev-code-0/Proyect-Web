@@ -1,6 +1,10 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { Reflector } from 'three/addons/objects/Reflector.js';
 
 // ─── Theme palettes ──────────────────────────────────────────────────────────
 const THEMES = {
@@ -35,6 +39,26 @@ const PHRASES = [
 
 function easeInOutCubic(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function playChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800 + Math.random() * 400, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 1.2);
+  } catch (e) {
+    // AudioContext might be blocked, that's fine
+  }
 }
 
 function makePetalTexture(hexColor) {
@@ -206,7 +230,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     const SHOOTER_INTERVAL_MAX = isMobile ? 9500 : 8500;
 
     // ── RENDERER ─────────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setClearColor(tema.bg, 1);
@@ -225,57 +249,83 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     camera.position.set(0, 80, 0.1);
     camera.lookAt(0, 2, 0);
 
+    // ── POST PROCESSING (BLOOM) ───────────────────────────────────────────────
+    const renderTarget = new THREE.WebGLRenderTarget(
+      container.clientWidth, container.clientHeight,
+      { type: THREE.HalfFloatType, format: THREE.RGBAFormat }
+    );
+    const renderScene = new RenderPass(scene, camera);
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.5, 0.35, 1.0);
+    // threshold = 1.0 asegura que solo los objetos con HDR (color > 1) brillen.
+    const composer = new EffectComposer(renderer, renderTarget);
+    composer.addPass(renderScene);
+    composer.addPass(bloomPass);
+
     // ── CONTROLS ─────────────────────────────────────────────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.minDistance = 4;
-    controls.maxDistance = 55;
+    controls.minDistance = 8;
+    controls.maxDistance = 65;
     controls.maxPolarAngle = Math.PI / 2 + 0.08;
     controls.target.set(0, 2, 0);
     controls.enabled = false;
 
-    // ── GROUND GLOW ───────────────────────────────────────────────────────────
+    // ── GROUND GLOW & REFLECTOR (LAGO) ───────────────────────────────────────
+    const mirrorGeo = new THREE.CircleGeometry(60, 64);
+    const groundMirror = new Reflector(mirrorGeo, {
+      clipBias: 0.003,
+      textureWidth: container.clientWidth * window.devicePixelRatio,
+      textureHeight: container.clientHeight * window.devicePixelRatio,
+      color: 0x222222,
+    });
+    groundMirror.rotation.x = -Math.PI / 2;
+    scene.add(groundMirror);
+
     const glowTex = makeGlowTexture();
     {
       const geo = new THREE.PlaneGeometry(120, 120);
       const mat = new THREE.MeshBasicMaterial({
-        color: tema.primary,
+        color: new THREE.Color(tema.primary).multiplyScalar(1.8),
         map: glowTex,
         transparent: true,
-        opacity: 0.07,
+        opacity: 0.09,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       });
       const groundGlow = new THREE.Mesh(geo, mat);
       groundGlow.rotation.x = -Math.PI / 2;
-      groundGlow.position.y = 0.01;
+      groundGlow.position.y = 0.02;
       scene.add(groundGlow);
     }
 
     // ── AMBIENT GROUND PARTICLES (fireflies) ──────────────────────────────────
-    {
-      const N = 280;
-      const pos = new Float32Array(N * 3);
-      for (let i = 0; i < N; i++) {
-        const r = 3 + Math.random() * 45;
-        const a = Math.random() * Math.PI * 2;
-        pos[i * 3]     = Math.cos(a) * r;
-        pos[i * 3 + 1] = Math.random() * 1.5;
-        pos[i * 3 + 2] = Math.sin(a) * r;
-      }
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
-        color: tema.primary,
-        size: 0.22,
-        sizeAttenuation: true,
-        transparent: true,
-        opacity: 0.38,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      })));
+    const N_FIREFLIES = 280;
+    const fireflyPos = new Float32Array(N_FIREFLIES * 3);
+    const fireflyBase = new Float32Array(N_FIREFLIES * 3);
+    for (let i = 0; i < N_FIREFLIES; i++) {
+      const r = 3 + Math.random() * 45;
+      const a = Math.random() * Math.PI * 2;
+      const h = Math.random() * 2.5;
+      fireflyPos[i * 3]     = Math.cos(a) * r;
+      fireflyPos[i * 3 + 1] = h;
+      fireflyPos[i * 3 + 2] = Math.sin(a) * r;
+      fireflyBase[i * 3]     = Math.cos(a) * r;
+      fireflyBase[i * 3 + 1] = h;
+      fireflyBase[i * 3 + 2] = Math.sin(a) * r;
     }
+    const fireflyGeo = new THREE.BufferGeometry();
+    fireflyGeo.setAttribute('position', new THREE.BufferAttribute(fireflyPos, 3));
+    const firefliesPoints = new THREE.Points(fireflyGeo, new THREE.PointsMaterial({
+      color: new THREE.Color(tema.primary).multiplyScalar(2.5),
+      size: 0.35,
+      sizeAttenuation: true,
+      transparent: true,
+      opacity: 0.6,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    }));
+    scene.add(firefliesPoints);
 
     const starSpot = makeStarSpotTexture();
 
@@ -340,16 +390,16 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     // ── SATURN CENTERPIECE ───────────────────────────────────────────────
     const saturnTex = makeSaturnTexture(tema.saturnA, tema.saturnB);
     const saturnBody = new THREE.Mesh(
-      new THREE.SphereGeometry(3.2, 48, 48),
+      new THREE.SphereGeometry(2.4, 88, 48),
       new THREE.MeshBasicMaterial({ map: saturnTex })
     );
     saturnBody.position.set(0, 4.4, 0);
     scene.add(saturnBody);
 
     const saturnHalo = new THREE.Mesh(
-      new THREE.SphereGeometry(4.4, 32, 32),
+      new THREE.SphereGeometry(3.4, 32, 32),
       new THREE.MeshBasicMaterial({
-        color: tema.primary,
+        color: new THREE.Color(tema.primary).multiplyScalar(1.5),
         transparent: true,
         opacity: 0.12,
         side: THREE.BackSide,
@@ -362,14 +412,14 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     const saturnRings = [];
     const RING_TILT = Math.PI * 0.28;
     [
-      { inner: 3.8, outer: 5.2, opacity: 0.32 },
-      { inner: 5.4, outer: 6.6, opacity: 0.20 },
-      { inner: 6.9, outer: 7.8, opacity: 0.12 },
+      { inner: 3.0, outer: 4.2, opacity: 0.32 },
+      { inner: 4.4, outer: 5.4, opacity: 0.20 },
+      { inner: 5.6, outer: 6.4, opacity: 0.12 },
     ].forEach(({ inner, outer, opacity }) => {
       const ring = new THREE.Mesh(
         new THREE.RingGeometry(inner, outer, 64),
         new THREE.MeshBasicMaterial({
-          color: tema.primary,
+          color: new THREE.Color(tema.primary).multiplyScalar(1.8),
           transparent: true,
           opacity,
           side: THREE.DoubleSide,
@@ -387,10 +437,12 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     const circleMask = makeCircleAlphaMask();
 
     // ── FLOWER GEOMETRY ───────────────────────────────────────────────────────
-    const PETAL_COUNT  = 6;
+    const isGirasoles = data.tema === 'girasoles';
+    const isPrimavera = data.tema === 'primavera';
+    const PETAL_COUNT  = isGirasoles ? 14 : (isPrimavera ? 8 : 6);
     const PHOTO_RADIUS = 1.25;
-    const PETAL_W      = 1.05;
-    const PETAL_H      = 1.85;
+    const PETAL_W      = isGirasoles ? 0.5 : 1.05;
+    const PETAL_H      = isGirasoles ? 1.4 : 1.85;
     const PETAL_OFFSET = PHOTO_RADIUS + PETAL_H * 0.42;
 
     const petalGeo = new THREE.PlaneGeometry(PETAL_W, PETAL_H);
@@ -404,7 +456,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     // Spiral scatter pattern for flower positions
     for (let i = 0; i < FLOWER_COUNT; i++) {
       const angle  = (i / FLOWER_COUNT) * Math.PI * 2 + (i % 2) * 0.6;
-      const spread = 6 + (i % 4) * 4.5;
+      const spread = 9 + (i % 4) * 5.0;
       const jitter = (Math.random() - 0.5) * 3.5;
       const x = Math.cos(angle) * spread + Math.sin(angle * 2) * jitter;
       const z = Math.sin(angle) * spread + Math.cos(angle * 2) * jitter;
@@ -429,13 +481,15 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       flowerHead.position.y = stemH + 0.05;
 
       // Petals
+      const petalIntensity = isGirasoles ? 1.25 : 1.8;
       const petalMatBase = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(petalIntensity, petalIntensity, petalIntensity),
         map: petalTex,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.95,
         side: THREE.DoubleSide,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        // Eliminamos el AdditiveBlending para que al superponerse (ej. 14 pétalos de girasol) no se sume la luz hasta quemar la imagen
       });
 
       for (let p = 0; p < PETAL_COUNT; p++) {
@@ -448,9 +502,10 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       }
 
       // Glow ring behind photo
+      const glowIntensity = isGirasoles ? 1.15 : 1.5;
       const glowGeo = new THREE.CircleGeometry(PHOTO_RADIUS * 1.55, 32);
       const glowMat = new THREE.MeshBasicMaterial({
-        color: tema.primary,
+        color: new THREE.Color(tema.primary).multiplyScalar(glowIntensity),
         transparent: true,
         opacity: 0.18,
         depthWrite: false,
@@ -515,7 +570,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     fallGeo.setAttribute('position', new THREE.BufferAttribute(fallBuf, 3));
     const fallTex = makeFallingPetalTexture();
     const fallPoints = new THREE.Points(fallGeo, new THREE.PointsMaterial({
-      color: tema.particle,
+      color: new THREE.Color(tema.particle).multiplyScalar(2.5),
       size: 0.32,
       sizeAttenuation: true,
       map: fallTex,
@@ -529,8 +584,8 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     // ── SHOOTING STARS + PHRASES ─────────────────────────────────────────
     const SHOOTER_LIFE_MIN = 1.1;
     const SHOOTER_LIFE_MAX = 1.9;
-    const SHOOTER_SPEED_MIN = isMobile ? 18 : 22;
-    const SHOOTER_SPEED_MAX = isMobile ? 28 : 34;
+    const SHOOTER_SPEED_MIN = isMobile ? 8 : 12;
+    const SHOOTER_SPEED_MAX = isMobile ? 14 : 18;
     const SHOOTER_TAIL_MIN = 4.5;
     const SHOOTER_TAIL_MAX = 7.5;
     const rand = (min, max) => min + Math.random() * (max - min);
@@ -560,7 +615,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     for (let i = 0; i < SHOOTER_MAX_ACTIVE; i++) {
       const head = new THREE.Sprite(new THREE.SpriteMaterial({
         map: starSpot,
-        color: 0xffffff,
+        color: new THREE.Color(2.5, 2.5, 2.5),
         transparent: true,
         opacity: 0.9,
         depthWrite: false,
@@ -574,7 +629,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       const tailGeo = new THREE.BufferGeometry();
       tailGeo.setAttribute('position', new THREE.BufferAttribute(tailPos, 3));
       const tail = new THREE.Line(tailGeo, new THREE.LineBasicMaterial({
-        color: tema.primary,
+        color: new THREE.Color(tema.primary).multiplyScalar(2.5),
         transparent: true,
         opacity: 0.6,
         depthWrite: false,
@@ -605,9 +660,9 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       star.life = rand(SHOOTER_LIFE_MIN, SHOOTER_LIFE_MAX);
       star.tailLen = rand(SHOOTER_TAIL_MIN, SHOOTER_TAIL_MAX);
 
-      const radius = rand(25, 60);
+      const radius = rand(15, 35);
       const angle = Math.random() * Math.PI * 2;
-      const height = rand(16, 30);
+      const height = rand(12, 22);
       star.position.set(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
 
       const dirAngle = angle + Math.PI * (0.55 + Math.random() * 0.6);
@@ -631,19 +686,19 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       }
       const phrase = nextPhrase();
       const sprite = makeTextSprite(phrase, tema.primary);
+      sprite.material.color = new THREE.Color(2.5, 2.5, 2.5);
       sprite.material.opacity = 0;
       star.text = sprite;
       scene.add(sprite);
     };
 
-    // ── INTRO CAMERA CURVE ────────────────────────────────────────────────────
     const introCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0,   80, 0.1),
       new THREE.Vector3(28,  45, 22),
       new THREE.Vector3(-18, 22, -16),
       new THREE.Vector3(12,  12, 18),
       new THREE.Vector3(-6,   7, 14),
-      new THREE.Vector3(0,    5, 20),
+      new THREE.Vector3(0,    6, isMobile ? 48 : 34),
     ], false, 'centripetal');
 
     // ── AUDIO ─────────────────────────────────────────────────────────────────
@@ -669,21 +724,36 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     const pointer      = new THREE.Vector2();
     let   hoveredIdx   = -1;
     const photoMeshes  = flowers.map(f => f.photoMesh);
+    let pointerDownPos = { x: 0, y: 0 };
 
     const updatePointer = (e) => {
       const rect = renderer.domElement.getBoundingClientRect();
-      const cx = e.touches ? e.touches[0].clientX : e.clientX;
-      const cy = e.touches ? e.touches[0].clientY : e.clientY;
+      const cx = e.changedTouches ? e.changedTouches[0].clientX : (e.touches ? e.touches[0].clientX : e.clientX);
+      const cy = e.changedTouches ? e.changedTouches[0].clientY : (e.touches ? e.touches[0].clientY : e.clientY);
       pointer.x =  ((cx - rect.left) / rect.width)  * 2 - 1;
       pointer.y = -((cy - rect.top)  / rect.height) * 2 + 1;
+      return { cx, cy };
     };
 
     const handlePointerDown = (e) => {
       if (phase !== 'explore') return;
-      updatePointer(e);
-      raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects(photoMeshes);
-      if (hits.length > 0) onFlowerClickRef.current?.(hits[0].object.userData.index);
+      const { cx, cy } = updatePointer(e);
+      pointerDownPos = { x: cx, y: cy };
+    };
+
+    const handlePointerUp = (e) => {
+      if (phase !== 'explore') return;
+      const { cx, cy } = updatePointer(e);
+      const dist = Math.hypot(cx - pointerDownPos.x, cy - pointerDownPos.y);
+      // Solo consideramos "click" si el dedo no se movió más de 10px (evita clics accidentales al hacer zoom/drag)
+      if (dist < 10) {
+        raycaster.setFromCamera(pointer, camera);
+        const hits = raycaster.intersectObjects(photoMeshes);
+        if (hits.length > 0) {
+          playChime();
+          onFlowerClickRef.current?.(hits[0].object.userData.index);
+        }
+      }
     };
 
     const handlePointerMove = (e) => {
@@ -699,6 +769,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     };
 
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+    renderer.domElement.addEventListener('pointerup', handlePointerUp);
     renderer.domElement.addEventListener('pointermove', handlePointerMove);
 
     // ── RESIZE ────────────────────────────────────────────────────────────────
@@ -767,6 +838,39 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
 
       if (phase === 'explore') controls.update();
 
+      // ── FIREFLIES INTERACTION ──────────────────────────────────────────────
+      // They sway slightly and move away if raycaster hits ground
+      raycaster.setFromCamera(pointer, camera);
+      const groundHit = raycaster.intersectObject(groundMirror)[0]?.point;
+      
+      for (let i = 0; i < N_FIREFLIES; i++) {
+        let fx = fireflyBase[i * 3];
+        let fy = fireflyBase[i * 3 + 1];
+        let fz = fireflyBase[i * 3 + 2];
+        
+        // Base hover
+        fy += Math.sin(time * 2 + i) * 0.8;
+        fx += Math.cos(time * 1.5 + i) * 0.5;
+        fz += Math.sin(time * 1.2 + i) * 0.5;
+
+        // Interactive repel
+        if (groundHit) {
+          const dx = fx - groundHit.x;
+          const dz = fz - groundHit.z;
+          const dist = Math.sqrt(dx*dx + dz*dz);
+          if (dist < 5) {
+            const repel = (5 - dist) * 0.5;
+            fx += (dx / dist) * repel;
+            fz += (dz / dist) * repel;
+          }
+        }
+        
+        fireflyPos[i * 3] = fx;
+        fireflyPos[i * 3 + 1] = fy;
+        fireflyPos[i * 3 + 2] = fz;
+      }
+      firefliesPoints.geometry.attributes.position.needsUpdate = true;
+
       // ── FLOWERS ────────────────────────────────────────────────────────────
       for (let i = 0; i < flowers.length; i++) {
         const { flowerHead, photoMesh } = flowers[i];
@@ -788,7 +892,10 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
           );
         }
 
-        // Gentle bob
+        // Gentle bob and Wind sway
+        const wind = Math.sin(time * 0.8 + i) * 0.08;
+        flowers[i].group.rotation.z = wind;
+        flowers[i].group.rotation.x = wind * 0.5;
         flowerHead.position.y = flowers[i].stemH + 0.05 + Math.sin(time * 0.55 + i * 1.4) * 0.06;
 
         // Hover scale
@@ -862,12 +969,20 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
         }
       }
 
-      renderer.render(scene, camera);
+      composer.render();
     };
 
     raf = requestAnimationFrame(animate);
 
-    // ── CLEANUP ───────────────────────────────────────────────────────────────
+    // ── EXPORT METHODS ────────────────────────────────────────────────────────
+    containerRef.current.takePhoto = () => {
+      composer.render();
+      const link = document.createElement('a');
+      link.download = 'jardin-recuerdos.png';
+      link.href = renderer.domElement.toDataURL('image/png');
+      link.click();
+    };
+
     return () => {
       mounted = false;
       cancelAnimationFrame(raf);
@@ -889,6 +1004,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
           else { obj.material.map?.dispose(); obj.material.dispose(); }
         }
       });
+      composer.dispose();
       renderer.dispose();
     };
   }, [containerRef, data, onFlowerClickRef]);
