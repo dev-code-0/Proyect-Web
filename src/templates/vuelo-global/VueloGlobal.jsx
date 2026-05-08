@@ -2,15 +2,17 @@ import { useState, useMemo, useEffect } from 'react';
 import Map, { Marker, Source, Layer, MapProvider } from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-csp-worker.js?url';
 import { vueloGlobalConfig } from './config.js';
 import { useMapAnimation } from './useMapAnimation.js';
 import ArrivalModal from './ArrivalModal.jsx';
 import './vuelo.css';
 
-// Fix para Cloudflare / Producción con Vite 8 (Rolldown)
-// Evita que el worker falle al ser minificado o resuelto como 404
+// Fix para Cloudflare / Producción con Vite 8
+// Importar el worker con "?url" asegura que Vite lo procese y lo sirva desde el mismo dominio,
+// evitando el error de CORS (SecurityError) al construir el Web Worker.
 if (typeof window !== 'undefined') {
-  maplibregl.setWorkerUrl('https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl-csp-worker.js');
+  maplibregl.setWorkerUrl(workerUrl);
 }
 
 // Componente interno que usa el contexto de react-map-gl
