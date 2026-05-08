@@ -1,0 +1,814 @@
+{
+  "D:\\Visual-Studio-Code\\React\\code-free\\eslint.config.js": {
+    "mtime": 1774209441.1372638,
+    "hash": "49c8473bcfcec3aef596a5fb04a6df06"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\vite.config.js": {
+    "mtime": 1777664171.2309916,
+    "hash": "95e19aa6fac3d6f160b233aebee19d12"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\App.jsx": {
+    "mtime": 1776641113.085337,
+    "hash": "700383451fcc191286886dfd9f2df2bd"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\main.jsx": {
+    "mtime": 1777775217.0634985,
+    "hash": "568b73af3b4a518fd33eefe9941ded56"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\ActionButtons.jsx": {
+    "mtime": 1777694093.384325,
+    "hash": "0341e6bde118da4899ee0c9ba7f0617c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\BackgroundAnimation.jsx": {
+    "mtime": 1777659833.3941572,
+    "hash": "e195fff90bb3fc484d90b67de99ac066"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\CarouselMock.jsx": {
+    "mtime": 1774209985.7030785,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\CustomizeModal.jsx": {
+    "mtime": 1778129193.8274894,
+    "hash": "212ee4bf2098c9cb56d9ea5d2ee561ab"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\FeedbackModal.jsx": {
+    "mtime": 1777774438.513168,
+    "hash": "042e88e684ed8e66a1f49da327f5787c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\Header.jsx": {
+    "mtime": 1774209964.8520684,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\ShareModal.jsx": {
+    "mtime": 1777664139.1989913,
+    "hash": "7b2130ba3e368e5bf621b3a3b29d234b"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\TemplateCarousel.jsx": {
+    "mtime": 1776580691.441021,
+    "hash": "f9ab648c4cd5d142da9b78e9b5e42843"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\components\\YapeModal.jsx": {
+    "mtime": 1774215409.3905652,
+    "hash": "8b82292573ddae0ac0de94b5b3371f5f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\hooks\\usePreloadImages.js": {
+    "mtime": 1774499118.1130638,
+    "hash": "2224ded319ab2fa0ad0ec038dc75427c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\antiInspect.jsx": {
+    "mtime": 1777660688.3223987,
+    "hash": "b7d0685b5ff62073b3875ae6ebf50079"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\supabase.js": {
+    "mtime": 1776138272.538368,
+    "hash": "50756bfd4e6c30bd00083a37aede8967"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\templates.js": {
+    "mtime": 1778112189.5254996,
+    "hash": "04566f2be611f7f236f04b6c34aa5885"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\pages\\Home.jsx": {
+    "mtime": 1778118025.434412,
+    "hash": "50cfb10c1167311ecbb8c8aaf89ea6fc"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\pages\\Preview.jsx": {
+    "mtime": 1778129195.8454027,
+    "hash": "4cfb70d93fd0595400d846e15d4ad141"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\pages\\ViewGift.jsx": {
+    "mtime": 1778112189.5264976,
+    "hash": "6d86bbc7231bb44a3b5c04008b77b7cd"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\app-recuerdos\\config.js": {
+    "mtime": 1776637923.5711868,
+    "hash": "6a71362787e1e3fc66e13a57db4f1ec0"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\app-recuerdos\\index.jsx": {
+    "mtime": 1776903069.3813047,
+    "hash": "4487ba4e04c6a515fe67fb69534951e7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\arbol-madre\\ArbolScene.jsx": {
+    "mtime": 1778112189.5274942,
+    "hash": "5788f7a5c3689da322ee1ea44c92da9a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\arbol-madre\\config.js": {
+    "mtime": 1778112189.5284915,
+    "hash": "95de154dde579ea03bde3d4e39b7d5c8"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\arbol-madre\\index.jsx": {
+    "mtime": 1778125649.3513057,
+    "hash": "0047b73d69274a486ca18733b6e52f96"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\arbol-madre\\useArbol.js": {
+    "mtime": 1778124399.4141474,
+    "hash": "84a5bd68fda26d38bd07480bbd74da34"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\caja-musical\\config.js": {
+    "mtime": 1776911249.7863724,
+    "hash": "b5d49d1b1c6b41526074a5628310ea39"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\caja-musical\\index.jsx": {
+    "mtime": 1776913479.3761384,
+    "hash": "bb6867aeedac30175d261c1363699121"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-animado\\config.js": {
+    "mtime": 1775518087.6189127,
+    "hash": "c3f34f747c2ddeafa374c212e9770440"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-animado\\index.jsx": {
+    "mtime": 1776735795.4656148,
+    "hash": "32f0d30a1d476080137e4481ff86234d"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-carrusel\\config.js": {
+    "mtime": 1776916427.0520794,
+    "hash": "e685d3203c0ccc5984f9870366b54f71"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-carrusel\\index.jsx": {
+    "mtime": 1776916373.8921726,
+    "hash": "36a04738518b9f448097f8054b34fff7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\config.js": {
+    "mtime": 1775712513.8437452,
+    "hash": "e08ccca4a32fd5a475c901e667bf0036"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\index.jsx": {
+    "mtime": 1776735914.8608105,
+    "hash": "5f12d346b0a9e61de34a03de5fb51704"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\config.js": {
+    "mtime": 1774219512.2626443,
+    "hash": "508e2dea332fabd31e66401341407819"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\index.jsx": {
+    "mtime": 1776735998.8532484,
+    "hash": "edd6b766a1bba098119dc1c750cc81a1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\config.js": {
+    "mtime": 1776916503.04166,
+    "hash": "89050e0ee040612e19278cc5c936a790"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\index.jsx": {
+    "mtime": 1776903365.7089784,
+    "hash": "8f80d312bbd608f5c9f3e0efb8b36aca"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-corazones\\config.js": {
+    "mtime": 1774824283.4297154,
+    "hash": "869ab3e7de29d389f226997e81f47d7f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-corazones\\index.jsx": {
+    "mtime": 1776916549.8420546,
+    "hash": "f6ba9e1884056486e921c33c60f48287"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-para-ti\\config.js": {
+    "mtime": 1775714002.755446,
+    "hash": "676cb7dae8e10ec7ca8bd07559946dd8"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-para-ti\\index.jsx": {
+    "mtime": 1776641113.2309482,
+    "hash": "f0318ec37622394f059de750a5f5a87e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\config.js": {
+    "mtime": 1777865494.1358368,
+    "hash": "0261c32f8bfa5b196bd671b82914f2fe"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\GalaxyScene.jsx": {
+    "mtime": 1777893667.0472052,
+    "hash": "dfc662b988e6e4763c06f5a0c757725f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\index.jsx": {
+    "mtime": 1777830081.3845592,
+    "hash": "87b6a18a48fd7cd278e201d46cb83f7e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\useGalaxy.js": {
+    "mtime": 1777893459.7009776,
+    "hash": "9d5ed0961a308f994073ff341ddd320d"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\girasoles\\config.js": {
+    "mtime": 1775015606.2153287,
+    "hash": "43b8b3d99b099b4d14d84179fc0a914a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\girasoles\\index.jsx": {
+    "mtime": 1776902488.1580021,
+    "hash": "2679d6966f476609ba3c4bdfa2f9bd8a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\hot-wheels\\config.js": {
+    "mtime": 1775015606.2173235,
+    "hash": "6634b96287f42e9c170f8f091a0a6b84"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\hot-wheels\\index.jsx": {
+    "mtime": 1776738397.022199,
+    "hash": "9608dd9580551ab9e0e4c2bd75635859"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\jardin-madre\\config.js": {
+    "mtime": 1778120076.8944468,
+    "hash": "02c64810b4d66ecb85d69a17c74711a8"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\jardin-madre\\index.jsx": {
+    "mtime": 1778112189.5496688,
+    "hash": "1d8984431334281d7c3b6ecadb231918"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\jardin-madre\\JardinScene.jsx": {
+    "mtime": 1778120284.1643217,
+    "hash": "930a56b8a156622ad2471c04f15ae3bf"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\jardin-madre\\useJardin.js": {
+    "mtime": 1778119325.091589,
+    "hash": "79f8ea2148d9970354cbf7486c676182"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\libro-pop\\config.js": {
+    "mtime": 1776138272.6690185,
+    "hash": "4127440a80408fb451a7f4e890d7a7f7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\libro-pop\\index.jsx": {
+    "mtime": 1776738480.3031275,
+    "hash": "687f73d79a86d2df57187e39f0f2367a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\config.js": {
+    "mtime": 1774810373.863206,
+    "hash": "49359854db1dd4b6490d0004b9a8465d"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\index.jsx": {
+    "mtime": 1776738512.927743,
+    "hash": "d01b7f1cd1d2eba7c5021aaeeae8b405"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\prueba-conex\\config.js": {
+    "mtime": 1776732954.723499,
+    "hash": "b1f005f3914b6bdb368f29f83330fa71"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\prueba-conex\\index.jsx": {
+    "mtime": 1776738594.3707538,
+    "hash": "1543530863a600f200a2f35e73309107"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\config.js": {
+    "mtime": 1774314908.3197381,
+    "hash": "c467724c257b00bb8e48b10a7781788f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\index.jsx": {
+    "mtime": 1776738630.9659066,
+    "hash": "4100859bb3fb38011d670c52b35d1f4e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\rosaAssets.js": {
+    "mtime": 1776477597.0924544,
+    "hash": "e93bd6df9cd96f579d1c7b9725d53b88"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\RosaCreator.jsx": {
+    "mtime": 1776901587.9347763,
+    "hash": "f1dad14ba8fb9639739ef1e77d4082e0"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\sorpresa-romantica\\config.js": {
+    "mtime": 1777665474.9100204,
+    "hash": "5eaf783695e21f1aa3f64580acb04fd5"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\sorpresa-romantica\\index.jsx": {
+    "mtime": 1777774438.5341125,
+    "hash": "7d2b1c5a9870fcf0220ba5804010446d"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\ArrivalModal.jsx": {
+    "mtime": 1777952742.3371418,
+    "hash": "b8085957a82bc08e4e3695b0c008c4f3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\CitySearch.jsx": {
+    "mtime": 1778133909.7980816,
+    "hash": "3b1139d03d805b7da228244a034b6ab3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\config.js": {
+    "mtime": 1778129713.5868065,
+    "hash": "7821f13c15dcd0536fbcaebb910dc326"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\index.jsx": {
+    "mtime": 1777952823.2104366,
+    "hash": "18419811cc7da132ffeffe11b0670d66"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\useFlightPath.js": {
+    "mtime": 1777980135.188902,
+    "hash": "11a1dd89159a176322ad5b66a249005e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\useGlobe.js": {
+    "mtime": 1777980151.7894828,
+    "hash": "06066ac9699784a261f7eb8e8afb697f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\useMapAnimation.js": {
+    "mtime": 1778133948.9452279,
+    "hash": "4a872bce6db3f685e498195ea506180c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\VueloGlobal.jsx": {
+    "mtime": 1778137633.648504,
+    "hash": "81f3f54fba2066a55e7c80eebda04326"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\CLAUDE.md": {
+    "mtime": 1778112189.5205126,
+    "hash": "8b24dd2da074713defc12e9725e95b49"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\index.html": {
+    "mtime": 1777775217.0625017,
+    "hash": "239db4b515dbe7963e23f83671bef70d"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\README.md": {
+    "mtime": 1774312223.166288,
+    "hash": "0c468dcfc7f9c6772a4e6efe2159864e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\SKILLS_SETUP.md": {
+    "mtime": 1778112189.5215104,
+    "hash": "c840d8c932d49559f4cb2d596d9db7ce"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\docs\\superpowers\\specs\\2026-05-04-vuelo-global-design.md": {
+    "mtime": 1777952210.453502,
+    "hash": "f0ddbad78cfd0c70d868004c27cca8d5"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\docs\\superpowers\\specs\\2026-05-06-arbol-madre-18-puntas-design.md": {
+    "mtime": 1778112189.5225089,
+    "hash": "18c9c80762c41bcad4301b1e7bba3359"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\docs\\superpowers\\specs\\2026-05-06-jardin-madre-enhancements-design.md": {
+    "mtime": 1778112189.5225089,
+    "hash": "2178b09f3e52a077d43ed97995fb5c09"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\app-recuerdos\\app-recuerdos.svg": {
+    "mtime": 1776735389.084591,
+    "hash": "04d9f14eb1e93af97d56d3fdb4faf720"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\arbol-madre\\preview.svg": {
+    "mtime": 1778112189.523505,
+    "hash": "c8607418b67ba3ff6fb766a4836c5816"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\caja-musical\\caja-musical.svg": {
+    "mtime": 1776133220.4421678,
+    "hash": "b5caa379f1f1772aabc7c321b562277e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\corazon-animado\\corazon-animado.svg": {
+    "mtime": 1775531380.7060673,
+    "hash": "1457509ea9149c0312869c757b1d55d7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\corazon-carrusel\\corazon.svg": {
+    "mtime": 1775531179.125988,
+    "hash": "ea73628ef4ec9fc8d0d42efdcf1c57a3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\corazon-mensaje\\corazon-mensaje.svg": {
+    "mtime": 1776133333.0503354,
+    "hash": "64f2562e35b3d6416a3a26e121d8e719"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\dia-mujer\\img.svg": {
+    "mtime": 1774218828.090386,
+    "hash": "97d1892387257fbf2df77f9a8fd1f826"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\dia-mujer\\video.png": {
+    "mtime": 1772935247.5162027,
+    "hash": "4a9091902eb501cd48f23c7dcf4cc2f7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\flores-amarillas\\flores_2.svg": {
+    "mtime": 1774678398.924921,
+    "hash": "35da90f70bc2469363729b762c709671"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\flores-corazones\\cajita.webp": {
+    "mtime": 1701277858.0,
+    "hash": "469db6c66ae69a83347d7aa3d14720e4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\flores-para-ti\\flores-para-ti.svg": {
+    "mtime": 1776134421.9237304,
+    "hash": "a4348c630f4be7b22326e51ca9550835"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\flowers\\favicon.svg": {
+    "mtime": 1774411784.1679664,
+    "hash": "022dd94341bb303f7b01b5383319bd9a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\galaxia-momentos\\preview.svg": {
+    "mtime": 1777827489.2591522,
+    "hash": "8e9b301ed20c8444aab3be78b5cefcb1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\girasoles\\girasoles.svg": {
+    "mtime": 1775527343.927508,
+    "hash": "ba864032bf42f820961888abff6a8b06"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\hot-wheels\\hot-wheels.svg": {
+    "mtime": 1775530993.8165753,
+    "hash": "89711999c90ba6e6b65712056e660b8a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\jardin-madre\\preview.svg": {
+    "mtime": 1778112189.524503,
+    "hash": "4590f5a52d5b5b8316b24a2909085836"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\libro-pop\\libro-pop.svg": {
+    "mtime": 1776128881.6729107,
+    "hash": "b49cb27a4ca09efb95e26555fd08c66b"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\pregunta\\favicon.svg": {
+    "mtime": 1774802162.233448,
+    "hash": "d9d322eec651208cc67251540807126f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\pregunta\\oso.svg": {
+    "mtime": 1774801749.0108974,
+    "hash": "03129bcdda5f101373473c935fdd1971"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\pregunta\\oso1.svg": {
+    "mtime": 1774810208.225667,
+    "hash": "d005f260f63516ad360804053831f4b1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\sorpresa-romantica\\sorpresa-romantica.svg": {
+    "mtime": 1777774438.512172,
+    "hash": "ca7a4036e270259a53f181cd632ea51f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\viernes-13\\friday.svg": {
+    "mtime": 1776621482.5848973,
+    "hash": "656560cb4efe77a98f6caefaf889cecb"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\vuelo-global\\earth_bumpmap.jpg": {
+    "mtime": 1777952638.5977366,
+    "hash": "d309331c72cff9557deae2f779d47f26"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\vuelo-global\\earth_daymap.jpg": {
+    "mtime": 1777952637.792414,
+    "hash": "e15eb8d2a32d001aa4e06884f6a566cd"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\vuelo-global\\earth_specularmap.jpg": {
+    "mtime": 1777952639.2850356,
+    "hash": "7dd1857a60a7a7bee6fb9e4b6c9fc9dd"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\vuelo-global\\preview.svg": {
+    "mtime": 1777952858.3805943,
+    "hash": "1579d84d6401fb005c60336e49322d50"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\assets\\hero.png": {
+    "mtime": 1774209441.2466686,
+    "hash": "5cf2b0762834cdddc0dd3ec1397b5011"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\assets\\react.svg": {
+    "mtime": 1774209441.332436,
+    "hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\assets\\vite.svg": {
+    "mtime": 1774209441.3555322,
+    "hash": "9960a24288958394ac50e57ff638b036"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\app-recuerdos\\app-recuerdos.svg": {
+    "mtime": 1776735287.861348,
+    "hash": "04d9f14eb1e93af97d56d3fdb4faf720"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\caja-musical\\caja-musical.svg": {
+    "mtime": 1776133220.4421678,
+    "hash": "b5caa379f1f1772aabc7c321b562277e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\corazon-animado\\corazon-animado.svg": {
+    "mtime": 1775531380.7060673,
+    "hash": "1457509ea9149c0312869c757b1d55d7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\corazon-carrusel\\corazon.svg": {
+    "mtime": 1775531179.125988,
+    "hash": "ea73628ef4ec9fc8d0d42efdcf1c57a3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\corazon-mensaje\\corazon-mensaje.svg": {
+    "mtime": 1776133333.0503354,
+    "hash": "64f2562e35b3d6416a3a26e121d8e719"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\dia-mujer\\img.svg": {
+    "mtime": 1774218828.090386,
+    "hash": "97d1892387257fbf2df77f9a8fd1f826"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\dia-mujer\\video.png": {
+    "mtime": 1772935247.5162027,
+    "hash": "4a9091902eb501cd48f23c7dcf4cc2f7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\flores-amarillas\\flores_2.svg": {
+    "mtime": 1774678398.924921,
+    "hash": "35da90f70bc2469363729b762c709671"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\flores-corazones\\cajita.webp": {
+    "mtime": 1701277858.0,
+    "hash": "469db6c66ae69a83347d7aa3d14720e4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\flores-para-ti\\flores-para-ti.svg": {
+    "mtime": 1776134421.9237304,
+    "hash": "a4348c630f4be7b22326e51ca9550835"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\flowers\\favicon.svg": {
+    "mtime": 1774411784.1679664,
+    "hash": "022dd94341bb303f7b01b5383319bd9a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\girasoles\\girasoles.svg": {
+    "mtime": 1775527343.927508,
+    "hash": "ba864032bf42f820961888abff6a8b06"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\hot-wheels\\hot-wheels.svg": {
+    "mtime": 1775530993.8165753,
+    "hash": "89711999c90ba6e6b65712056e660b8a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\libro-pop\\libro-pop.svg": {
+    "mtime": 1776128881.6729107,
+    "hash": "b49cb27a4ca09efb95e26555fd08c66b"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\pregunta\\favicon.svg": {
+    "mtime": 1774802162.233448,
+    "hash": "d9d322eec651208cc67251540807126f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\pregunta\\oso.svg": {
+    "mtime": 1774801749.0108974,
+    "hash": "03129bcdda5f101373473c935fdd1971"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\pregunta\\oso1.svg": {
+    "mtime": 1774810208.225667,
+    "hash": "d005f260f63516ad360804053831f4b1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\sorpresa-romantica\\sorpresa-romantica.svg": {
+    "mtime": 1777774438.5141656,
+    "hash": "ca7a4036e270259a53f181cd632ea51f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\viernes-13\\friday.svg": {
+    "mtime": 1776621482.5848973,
+    "hash": "656560cb4efe77a98f6caefaf889cecb"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\ico.svg": {
+    "mtime": 1774310473.1919274,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\app-recuerdos\\descarga.png": {
+    "mtime": 1776627506.1787748,
+    "hash": "f211aa9882cb4fbbb5d6d3306ff40e4a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\icoCarta.svg": {
+    "mtime": 1774224500.3939729,
+    "hash": "72982d35a38dcede20e491ae04a324f4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\icoMujer.svg": {
+    "mtime": 1774226428.6887813,
+    "hash": "bfa9b1de3efba8f40637623d4186bd29"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\movie.svg": {
+    "mtime": 1774573557.6449952,
+    "hash": "e0dc612d4a115295bab6d9090143f987"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\images\\foto1.jpeg": {
+    "mtime": 1774413224.8067935,
+    "hash": "25ea23b99c48044313e95079ea41bf16"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\images\\foto2.jpeg": {
+    "mtime": 1774413256.314072,
+    "hash": "af028c7db590b0a03b920b4422af016a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\images\\foto3.jpeg": {
+    "mtime": 1774413282.143351,
+    "hash": "8981e8cfe0ddf26a15feda64aec18fcf"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\images\\video.png": {
+    "mtime": 1772935247.5162027,
+    "hash": "4a9091902eb501cd48f23c7dcf4cc2f7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\ico.svg": {
+    "mtime": 1776487539.2737072,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\corazon-letras.svg": {
+    "mtime": 1776487538.2406173,
+    "hash": "4a59ea328530345b98818269ed906d81"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\couple-photo.jpg": {
+    "mtime": 1774575408.0,
+    "hash": "69634afe21cfff38da2af97c0e234c14"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\flores.gif": {
+    "mtime": 1775711954.3245685,
+    "hash": "73ca7f258fbfe186ccff5c9f04bf00dc"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\flores_2.svg": {
+    "mtime": 1774678398.924921,
+    "hash": "35da90f70bc2469363729b762c709671"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\logo.svg": {
+    "mtime": 1776488197.7497616,
+    "hash": "9471fac97bdeba4024be20a59d12a84a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\images\\ramo.svg": {
+    "mtime": 1774672343.28826,
+    "hash": "7a6bec5e53ba6459ca60d64eb011c105"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-corazones\\cajita.webp": {
+    "mtime": 1701277858.0,
+    "hash": "469db6c66ae69a83347d7aa3d14720e4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\inicio.gif": {
+    "mtime": 1777864510.615366,
+    "hash": "70f4f3495eecb3dc3a8694ee9e2505a9"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\hot-wheels\\card.svg": {
+    "mtime": 1775529739.309974,
+    "hash": "7f21d904a44ca777d3b67351df62a5f3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\hot-wheels\\ramo-azul.png": {
+    "mtime": 1775015606.2203145,
+    "hash": "aa49b599e457ac469fe8b52e81dad745"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha.gif": {
+    "mtime": 1707233946.0,
+    "hash": "1a02f6919e5e1afd0264c1942094d2a1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha2.gif": {
+    "mtime": 1707233946.0,
+    "hash": "6560ba3cc0d82dab7a92e7bf62a518fd"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha3.gif": {
+    "mtime": 1707233946.0,
+    "hash": "5841b6ce40cdcc0472934a2ea62a3e78"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha4.gif": {
+    "mtime": 1707233946.0,
+    "hash": "07022fe170a93627a2bd2331ddd90d41"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha5final.gif": {
+    "mtime": 1707233946.0,
+    "hash": "4ec57f0a9c32b5cc3d539a7a20e29304"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha6final.gif": {
+    "mtime": 1707233946.0,
+    "hash": "f5534650ba5e06dfa50f697c7a8a651e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha7final.gif": {
+    "mtime": 1707233946.0,
+    "hash": "2997edc6e02c0310da8e41fc6b008a8a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\pregunta\\images\\mocha9final.gif": {
+    "mtime": 1707233946.0,
+    "hash": "9ec2a2e85e39cc2c9104de3b5b8a40c6"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\prueba-conex\\letter-blue.webp": {
+    "mtime": 1774569552.4383721,
+    "hash": "79a6f8e78515e258d30a49c6503d11db"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\ico.webp": {
+    "mtime": 1774411784.1719542,
+    "hash": "6f79158c8a114be80b7a0e3e361fcbf4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-blue.webp": {
+    "mtime": 1774411784.1729631,
+    "hash": "79a6f8e78515e258d30a49c6503d11db"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-orange.webp": {
+    "mtime": 1774411784.1729631,
+    "hash": "22b126c4f02066efa0eb340de91140bf"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-pink.webp": {
+    "mtime": 1774411784.1739492,
+    "hash": "b0f40c738e4afd428be77048080af79e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-red.webp": {
+    "mtime": 1774411784.1749458,
+    "hash": "b0675fde9363411b96702ca7461fe52b"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-violet.webp": {
+    "mtime": 1774411784.175959,
+    "hash": "4885861a8d085399e0f672356820f4f9"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-white.webp": {
+    "mtime": 1774411784.175959,
+    "hash": "b0675fde9363411b96702ca7461fe52b"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\letter-yellow.webp": {
+    "mtime": 1774411784.1769407,
+    "hash": "b74a187e065cb3177bdb5e717105b77c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\picture.webp": {
+    "mtime": 1774411784.1769407,
+    "hash": "60f7c467c741d92fea3b6322eb8616c4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-lightblue.webp": {
+    "mtime": 1774411784.1769407,
+    "hash": "44794cd80a468aa3028d8d2bd7cefc8a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-orange.webp": {
+    "mtime": 1774411784.1779385,
+    "hash": "071934ead028f433050e7aa17b4e0215"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-pink.webp": {
+    "mtime": 1774411784.1779385,
+    "hash": "359dab83164a2e77cf96aa425f82dfec"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-red.webp": {
+    "mtime": 1774411784.1789355,
+    "hash": "2bce32d1f8b5626ceb6da311ee4c63f7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-violet.webp": {
+    "mtime": 1774411784.1789355,
+    "hash": "62745255214669c16c16ec6db3515b7e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-white.webp": {
+    "mtime": 1774411784.1789355,
+    "hash": "751225a3bc1c74461928782a9e047db0"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\rose-yellow.webp": {
+    "mtime": 1774411784.1799326,
+    "hash": "d63b452a555d3fa92a8f69af25dd358e"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-lightblue.webp": {
+    "mtime": 1774411784.1799326,
+    "hash": "ec4f3b7c43e1db25f401cec63f9c4fa5"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-orange.webp": {
+    "mtime": 1774411784.1809304,
+    "hash": "110126a8f1990cfb5c30927986c3314c"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-red.webp": {
+    "mtime": 1774411784.1809304,
+    "hash": "13c868274cfad9a796e2be87db39f9cb"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-rose.webp": {
+    "mtime": 1774411784.1819274,
+    "hash": "0cba985e32c0482261e5cfe118cd35e0"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-violet.webp": {
+    "mtime": 1774411784.1819274,
+    "hash": "6f639baaf954f5171aeb5fb3c0e641e1"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-white.webp": {
+    "mtime": 1774411784.1829247,
+    "hash": "1401681b6ee8dcb182b7866491417b55"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\rosa-virtual\\images\\roses-yellow.webp": {
+    "mtime": 1774411784.1829247,
+    "hash": "4d607349f058bfebb7777dbce1fabdf2"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\vuelo-global\\hug.svg": {
+    "mtime": 1778132916.4243648,
+    "hash": "eee27e71a179c0727597334cdb3500a4"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\public\\images\\dia-mujer\\I-love-you-so.mp3": {
+    "mtime": 1772935247.5052257,
+    "hash": "660a709ff87afb2d21c25ce8aded6d46"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\lib\\images\\dia-mujer\\I-love-you-so.mp3": {
+    "mtime": 1772935247.5052257,
+    "hash": "660a709ff87afb2d21c25ce8aded6d46"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\app-recuerdos\\music.mp3": {
+    "mtime": 1776629531.0547645,
+    "hash": "b9f588bc38ecd4afe91317710b66c8d7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\arbol-madre\\music.mp3": {
+    "mtime": 1778125534.0421097,
+    "hash": "43d8a1705dc52b98b48fc23ece7b1fb7"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\caja-musical\\song.mp3": {
+    "mtime": 1775792820.3533854,
+    "hash": "c45eedde6919446b53ff36ff519ea172"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-animado\\music.mp3": {
+    "mtime": 1775951355.8503869,
+    "hash": "cb939e3863c2f42b401ed6c71fb27452"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-carrusel\\song.mp3": {
+    "mtime": 1776914328.7717903,
+    "hash": "4d839d0abc2daf81d82318fd909acb03"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\songs\\explosion1.mp3": {
+    "mtime": 1775713621.6281273,
+    "hash": "1408864945d486d47cb3ac83a41a4235"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\songs\\explosion2.mp3": {
+    "mtime": 1775713621.6281273,
+    "hash": "1408864945d486d47cb3ac83a41a4235"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\songs\\explosion3.mp3": {
+    "mtime": 1775713621.6281273,
+    "hash": "1408864945d486d47cb3ac83a41a4235"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\songs\\explosion4.mp3": {
+    "mtime": 1775713621.6281273,
+    "hash": "1408864945d486d47cb3ac83a41a4235"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\corazon-mensaje\\songs\\musica.mp3": {
+    "mtime": 1775713541.4329412,
+    "hash": "a846171e68d7c44800fcc723592f9e7a"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\dia-mujer\\song\\I-love-you-so.mp3": {
+    "mtime": 1772935247.5052257,
+    "hash": "660a709ff87afb2d21c25ce8aded6d46"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-amarillas\\audioMusic.mp3": {
+    "mtime": 1776543484.7513864,
+    "hash": "c1a2df80cba14e859739d0fd72794ef3"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-corazones\\musica.mp3": {
+    "mtime": 1775949582.9436553,
+    "hash": "fb3e70510d615cf8a031e06afa18d99f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\flores-para-ti\\sound.mp3": {
+    "mtime": 1775714267.9733584,
+    "hash": "5e307f07c7dcff940d92be9672ff15a0"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\galaxia-momentos\\Music.mp3": {
+    "mtime": 1776618632.0668333,
+    "hash": "b53508d9018ef6086d8c67747feb6266"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\girasoles\\musica.mp3": {
+    "mtime": 1775949582.9436553,
+    "hash": "fb3e70510d615cf8a031e06afa18d99f"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\jardin-madre\\music.mp3": {
+    "mtime": 1778119853.5711837,
+    "hash": "cac53daddf9af866fa4ac0427f127252"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\prueba-conex\\Music.mp3": {
+    "mtime": 1776618632.0668333,
+    "hash": "b53508d9018ef6086d8c67747feb6266"
+  },
+  "D:\\Visual-Studio-Code\\React\\code-free\\src\\templates\\sorpresa-romantica\\song.mp3": {
+    "mtime": 1777244187.7463763,
+    "hash": "b9f588bc38ecd4afe91317710b66c8d7"
+  }
+}
