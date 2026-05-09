@@ -1,3 +1,5 @@
+// Preview.jsx - Página principal para previsualizar y personalizar templates
+
 import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { templates } from "../lib/templates";
@@ -9,7 +11,7 @@ import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
 import { diaMujerConfig } from "../templates/dia-mujer/config.js";
 
 import CustomizeModal from "../components/CustomizeModal";
-import ShareModal from "../components/ShareModal"; // Importamos el nuevo modal
+import ShareModal from "../components/ShareModal";
 import { supabase } from "../lib/supabase";
 
 import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
