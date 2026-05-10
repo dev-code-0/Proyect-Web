@@ -410,7 +410,7 @@ export default function App({ data }) {
             {/* Sección Inferior: Texto Tipo Máquina de Escribir */}
             <div className="modal-bottom-section-sr">
               <h2 className="font-script-sr text-gradient-sr modal-title-sr">Mi lugar seguro...</h2>
-              <div className="modal-text-sr">
+              <div className="modal-text-sr"> 
                 <TextWithLineBreaks text={typewriterText} />
               </div>
             </div>

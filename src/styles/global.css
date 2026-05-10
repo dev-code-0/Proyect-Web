@@ -67,7 +67,8 @@ strong,
 em,
 input,
 textarea,
-select {
+select, 
+[class*="text"]  {
   font-family: var(--font-text) !important;
 }
 

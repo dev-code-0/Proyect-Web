@@ -206,7 +206,7 @@ export default function CorazonCaruselTemplate({ data }) {
         audio.loop = true;
         audio.volume = 0.65;
         audio.playsInline = true;
-        audio.autoplay = true;
+        audio.autoplay = false;
 
         const MAX_RETRIES = 20;
         const RETRY_MS = 300;
@@ -302,7 +302,7 @@ export default function CorazonCaruselTemplate({ data }) {
             audio.pause();
             audio.currentTime = 0;
         };
-    }, []);
+    }, [music]);
 
 
     // ==========================================
@@ -537,7 +537,7 @@ export default function CorazonCaruselTemplate({ data }) {
 
         <AntiInspectGuard>
         <div className="app-wrapper-cc" ref={appWrapperRef}>
-            <audio ref={audioRef} src={music} preload="auto" autoPlay />
+            <audio ref={audioRef} src={music} preload="auto" />
 
             <button
                 className="music-btn-cc"

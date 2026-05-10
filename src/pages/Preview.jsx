@@ -1,77 +1,13 @@
-// Preview.jsx - Página principal para previsualizar y personalizar templates
-
-import React, { useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { templates } from "../lib/templates";
+import { TEMPLATE_REGISTRY } from "../lib/templateRegistry";
 import "../styles/preview.css";
-import { AntiInspectGuard } from '../lib/antiInspect';
 import BackgroundAnimation from "../components/BackgroundAnimation";
-
-import DiaMujerTemplate from "../templates/dia-mujer/index.jsx";
-import { diaMujerConfig } from "../templates/dia-mujer/config.js";
-
 import CustomizeModal from "../components/CustomizeModal";
 import ShareModal from "../components/ShareModal";
-import { supabase } from "../lib/supabase";
 
-import RosaVirtualTemplate from "../templates/rosa-virtual/index.jsx";
-import RosaCreator from "../templates/rosa-virtual/RosaCreator.jsx";
-
-import PruebaConexTemplate from "../templates/prueba-conex/index.jsx"
-import { pruebaConexConfig } from "../templates/prueba-conex/config.js"
-
-import FloresAmarillasTemplate from "../templates/flores-amarillas/index.jsx";
-import { floresAmarillasConfig } from "../templates/flores-amarillas/config.js";
-
-import NoviaPregunta from "../templates/pregunta/index.jsx";
-import { preguntaConfig } from "../templates/pregunta/config.js";
-
-import FloresCorazonesTemplate from "../templates/flores-corazones/index.jsx";
-import { floresCorazonesConfig } from "../templates/flores-corazones/config.js";
-
-import GirasolesTemplate from "../templates/girasoles/index.jsx";
-import { girasolesConfig } from "../templates/girasoles/config.js";
-
-import RamoHotWheelsTemplate from "../templates/hot-wheels/index.jsx";
-import { hotWheelsConfig } from "../templates/hot-wheels/config.js";
-
-import CorazonCarruselTemplate from "../templates/corazon-carrusel/index.jsx";
-import { CorazonCarruselConfig } from "../templates/corazon-carrusel/config.js";
-
-import CorazonAnimadoTemplate from "../templates/corazon-animado/index.jsx";
-import { corazonAnimadoConfig } from "../templates/corazon-animado/config.js";
-
-import LibroPopUpTemplate from "../templates/libro-pop/index.jsx";
-import { libroPopConfig } from "../templates/libro-pop/config.js";
-
-import CajaMusicalTemplate from "../templates/caja-musical/index.jsx";
-import { cajaMusicalConfig } from "../templates/caja-musical/config.js";
-
-import FuegosAmorTemplate from "../templates/corazon-mensaje/index.jsx";
-import { fuegosAmorConfig } from "../templates/corazon-mensaje/config.js";
-
-import FloresParaTiTemplate from "../templates/flores-para-ti/index.jsx";
-import { floresParaTiConfig } from "../templates/flores-para-ti/config.js";
-
-import SanValentinApp from "../templates/app-recuerdos/index.jsx";
-import { sanValentinConfig } from "../templates/app-recuerdos/config.js";
-
-import SorpresaRomantica from "../templates/sorpresa-romantica/index.jsx";
-import { sorpresaRomanticaConfig } from "../templates/sorpresa-romantica/config.js";
-
-import GalaxyMomentos from "../templates/galaxia-momentos/index.jsx";
-import { galaxiaMomentosConfig } from "../templates/galaxia-momentos/config.js";
-
-import VueloGlobalTemplate from "../templates/vuelo-global/VueloGlobal.jsx";
-import { vueloGlobalConfig } from "../templates/vuelo-global/config.js";
-
-import ArbolMadre from "../templates/arbol-madre/index.jsx";
-import { arbolMadreConfig } from "../templates/arbol-madre/config.js";
-
-import JardinMadre from "../templates/jardin-madre/index.jsx";
-import { jardinMadreConfig } from "../templates/jardin-madre/config.js";
-
-
+const RosaCreator = lazy(() => import('../templates/rosa-virtual/RosaCreator.jsx'));
 
 export default function Preview() {
   const { id } = useParams();
@@ -80,6 +16,7 @@ export default function Preview() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [generatedLink, setGeneratedLink] = useState("");
   const [previewData, setPreviewData] = useState({});
+  const [saveError, setSaveError] = useState("");
   const templateActual = templates.find((t) => t.id === id);
 
   if (!templateActual) {
@@ -91,20 +28,29 @@ export default function Preview() {
   }
 
   const handleSaveConfig = async (datosPersonalizados) => {
-    const uniqueId =
-      typeof crypto !== "undefined" && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
-    // Guardamos en la base de datos real
-    const { data, error } = await supabase
-      .from("proyectos_creados")
-      .insert([
-        { id: uniqueId, template_id: id, user_data: datosPersonalizados },
-      ]);
+    setSaveError("");
+    const uniqueId = crypto.randomUUID();
 
-    if (error) {
-      console.error("Error al guardar:", error);
-      alert("Hubo un error al guardar tu proyecto.");
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-project`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ id: uniqueId, template_id: id, user_data: datosPersonalizados }),
+        },
+      );
+      const result = await res.json();
+      if (!res.ok) {
+        setSaveError(result.error || "Hubo un error al guardar tu proyecto. Intenta de nuevo.");
+        return;
+      }
+    } catch (err) {
+      console.error("Error al guardar:", err);
+      setSaveError("Hubo un error al guardar tu proyecto. Intenta de nuevo.");
       return;
     }
 
@@ -114,123 +60,64 @@ export default function Preview() {
     setShowShareModal(true);
   };
 
+  const entry = TEMPLATE_REGISTRY[id];
+  const TemplateComponent = entry?.Component;
+  const templateConfig = entry?.config || { name: "Proyecto genérico", fields: [] };
+
   const renderTemplate = () => {
-    switch (id) {
-      case "dia-mujer":
-        return <DiaMujerTemplate data={previewData} />;
-        
-      case "rosa-virtual":
-        return <RosaVirtualTemplate data={previewData} />;
-
-      case "viernes-13":
-        return <PruebaConexTemplate data={previewData} />;
-
-      case "flores-amarillas":
-        return <FloresAmarillasTemplate data={previewData} />;
-        
-      case "pregunta":
-        return <NoviaPregunta data={previewData} />;
-
-      case "flores-corazones":
-        return <FloresCorazonesTemplate data={previewData} />;
-
-      case "girasoles":
-        return <GirasolesTemplate data={previewData} />;
-
-      case "hot-wheels":
-        return <RamoHotWheelsTemplate data={previewData} />;
-
-      case "corazon-carrusel":
-        return <CorazonCarruselTemplate data={previewData} />;
-
-      case "corazon-animado":
-        return <CorazonAnimadoTemplate data={previewData} />;
-
-      case "libro-pop":
-        return <LibroPopUpTemplate data={previewData} />
-        ;
-      case "caja-musical":
-        return <CajaMusicalTemplate data={previewData} />;
-
-      case "corazon-mensaje":
-        return <FuegosAmorTemplate data={previewData} />;
-      case "flores-para-ti":
-        return <FloresParaTiTemplate data={previewData} />;
-      case "app-recuerdos":
-        return <SanValentinApp data={previewData} />;
-      case "sorpresa-romantica":
-        return <SorpresaRomantica data={previewData} />;
-      case "galaxia-momentos":
-        return <GalaxyMomentos data={previewData} />;
-      case "arbol-madre":
-        return <ArbolMadre data={previewData} />;
-      case "jardin-madre":
-        return <JardinMadre data={previewData} />;
-      case "vuelo-global":
-        return <VueloGlobalTemplate data={previewData} isPreview={true} />;
-      default:
-        return ( 
-          <p>
-            Aquí se mostrará la web de{" "}
-            <strong>{templateActual.title.toLowerCase()}</strong>
-          </p>
-        );
+    if (!TemplateComponent) {
+      return (
+        <p>
+          Aquí se mostrará la web de{" "}
+          <strong>{templateActual.title.toLowerCase()}</strong>
+        </p>
+      );
     }
-  };
-
-  const getConfig = () => {
-    if (id === "dia-mujer") return diaMujerConfig;
-    if (id === "viernes-13") return pruebaConexConfig;
-    if (id === "flores-amarillas") return floresAmarillasConfig;
-    if (id === "pregunta") return preguntaConfig;
-    if (id === "flores-corazones") return floresCorazonesConfig;
-    if (id === "girasoles") return girasolesConfig;
-    if (id === "hot-wheels") return hotWheelsConfig;
-    if (id === "corazon-carrusel") return CorazonCarruselConfig;
-    if (id === "corazon-animado") return corazonAnimadoConfig;
-    if (id === "libro-pop") return libroPopConfig;
-    if (id === "caja-musical") return cajaMusicalConfig;
-    if (id === "corazon-mensaje") return fuegosAmorConfig;
-    if (id === "flores-para-ti") return floresParaTiConfig;
-    if (id === "app-recuerdos") return sanValentinConfig;
-    if (id === "sorpresa-romantica") return sorpresaRomanticaConfig;
-    if (id === "galaxia-momentos") return galaxiaMomentosConfig;
-    if (id === "arbol-madre") return arbolMadreConfig;
-    if (id === "jardin-madre") return jardinMadreConfig;
-    if (id === "vuelo-global") return vueloGlobalConfig;
-
-    return { name: "Proyecto genérico", fields: [] };
-  };
-
-  // Función para cuando cierra el modal de compartir
-  const handleCloseShare = () => { setShowShareModal(false); navigate("/"); // Lo mandamos al inicio
+    return (
+      <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>Cargando plantilla...</div>}>
+        <TemplateComponent data={previewData} isPreview={true} />
+      </Suspense>
+    );
   };
 
   return (
-    // <AntiInspectGuard>
     <>
-    <BackgroundAnimation />
-    <main className="preview-container">
-      <h2 className="preview-title">{templateActual.title}</h2>
+      <BackgroundAnimation />
+      <main className="preview-container">
+        <h2 className="preview-title">{templateActual.title}</h2>
 
-      <div className="preview-box">{renderTemplate()}</div>
+        <div className="preview-box">{renderTemplate()}</div>
 
-      <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>
+        {saveError && (
+          <p style={{ color: '#ff6b6b', background: 'rgba(0,0,0,0.4)', padding: '8px 16px', borderRadius: '8px', textAlign: 'center', margin: '8px 0', fontSize: '0.9rem' }}>
+            {saveError}
+          </p>
+        )}
 
-      <Link to="/" className="btn-volver">Volver</Link>
+        <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>
 
-      {/* Modal para rellenar datos */}
-      {showCustomizeModal &&
-        (id === "rosa-virtual" ? (
-          <RosaCreator onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
-        ) : (
-          <CustomizeModal config={getConfig()} onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig}/>
-        ))}
+        <Link to="/" className="btn-volver">Volver</Link>
 
-      {/* Modal final con el QR y el Link */}
-      <ShareModal isOpen={showShareModal} onClose={handleCloseShare} shareLink={generatedLink}/>
-    </main>
-    {/* </AntiInspectGuard> */}
+        {showCustomizeModal && (
+          id === "rosa-virtual" ? (
+            <Suspense fallback={null}>
+              <RosaCreator onClose={() => setShowCustomizeModal(false)} onSave={handleSaveConfig} />
+            </Suspense>
+          ) : (
+            <CustomizeModal
+              config={templateConfig}
+              onClose={() => setShowCustomizeModal(false)}
+              onSave={handleSaveConfig}
+            />
+          )
+        )}
+
+        <ShareModal
+          isOpen={showShareModal}
+          onClose={() => { setShowShareModal(false); navigate("/"); }}
+          shareLink={generatedLink}
+        />
+      </main>
     </>
   );
 }

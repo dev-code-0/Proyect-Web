@@ -439,7 +439,7 @@ export default function FloresAmarillasTemplate({ data }) {
   const photoCaption = data?.photoCaption ?? data?.caption ?? "Nuestro momento";
   const distanceMessage = data?.distanceMessage ?? DEFAULT_DISTANCE_MESSAGE;
   const loveLetter = data?.loveLetterMessage ?? DEFAULT_LOVE_LETTER;
-  const whatsappNumber = data?.whatsappNumber ?? 983631052; 
+  const whatsappNumber = data?.whatsappNumber ?? ''; 
   
   const inicial_1 = String(recipientName).trim().charAt(0).toUpperCase();
   const inicial_2 = String(senderName).trim().charAt(0).toUpperCase();

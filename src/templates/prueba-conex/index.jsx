@@ -198,6 +198,8 @@ export default function App({ data }) {
 
   const fotos = data?.fotos && data.fotos.length > 0? data.fotos
       : [Image1, Image2, Image3, Image4, Image5];
+
+    const music = data?.music || Audio;
 usePreloadImages(fotos); // Pre-cargar las imágenes al entrar a la página
     useEffect(() => {
         let i = 0;
@@ -249,8 +251,10 @@ usePreloadImages(fotos); // Pre-cargar las imágenes al entrar a la página
 
         return () => {
             detachUnlockListeners();
+            audio.pause();
+            audio.currentTime = 0;
         };
-    }, []);
+    }, [music]);
 
     const togglePlay = (e) => {
         e.stopPropagation();
@@ -398,7 +402,7 @@ usePreloadImages(fotos); // Pre-cargar las imágenes al entrar a la página
     return (
         <AntiInspectGuard>
         <div className="v13-container" ref={containerRef}>
-            <audio ref={audioRef} src={Audio} loop autoPlay preload="auto" />
+            <audio ref={audioRef} src={music} loop preload="auto" />
 
             <div className="v13-star-layer" style={{ transform: `translate(${(mousePos.current.x - (window.innerWidth/2)) * -0.01}px, ${(mousePos.current.y - (window.innerHeight/2)) * -0.01}px)` }} />
             <div className="v13-bg-glow" />

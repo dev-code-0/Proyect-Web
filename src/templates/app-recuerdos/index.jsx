@@ -249,6 +249,7 @@ const config = {
     const [code, setCode] = useState({ day: 26, month: 5, year: 23 });
     
     const audioRef = useRef(null);
+    const pendingSeekRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [songProgress, setSongProgress] = useState(0);
     const [songDuration, setSongDuration] = useState(0);
@@ -287,6 +288,25 @@ const config = {
         else audio.pause();
     };
 
+    const requestSeek = (nextTime) => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        const safeTime = duration > 0
+            ? Math.min(Math.max(nextTime, 0), Math.max(duration - 0.05, 0))
+            : Math.max(nextTime, 0);
+
+        if (audio.readyState < 1 || !Number.isFinite(audio.duration)) {
+            pendingSeekRef.current = safeTime;
+            audio.load();
+            return;
+        }
+
+        audio.currentTime = safeTime;
+        setSongProgress(safeTime);
+    };
+
     const updateSongProgress = () => {
         const audio = audioRef.current;
         if (!audio) return;
@@ -305,8 +325,7 @@ const config = {
         if (!audio) return;
 
         const nextTime = Number(e.target.value);
-        audio.currentTime = nextTime;
-        setSongProgress(nextTime);
+        requestSeek(nextTime);
     };
 
     const seekBySeconds = (seconds, e) => {
@@ -320,19 +339,35 @@ const config = {
         const maxTime = duration > 0 ? Math.max(duration - 0.05, 0) : Math.max(current + Math.abs(seconds), 0);
         const nextTime = Math.min(Math.max(current + seconds, 0), maxTime);
 
-        audio.currentTime = nextTime;
-        setSongProgress(nextTime);
+        requestSeek(nextTime);
     };
 
     const restartSong = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        requestSeek(0);
+    };
+
+    useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
 
-        audio.currentTime = 0;
-        setSongProgress(0);
-    };
+        const applyPendingSeek = () => {
+            if (pendingSeekRef.current === null) return;
+            const nextTime = pendingSeekRef.current;
+            pendingSeekRef.current = null;
+            audio.currentTime = nextTime;
+            setSongProgress(nextTime);
+        };
+
+        audio.addEventListener('loadedmetadata', applyPendingSeek);
+        audio.addEventListener('canplay', applyPendingSeek);
+
+        return () => {
+            audio.removeEventListener('loadedmetadata', applyPendingSeek);
+            audio.removeEventListener('canplay', applyPendingSeek);
+        };
+    }, []);
 
     const handleScreenClick = (e) => {
         if (!isUnlocked) return;
@@ -382,6 +417,7 @@ const config = {
                 ref={audioRef}
                 src={config.songUrl}
                 loop
+                preload="auto"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onLoadedMetadata={updateSongProgress}

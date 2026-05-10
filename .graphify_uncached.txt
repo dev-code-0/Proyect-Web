@@ -1,0 +1,17 @@
+D:\Visual-Studio-Code\React\code-free\src\App.jsx
+D:\Visual-Studio-Code\React\code-free\src\main.jsx
+D:\Visual-Studio-Code\React\code-free\src\components\CustomizeModal.jsx
+D:\Visual-Studio-Code\React\code-free\src\lib\templateRegistry.jsx
+D:\Visual-Studio-Code\React\code-free\src\pages\Preview.jsx
+D:\Visual-Studio-Code\React\code-free\src\pages\ViewGift.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\app-recuerdos\index.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\corazon-animado\index.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\corazon-carrusel\index.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\flores-amarillas\config.js
+D:\Visual-Studio-Code\React\code-free\src\templates\flores-amarillas\index.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\prueba-conex\config.js
+D:\Visual-Studio-Code\React\code-free\src\templates\prueba-conex\index.jsx
+D:\Visual-Studio-Code\React\code-free\src\templates\sorpresa-romantica\index.jsx
+D:\Visual-Studio-Code\React\code-free\supabase\functions\create-project\index.ts
+D:\Visual-Studio-Code\React\code-free\supabase\functions\upload-file\index.ts
+D:\Visual-Studio-Code\React\code-free\docs\superpowers\specs\2026-05-09-home-viral-design.md

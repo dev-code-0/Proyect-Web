@@ -5,6 +5,7 @@ import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function CorazonMagicotemplate({data}) {
     const nombre = data?.nombre || "María";
+    const music = data?.music || Music;
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const audioRef = useRef(null);
@@ -124,6 +125,51 @@ export default function CorazonMagicotemplate({data}) {
             audio.removeEventListener('pause', handlePause);
         };
     }, []);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        let started = false;
+
+        const detachUnlockListeners = () => {
+            window.removeEventListener('pointerdown', handleFirstInteraction);
+            window.removeEventListener('touchstart', handleFirstInteraction);
+            window.removeEventListener('keydown', handleFirstInteraction);
+        };
+
+        const tryAutoPlay = () => {
+            if (started) return;
+
+            audio.play()
+                .then(() => {
+                    started = true;
+                    setIsPlaying(true);
+                    detachUnlockListeners();
+                })
+                .catch(() => {
+                    // Algunos navegadores bloquean autoplay sin interaccion.
+                });
+        };
+
+        const handleFirstInteraction = () => {
+            tryAutoPlay();
+        };
+
+        tryAutoPlay();
+
+        if (audio.paused) {
+            window.addEventListener('pointerdown', handleFirstInteraction);
+            window.addEventListener('touchstart', handleFirstInteraction);
+            window.addEventListener('keydown', handleFirstInteraction);
+        }
+
+        return () => {
+            detachUnlockListeners();
+            audio.pause();
+            audio.currentTime = 0;
+        };
+    }, [music]);
 
     // ==========================================
     // MOTOR DEL CANVAS (CORAZÓN + POLVO + ONDAS + ESTRELLAS)
@@ -415,9 +461,7 @@ export default function CorazonMagicotemplate({data}) {
         >
             
             {/* Reproductor de música (Pista relajante de dominio público para probar) */}
-            <audio ref={audioRef} loop preload="auto" playsInline id="bg-music">
-                <source src={Music} type="audio/mp3" />
-            </audio>
+            <audio ref={audioRef} src={music} loop preload="auto" playsInline id="bg-music" />
 
             
 

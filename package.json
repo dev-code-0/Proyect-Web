@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/dancing-script": "^5.2.8",
     "@fontsource/pacifico": "^5.2.7",
+    "@sentry/react": "^10.52.0",
     "@supabase/supabase-js": "^2.100.0",
     "@turf/turf": "^7.3.5",
     "browser-image-compression": "^2.0.2",

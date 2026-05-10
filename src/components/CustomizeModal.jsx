@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import imageCompression from 'browser-image-compression';
-import { supabase } from '../lib/supabase';
 import CitySearch from '../templates/vuelo-global/CitySearch';
 import '../styles/modal.css';
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
 const MAX_IMAGE_SIZE_MB = 8;
 const MAX_AUDIO_SIZE_MB = 15;
-const MAX_FILES_PER_UPLOAD = 5;
+const MAX_FILES_PER_UPLOAD = 10;
 
 // Firmas de formatos permitidos. Cada entrada: { bytes, offset }
 // Validamos por CATEGORÍA (imagen/audio), no por MIME declarado:
@@ -81,10 +83,6 @@ const exceedsSizeLimit = (file, accept = '') => {
   return fileSizeMB > MAX_IMAGE_SIZE_MB;
 };
 
-const randomId = () =>
-  Array.from(crypto.getRandomValues(new Uint8Array(8)))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
 
 export default function CustomizeModal({ config, onClose, onSave }) {
   const [formData, setFormData] = useState(() => {
@@ -95,7 +93,12 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     return defaults;
   });
   const [isProcessing, setIsProcessing] = useState(false);
-  const [progreso, setProgreso] = useState(''); // Para mostrarle al usuario qué está pasando
+  const [progreso, setProgreso] = useState('');
+  const [notification, setNotification] = useState('');
+  const notify = (msg) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(''), 4000);
+  };
 
   const handleFileUpload = async (e, field) => {
     setIsProcessing(true);
@@ -107,13 +110,13 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     for (const file of files) {
       if (!matchesAccept(file, field.accept || '')) {
         setProgreso('');
-        alert(`Tipo de archivo no permitido para ${field.label}.`);
+        notify(`Tipo de archivo no permitido para ${field.label}.`);
         continue;
       }
 
       if (exceedsSizeLimit(file, field.accept || '')) {
         setProgreso('');
-        alert(
+        notify(
           `Archivo demasiado grande para ${field.label}. Máximo: ${
             (field.accept || '').includes('audio/') ? MAX_AUDIO_SIZE_MB : MAX_IMAGE_SIZE_MB
           }MB.`,
@@ -126,7 +129,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       const magicOk = await validateMagicNumber(file, field.accept || '');
       if (!magicOk) {
         setProgreso('');
-        alert(`El archivo "${file.name}" no es válido o su tipo no está permitido.`);
+        notify(`El archivo "${file.name}" no es válido o su tipo no está permitido.`);
         continue;
       }
 
@@ -148,33 +151,36 @@ export default function CustomizeModal({ config, onClose, onSave }) {
         }
       }
 
-      // 2. SUBIDA A SUPABASE
+      // 2. SUBIDA VÍA EDGE FUNCTION (rate limit + validación server-side)
       setProgreso(`Subiendo archivo a la nube...`);
-      const fileExt = fileToUpload.type === 'image/webp' ? 'webp' : file.name.split('.').pop();
-      const fileName = `${randomId()}.${fileExt}`;
-      const filePath = `${config.id}/${fileName}`; // Lo guarda ordenado por proyecto
+      const kind = file.type.startsWith('audio/') ? 'audio' : 'image';
+      const fd = new FormData();
+      fd.append('file', fileToUpload, fileToUpload.name || `file.${kind === 'audio' ? 'mp3' : 'webp'}`);
+      fd.append('fileType', kind);
+      fd.append('templateId', config.id);
 
-      const { error } = await supabase.storage
-        .from('archivos_usuarios')
-        .upload(filePath, fileToUpload);
-
-      if (error) {
-        if (import.meta.env.DEV) console.error("Error subiendo archivo:", error);
-        setProgreso(`Error subiendo archivo: ${error.message || 'intenta de nuevo.'}`);
+      let uploadUrl = '';
+      try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/upload-file`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+          body: fd,
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          notify(result.error || 'Error subiendo archivo.');
+          setProgreso('');
+          continue;
+        }
+        uploadUrl = result.url;
+      } catch (err) {
+        if (import.meta.env.DEV) console.error('Error subiendo archivo:', err);
+        notify('Error subiendo archivo. Intenta de nuevo.');
+        setProgreso('');
         continue;
       }
 
-      // 3. OBTENER EL LINK PÚBLICO
-      const { data: publicData } = supabase.storage
-        .from('archivos_usuarios')
-        .getPublicUrl(filePath);
-
-      if (!publicData?.publicUrl) {
-        setProgreso('No se pudo obtener URL publica del archivo.');
-        continue;
-      }
-      
-      uploadedUrls.push(publicData.publicUrl);
+      uploadedUrls.push(uploadUrl);
     }
 
     // 4. GUARDAMOS LAS URLs LISTAS
@@ -184,13 +190,14 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       setFormData({ ...formData, [field.name]: uploadedUrls[0] });
     }
     
-    setProgreso(uploadedUrls.length ? '' : 'No se subio ningun archivo valido.');
+    if (!uploadedUrls.length) notify('No se subió ningún archivo válido.');
+    setProgreso('');
     setIsProcessing(false);
   };
 
   const sanitizeText = (value, maxLength = 200) =>
     value
-      .replace(/[<>"'`]/g, '') // elimina caracteres XSS básicos
+      .replace(/[<>`]/g, '') // elimina caracteres XSS básicos; React escapa " y ' por defecto
       .slice(0, maxLength);
 
   const handleChange = (e, field) => {
@@ -198,14 +205,18 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       handleFileUpload(e, field);
     } else {
       const maxLength = field.maxLength || 200;
-      setFormData({ ...formData, [field.name]: sanitizeText(e.target.value, maxLength) });
+      const rawValue = e.target.value;
+      const cleanedValue = field.onlyDigits
+        ? rawValue.replace(/\D+/g, '').slice(0, maxLength)
+        : sanitizeText(rawValue, maxLength);
+      setFormData({ ...formData, [field.name]: cleanedValue });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isProcessing) {
-      alert("Espera un segundito a que los archivos terminen de subir...");
+      notify("Espera a que los archivos terminen de subir.");
       return;
     }
 
@@ -220,7 +231,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
     });
 
     if (camposFaltantes.length) {
-      alert(`Falta subir: ${camposFaltantes.map((f) => f.label).join(', ')}`);
+      notify(`Falta subir: ${camposFaltantes.map((f) => f.label).join(', ')}`);
       return;
     }
 
@@ -241,6 +252,10 @@ export default function CustomizeModal({ config, onClose, onSave }) {
       <div className="modal-content custom-modal" onClick={(e) => e.stopPropagation()}>
         <h2>Personaliza tu Regalo</h2>
         <p>Llena los datos para <strong className='title-name-proyect'>{config.name}</strong></p>
+
+        {notification && (
+          <p className="modal-notification">{notification}</p>
+        )}
 
         {needsAudio && (
           <a
@@ -295,6 +310,8 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   placeholder={field.placeholder || ''}
                   accept={field.accept || ''}
                   multiple={field.multiple || false}
+                  inputMode={field.inputMode}
+                  pattern={field.pattern}
                   value={field.type === 'file' ? undefined : (formData[field.name] ?? '')}
                   onChange={(e) => handleChange(e, field)}
                   required={field.required ?? !field.label.includes('(Opcional)')}
