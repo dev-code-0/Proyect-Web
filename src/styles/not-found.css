@@ -1,0 +1,182 @@
+/* ══════════════════════════════════════════════
+   NOT FOUND — página espectacular con animaciones
+   ══════════════════════════════════════════════ */
+
+.notfound-container {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  position: relative;
+  z-index: 1;
+  animation: nfPageIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes nfPageIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Icono flotante ── */
+.notfound-icon-wrap {
+  color: var(--accent);
+  margin-bottom: 24px;
+  animation: nfFloat 3.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px oklch(55% 0.22 310 / 0.5));
+}
+
+.notfound-svg {
+  width: clamp(90px, 22vw, 130px);
+  height: auto;
+  display: block;
+}
+
+@keyframes nfFloat {
+  0%, 100% { transform: translateY(0px)   rotate(-4deg); }
+  50%       { transform: translateY(-16px) rotate(4deg);  }
+}
+
+/* ── 404 grande ── */
+.notfound-code {
+  font-size: clamp(5.5rem, 22vw, 10rem);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 0.9;
+  letter-spacing: -4px;
+  font-family: var(--font-title) !important;
+  margin: 0 0 18px;
+  animation:
+    nfSlideUp 0.55s 0.05s cubic-bezier(0.23, 1, 0.32, 1) both,
+    nfGlow    2.8s  1s    ease-in-out infinite alternate;
+}
+
+@keyframes nfGlow {
+  from {
+    text-shadow:
+      0 0 20px oklch(55% 0.22 310 / 0.45),
+      0 0 50px oklch(55% 0.22 310 / 0.2);
+  }
+  to {
+    text-shadow:
+      0 0 40px oklch(55% 0.24 310 / 0.7),
+      0 0 90px oklch(55% 0.24 310 / 0.35),
+      0 0  8px oklch(75% 0.20 310 / 0.35);
+  }
+}
+
+/* ── Título ── */
+.notfound-title {
+  font-size: clamp(1.3rem, 4.5vw, 1.9rem);
+  color: oklch(90% 0.04 310);
+  font-family: var(--font-title) !important;
+  margin: 0 0 12px;
+  animation: nfSlideUp 0.55s 0.12s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* ── ID inválido ── */
+.notfound-detail {
+  font-size: clamp(0.82rem, 2.5vw, 0.92rem);
+  color: oklch(62% 0.08 310);
+  margin: 0 0 10px;
+  animation: nfSlideUp 0.55s 0.18s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.notfound-id {
+  background: oklch(20% 0.07 310 / 0.65);
+  border: 1px solid oklch(48% 0.14 310 / 0.35);
+  color: var(--accent);
+  padding: 2px 9px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+/* ── Subtítulo ── */
+.notfound-sub {
+  font-size: clamp(0.78rem, 2.5vw, 0.86rem);
+  color: oklch(50% 0.04 310);
+  max-width: 340px;
+  line-height: 1.6;
+  margin: 0 0 40px;
+  animation: nfSlideUp 0.55s 0.22s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* ── Botón principal ── */
+.notfound-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 34px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 18px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: clamp(0.92rem, 2.5vw, 1rem);
+  font-family: var(--font-button) !important;
+  box-shadow:
+    0 0 0 0 var(--accent-dim),
+    0 4px 20px oklch(40% 0.18 310 / 0.35);
+  transition:
+    box-shadow 0.22s ease,
+    transform  0.15s cubic-bezier(0.23, 1, 0.32, 1);
+  animation:
+    nfSlideUp 0.55s 0.3s cubic-bezier(0.23, 1, 0.32, 1) both,
+    nfBtnPulse 2.4s 1.5s ease-in-out infinite;
+}
+
+@keyframes nfBtnPulse {
+  0%, 100% { box-shadow: 0 0 0  0   var(--accent-dim), 0 4px 20px oklch(40% 0.18 310 / 0.35); }
+  50%       { box-shadow: 0 0 28px 4px var(--accent-dim), 0 4px 32px oklch(40% 0.18 310 / 0.5); }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .notfound-btn:hover {
+    box-shadow:
+      0 0 32px 6px var(--accent-dim),
+      0 6px 28px oklch(40% 0.20 310 / 0.55);
+    transform: translateY(-3px);
+    animation: none; /* detiene el pulso en hover para no interferir */
+  }
+}
+
+.notfound-btn:active {
+  transform: scale(0.96);
+  animation: none;
+}
+
+/* ── Animación base de entrada escalonada ── */
+@keyframes nfSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ Responsive ══ */
+@media (min-width: 600px) {
+  .notfound-container {
+    padding: 60px 40px;
+  }
+
+  .notfound-code {
+    letter-spacing: -6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notfound-icon-wrap,
+  .notfound-code,
+  .notfound-btn {
+    animation: none;
+    filter: none;
+  }
+
+  .notfound-title,
+  .notfound-detail,
+  .notfound-sub {
+    animation: none;
+  }
+}

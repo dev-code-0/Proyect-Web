@@ -1,10 +1,21 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+const ALLOWED_ORIGINS = [
+  'https://sorpresavirtual.com',
+  'https://www.sorpresavirtual.com',
+  'http://localhost:5173',
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Vary': 'Origin',
+  };
+}
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;   // 8 MB
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024;  // 15 MB
@@ -48,6 +59,8 @@ function randomId(): string {
 }
 
 Deno.serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === 'OPTIONS') return new Response('OK', { headers: corsHeaders });
 
   if (req.method !== 'POST') {

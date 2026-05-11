@@ -6,6 +6,16 @@
   pointer-events: none;
 }
 
+/* Stage light desde el tope — enmarca el header/logo */
+.bg-anim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 28% at 50% -2%, oklch(38% 0.20 310 / 0.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
 /* Campo de estrellas estático con twinkle suave */
 .bg-anim::before {
   content: '';
@@ -69,9 +79,9 @@
 .orb-3 {
   width:  clamp(110px, 20vw, 210px);
   height: clamp(110px, 20vw, 210px);
-  background: radial-gradient(circle at center, rgba(168,85,247,0.40) 0%, transparent 70%);
-  top: 42%;
-  left: 38%;
+  background: radial-gradient(circle at center, rgba(168,85,247,0.38) 0%, transparent 70%);
+  top: 55%;
+  left: 12%;
   animation: floatOrb3 30s ease-in-out infinite;
 }
 
@@ -104,6 +114,22 @@
 @keyframes floatOrb4 {
   0%,100% { transform: translate(  0px,  0px) scale(1.00); }
   50%     { transform: translate(-40px, 70px) scale(1.08); }
+}
+
+/* Orb extra — tono violeta frío, posición asimétrica abajo-derecha */
+.orb-5 {
+  width:  clamp(80px, 14vw, 150px);
+  height: clamp(80px, 14vw, 150px);
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.32) 0%, transparent 70%);
+  bottom: 18%;
+  right: 22%;
+  animation: floatOrb5 22s ease-in-out infinite;
+}
+
+@keyframes floatOrb5 {
+  0%,100% { transform: translate(  0px,  0px) scale(1.00); }
+  40%     { transform: translate( 50px,-45px) scale(1.05); }
+  75%     { transform: translate(-25px, 30px) scale(0.96); }
 }
 
 /* Respeta la preferencia de accesibilidad del usuario */

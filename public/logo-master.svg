@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 295">
+  <defs>
+    <linearGradient id="lg" x1="42" y1="16" x2="158" y2="204" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#f0abfc"/>
+      <stop offset="42%"  stop-color="#d946ef"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="lgHL" x1="70" y1="16" x2="120" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Glow layer -->
+  <g filter="url(#glow)" opacity="0.42">
+    <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108 L 100 204"
+          stroke="#d946ef" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108 C 135 116,155 141,145 168 C 137 188,115 200,100 204"
+          stroke="#d946ef" stroke-width="26" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- V -->
+  <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108 L 100 204"
+        stroke="url(#lg)" stroke-width="26" stroke-linecap="round" fill="none"/>
+
+  <!-- S -->
+  <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108 C 135 116,155 141,145 168 C 137 188,115 200,100 204"
+        stroke="url(#lg)" stroke-width="26" stroke-linecap="round" fill="none"/>
+
+  <!-- Highlight sheen -->
+  <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108"
+        stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108"
+        stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+
+  <!-- Thin divider -->
+  <line x1="30" y1="228" x2="170" y2="228" stroke="#4c1d95" stroke-width="0.6"/>
+
+  <!-- Brand name -->
+  <text x="100" y="248"
+        text-anchor="middle"
+        font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="13.5" font-weight="700" letter-spacing="3.8"
+        fill="#ffffff">SORPRESA VIRTUAL</text>
+
+  <!-- Tagline -->
+  <text x="100" y="266"
+        text-anchor="middle"
+        font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="7.2" font-weight="400" letter-spacing="1.2"
+        fill="#c084fc">CREA REGALOS VIRTUALES ÚNICOS</text>
+</svg>

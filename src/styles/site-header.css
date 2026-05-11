@@ -1,0 +1,314 @@
+/* ══════════════════════════════════════════════
+   SITE HEADER — responsive completo
+   xs/sm (<768px): logo+actions fila 1, hero fila 2
+   md+ (≥768px)  : 3 columnas logo | hero | actions
+   ══════════════════════════════════════════════ */
+
+/* ── Base mobile-first ── */
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 14px 12px;
+  width: 100%;
+  padding: 14px 18px 18px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+.site-logo {
+  grid-column: 1;
+  grid-row: 1;
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+/* ── Contenedor derecho: social + Apóyanos ── */
+.header-actions {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-hero {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  animation: heroFadeIn 0.55s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Badge ── */
+.template-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  color: oklch(68% 0.14 310);
+  background: oklch(22% 0.06 310 / 0.55);
+  border: 1px solid oklch(48% 0.14 310 / 0.3);
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+}
+
+.badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 oklch(55% 0.20 310 / 0.5);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.85);
+    box-shadow: 0 0 0 4px oklch(55% 0.20 310 / 0);
+  }
+}
+
+/* ── Tagline ── */
+.header-tagline {
+  font-size: clamp(1.15rem, 5.5vw, 1.6rem);
+  font-weight: 700;
+  color: oklch(96% 0.02 310);
+  line-height: 1.2;
+  font-family: var(--font-title) !important;
+  text-shadow: none;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+.header-sub {
+  font-size: clamp(0.74rem, 3vw, 0.86rem);
+  color: oklch(56% 0.06 310);
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+/* ── Social icons ── */
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: oklch(68% 0.14 310);
+  background: oklch(20% 0.05 310 / 0.65);
+  border: 1px solid oklch(40% 0.10 310 / 0.28);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ── Botón Apóyanos (header) — mismo token visual que social-link ── */
+.header-support-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: oklch(74% 0.18 310);
+  background: oklch(22% 0.08 310 / 0.65);
+  border: 1px solid oklch(52% 0.18 310 / 0.45);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .social-link:hover {
+    color: #fff;
+    background: oklch(28% 0.12 310 / 0.85);
+    border-color: oklch(55% 0.18 310 / 0.5);
+    transform: translateY(-2px);
+  }
+
+  .header-support-btn:hover {
+    color: #fff;
+    background: oklch(30% 0.14 310 / 0.85);
+    border-color: oklch(60% 0.22 310 / 0.7);
+    transform: translateY(-2px);
+  }
+}
+
+.social-link:active {
+  transform: scale(0.93);
+}
+
+.header-support-btn:active {
+  transform: scale(0.93);
+}
+
+/* ══ sm — 480px ══ */
+@media (min-width: 480px) {
+  .site-header {
+    padding: 16px 22px 20px;
+    gap: 14px 14px;
+  }
+
+  .site-logo {
+    height: 40px;
+  }
+
+  .header-tagline {
+    font-size: clamp(1.2rem, 4vw, 1.7rem);
+  }
+
+  .social-link,
+  .header-support-btn {
+    height: 34px;
+  }
+
+  .social-link {
+    width: 34px;
+    border-radius: 10px;
+  }
+
+  .header-support-btn {
+    border-radius: 10px;
+    padding: 0 13px;
+    font-size: 0.74rem;
+  }
+}
+
+/* ══ md — 768px: grid 3 columnas ══ */
+@media (min-width: 768px) {
+  .site-header {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto;
+    align-items: center;
+    gap: 0 22px;
+    padding: 18px 28px 22px;
+  }
+
+  .site-logo {
+    grid-column: 1;
+    grid-row: 1;
+    height: 44px;
+  }
+
+  .header-hero {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 6px;
+  }
+
+  .header-actions {
+    grid-column: 3;
+    grid-row: 1;
+    gap: 8px;
+    align-self: center;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-support-btn {
+    height: 36px;
+    padding: 0 14px;
+    font-size: 0.76rem;
+  }
+
+  .header-tagline {
+    font-size: clamp(1.1rem, 2.2vw, 1.65rem);
+  }
+
+  .header-sub {
+    font-size: clamp(0.76rem, 1.4vw, 0.86rem);
+  }
+}
+
+/* ══ lg — 1024px ══ */
+@media (min-width: 1024px) {
+  .site-header {
+    gap: 0 32px;
+    padding: 20px 40px 24px;
+  }
+
+  .site-logo {
+    height: 50px;
+  }
+
+  .social-link {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .header-support-btn {
+    height: 38px;
+    border-radius: 11px;
+    padding: 0 16px;
+    font-size: 0.78rem;
+  }
+
+  .header-tagline {
+    font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  }
+}
+
+/* ══ xl — 1440px ══ */
+@media (min-width: 1440px) {
+  .site-header {
+    gap: 0 40px;
+    padding: 22px 56px 26px;
+  }
+
+  .site-logo {
+    height: 56px;
+  }
+
+  .header-tagline {
+    font-size: clamp(1.4rem, 2vw, 2.1rem);
+  }
+
+  .header-sub {
+    font-size: 0.9rem;
+  }
+}
+
+/* ══ Accesibilidad ══ */
+@media (prefers-reduced-motion: reduce) {
+  .header-hero,
+  .badge-dot {
+    animation: none;
+  }
+}

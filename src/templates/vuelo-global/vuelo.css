@@ -1,4 +1,3 @@
-@import '@fontsource/dancing-script';
 
 /* ── Preview mode: inline dentro del preview-box ─ */
 .vg-root {
@@ -8,7 +7,6 @@
   overflow: hidden;
   background: #000510;
   border-radius: 12px;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* ── View mode: pantalla completa ────────────────────── */
@@ -153,7 +151,6 @@
 }
 
 .vg-modal-name {
-  font-family: 'Dancing Script', cursive;
   font-size: 1.65rem;
   color: rgba(255,255,255,0.92);
   display: block;
@@ -178,7 +175,6 @@
 
 .vg-modal-city {
   font-size: 0.76rem;
-  font-family: 'Courier New', monospace;
   color: rgba(255,255,255,0.4);
   letter-spacing: 0.02em;
 }

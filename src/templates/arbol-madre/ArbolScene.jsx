@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useArbol } from './useArbol';
 import './arbol.css';
-
+ 
 // ─── SVG icons ────────────────────────────────────────────────────────────────
 const IconTree = ({ size = 64 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">

@@ -5,7 +5,6 @@
 
 /* El contenedor principal ahora se adapta al 100% de su PADRE, no de la ventana */
 .app-container-sr {
-    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
     /* Cambiado de 100vw/100vh a 100% para que respete el .preview-box */
@@ -25,13 +24,6 @@
     flex-direction: column;
 }
 
-.font-serif-sr {
-    font-family: 'Playfair Display', serif;
-}
-
-.font-script-sr {
-    font-family: 'Alex Brush', cursive;
-}
 
 @keyframes gradientBG {
     0% {

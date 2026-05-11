@@ -1,7 +1,43 @@
-/* Selector más específico (.modal-content.custom-modal) para vencer al max-width: 90% de .modal-content */
+/* ───── CustomizeModal — scroll interno + animación de entrada ───── */
 .modal-content.custom-modal {
-  width: min(400px, calc(100% - 32px));
+  width: min(420px, 100%);
+  max-height: min(680px, calc(100dvh - 48px));
+  overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
+  border: 1px solid oklch(45% 0.12 310 / 0.22);
+  scrollbar-width: thin;
+  scrollbar-color: oklch(55% 0.18 310 / 0.45) transparent;
+  scroll-behavior: smooth;
+  animation: customModalIn 240ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.modal-content.custom-modal::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-content.custom-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-content.custom-modal::-webkit-scrollbar-thumb {
+  background: oklch(55% 0.18 310 / 0.45);
+  border-radius: 4px;
+}
+
+@keyframes customModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content.custom-modal {
+    animation: none;
+  }
 }
 
 .custom-modal {
@@ -50,9 +86,9 @@
 }
 
 .tiktok-cta-icon {
-  font-size: 1.5rem;
   flex-shrink: 0;
-  display: inline-block;
+  display: flex;
+  align-items: center;
   animation: tiktokWobble 2s ease-in-out infinite;
   transform-origin: center;
 }
@@ -178,9 +214,44 @@
 }
 
 .form-group input[type="file"] {
-  background: #2a2a2a;
+  background: #1a1a1a;
   cursor: pointer;
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0;
+  border: 1px solid oklch(45% 0.12 310 / 0.35);
+  overflow: hidden;
+}
+
+.form-group input[type="file"]::file-selector-button {
+  padding: 10px 14px;
+  background: oklch(35% 0.18 310 / 0.55);
+  color: var(--accent);
+  border: none;
+  border-right: 1px solid oklch(45% 0.12 310 / 0.4);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.2s;
+  margin-right: 12px;
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
+  background: oklch(40% 0.22 310 / 0.7);
+}
+
+.form-group input[type="file"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.form-group input[type="file"]:disabled::file-selector-button {
+  cursor: not-allowed;
+}
+
+.form-group input[type="date"] {
+  color-scheme: dark;
 }
 
 .form-group textarea {
@@ -191,7 +262,14 @@
 .modal-actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  gap: 12px;
+  position: sticky;
+  bottom: -30px;
+  background: var(--surface);
+  margin: 20px -30px -30px;
+  padding: 14px 30px 20px;
+  border-top: 1px solid oklch(35% 0.06 310 / 0.4);
+  box-shadow: 0 -12px 24px 6px var(--surface);
 }
 
 /* FeedbackModal */
@@ -353,4 +431,61 @@
 .qr-canvas svg,
 .qr-canvas canvas {
   display: block;
+}
+
+/* ───── CustomizeModal — clases de estado ───── */
+.form-upload-warning {
+  color: var(--accent);
+  font-size: 0.78rem;
+  margin: 4px 0 0;
+  opacity: 0.85;
+}
+
+.form-progress {
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin: 5px 0;
+}
+
+/* ───── YapeModal ───── */
+.yape-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.yape-title {
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.yape-subtitle {
+  font-size: 0.88rem;
+  color: oklch(70% 0.04 310);
+  margin-bottom: 12px;
+}
+
+.yape-qr-img {
+  width: min(200px, 70vw);
+  border-radius: 12px;
+  display: block;
+}
+
+.yape-actions {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ───── FeedbackModal — contador ───── */
+.feedback-counter {
+  display: block;
+  text-align: right;
+  font-size: 0.72rem;
+  color: oklch(52% 0.04 310);
+  margin: -12px 0 4px;
+  opacity: 0.8;
 }

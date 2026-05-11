@@ -9,7 +9,7 @@ import { AntiInspectGuard } from '../../lib/antiInspect';
 
 // ─── Datos ────────────────────────────────────────────────────────────────────
 
-const INTENCIONES = [   
+const INTENCIONES = [
   { sub: 'Mostrar',    main: 'Amor',          msg: ', te han regalado esta rosa para que sepas lo especial que eres para esa persona' },
   { sub: 'Desear',     main: 'Suerte',        msg: ', te han regalado esta rosa para desearte mucha suerte en los próximos días' },
   { sub: 'Subir sus',  main: 'Ánimos',        msg: ', te han regalado esta rosa para darte muchos ánimos y abrazos' },
@@ -28,7 +28,7 @@ const INTENCIONES = [
   { sub: 'Sín',        main: 'Razón',         msg: ', te han regalado esta rosa sin razón, porque eres importante' },
 ];
 
-// ─── SVG Icono Rosa (reutilizable) ────────────────────────────────────────────
+// ─── SVG Icono Rosa ───────────────────────────────────────────────────────────
 
 function RosaIcon({ color = 'currentColor', size = 44, style = {} }) {
   return (
@@ -46,15 +46,12 @@ function RosaIcon({ color = 'currentColor', size = 44, style = {} }) {
   );
 }
 
-// ─── Sub-componente Botón Volver ─────────────────────────────────────────────
+// ─── Botón Volver ─────────────────────────────────────────────────────────────
+
 function BackButton({ onClick, color, text = "Volver al paso anterior" }) {
   return (
-    <div
-      className="rc-back-btn"
-      style={{ color: color, marginTop: 10 }}
-      onClick={onClick}
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor" style={{ width: 12, height: 20, marginRight: 6 }}>
+    <div className="rc-back-btn" style={{ color }} onClick={onClick}>
+      <svg className="rc-back-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="currentColor">
         <path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" />
       </svg>
       {text}
@@ -65,21 +62,20 @@ function BackButton({ onClick, color, text = "Volver al paso anterior" }) {
 // ─── Componente Principal ──────────────────────────────────────────────────────
 
 export default function RosaCreator({ onSave }) {
-  const [step, setStep]                         = useState(1);
-  const [animDir, setAnimDir]                   = useState('next');   // 'next' | 'prev'
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showVideoModal, setShowVideoModal]     = useState(false);
-  const [videoUrl, setVideoUrl]                 = useState('');
-  const [videoSaved, setVideoSaved]             = useState('');
-  const [charCount, setCharCount]               = useState(0);
-  const [intentionSelected, setIntentionSelected] = useState(null); // ahora guarda ID en vez de índice
-  const [_rosaIndex, setRosaIndex]              = useState(0);            // slide activo
-  const [isBouquet, setIsBouquet]               = useState(false);
-  const nameInputRef                            = useRef(null);
-  const swiperRef                               = useRef(null);
-  
-  // Refs para corregir el bug de animación
-  const timerRef = useRef(null);
+  const [step, setStep]                           = useState(1);
+  const [animDir, setAnimDir]                     = useState('next');
+  const [showConfirmModal, setShowConfirmModal]   = useState(false);
+  const [showVideoModal, setShowVideoModal]       = useState(false);
+  const [videoUrl, setVideoUrl]                   = useState('');
+  const [videoSaved, setVideoSaved]               = useState('');
+  const [charCount, setCharCount]                 = useState(0);
+  const [intentionSelected, setIntentionSelected] = useState(null);
+  const [_rosaIndex, setRosaIndex]                = useState(0);
+  const [isBouquet, setIsBouquet]                 = useState(false);
+  const [notif, setNotif]                         = useState('');
+  const nameInputRef  = useRef(null);
+  const swiperRef     = useRef(null);
+  const timerRef      = useRef(null);
   const userInteracted = useRef(false);
 
   const [formData, setFormData] = useState({
@@ -96,7 +92,11 @@ export default function RosaCreator({ onSave }) {
     videoLink: '',
   });
 
-  // Sincronizar color con el slide del Swiper
+  const notify = (msg) => {
+    setNotif(msg);
+    setTimeout(() => setNotif(''), 3500);
+  };
+
   const onSlideChange = (swiper) => {
     const idx  = swiper.realIndex;
     const rosa = ROSAS[idx];
@@ -113,7 +113,6 @@ export default function RosaCreator({ onSave }) {
 
   const [nameFocused, setNameFocused] = useState(false);
 
-  // Animación de entrada del carrusel corregida (no fuga memoria y respeta interacción)
   useEffect(() => {
     const sequence = [0, 1, 2, 3, 0];
     let i = 0;
@@ -126,64 +125,56 @@ export default function RosaCreator({ onSave }) {
       swiperRef.current.slideTo(sequence[i]);
       timerRef.current = setTimeout(run, 700);
     };
-    
+
     timerRef.current = setTimeout(run, 1000);
-    
+
     return () => {
       mounted = false;
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, []);
 
-  // Navegar entre pasos con animación
   const goTo = (nextStep, dir = 'next') => {
     setAnimDir(dir);
     setStep(nextStep);
   };
 
-  // Confirmar rosa y pasar al paso 2
   const confirmarRosa = () => {
     userInteracted.current = true;
     setShowConfirmModal(false);
     goTo(2);
   };
 
-  // Paso 2 → 3: guardar nombre y mostrar intenciones
   const handleSaveName = () => {
     if (!formData.nombre.trim()) {
-      alert('Por favor, ingresa un nombre o apodo antes de continuar.');
+      notify('Por favor, ingresa un nombre o apodo antes de continuar.');
       return;
     }
     goTo(3);
   };
 
-  // Paso 3 → 4: guardar intención
   const handleSaveIntention = () => {
     if (intentionSelected === null) {
-      alert('Por favor, selecciona una intención antes de continuar.');
+      notify('Por favor, selecciona una intención antes de continuar.');
       return;
     }
     goTo(4);
   };
 
-  // Paso 4 → 5 (ramo)
   const handleSaveLetter = () => {
     goTo(5);
   };
 
-  // Paso 5 → 6 (resumen)
   const handleSaveBouquet = (isBouq) => {
     setIsBouquet(isBouq);
     setFormData(fd => ({ ...fd, isBouquet: isBouq }));
     goTo(6);
   };
 
-  // Finalizar y enviar
   const handleFinalizar = () => {
     onSave?.({ ...formData, videoLink: videoSaved });
   };
 
-  // Video helpers
   const esEnlaceDeVideo = (url) => {
     const patrones = [
       /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/,
@@ -203,486 +194,407 @@ export default function RosaCreator({ onSave }) {
       setFormData(fd => ({ ...fd, videoLink: videoUrl }));
       setShowVideoModal(false);
     } else {
-      alert('Por favor, ingresa un enlace de video válido.');
+      notify('Por favor, ingresa un enlace de video válido.');
     }
   };
 
-  // ─── Clases de animación ──────────────────────────────────────────────────────
   const animClass = animDir === 'next' ? 'page-enter-next' : 'page-enter-prev';
-  
-  // Buscar la intención seleccionada de forma robusta para el Preview Header
   const selectedIntentionObj = INTENCIONES.find(int => `${int.sub}-${int.main}` === intentionSelected);
 
   // ─── RENDER ──────────────────────────────────────────────────────────────────
   return (
     <AntiInspectGuard>
-    <div className="rc-overlay">
-      <div className="rc-container">
+      <div className="rc-overlay">
 
-        {/* ════════════════════════════════════════════════
-            PASO 1 — Seleccionar color de rosa (Swiper)
-        ════════════════════════════════════════════════ */}
-        {step === 1 && (
-          <div className={`rc-page ${animClass}`}>
+        {/* Notificación toast — 1. alert() reemplazados */}
+        {notif && <div className="rc-notif">{notif}</div>}
 
-            {/* Header */}
-            <div className="rc-p1-header">
-              <div style={{ display: 'inline-flex' }}>
-                <RosaIcon color={formData.colorHex} size={44} style={{ background: 'radial-gradient(white, transparent)', borderRadius: 8, padding: 1 }} />
+        <div className="rc-container">
+
+          {/* ══ PASO 1 — Seleccionar color de rosa ══ */}
+          {step === 1 && (
+            <div className={`rc-page ${animClass}`}>
+
+              <div className="rc-p1-header">
+                <div className="rc-p1-icon-wrap">
+                  <RosaIcon
+                    color={formData.colorHex}
+                    size={44}
+                    style={{ background: 'radial-gradient(white, transparent)', borderRadius: 8, padding: 1 }}
+                  />
+                </div>
+                <h2 className="rc-p1-title">
+                  Regalo Virtual para<br />
+                  <span style={{ color: formData.colorHex }}>amigos</span> y{' '}
+                  <span style={{ color: formData.colorHex }}>parejas</span>
+                </h2>
+                <p className="rc-p1-subtitle">
+                  Elige una <span style={{ color: formData.colorHex }}>rosa</span> o detalle gratis
+                </p>
               </div>
-              <h2 className="rc-p1-title">
-                Regalo Virtual para<br />
-                <span style={{ color: formData.colorHex }}>amigos</span> y{' '}
-                <span style={{ color: formData.colorHex }}>parejas</span>
-              </h2>
-              <p className="rc-p1-subtitle">
-                Elige una <span style={{ color: formData.colorHex }}>rosa</span> o detalle gratis
-              </p>
+
+              <div className="rc-swiper-wrapper">
+                <div className="rc-highlight-box" style={{ backgroundColor: formData.bgLight }} />
+                <Swiper
+                  modules={[Pagination]}
+                  className="rc-swiper"
+                  loop={false}
+                  centeredSlides={true}
+                  slidesPerView="auto"
+                  spaceBetween={10}
+                  grabCursor={true}
+                  initialSlide={_rosaIndex}
+                  speed={600}
+                  onTouchStart={() => { userInteracted.current = true; }}
+                  pagination={{
+                    clickable: true,
+                    renderBullet: (index, className) =>
+                      `<span class="${className}" style="background-color:${ROSAS[index]?.hex}"></span>`,
+                  }}
+                  onSwiper={(swiper) => { swiperRef.current = swiper; }}
+                  onSlideChange={onSlideChange}
+                  breakpoints={{
+                    320: { slidesPerView: 'auto', spaceBetween: 10 },
+                    480: { slidesPerView: 'auto', spaceBetween: 20 },
+                  }}
+                >
+                  {ROSAS.map((rosa, idx) => (
+                    <SwiperSlide key={idx} className="rc-swiper-slide">
+                      <img src={rosa.img} alt={rosa.alt} className="rc-rose-img" />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+
+              <div className="rc-p1-btn-wrap">
+                <button
+                  className="rc-btn"
+                  style={{ backgroundColor: formData.colorHex }}
+                  onClick={() => setShowConfirmModal(true)}
+                >
+                  Personalizar
+                </button>
+              </div>
+
+              {showConfirmModal && (
+                <div className="rc-modal-backdrop">
+                  <div className="rc-modal-content animated">
+                    <h2>Confirmar selección</h2>
+                    <p>
+                      Has seleccionado una rosa de color:{' '}
+                      <RosaIcon color={formData.colorHex} size={30} style={{ verticalAlign: 'middle' }} />
+                    </p>
+                    <button
+                      className="rc-btn"
+                      style={{ backgroundColor: formData.colorHex, width: '100%' }}
+                      onClick={confirmarRosa}
+                    >
+                      Confirmar
+                    </button>
+                    <button className="rc-modal-close" onClick={() => setShowConfirmModal(false)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
+                        <g fill="none">
+                          <path fill="currentColor" d="M12 3a1 1 0 0 1 .117 1.993L12 5H7a1 1 0 0 0-.993.883L6 6v12a1 1 0 0 0 .883.993L7 19h4.5a1 1 0 0 1 .117 1.993L11.5 21H7a3 3 0 0 1-2.995-2.824L4 18V6a3 3 0 0 1 2.824-2.995L7 3zm5.707 5.464l2.828 2.829a1 1 0 0 1 0 1.414l-2.828 2.829a1 1 0 1 1-1.414-1.415L17.414 13H12a1 1 0 1 1 0-2h5.414l-1.121-1.121a1 1 0 0 1 1.414-1.415" />
+                        </g>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
+          )}
 
-            {/* Swiper */}
-            <div className="rc-swiper-wrapper" style={{ transformOrigin: 'center center' }}>
-              {/* Caja de fondo de color */}
-              <div className="rc-highlight-box" style={{ backgroundColor: formData.bgLight }} />
-
-              <Swiper
-                modules={[Pagination]}
-                className="rc-swiper"
-                loop={false}
-                centeredSlides={true}
-                slidesPerView="auto"
-                spaceBetween={10}
-                grabCursor={true}
-                initialSlide={_rosaIndex}
-                speed={600}
-                onTouchStart={() => { userInteracted.current = true; }} // Cancela la animación si el usuario toca
-                pagination={{
-                  clickable: true,
-                  renderBullet: (index, className) =>
-                    `<span class="${className}" style="background-color:${ROSAS[index]?.hex}"></span>`,
-                }}
-                onSwiper={(swiper) => { swiperRef.current = swiper; }}
-                onSlideChange={onSlideChange}
-                breakpoints={{
-                  320: { slidesPerView: 'auto', spaceBetween: 10 },
-                  480: { slidesPerView: 'auto', spaceBetween: 20 },
-                }}
-              >
-                {ROSAS.map((rosa, idx) => (
-                  <SwiperSlide key={idx} className="rc-swiper-slide">
-                    <img
-                      src={rosa.img}
-                      alt={rosa.alt}
-                      className="rc-rose-img"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-
-            {/* Botón personalizar */}
-            <div className="rc-p1-btn-wrap">
-              <button
-                className="rc-btn"
+          {/* ══ PASOS 2-3: Barra de vista previa compartida ══ */}
+          {step >= 2 && step <= 3 && (
+            <div className="rc-preview-bar" style={{ backgroundColor: formData.bgLight }}>
+              <img
+                src={formData.roseImg}
+                alt="rosa"
+                className={`rc-preview-rose ${nameFocused ? 'rc-preview-rose--shifted' : ''}`}
+              />
+              <div className={`rc-preview-text ${nameFocused ? 'rc-preview-text--visible' : ''}`}>
+                <span style={{ color: formData.colorHex }}>{formData.nombre || ''}</span>
+                {selectedIntentionObj
+                  ? <span>{selectedIntentionObj.msg}</span>
+                  : <span>, <br />elige una intención (siguiente)</span>
+                }
+              </div>
+              <div
+                className={`rc-preview-label ${nameFocused ? 'rc-preview-label--visible' : ''}`}
                 style={{ backgroundColor: formData.colorHex }}
-                onClick={() => setShowConfirmModal(true)}
               >
-                Personalizar
-              </button>
+                Vista previa
+              </div>
             </div>
+          )}
 
-            {/* Modal de confirmación */}
-            {showConfirmModal && (
-              <div className="rc-modal-backdrop">
-                <div className="rc-modal-content animated">
-                  
-                  <h2>Confirmar selección</h2>
-                  <p>
-                    Has seleccionado una rosa de color:{' '}
-                    <RosaIcon color={formData.colorHex} size={30} style={{ verticalAlign: 'middle' }} />
-                  </p>
-                  <button
-                    className="rc-btn"
-                    style={{ backgroundColor: formData.colorHex, width: '100%' }}
-                    onClick={confirmarRosa}
-                  >
-                    Confirmar
-                  </button>
-
-                  <button
-                    className="rc-modal-close"
-                    onClick={() => setShowConfirmModal(false)}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
-                      <g fill="none">
-                        <path fill="currentColor" d="M12 3a1 1 0 0 1 .117 1.993L12 5H7a1 1 0 0 0-.993.883L6 6v12a1 1 0 0 0 .883.993L7 19h4.5a1 1 0 0 1 .117 1.993L11.5 21H7a3 3 0 0 1-2.995-2.824L4 18V6a3 3 0 0 1 2.824-2.995L7 3zm5.707 5.464l2.828 2.829a1 1 0 0 1 0 1.414l-2.828 2.829a1 1 0 1 1-1.414-1.415L17.414 13H12a1 1 0 1 1 0-2h5.414l-1.121-1.121a1 1 0 0 1 1.414-1.415" />
-                      </g>
-                    </svg>
-                  </button>
-
+          {/* ══ PASO 2 — Nombre / Apodo ══ */}
+          {step === 2 && (
+            <div className={`rc-page rc-page--inner ${animClass}`}>
+              <div className="rc-section-name">
+                <div className="rc-p24 rc-pb0">
+                  <h2 className="rc-section-title">
+                    Escribe <span style={{ color: formData.colorHex }}>su</span> nombre<br />o apodo
+                  </h2>
+                </div>
+                <div>
+                  <div className="label-float">Nombre:</div>
+                  <input
+                    ref={nameInputRef}
+                    id="name_gift"
+                    className="input-rosify"
+                    maxLength={16}
+                    value={formData.nombre}
+                    style={{ borderColor: formData.colorHex, caretColor: formData.colorHex }}
+                    onChange={(e) => setFormData(fd => ({ ...fd, nombre: e.target.value }))}
+                    onFocus={() => setNameFocused(true)}
+                    onBlur={() => { if (!formData.nombre) setNameFocused(false); }}
+                  />
+                </div>
+                <BackButton onClick={() => goTo(1, 'prev')} color={formData.colorHex} text="Cambiar Color Rosa" />
+              </div>
+              <div className="rc-p24">
+                <div
+                  className="button-bottom press-effect"
+                  style={{ backgroundColor: formData.colorHex }}
+                  onClick={handleSaveName}
+                >
+                  Continuar
                 </div>
               </div>
-            )}
-          </div>
-        )}
-
-
-        {/* ════════════════════════════════════════════════
-            PASOS 2‑3 — Header compartido: vista previa
-        ════════════════════════════════════════════════ */}
-        {step >= 2 && step <= 3 && (
-          <div
-            className="rc-preview-bar"
-            style={{ backgroundColor: formData.bgLight }}
-          >
-            <img
-              src={formData.roseImg}
-              alt="rosa"
-              className={`rc-preview-rose ${nameFocused ? 'rc-preview-rose--shifted' : ''}`}
-            />
-            <div className={`rc-preview-text ${nameFocused ? 'rc-preview-text--visible' : ''}`}>
-              <span style={{ color: formData.colorHex }}>{formData.nombre || ''}</span>
-              {selectedIntentionObj
-                ? <span>{selectedIntentionObj.msg}</span>
-                : <span>, <br />elige una intención (siguiente)</span>
-              }
             </div>
-            <div
-              className={`rc-preview-label ${nameFocused ? 'rc-preview-label--visible' : ''}`}
-              style={{ backgroundColor: formData.colorHex }}
-            >
-              Vista previa
-            </div>
-          </div>
-        )}
+          )}
 
-
-        {/* ════════════════════════════════════════════════
-            PASO 2 — Nombre / Apodo
-        ════════════════════════════════════════════════ */}
-        {step === 2 && (
-          <div className={`rc-page rc-page--inner ${animClass}`}>
-
-            <div className="rc-section-name">
+          {/* ══ PASO 3 — Intención ══ */}
+          {step === 3 && (
+            <div className={`rc-page rc-page--inner ${animClass}`}>
               <div className="rc-p24 rc-pb0">
-                <h2 className="rc-section-title">
-                  Escribe <span style={{ color: formData.colorHex }}>su</span> nombre<br />o apodo
+                <h2 className="rc-section-title elige-intencion">
+                  Elige qué intención<br />lleva la rosa
                 </h2>
               </div>
-
-              <div>
-                <div className="label-float">Nombre:</div>
-                <input
-                  ref={nameInputRef}
-                  id="name_gift"
-                  className="input-rosify"
-                  maxLength={16}
-                  value={formData.nombre}
-                  style={{ borderColor: formData.colorHex, caretColor: formData.colorHex }}
-                  onChange={(e) => setFormData(fd => ({ ...fd, nombre: e.target.value }))}
-                  onFocus={() => setNameFocused(true)}
-                  onBlur={() => { if (!formData.nombre) setNameFocused(false); }}
-                />
+              <div className="rc-intentions-scroll">
+                {[
+                  [0, 2, 11],
+                  [12, 10, 9],
+                  [3, 1, 5],
+                  [6, 7, 8],
+                  [13, 14, 15],
+                ].map((row, rowIdx) => (
+                  <div className="intention-container" key={`row-${rowIdx}`}>
+                    {row.map((i) => {
+                      const intencion   = INTENCIONES[i];
+                      const intentionId = `${intencion.sub}-${intencion.main}`;
+                      return (
+                        <IntentionCard
+                          key={intentionId}
+                          intencion={intencion}
+                          color={formData.colorHex}
+                          selected={intentionSelected === intentionId}
+                          onSelect={() => {
+                            setIntentionSelected(intentionId);
+                            setFormData(fd => ({
+                              ...fd,
+                              intencion: intencion.msg.replace(', ', ''),
+                              intencionCorta: intencion.main,
+                            }));
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
-
-              <BackButton onClick={() => goTo(1, 'prev')} color={formData.colorHex} text="Cambiar Color Rosa" />
-            </div>
-
-            <div className="rc-p24">
-              <div
-                className="button-bottom press-effect"
-                style={{ backgroundColor: formData.colorHex }}
-                onClick={handleSaveName}
-              >
-                Continuar
-              </div>
-            </div>
-          </div>
-        )}
-
-       
-        {/* ════════════════════════════════════════════════
-            PASO 3 — Intención
-        ════════════════════════════════════════════════ */}
-        {step === 3 && (
-          <div className={`rc-page rc-page--inner ${animClass}`}>
-
-            <div className="rc-p24 rc-pb0">
-              <h2 className="rc-section-title elige-intencion">
-                Elige qué intención<br />lleva la rosa
-              </h2>
-            </div>
-
-            <div className="rc-intentions-scroll">
-  {[
-    [0, 2, 11],   // Fila 1: Amor, Ánimos, Gracias
-    [12, 10, 9],  // Fila 2
-    [3, 1, 5],    // Fila 3
-    [6, 7, 8],    // Fila 4
-    [13, 14, 15], // Fila 5
-  ].map((row, rowIdx) => (
-    <div className="intention-container" key={`row-${rowIdx}`}>
-      {row.map((i) => {
-        const intencion = INTENCIONES[i];
-        const intentionId = `${intencion.sub}-${intencion.main}`;
-        return (
-          <IntentionCard
-            key={intentionId}
-            intencion={intencion}
-            color={formData.colorHex}
-            selected={intentionSelected === intentionId}
-            onSelect={() => {
-              setIntentionSelected(intentionId);
-              setFormData(fd => ({
-                ...fd,
-                intencion: intencion.msg.replace(', ', ''),
-                intencionCorta: intencion.main
-              }));
-            }}
-          />
-        );
-      })}
-    </div>
-  ))}
-</div>
-
-            <div className="rc-p24" style={{ paddingTop: 0 }}>
-              <div
-                className="button-bottom press-effect"
-                style={{ backgroundColor: formData.colorHex }}
-                onClick={handleSaveIntention}
-              >
-                Continuar
-              </div>
-              <BackButton onClick={() => goTo(2, 'prev')} color={formData.colorHex} />
-            </div>
-          </div>
-        )}
-
-
-        {/* ════════════════════════════════════════════════
-            PASO 4 — Video + Mensaje adicional
-        ════════════════════════════════════════════════ */}
-        {step === 4 && (
-          <div className={`rc-page rc-page--inner ${animClass}`}>
-
-            {/* Modal de video */}
-            {showVideoModal && (
-              <div className="rc-video-modal" style={{ borderColor: formData.colorHex }}>
-                <div style={{ padding: 15, color: formData.colorHex }}>Introduce la URL del video.</div>
-                <input
-                  type="url"
-                  className="input-rosify"
-                  style={{ height: 40, border: `2px solid ${formData.colorHex}`, borderRadius: 12, width: '90%', boxSizing: 'border-box' }}
-                  placeholder="https://www.video.com/video"
-                  value={videoUrl}
-                  onChange={e => setVideoUrl(e.target.value)}
-                />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 10 }}>
-                  {[
-                    { label: 'Guardar',  action: guardarLink },
-                    { label: 'Borrar',   action: () => { setVideoUrl(''); setVideoSaved(''); } },
-                    { label: 'Salir',    action: () => setShowVideoModal(false) },
-                  ].map(({ label, action }) => (
-                    <div
-                      key={label}
-                      className="button-bottom grow-click"
-                      style={{ backgroundColor: formData.colorHex, color: '#fff', fontSize: 15, height: 54, lineHeight: '54px', textAlign: 'center', cursor: 'pointer', borderRadius: 10, margin: '5px 20px' }}
-                      onClick={action}
-                    >
-                      {label}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Zona superior: video opcional */}
-            <div
-              className="image-container"
-              style={{ display:'none'}}
-            >
-              <div style={{ textAlign: 'center', marginBottom: 6, fontWeight: 600, color: '#555', fontSize: 14 }}>
-                {videoSaved ? `✅ Video guardado` : '¿Deseas agregar un video? (Opcional)'}
-              </div>
-              <div
-                className="button-bottom grow-click"
-                style={{ backgroundColor: formData.colorHex, color: '#fff', borderRadius: 11, fontSize: 15, display: 'flex', padding: '8px 16px', alignItems: 'center', gap: 8, cursor: 'pointer', height: 'auto', lineHeight: 'normal' }}
-                onClick={() => setShowVideoModal(true)}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
-                  <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
-                    <path d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3"/>
-                    <path d="M20.5 28v-6.062l5.25 3.03L31 28l-5.25 3.031l-5.25 3.031zM6 15h36m-9-9l-6 9m-6-9l-6 9"/>
-                  </g>
-                </svg>
-                {videoSaved ? 'Cambiar video' : 'Añadir link de Video'}
-              </div>
-            </div>
-
-            {/* Mensaje adicional */}
-            <div id="section-letter" style={{ display: 'block' }}>
-              <div className="rc-p24 rc-pb0" style={{ paddingTop: 0, marginTop: 15 }}>
-                <h2 className="rc-section-title">Mensaje adicional</h2>
-              </div>
-              <div style={{ height: 180 }}>
-                <div className="flex justify-between">
-                  <label className="label-float" style={{ display: 'block', marginBottom: 8 }}>Tu mensaje:</label>
-                </div>
-                <textarea
-                  id="message"
-                  className="input-rosify"
-                  maxLength={300}
-                  style={{
-                    height: 120, fontSize: 16, padding: 14,
-                    width: 'calc(90%)',
-                    border: `3px solid ${formData.colorHex}`,
-                    caretColor: formData.colorHex,
-                    transition: 'border-color 0.3s',
-                    resize: 'none',
-                  }}
-                  placeholder="Escribe tu mensaje aquí..."
-                  value={formData.mensaje}
-                  onChange={(e) => {
-                    setCharCount(e.target.value.length);
-                    setFormData(fd => ({ ...fd, mensaje: e.target.value }));
-                  }}
-                />
-                <div id="char-counter" style={{ textAlign: 'right', fontSize: 14, color: '#666', paddingRight: 20, margin: 5 }}>
-                  {charCount} / 300
-                </div>
-              </div>
-            </div>
-
-            <div className="rc-p24" style={{ paddingTop: 0 }}>
-              <div
-                id="btn-letter"
-                className="button-bottom grow-click"
-                style={{ backgroundColor: formData.colorHex }}
-                onClick={handleSaveLetter}
-              >
-                Continuar
-              </div>
-              <BackButton onClick={() => goTo(3, 'prev')} color={formData.colorHex} />
-            </div>
-          </div>
-        )}
-
-
-        {/* ════════════════════════════════════════════════
-            PASO 5 — ¿Ramo o rosa?
-        ════════════════════════════════════════════════ */}
-        {step === 5 && (
-          <div className={`rc-page rc-page--bouquet ${animClass}`}>
-
-            {/* Círculo con imagen del ramo */}
-            <div
-              style={{
-                position: 'relative', width: 200, height: 200, borderRadius: '50%',
-                display: 'flex', justifyContent: 'center', alignItems: 'center',
-                margin: '40px auto',
-                backgroundColor: formData.bgLight,
-                boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
-              }}
-            >
-              <img
-                src={formData.ramoImg}
-                style={{ width: 120, height: 'auto', zIndex: 1 }}
-                alt="ramo"
-              />
-            </div>
-
-            <div style={{ textAlign: 'center', fontFamily: "'Cascadia Code', monospace" }}>
-              <h2 style={{ fontSize: 20, fontWeight: 600, margin: '50px 0' }}>
-                ¿Deseas convertir la rosa en un ramo?
-              </h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center' }}>
-                <button
-                  style={{
-                    width: 120, padding: '10px 0', fontSize: 18, fontWeight: 'bold',
-                    border: `2px solid ${formData.colorHex}`, borderRadius: 16, cursor: 'pointer',
-                    backgroundColor: formData.colorHex, color: 'white',
-                  }}
-                  onClick={() => handleSaveBouquet(true)}
+              <div className="rc-p24 rc-pt0">
+                <div
+                  className="button-bottom press-effect"
+                  style={{ backgroundColor: formData.colorHex }}
+                  onClick={handleSaveIntention}
                 >
-                  Sí
-                </button>
-                <button
-                  style={{
-                    width: 120, padding: '10px 0', fontSize: 18, fontWeight: 'bold',
-                    border: `2px solid ${formData.colorHex}`, borderRadius: 16, cursor: 'pointer',
-                    backgroundColor: formData.colorHex, color: 'white',
-                  }}
-                  onClick={() => handleSaveBouquet(false)}
+                  Continuar
+                </div>
+                <BackButton onClick={() => goTo(2, 'prev')} color={formData.colorHex} />
+              </div>
+            </div>
+          )}
+
+          {/* ══ PASO 4 — Mensaje adicional ══ */}
+          {step === 4 && (
+            <div className={`rc-page rc-page--inner ${animClass}`}>
+
+              {/* Modal de video (oculto por ahora) */}
+              {showVideoModal && (
+                <div className="rc-video-modal" style={{ borderColor: formData.colorHex }}>
+                  <div className="rc-video-modal-label" style={{ color: formData.colorHex }}>
+                    Introduce la URL del video.
+                  </div>
+                  <input
+                    type="url"
+                    className="input-rosify rc-video-input"
+                    style={{ border: `2px solid ${formData.colorHex}` }}
+                    placeholder="https://www.video.com/video"
+                    value={videoUrl}
+                    onChange={e => setVideoUrl(e.target.value)}
+                  />
+                  <div className="rc-video-actions">
+                    {[
+                      { label: 'Guardar', action: guardarLink },
+                      { label: 'Borrar',  action: () => { setVideoUrl(''); setVideoSaved(''); } },
+                      { label: 'Salir',   action: () => setShowVideoModal(false) },
+                    ].map(({ label, action }) => (
+                      <div
+                        key={label}
+                        className="button-bottom grow-click rc-video-btn"
+                        style={{ backgroundColor: formData.colorHex }}
+                        onClick={action}
+                      >
+                        {label}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Zona de video (oculta por ahora) */}
+              <div className="rc-video-zone" style={{ display: 'none' }}>
+                <div className="rc-video-status">
+                  {videoSaved ? 'Video guardado' : '¿Deseas agregar un video? (Opcional)'}
+                </div>
+                <div
+                  className="button-bottom grow-click rc-video-add-btn"
+                  style={{ backgroundColor: formData.colorHex }}
+                  onClick={() => setShowVideoModal(true)}
                 >
-                  No
-                </button>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: 15 }}>
-                <BackButton onClick={() => goTo(4, 'prev')} color={formData.colorHex} />
-              </div>
-            </div>
-          </div>
-        )}
-
-
-        {/* ════════════════════════════════════════════════
-            PASO 6 — Resumen final
-        ════════════════════════════════════════════════ */}
-        {step === 6 && (
-          <div className={`rc-page ${animClass}`} style={{ maxWidth: 420, paddingBottom: 40, marginTop: 20, margin: 'auto' }}>
-            <h2 style={{ textAlign: 'center', fontWeight: 700, fontSize: 24, marginBottom: 15, marginTop: 0, color: formData.colorHex }}>
-              Resumen de tu Selección
-            </h2>
-
-            <div className="summary-container" style={{ display: 'grid', gap: 10, padding: 10 }}>
-              {[
-                { label: 'Nombre',             value: formData.nombre },
-                { label: 'Intención',          value: formData.intencionCorta || formData.intencion },
-                { label: 'Mensaje Adicional',  value: formData.mensaje },
-                // { label: 'Enlace de Video',    value: videoSaved || 'No especificado' },
-              ].map(({ label, value }) => (
-                <div key={label} className="summary-card" style={{ display: 'flex', flexDirection: 'column', margin: '0 15px', padding: 10, border: '2px solid #eee', boxShadow: '0px 0px 12px 2px #bebebe', borderRadius: 12, textAlign: 'left' }}>
-                  <h2 style={{ margin: '0 0 5px', fontSize: 17, fontWeight: 600, color: formData.colorHex }}>{label}</h2>
-                  <p style={{ margin: 0, fontWeight: 400, color: '#000' }}>{value}</p>
-                </div>
-              ))}
-
-              {/* Tarjeta imagen rosa/ramo */}
-              <div className="summary-card" style={{ display: 'flex', flexDirection: 'column', margin: '0 15px', padding: 10, border: '2px solid #eee', boxShadow: '0px 0px 12px 2px #bebebe', borderRadius: 12, textAlign: 'left' }}>
-                <h2 style={{ margin: '0 0 5px', fontSize: 17, fontWeight: 600, color: formData.colorHex }}>Color de Rosa</h2>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <img src={isBouquet ? formData.ramoImg : formData.roseImg} style={{ width: 120, height: 'auto' }} alt="rosa seleccionada" />
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
+                    <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
+                      <path d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3"/>
+                      <path d="M20.5 28v-6.062l5.25 3.03L31 28l-5.25 3.031l-5.25 3.031zM6 15h36m-9-9l-6 9m-6-9l-6 9"/>
+                    </g>
+                  </svg>
+                  {videoSaved ? 'Cambiar video' : 'Añadir link de Video'}
                 </div>
               </div>
-            </div>
 
-            <button
-              style={{
-                margin: '20px auto 10px auto', display: 'block', padding: '15px 30px',
-                fontSize: 18, fontWeight: 'bold', border: 'none', borderRadius: 30,
-                cursor: 'pointer', backgroundColor: formData.colorHex, color: 'white',
-                transition: 'transform 0.3s',
-              }}
-              onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'}
-              onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-              onClick={handleFinalizar}
-            >
-              Finalizar y Generar Link
-            </button>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-               <BackButton onClick={() => goTo(5, 'prev')} color={formData.colorHex} />
-            </div>
-          </div>
-        )}
+              {/* Mensaje adicional */}
+              <div className="rc-letter-section">
+                <div className="rc-p24 rc-pb0 rc-pt-sm">
+                  <h2 className="rc-section-title">Mensaje adicional</h2>
+                </div>
+                <div className="rc-letter-area">
+                  <label className="label-float rc-letter-label">Tu mensaje:</label>
+                  <textarea
+                    id="message"
+                    className="input-rosify rc-message-textarea"
+                    maxLength={300}
+                    style={{ border: `3px solid ${formData.colorHex}`, caretColor: formData.colorHex }}
+                    placeholder="Escribe tu mensaje aquí..."
+                    value={formData.mensaje}
+                    onChange={(e) => {
+                      setCharCount(e.target.value.length);
+                      setFormData(fd => ({ ...fd, mensaje: e.target.value }));
+                    }}
+                  />
+                  <div className="rc-char-counter">{charCount} / 300</div>
+                </div>
+              </div>
 
+              <div className="rc-p24 rc-pt0">
+                <div
+                  id="btn-letter"
+                  className="button-bottom grow-click"
+                  style={{ backgroundColor: formData.colorHex }}
+                  onClick={handleSaveLetter}
+                >
+                  Continuar
+                </div>
+                <BackButton onClick={() => goTo(3, 'prev')} color={formData.colorHex} />
+              </div>
+            </div>
+          )}
+
+          {/* ══ PASO 5 — ¿Ramo o rosa? ══ */}
+          {step === 5 && (
+            <div className={`rc-page rc-page--bouquet ${animClass}`}>
+              <div className="rc-bouquet-circle" style={{ backgroundColor: formData.bgLight }}>
+                <img src={formData.ramoImg} className="rc-bouquet-img" alt="ramo" />
+              </div>
+              <div className="rc-bouquet-body">
+                <h2 className="rc-bouquet-title">¿Deseas convertir la rosa en un ramo?</h2>
+                <div className="rc-bouquet-btns">
+                  <button
+                    className="rc-bouquet-btn"
+                    style={{ backgroundColor: formData.colorHex, borderColor: formData.colorHex }}
+                    onClick={() => handleSaveBouquet(true)}
+                  >
+                    Sí
+                  </button>
+                  <button
+                    className="rc-bouquet-btn"
+                    style={{ backgroundColor: formData.colorHex, borderColor: formData.colorHex }}
+                    onClick={() => handleSaveBouquet(false)}
+                  >
+                    No
+                  </button>
+                </div>
+                <div className="rc-bouquet-back">
+                  <BackButton onClick={() => goTo(4, 'prev')} color={formData.colorHex} />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ══ PASO 6 — Resumen final ══ */}
+          {step === 6 && (
+            <div className={`rc-page rc-step6 ${animClass}`}>
+              <h2 className="rc-step6-title" style={{ color: formData.colorHex }}>
+                Resumen de tu Selección
+              </h2>
+
+              <div className="rc-summary-grid">
+                {[
+                  { label: 'Nombre',            value: formData.nombre },
+                  { label: 'Intención',         value: formData.intencionCorta || formData.intencion },
+                  { label: 'Mensaje Adicional', value: formData.mensaje },
+                ].map(({ label, value }) => (
+                  <div key={label} className="summary-card">
+                    <h2 className="summary-card-label" style={{ color: formData.colorHex }}>{label}</h2>
+                    <p className="summary-card-value">{value}</p>
+                  </div>
+                ))}
+
+                <div className="summary-card">
+                  <h2 className="summary-card-label" style={{ color: formData.colorHex }}>Color de Rosa</h2>
+                  <div className="summary-card-rose">
+                    <img
+                      src={isBouquet ? formData.ramoImg : formData.roseImg}
+                      className="summary-card-rose-img"
+                      alt="rosa seleccionada"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <button
+                className="rc-finalize-btn"
+                style={{ backgroundColor: formData.colorHex }}
+                onClick={handleFinalizar}
+              >
+                Finalizar y Generar Link
+              </button>
+
+              <div className="rc-bouquet-back">
+                <BackButton onClick={() => goTo(5, 'prev')} color={formData.colorHex} />
+              </div>
+            </div>
+          )}
+
+        </div>
       </div>
-    </div>
     </AntiInspectGuard>
   );
 }
 
-// ─── Sub-componente: tarjeta de intención ─────────────────────────────────────
+// ─── Tarjeta de intención ─────────────────────────────────────────────────────
 
 function IntentionCard({ intencion, color, selected, onSelect }) {
   const { sub, main } = intencion;
@@ -692,9 +604,9 @@ function IntentionCard({ intencion, color, selected, onSelect }) {
       style={selected ? { borderColor: color } : {}}
       onClick={onSelect}
     >
-      <div style={{ height: 44, alignSelf: 'center' }}>
-        <div style={{ fontSize: 10, fontWeight: 500, textAlign: 'left', color: '#808080', paddingTop: 4, lineHeight: '13px' }}>{sub}</div>
-        <div style={{ fontSize: 17, fontWeight: 500, textAlign: 'left', color: '#000' }}>{main}</div>
+      <div className="intention-inner">
+        <div className="intention-sub">{sub}</div>
+        <div className="intention-main">{main}</div>
       </div>
     </div>
   );

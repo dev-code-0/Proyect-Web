@@ -124,6 +124,26 @@
   }
 }
 
+/* ───── Estados de la Preview ───── */
+.preview-loader {
+  color: var(--accent);
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.preview-save-error {
+  color: #ff6b6b;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-align: center;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 107, 107, 0.25);
+}
+
 /* ───── Responsive: pantallas chicas <360px ───── */
 @media (max-width: 360px) {
   .preview-container {

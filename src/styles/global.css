@@ -9,7 +9,7 @@
 
   /* legacy alias para referencias antiguas */
   --cyan: #d946ef;
-  --cyan-dim: rgba(217, 70, 239, 0.3);
+  --cyan-dim: rgba(217, 70, 239, 0.3); 
 
   --font-title: "Pacifico", cursive;
   --font-button: "Chalkboard SE", "Chalkboard", cursive, sans-serif;

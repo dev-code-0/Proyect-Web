@@ -21,3 +21,6 @@ Thumbs.db
 
 # Brainstorming visual companion
 .superpowers/
+
+# Imagenes locales (se sirven desde /public en prod)
+public/images/

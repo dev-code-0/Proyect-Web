@@ -1,23 +1,29 @@
 import React from 'react';
-import ActionButtons from '../components/ActionButtons';
 import TemplateCarousel from '../components/TemplateCarousel';
 import BackgroundAnimation from '../components/BackgroundAnimation';
+import SiteHeader from '../components/SiteHeader';
+import SiteFooter from '../components/SiteFooter';
+import HowItWorks from '../components/HowItWorks';
 import '../styles/home.css';
-import { AntiInspectGuard } from '../lib/antiInspect';
-
 
 export default function Home() {
   return (
-    <main>
+    <div className="home-layout">
       <BackgroundAnimation />
-      <main className="home-container">
-        <div>
-          <h1 className="main-title-home">CODES FREE</h1>
-          <p className="subtitle-home">Crea regalos virtuales únicos y memorables</p>
-        </div>
+
+      {/* Header: logo | badge + tagline + sub | socials */}
+      <SiteHeader />
+
+      <main className="home-content">
+        {/* Carousel de plantillas */}
         <TemplateCarousel />
-        <ActionButtons />
+
+        {/* Cómo funciona — debajo del carousel */}
+        <HowItWorks />
       </main>
-    </main>
+
+      {/* Footer discreto */}
+      <SiteFooter />
+    </div>
   );
 }

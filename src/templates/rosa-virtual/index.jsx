@@ -4,7 +4,7 @@ import './style.css';
 import { ROSAS } from './rosaAssets';
 import { AntiInspectGuard } from '../../lib/antiInspect';
 
-export default function RosaVirtual({ data }) {
+export default function RosaVirtual({ data, isPreview }) {
   // 1. Extraemos los datos recibidos del primer componente
   const { 
     nombre = "María", 
@@ -26,6 +26,13 @@ export default function RosaVirtual({ data }) {
 
   const theme = colorMap[color] || colorMap.orange; // Fallback a naranja por defecto
 
+  useEffect(() => {
+    if (isPreview) return;
+    const prev = document.body.style.background;
+    document.body.style.background = '#fafafa';
+    return () => { document.body.style.background = prev; };
+  }, [isPreview]);
+
   // 3. Estados de la secuencia
   const [step, setStep] = useState(0); // 0=Cargando, 1=Rosa, 2=Carta
   
@@ -46,6 +53,7 @@ export default function RosaVirtual({ data }) {
   const [cartaVisible, setCartaVisible] = useState(false);
   const [cartaImgVisible, setCartaImgVisible] = useState(false);
   const [longMsgText, setLongMsgText] = useState('');
+
 
   // ─── FASE 0: PANTALLA DE CARGA (Máquina de escribir) ────────────────────────
   useEffect(() => {
@@ -199,7 +207,7 @@ export default function RosaVirtual({ data }) {
   // ─── RENDER ─────────────────────────────────────────────────────────────────
   return (
     <AntiInspectGuard>
-    <div id="contenedor">
+    <div id="contenedor" className={isPreview ? 'preview-mode' : ''}>
 
       {/* ════ PANTALLA 0: CARGANDO ════ */}
       {step === 0 && (

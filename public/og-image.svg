@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bgGlow" cx="600" cy="220" r="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Logo mark gradient (scaled to OG space) -->
+    <linearGradient id="lgOG" x1="486" y1="60" x2="714" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#f0abfc"/>
+      <stop offset="42%"  stop-color="#d946ef"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="lgHL" x1="510" y1="60" x2="600" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.36"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0015"/>
+  <rect width="1200" height="630" fill="url(#bgGlow)"/>
+
+  <!-- Decorative micro sparkles -->
+  <path d="M110 92 Q109 104,97 104 Q109 105,110 117 Q111 105,123 104 Q111 103,110 92 Z" fill="#2d0a5a" opacity="0.6"/>
+  <path d="M1090 158 Q1089.4 167,1081 167 Q1089.4 167.6,1090 176 Q1090.6 167.6,1099 167 Q1090.6 166.4,1090 158 Z" fill="#2d0a5a" opacity="0.65"/>
+  <path d="M152 532 Q151.3 542,142 542 Q151.3 542.7,152 552 Q152.7 542.7,162 542 Q152.7 541.3,152 532 Z" fill="#2d0a5a" opacity="0.5"/>
+  <path d="M1048 502 Q1047.5 510,1040 510 Q1047.5 510.5,1048 518 Q1048.5 510.5,1056 510 Q1048.5 509.5,1048 502 Z" fill="#2d0a5a" opacity="0.5"/>
+  <path d="M966 62 Q965.4 69,959 69 Q965.4 69.6,966 76 Q966.6 69.6,973 69 Q966.6 68.4,966 62 Z" fill="#5b21b6" opacity="0.48"/>
+
+  <!--
+    SV Heart mark — original viewBox 0 0 200 220, scaled ×1.7, centered at (600,220).
+    scale(1.7): 200×220 → 340×374. Center of mark at (100×1.7, 108×1.7)=(170,183.6).
+    translate to put mark center at (600,220): translate(600-170, 220-183.6) = translate(430, 36.4)
+  -->
+
+  <!-- Glow layer -->
+  <g filter="url(#glow)" opacity="0.4">
+    <g transform="translate(430, 36) scale(1.7)">
+      <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108 L 100 204"
+            stroke="#d946ef" stroke-width="26" stroke-linecap="round" fill="none"/>
+      <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108 C 135 116,155 141,145 168 C 137 188,115 200,100 204"
+            stroke="#d946ef" stroke-width="26" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+
+  <!-- V -->
+  <g transform="translate(430, 36) scale(1.7)">
+    <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108 L 100 204"
+          stroke="url(#lgOG)" stroke-width="26" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- S -->
+  <g transform="translate(430, 36) scale(1.7)">
+    <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108 C 135 116,155 141,145 168 C 137 188,115 200,100 204"
+          stroke="url(#lgOG)" stroke-width="26" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Highlight -->
+  <g transform="translate(430, 36) scale(1.7)">
+    <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108"
+          stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108"
+          stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Brand name -->
+  <text x="600" y="416"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="76" font-weight="700" letter-spacing="-1"
+        fill="#ffffff">Sorpresa Virtual</text>
+
+  <!-- Tagline -->
+  <text x="600" y="478"
+        text-anchor="middle"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="26" font-weight="400" letter-spacing="0.3"
+        fill="#d8b4fe">Crea regalos virtuales únicos y memorables</text>
+
+  <!-- Domain -->
+  <text x="1148" y="600"
+        text-anchor="end"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="20" fill="#6d28d9">sorpresavirtual.com</text>
+</svg>

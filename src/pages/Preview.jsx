@@ -6,6 +6,7 @@ import "../styles/preview.css";
 import BackgroundAnimation from "../components/BackgroundAnimation";
 import CustomizeModal from "../components/CustomizeModal";
 import ShareModal from "../components/ShareModal";
+import NotFound from "../components/NotFound";
 
 const RosaCreator = lazy(() => import('../templates/rosa-virtual/RosaCreator.jsx'));
 
@@ -20,11 +21,7 @@ export default function Preview() {
   const templateActual = templates.find((t) => t.id === id);
 
   if (!templateActual) {
-    return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        Proyecto no encontrado
-      </div>
-    );
+    return <NotFound id={id} />;
   }
 
   const handleSaveConfig = async (datosPersonalizados) => {
@@ -74,7 +71,7 @@ export default function Preview() {
       );
     }
     return (
-      <Suspense fallback={<div style={{ color: 'white', textAlign: 'center', padding: '40px' }}>Cargando plantilla...</div>}>
+      <Suspense fallback={<div className="preview-loader">Cargando plantilla...</div>}>
         <TemplateComponent data={previewData} isPreview={true} />
       </Suspense>
     );
@@ -89,9 +86,7 @@ export default function Preview() {
         <div className="preview-box">{renderTemplate()}</div>
 
         {saveError && (
-          <p style={{ color: '#ff6b6b', background: 'rgba(0,0,0,0.4)', padding: '8px 16px', borderRadius: '8px', textAlign: 'center', margin: '8px 0', fontSize: '0.9rem' }}>
-            {saveError}
-          </p>
+          <p className="preview-save-error">{saveError}</p>
         )}
 
         <button className="btn-personalizar" onClick={() => setShowCustomizeModal(true)}>Personalizar</button>

@@ -1,4 +1,3 @@
-@import '@fontsource/dancing-script/700.css';
 
 /* ─── Wrapper ─────────────────────────────────────────────────────────── */
 .am-wrapper {
@@ -7,8 +6,7 @@
   height: 100%;
   min-height: 100vh;
   overflow: hidden;
-  background: var(--am-bg, #0a0005);
-  font-family: system-ui, sans-serif;
+  background: var(--am-bg, #0a0005); 
 }
 
 /* ─── Canvas ──────────────────────────────────────────────────────────── */
@@ -60,7 +58,6 @@
 }
 
 .am-splash-title {
-  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   font-size: clamp(2rem, 7vw, 3.6rem);
   color: #fff;
@@ -118,7 +115,6 @@
   top: clamp(14px, 3.5vh, 36px);
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   font-size: clamp(1.4rem, 4.5vw, 3rem);
   color: #ffffff;
@@ -157,7 +153,6 @@
 }
 
 .am-firma-nombre {
-  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   font-size: clamp(1.1rem, 3.2vw, 1.7rem);
   color: rgba(255, 255, 255, 0.92);
@@ -276,7 +271,6 @@
 }
 
 .am-overlay-photo-title {
-  font-family: 'Dancing Script', cursive;
   font-weight: 700;
   font-size: clamp(1.6rem, 5vw, 2.2rem);
   color: rgba(255, 255, 255, 0.95);

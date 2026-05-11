@@ -7,28 +7,34 @@ const SUPABASE_PROJECT_ID = 'smxvjtnlnblxksdcbdhd';
 const EDGE_FUNCTION_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/submit-feedback`;
 
 export default function FeedbackModal({ onClose }) {
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje]   = useState('');
   const [enviando, setEnviando] = useState(false);
-  const [exito, setExito] = useState(false);
+  const [exito, setExito]       = useState(false);
+  const [notif, setNotif]       = useState('');
   const lastSentRef = useRef(0);
+
+  const notify = (msg) => {
+    setNotif(msg);
+    setTimeout(() => setNotif(''), 4000);
+  };
 
   const enviarSugerencia = async () => {
     const texto = mensaje.trim();
 
     if (!texto) {
-      alert("Por favor escribe algo antes de enviar.");
+      notify('Por favor escribe algo antes de enviar.');
       return;
     }
 
     if (texto.length > MAX_LENGTH) {
-      alert(`El mensaje no puede superar ${MAX_LENGTH} caracteres.`);
+      notify(`El mensaje no puede superar ${MAX_LENGTH} caracteres.`);
       return;
     }
 
     const ahora = Date.now();
     if (ahora - lastSentRef.current < COOLDOWN_MS) {
       const segundos = Math.ceil((COOLDOWN_MS - (ahora - lastSentRef.current)) / 1000);
-      alert(`Espera ${segundos} segundos antes de enviar otra sugerencia.`);
+      notify(`Espera ${segundos}s antes de enviar otra sugerencia.`);
       return;
     }
 
@@ -45,16 +51,16 @@ export default function FeedbackModal({ onClose }) {
       const data = await res.json();
 
       if (res.status === 429) {
-        alert("Demasiadas solicitudes. Espera una hora antes de enviar más sugerencias.");
+        notify('Demasiadas solicitudes. Espera un momento.');
       } else if (!res.ok) {
-        alert("Hubo un error al enviar. Intenta de nuevo.");
+        notify('Hubo un error al enviar. Intenta de nuevo.');
         if (import.meta.env.DEV) console.error(data);
       } else {
         setExito(true);
         setTimeout(onClose, 2000);
       }
     } catch (error) {
-      alert("Error de conexión. Intenta de nuevo.");
+      notify('Error de conexión. Intenta de nuevo.');
       if (import.meta.env.DEV) console.error(error);
     }
 
@@ -72,9 +78,12 @@ export default function FeedbackModal({ onClose }) {
         ) : (
           <>
             <h2>Enviar Sugerencia</h2>
-            <p className="feedback-sub"> 
+            <p className="feedback-sub">
               Escribe tu idea, queja o recomendación para mejorar la plataforma.
             </p>
+
+            {notif && <p className="modal-notification">{notif}</p>}
+
             <textarea
               value={mensaje}
               onChange={(e) => setMensaje(e.target.value.slice(0, MAX_LENGTH))}
@@ -82,14 +91,13 @@ export default function FeedbackModal({ onClose }) {
               className="feedback-textarea"
               maxLength={MAX_LENGTH}
             />
-            <small style={{ opacity: 0.6, fontSize: '0.75rem' }}>
-              {mensaje.length}/{MAX_LENGTH}
-            </small>
+            <span className="feedback-counter">{mensaje.length}/{MAX_LENGTH}</span>
+
             <div className="feedback-buttons">
-              <button onClick={onClose} disabled={enviando} className="btn-feedback-cancel">
+              <button onClick={onClose} disabled={enviando} className="btn-gray">
                 Cancelar
               </button>
-              <button onClick={enviarSugerencia} disabled={enviando} className="btn-feedback-send">
+              <button onClick={enviarSugerencia} disabled={enviando} className="btn-blue">
                 {enviando ? 'Enviando...' : 'Enviar'}
               </button>
             </div>

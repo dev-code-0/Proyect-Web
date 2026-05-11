@@ -1,7 +1,8 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { TEMPLATE_REGISTRY } from "../lib/templateRegistry";
+import NotFound from "../components/NotFound";
 
 export default function ViewGift() {
   const { id } = useParams();
@@ -27,19 +28,20 @@ export default function ViewGift() {
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", padding: "50px", color: "white" }}>
-        <h2>...</h2>
-        <p>{error}</p>
-        <Link to="/" style={{ color: "white", textDecoration: "underline" }}>
-          Ir al inicio
-        </Link>
-      </div>
+      <NotFound
+        title="Regalo no encontrado"
+        subtitle="Este enlace no existe o ha expirado. Vuelve al inicio para crear tu propio regalo virtual."
+      />
     );
   }
 
   if (!projectData) {
     return (
-      <div style={{ color: "white", textAlign: "center", marginTop: "50px" }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        height: '100vh', color: 'var(--accent)', fontSize: '1rem',
+        fontFamily: 'var(--font-text)',
+      }}>
         Cargando sorpresa...
       </div>
     );
@@ -47,7 +49,12 @@ export default function ViewGift() {
 
   const entry = TEMPLATE_REGISTRY[projectData.template_id];
   if (!entry?.Component) {
-    return <div style={{ color: "white" }}>Template no soportado.</div>;
+    return (
+      <NotFound
+        title="Plantilla no disponible"
+        subtitle="Esta plantilla ya no está disponible. Vuelve al inicio para ver las plantillas actuales."
+      />
+    );
   }
 
   const { Component } = entry;

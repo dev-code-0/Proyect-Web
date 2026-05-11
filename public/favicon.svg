@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .bg { fill: #14002c }
+      @media (prefers-color-scheme: light) {
+        .bg { fill: #f0e8ff }
+      }
+    </style>
+    <linearGradient id="lg" x1="42" y1="14" x2="158" y2="172" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#f0abfc"/>
+      <stop offset="42%"  stop-color="#d946ef"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="lgHL" x1="60" y1="14" x2="100" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.36"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <circle class="bg" cx="100" cy="100" r="100"/>
+  <g transform="translate(22, 15.8) scale(0.78)">
+    <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108 L 100 204"
+          stroke="url(#lg)" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108 C 135 116,155 141,145 168 C 137 188,115 200,100 204"
+          stroke="url(#lg)" stroke-width="26" stroke-linecap="round" fill="none"/>
+    <path d="M 110 28 C 92 16,52 16,42 48 C 34 76,55 96,100 108"
+          stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <path d="M 90 28 C 108 16,148 16,158 48 C 166 76,145 96,100 108"
+          stroke="url(#lgHL)" stroke-width="10" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

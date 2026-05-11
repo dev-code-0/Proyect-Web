@@ -264,12 +264,21 @@ export default function CustomizeModal({ config, onClose, onSave }) {
             rel="noopener noreferrer"
             className="tiktok-cta"
           >
-            <span className="tiktok-cta-icon" aria-hidden="true">🎵</span>
+            <span className="tiktok-cta-icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M23.58 14.84c-2.97 0-5.39 2.41-5.39 5.38 0 2.97 2.42 5.38 5.39 5.38 2.86 0 5.19-2.25 5.35-5.08.02-.09.03-18.52.03-18.52 0-.48-.22-.93-.61-1.21-.38-.28-.88-.36-1.33-.22L11.86 5.28c-.63.2-1.05.78-1.05 1.44v14.59a5.37 5.37 0 0 0-2.39-.58c-2.97 0-5.38 2.42-5.38 5.39 0 2.96 2.41 5.38 5.38 5.38 2.87 0 5.19-2.26 5.35-5.08.02-.1.04-12.73.04-12.73l12.15-3.78v5.51c-.72-.36-1.52-.58-2.38-.58z"/>
+              </svg>
+            </span>
             <span className="tiktok-cta-text">
               <strong>¿Necesitas un audio de TikTok?</strong>
               <span>Descárgalo gratis aquí y súbelo</span>
             </span>
-            <span className="tiktok-cta-arrow" aria-hidden="true">↗</span>
+            <span className="tiktok-cta-arrow" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7"/><path d="M7 7h10v10"/>
+              </svg>
+            </span>
           </a>
         )}
 
@@ -305,22 +314,30 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   accentColor="var(--accent)"
                 />
               ) : (
-                <input
-                  type={field.type}
-                  placeholder={field.placeholder || ''}
-                  accept={field.accept || ''}
-                  multiple={field.multiple || false}
-                  inputMode={field.inputMode}
-                  pattern={field.pattern}
-                  value={field.type === 'file' ? undefined : (formData[field.name] ?? '')}
-                  onChange={(e) => handleChange(e, field)}
-                  required={field.required ?? !field.label.includes('(Opcional)')}
-                />
+                <>
+                  <input
+                    type={field.type}
+                    placeholder={field.placeholder || ''}
+                    accept={field.accept || ''}
+                    multiple={field.multiple || false}
+                    inputMode={field.inputMode}
+                    pattern={field.pattern}
+                    value={field.type === 'file' ? undefined : (formData[field.name] ?? '')}
+                    onChange={(e) => handleChange(e, field)}
+                    required={field.required ?? !field.label.includes('(Opcional)')}
+                    disabled={field.type === 'file' && isProcessing}
+                  />
+                  {field.type === 'file' && isProcessing && (
+                    <p className="form-upload-warning">
+                      Espera a que termine la subida actual antes de agregar más archivos.
+                    </p>
+                  )}
+                </>
               )}
             </div>
           ))}
 
-          {progreso && <p style={{color: 'var(--accent)', fontSize: '0.85rem', margin: '5px 0'}}>{progreso}</p>}
+          {progreso && <p className="form-progress">{progreso}</p>}
 
           <div className="modal-actions">
             <button type="button" onClick={onClose} className="btn-gray">Cancelar</button>

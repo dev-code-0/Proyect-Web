@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 130">
+  <defs>
+    <linearGradient id="lg" x1="30" y1="10" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#f0abfc"/>
+      <stop offset="42%"  stop-color="#d946ef"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="lgHL" x1="42" y1="10" x2="75" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!--
+    Mark scaled ~0.54 from 200x220 space, centered at (70, 65).
+    Original center (100,116) → translate(70-54, 65-63) scale(0.54)
+    = translate(16, 2) scale(0.54)
+    Applied paths below are pre-transformed for clarity.
+  -->
+
+  <!-- Glow layer -->
+  <g filter="url(#glow)" opacity="0.42">
+    <path d="M 63.4 17.1 C 72.3 10.6,91.9 10.6,99.3 31.6 C 104.6 47.0,93.3 58.3,70 64.3 L 70 112.2"
+          stroke="#d946ef" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <path d="M 69.4 17.1 C 60.5 10.6,40.9 10.6,33.5 31.6 C 27.4 47.0,38.7 57.0,70 64.3 C 88.9 69.0,100.5 82.0,95.3 97.4 C 91.6 108.5,80.9 113.8,70 112.2"
+          stroke="#d946ef" stroke-width="14" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- V -->
+  <path d="M 63.4 17.1 C 72.3 10.6,91.9 10.6,99.3 31.6 C 104.6 47.0,93.3 58.3,70 64.3 L 70 112.2"
+        stroke="url(#lg)" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- S -->
+  <path d="M 69.4 17.1 C 60.5 10.6,40.9 10.6,33.5 31.6 C 27.4 47.0,38.7 57.0,70 64.3 C 88.9 69.0,100.5 82.0,95.3 97.4 C 91.6 108.5,80.9 113.8,70 112.2"
+        stroke="url(#lg)" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Highlight -->
+  <path d="M 69.4 17.1 C 60.5 10.6,40.9 10.6,33.5 31.6 C 27.4 47.0,38.7 57.0,70 64.3"
+        stroke="url(#lgHL)" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  <path d="M 63.4 17.1 C 72.3 10.6,91.9 10.6,99.3 31.6 C 104.6 47.0,93.3 58.3,70 64.3"
+        stroke="url(#lgHL)" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Thin divider -->
+  <line x1="130" y1="30" x2="130" y2="100" stroke="#4c1d95" stroke-width="0.8"/>
+
+  <!-- Brand name — two lines -->
+  <text x="150" y="58"
+        font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="27" font-weight="700" letter-spacing="4.5"
+        fill="#ffffff">SORPRESA</text>
+  <text x="150" y="84"
+        font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="27" font-weight="700" letter-spacing="4.5"
+        fill="#c084fc">VIRTUAL</text>
+
+  <!-- Tagline -->
+  <text x="150" y="103"
+        font-family="'Helvetica Neue',Helvetica,Arial,sans-serif"
+        font-size="8.5" font-weight="400" letter-spacing="1.2"
+        fill="#7c3aed">Crea regalos virtuales únicos y memorables</text>
+</svg>

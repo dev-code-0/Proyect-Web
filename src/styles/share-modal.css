@@ -1,0 +1,257 @@
+/* ══════════════════════════════════════════════
+   SHARE MODAL — diseño y responsive
+   ══════════════════════════════════════════════ */
+
+.share-modal {
+  background: var(--surface);
+  border-radius: 22px;
+  padding: 32px 24px 26px;
+  width: min(400px, calc(100vw - 36px));
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid oklch(45% 0.12 310 / 0.2);
+  box-shadow:
+    -6px -6px 14px var(--shadow-lift),
+    8px 8px 24px var(--shadow-drop),
+    0 0 0 1px oklch(30% 0.06 310 / 0.15);
+  animation: shareIn 260ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  scrollbar-width: thin;
+  scrollbar-color: oklch(55% 0.18 310 / 0.4) transparent;
+}
+
+.share-modal::-webkit-scrollbar { width: 4px; }
+.share-modal::-webkit-scrollbar-track { background: transparent; }
+.share-modal::-webkit-scrollbar-thumb {
+  background: oklch(55% 0.18 310 / 0.4);
+  border-radius: 4px;
+}
+
+@keyframes shareIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* ── Botón cerrar ── */
+.share-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid oklch(38% 0.06 310 / 0.4);
+  background: oklch(22% 0.04 310 / 0.6);
+  color: oklch(60% 0.06 310);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.16s, background 0.16s, transform 0.14s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.share-close:hover {
+  color: #fff;
+  background: oklch(28% 0.08 310 / 0.8);
+}
+
+.share-close:active {
+  transform: scale(0.91);
+}
+
+/* ── Encabezado ── */
+.share-title {
+  color: var(--accent);
+  font-size: clamp(1.3rem, 5vw, 1.65rem);
+  margin: 0 0 8px;
+  line-height: 1.2;
+  padding-right: 24px; /* evita solapar con el botón cerrar */
+}
+
+.share-subtitle {
+  font-size: clamp(0.8rem, 3vw, 0.88rem);
+  color: oklch(70% 0.04 310);
+  margin: 0 0 4px;
+  line-height: 1.45;
+  max-width: 300px;
+}
+
+/* ── QR ── */
+.qr-frame {
+  position: relative;
+  margin: 20px auto;
+  padding: 12px;
+  width: fit-content;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #d946ef, #f472b6 50%, #a855f7);
+  box-shadow:
+    0 0 20px rgba(217, 70, 239, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.qr-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.qr-canvas {
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.qr-canvas svg,
+.qr-canvas canvas {
+  display: block;
+}
+
+/* ── Caja de enlace copiable ── */
+.share-link-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid oklch(42% 0.10 310 / 0.3);
+  border-radius: 11px;
+  padding: 11px 13px;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    transform 0.14s cubic-bezier(0.23, 1, 0.32, 1);
+  box-sizing: border-box;
+}
+
+.share-link-box:hover {
+  border-color: oklch(55% 0.16 310 / 0.5);
+  background: oklch(12% 0.03 310 / 0.8);
+}
+
+.share-link-box:active {
+  transform: scale(0.98);
+}
+
+.share-link-box--copied {
+  border-color: oklch(55% 0.20 310 / 0.6);
+  background: oklch(18% 0.06 310 / 0.7);
+}
+
+.share-link-text {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--accent);
+  word-break: break-all;
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.share-link-icon {
+  flex-shrink: 0;
+  color: oklch(58% 0.12 310);
+  display: flex;
+  align-items: center;
+}
+
+.share-link-box--copied .share-link-icon {
+  color: oklch(68% 0.20 310);
+}
+
+/* ── Acciones ── */
+.share-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 14px;
+}
+
+.share-actions-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Base compartida de botones */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 42px;
+  border-radius: 11px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s,
+    transform 0.14s cubic-bezier(0.23, 1, 0.32, 1);
+  white-space: nowrap;
+}
+
+.share-btn:active {
+  transform: scale(0.97);
+}
+
+/* Primario — Copiar enlace */
+.share-btn--primary {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 0 var(--accent-dim);
+}
+
+.share-btn--primary:hover {
+  box-shadow: 0 0 18px var(--accent-dim);
+}
+
+.share-btn--copied {
+  background: oklch(42% 0.20 310);
+}
+
+/* Secundario — Descargar / Cerrar */
+.share-btn--secondary {
+  flex: 1;
+  background: oklch(22% 0.04 310 / 0.7);
+  color: oklch(72% 0.08 310);
+  border: 1px solid oklch(40% 0.08 310 / 0.45);
+}
+
+.share-btn--secondary:hover {
+  background: oklch(28% 0.06 310 / 0.85);
+  color: #fff;
+  border-color: oklch(50% 0.12 310 / 0.55);
+}
+
+/* ══ Responsive ══ */
+@media (min-width: 480px) {
+  .share-modal {
+    padding: 34px 28px 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-modal {
+    animation: none;
+  }
+}
