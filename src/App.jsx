@@ -4,10 +4,13 @@ import * as Sentry from '@sentry/react';
 import { AntiInspectGuard } from './lib/antiInspect';
 import './styles/global.css';
 
-const Home     = lazy(() => import('./pages/Home'));
-const Preview  = lazy(() => import('./pages/Preview'));
-const ViewGift = lazy(() => import('./pages/ViewGift'));
-const NotFound = lazy(() => import('./components/NotFound'));
+const Home      = lazy(() => import('./pages/Home'));
+const Preview   = lazy(() => import('./pages/Preview'));
+const ViewGift  = lazy(() => import('./pages/ViewGift'));
+const Donations   = lazy(() => import('./pages/Donations'));
+const Suggestions = lazy(() => import('./pages/Suggestions'));
+const Questions   = lazy(() => import('./pages/Questions'));
+const NotFound    = lazy(() => import('./components/NotFound'));
 
 const PageLoader = () => (
   <div style={{
@@ -69,6 +72,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/template/:id" element={<Preview />} />
               <Route path="/view/:id" element={<ViewGift />} />
+              <Route path="/donations" element={<Donations />} />
+              <Route path="/suggestions" element={<Suggestions />} />
+              <Route path="/questions" element={<Questions />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

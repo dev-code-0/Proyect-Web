@@ -1,0 +1,580 @@
+/* ══════════════════════════════════════════════
+   DONATIONS PAGE — mobile-first
+   ══════════════════════════════════════════════ */
+
+.donations-page {
+  min-height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 52px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.donations-page::before {
+  content: '';
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(ellipse at center, oklch(32% 0.18 310 / 0.09) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Nav ── */
+.don-nav {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.don-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: oklch(62% 0.07 310);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 7px 11px 7px 8px;
+  border-radius: 9px;
+  background: oklch(18% 0.04 310 / 0.6);
+  border: 1px solid oklch(34% 0.06 310 / 0.3);
+  transition: color 0.16s, background 0.16s, transform 0.14s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.don-back:hover  { color: #fff; background: oklch(23% 0.07 310 / 0.8); transform: translateX(-2px); }
+.don-back:active { transform: scale(0.94); }
+
+.don-logo {
+  height: 28px;
+  width: auto;
+  opacity: 0.7;
+}
+
+/* ── Hero ── */
+.don-hero {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 20px 0 16px;
+  position: relative;
+  z-index: 1;
+  animation: donIn 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes donIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.don-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: oklch(72% 0.12 310);
+  background: oklch(20% 0.06 310 / 0.55);
+  border: 1px solid oklch(45% 0.12 310 / 0.28);
+  padding: 4px 11px 4px 8px;
+  border-radius: 999px;
+}
+
+.don-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: donDot 2.4s ease-in-out infinite;
+}
+
+@keyframes donDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 oklch(55% 0.20 310 / 0.5); }
+  50%       { opacity: 0.6; box-shadow: 0 0 0 4px oklch(55% 0.20 310 / 0); }
+}
+
+.don-title {
+  font-size: clamp(1.3rem, 5.5vw, 1.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  font-family: var(--font-title) !important;
+  margin: 0;
+}
+
+.don-subtitle {
+  font-size: clamp(0.78rem, 3vw, 0.88rem);
+  color: oklch(66% 0.05 310);
+  line-height: 1.65;
+  max-width: 340px;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════
+   TARJETA PRINCIPAL
+   ══════════════════════════════════════════════ */
+
+.don-flow-card {
+  width: 100%;
+  max-width: 460px;
+  background: oklch(15% 0.04 310 / 0.85);
+  border: 1px solid oklch(34% 0.07 310 / 0.22);
+  border-radius: 20px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  animation: donCardIn 0.4s 0.06s cubic-bezier(0.23, 1, 0.32, 1) both;
+  box-shadow:
+    0 0 0 1px oklch(24% 0.05 310 / 0.12),
+    0 16px 36px oklch(5% 0.02 310 / 0.5);
+}
+
+@keyframes donCardIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Paso ── */
+.don-step { display: flex; flex-direction: column; gap: 11px; padding: 2px 0; }
+
+.don-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.don-step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: oklch(24% 0.11 310 / 0.8);
+  border: 1px solid oklch(48% 0.16 310 / 0.4);
+  color: oklch(78% 0.14 310);
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-button) !important;
+}
+
+.don-step-label {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+}
+
+.don-step-amount {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.don-step-note {
+  font-size: 0.72rem;
+  color: oklch(56% 0.04 310);
+  line-height: 1.55;
+  margin: 0;
+  padding-left: 34px;
+}
+
+.don-divider {
+  height: 1px;
+  background: oklch(28% 0.05 310 / 0.28);
+  margin: 14px 0;
+}
+
+/* ── Montos ── */
+.don-amount-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  padding-left: 34px;
+}
+
+.don-amount-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 4px 9px;
+  border-radius: 11px;
+  border: 1.5px solid oklch(32% 0.06 310 / 0.4);
+  background: oklch(19% 0.05 310 / 0.7);
+  color: oklch(68% 0.07 310);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.16s,
+    background 0.16s,
+    color 0.16s,
+    box-shadow 0.16s,
+    transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.don-amount-btn:hover {
+  border-color: oklch(48% 0.14 310 / 0.65);
+  background: oklch(22% 0.07 310 / 0.9);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px oklch(38% 0.14 310 / 0.16);
+}
+
+.don-amount-selected {
+  border-color: oklch(56% 0.22 310 / 0.95) !important;
+  background: oklch(21% 0.10 310 / 0.95) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 0 1px oklch(50% 0.18 310 / 0.2),
+    0 0 16px oklch(46% 0.20 310 / 0.2) !important;
+  transform: scale(1.06) !important;
+}
+
+.don-amount-pressed {
+  transform: scale(0.9) !important;
+  transition-duration: 0.06s !important;
+}
+
+.don-check-icon {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+}
+
+.don-amount-currency {
+  font-size: 0.57rem;
+  font-weight: 600;
+  opacity: 0.65;
+  line-height: 1;
+}
+
+.don-amount-value {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-family: var(--font-title) !important;
+}
+
+/* ── QR — centrado en la tarjeta, sin indent ── */
+.don-qr-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.don-qr-glow {
+  position: absolute;
+  inset: -18px;
+  background: radial-gradient(circle at center, oklch(40% 0.18 310 / 0.16) 0%, transparent 65%);
+  animation: qrPulse 3s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+@keyframes qrPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.1); }
+}
+
+.don-qr-img {
+  width: min(260px, calc(100vw - 90px));
+  height: auto;
+  border-radius: 14px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 7px #fff,
+    0 0 0 8px oklch(40% 0.14 310 / 0.35),
+    0 8px 28px oklch(5% 0.02 310 / 0.65);
+}
+
+.don-qr-hint {
+  font-size: 0.71rem;
+  color: oklch(56% 0.05 310);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Botón descarga — centrado ── */
+.don-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 20px;
+  border-radius: 11px;
+  background: oklch(18% 0.04 310 / 0.6);
+  border: 1px solid oklch(34% 0.07 310 / 0.35);
+  color: oklch(60% 0.08 310);
+  font-size: 0.77rem;
+  font-weight: 600;
+  text-decoration: none;
+  align-self: center;
+  transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.13s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.don-secondary-btn:hover  { background: oklch(22% 0.07 310 / 0.85); border-color: oklch(44% 0.11 310 / 0.55); color: #fff; transform: translateY(-1px); }
+.don-secondary-btn:active { transform: scale(0.96); }
+
+/* ── Flujo alternativo (subir QR desde galería) ── */
+.don-alt-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: oklch(13% 0.03 310 / 0.6);
+  border: 1px solid oklch(30% 0.06 310 / 0.22);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.don-alt-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  color: oklch(58% 0.07 310);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-text) !important;
+  transition: color 0.16s, background 0.16s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.don-alt-toggle:hover {
+  color: oklch(72% 0.08 310);
+  background: oklch(18% 0.04 310 / 0.4);
+}
+
+.don-alt-steps {
+  padding: 10px 14px 14px;
+  border-top: 1px solid oklch(28% 0.05 310 / 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.don-alt-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 0.73rem;
+  color: oklch(62% 0.05 310);
+  line-height: 1.45;
+}
+
+.don-alt-num {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: oklch(20% 0.06 310 / 0.7);
+  border: 1px solid oklch(38% 0.10 310 / 0.3);
+  color: oklch(68% 0.10 310);
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  font-family: var(--font-button) !important;
+}
+
+/* ══════════════════════════════════════════════
+   CARD INTERNACIONAL — pronto
+   ══════════════════════════════════════════════ */
+
+.don-intl-card {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: oklch(14% 0.03 310 / 0.6);
+  border: 1px dashed oklch(34% 0.07 310 / 0.35);
+  position: relative;
+  z-index: 1;
+  animation: donCardIn 0.4s 0.12s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.don-intl-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: oklch(20% 0.05 310 / 0.65);
+  border: 1px solid oklch(36% 0.07 310 / 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: oklch(54% 0.08 310);
+}
+
+.don-intl-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.don-intl-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: oklch(62% 0.06 310);
+  line-height: 1.2;
+  font-family: var(--font-text) !important;
+}
+
+.don-intl-sub {
+  font-size: 0.69rem;
+  color: oklch(46% 0.04 310);
+  line-height: 1.4;
+}
+
+.don-intl-pill {
+  flex-shrink: 0;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: oklch(54% 0.08 310);
+  background: oklch(20% 0.05 310 / 0.6);
+  border: 1px solid oklch(36% 0.07 310 / 0.35);
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+
+/* ══════════════════════════════════════════════
+   IMPACTO
+   ══════════════════════════════════════════════ */
+
+.don-impact {
+  width: 100%;
+  max-width: 460px;
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.don-impact-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: oklch(15% 0.04 310 / 0.7);
+  border: 1px solid oklch(34% 0.08 310 / 0.2);
+  border-radius: 13px;
+  padding: 13px 15px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.don-impact-fade {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.don-impact-icon-wrap {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: oklch(22% 0.09 310 / 0.65);
+  border: 1px solid oklch(44% 0.14 310 / 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.don-impact-stat {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  font-family: var(--font-title) !important;
+  flex-shrink: 0;
+}
+
+.don-impact-text {
+  font-size: 0.73rem;
+  color: oklch(63% 0.05 310);
+  line-height: 1.45;
+}
+
+/* ── Trust ── */
+.don-trust {
+  font-size: 0.69rem;
+  color: oklch(40% 0.04 310);
+  text-align: center;
+  max-width: 340px;
+  line-height: 1.6;
+  margin: 14px 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ══ 480px ══ */
+@media (min-width: 480px) {
+  .donations-page  { padding: 0 22px 60px; }
+  .don-flow-card   { padding: 24px 22px; border-radius: 22px; }
+  .don-qr-img      { width: min(250px, calc(100vw - 130px)); }
+  .don-amount-btn  { padding: 13px 4px 11px; }
+  .don-amount-value { font-size: 1.1rem; }
+}
+
+/* ══ 768px ══ */
+@media (min-width: 768px) {
+  .don-title        { font-size: 1.9rem; }
+  .don-qr-img       { width: 290px; }
+  .don-amount-value { font-size: 1.2rem; }
+  .don-flow-card,
+  .don-intl-card,
+  .don-impact,
+  .don-hero,
+  .don-nav          { max-width: 520px; }
+  .don-amount-grid  { gap: 10px; }
+  .don-amount-btn   { padding: 15px 8px 13px; }
+}
+
+/* ══ Reduced motion ══ */
+@media (prefers-reduced-motion: reduce) {
+  .don-hero, .don-flow-card, .don-intl-card, .don-impact { animation: none; }
+  .don-badge-dot, .don-qr-glow { animation: none; }
+  .don-amount-btn { transition: border-color 0.1s, background 0.1s; }
+}

@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { templates } from '../lib/templates';
-import YapeModal from './YapeModal';
 import '../styles/site-header.css';
 
 const TikTokIcon = (
@@ -16,8 +15,6 @@ const InstagramIcon = (
 );
 
 export default function SiteHeader() {
-  const [showYape, setShowYape] = useState(false);
-
   return (
     <>
       <header className="site-header">
@@ -51,7 +48,7 @@ export default function SiteHeader() {
           </a>
           {/* Reemplaza href="#" con tu link real de Instagram */}
           <a
-            href="#"
+            href="https://www.instagram.com/fiore.vid_gifts/"
             className="social-link"
             aria-label="Instagram"
             target="_blank"
@@ -59,17 +56,15 @@ export default function SiteHeader() {
           >
             {InstagramIcon}
           </a>
-          <button
+          <Link
+            to="/donations"
             className="header-support-btn"
-            onClick={() => setShowYape(true)}
             aria-label="Apóyanos"
           >
             Apóyanos
-          </button>
+          </Link>
         </div>
       </header>
-
-      {showYape && <YapeModal onClose={() => setShowYape(false)} />}
     </>
   );
 }
