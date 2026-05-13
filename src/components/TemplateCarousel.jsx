@@ -22,7 +22,7 @@ export default function TemplateCarousel() {
                 key={template.id}
                 className="carousel-card"
               >
-                <img src={template.image} alt={template.title} className="carousel-img" />
+                <img src={template.image} alt={template.title} className="carousel-img" loading="lazy" />
                 <p className="carousel-text">{template.title}</p>
               </Link>
             ))}

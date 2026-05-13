@@ -413,6 +413,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     let audio = null, fadeTimer = null;
     if (data.musica) {
       audio = new Audio(data.musica);
+      audio.preload = 'none';
       audio.loop   = true;
       audio.volume = 0;
       audio.play().catch(() => {});

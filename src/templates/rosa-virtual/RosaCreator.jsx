@@ -64,7 +64,6 @@ function BackButton({ onClick, color, text = "Volver al paso anterior" }) {
 export default function RosaCreator({ onSave }) {
   const [step, setStep]                           = useState(1);
   const [animDir, setAnimDir]                     = useState('next');
-  const [showConfirmModal, setShowConfirmModal]   = useState(false);
   const [showVideoModal, setShowVideoModal]       = useState(false);
   const [videoUrl, setVideoUrl]                   = useState('');
   const [videoSaved, setVideoSaved]               = useState('');
@@ -141,7 +140,6 @@ export default function RosaCreator({ onSave }) {
 
   const confirmarRosa = () => {
     userInteracted.current = true;
-    setShowConfirmModal(false);
     goTo(2);
   };
 
@@ -270,37 +268,11 @@ export default function RosaCreator({ onSave }) {
                 <button
                   className="rc-btn"
                   style={{ backgroundColor: formData.colorHex }}
-                  onClick={() => setShowConfirmModal(true)}
+                  onClick={confirmarRosa}
                 >
                   Personalizar
                 </button>
               </div>
-
-              {showConfirmModal && (
-                <div className="rc-modal-backdrop">
-                  <div className="rc-modal-content animated">
-                    <h2>Confirmar selección</h2>
-                    <p>
-                      Has seleccionado una rosa de color:{' '}
-                      <RosaIcon color={formData.colorHex} size={30} style={{ verticalAlign: 'middle' }} />
-                    </p>
-                    <button
-                      className="rc-btn"
-                      style={{ backgroundColor: formData.colorHex, width: '100%' }}
-                      onClick={confirmarRosa}
-                    >
-                      Confirmar
-                    </button>
-                    <button className="rc-modal-close" onClick={() => setShowConfirmModal(false)}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
-                        <g fill="none">
-                          <path fill="currentColor" d="M12 3a1 1 0 0 1 .117 1.993L12 5H7a1 1 0 0 0-.993.883L6 6v12a1 1 0 0 0 .883.993L7 19h4.5a1 1 0 0 1 .117 1.993L11.5 21H7a3 3 0 0 1-2.995-2.824L4 18V6a3 3 0 0 1 2.824-2.995L7 3zm5.707 5.464l2.828 2.829a1 1 0 0 1 0 1.414l-2.828 2.829a1 1 0 1 1-1.414-1.415L17.414 13H12a1 1 0 1 1 0-2h5.414l-1.121-1.121a1 1 0 0 1 1.414-1.415" />
-                        </g>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
@@ -374,36 +346,27 @@ export default function RosaCreator({ onSave }) {
                 </h2>
               </div>
               <div className="rc-intentions-scroll">
-                {[
-                  [0, 2, 11],
-                  [12, 10, 9],
-                  [3, 1, 5],
-                  [6, 7, 8],
-                  [13, 14, 15],
-                ].map((row, rowIdx) => (
-                  <div className="intention-container" key={`row-${rowIdx}`}>
-                    {row.map((i) => {
-                      const intencion   = INTENCIONES[i];
-                      const intentionId = `${intencion.sub}-${intencion.main}`;
-                      return (
-                        <IntentionCard
-                          key={intentionId}
-                          intencion={intencion}
-                          color={formData.colorHex}
-                          selected={intentionSelected === intentionId}
-                          onSelect={() => {
-                            setIntentionSelected(intentionId);
-                            setFormData(fd => ({
-                              ...fd,
-                              intencion: intencion.msg.replace(', ', ''),
-                              intencionCorta: intencion.main,
-                            }));
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                ))}
+                <div className="intentions-pills-wrap">
+                  {INTENCIONES.map((intencion) => {
+                    const intentionId = `${intencion.sub}-${intencion.main}`;
+                    return (
+                      <IntentionCard
+                        key={intentionId}
+                        intencion={intencion}
+                        color={formData.colorHex}
+                        selected={intentionSelected === intentionId}
+                        onSelect={() => {
+                          setIntentionSelected(intentionId);
+                          setFormData(fd => ({
+                            ...fd,
+                            intencion: intencion.msg.replace(', ', ''),
+                            intencionCorta: intencion.main,
+                          }));
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
               <div className="rc-p24 rc-pt0">
                 <div

@@ -537,7 +537,7 @@ export default function CorazonCaruselTemplate({ data }) {
 
         <AntiInspectGuard>
         <div className="app-wrapper-cc" ref={appWrapperRef}>
-            <audio ref={audioRef} src={music} preload="auto" />
+            <audio ref={audioRef} src={music} preload="none" />
 
             <button
                 className="music-btn-cc"

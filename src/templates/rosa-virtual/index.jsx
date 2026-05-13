@@ -6,10 +6,11 @@ import { AntiInspectGuard } from '../../lib/antiInspect';
 
 export default function RosaVirtual({ data, isPreview }) {
   // 1. Extraemos los datos recibidos del primer componente
-  const { 
-    nombre = "María", 
-    color = "red", 
-    intencion = "para demostrarte mi amor", 
+  const {
+    nombre = "María",
+    color = "red",
+    isBouquet = false,
+    intencion = "para demostrarte mi amor",
     mensaje = "Eres una persona muy especial para mí. ¡Espero que te guste este detalle!",
   } = data || {};
 
@@ -20,6 +21,7 @@ export default function RosaVirtual({ data, isPreview }) {
       bg: rosa.bgLight,
       letter: rosa.letter,
       rose: rosa.img,
+      ramo: rosa.ramo,
     };
     return acc;
   }, {});
@@ -205,6 +207,27 @@ export default function RosaVirtual({ data, isPreview }) {
 
 
   // ─── RENDER ─────────────────────────────────────────────────────────────────
+  const roseImg = isBouquet ? theme.ramo : theme.rose;
+
+  const PETALS = [
+    { id: 0,  left: '7%',  delay: '0s',    dur: '4.2s', w: 11, h: 14 },
+    { id: 1,  left: '18%', delay: '0.6s',  dur: '3.6s', w: 14, h: 18 },
+    { id: 2,  left: '31%', delay: '1.1s',  dur: '4.8s', w: 9,  h: 12 },
+    { id: 3,  left: '44%', delay: '0.3s',  dur: '3.9s', w: 13, h: 16 },
+    { id: 4,  left: '57%', delay: '1.5s',  dur: '4.4s', w: 10, h: 13 },
+    { id: 5,  left: '69%', delay: '0.8s',  dur: '3.7s', w: 15, h: 19 },
+    { id: 6,  left: '81%', delay: '0.1s',  dur: '4.1s', w: 11, h: 14 },
+    { id: 7,  left: '92%', delay: '1.8s',  dur: '3.5s', w: 12, h: 15 },
+    { id: 8,  left: '12%', delay: '2.2s',  dur: '4.6s', w: 9,  h: 11 },
+    { id: 9,  left: '25%', delay: '1.9s',  dur: '3.8s', w: 14, h: 17 },
+    { id: 10, left: '38%', delay: '0.5s',  dur: '4.3s', w: 10, h: 13 },
+    { id: 11, left: '51%', delay: '2.5s',  dur: '3.6s', w: 12, h: 16 },
+    { id: 12, left: '63%', delay: '0.9s',  dur: '4.9s', w: 8,  h: 11 },
+    { id: 13, left: '76%', delay: '2.1s',  dur: '4.0s', w: 13, h: 17 },
+    { id: 14, left: '88%', delay: '1.3s',  dur: '3.4s', w: 11, h: 14 },
+    { id: 15, left: '3%',  delay: '2.8s',  dur: '4.7s', w: 10, h: 13 },
+  ];
+
   return (
     <AntiInspectGuard>
     <div id="contenedor" className={isPreview ? 'preview-mode' : ''}>
@@ -212,11 +235,23 @@ export default function RosaVirtual({ data, isPreview }) {
       {/* ════ PANTALLA 0: CARGANDO ════ */}
       {step === 0 && (
         <div className={`loading ${loadingFading ? 'fadeout' : ''}`}>
-          <div className="p-24">
-            <h1 className="h1-rosify">
-              <span id="text-0-1" style={{ fontSize: '2rem', fontWeight: '700' }}>{text1}</span>
-              <span id="text-0-2" style={{ color: theme.hex, fontSize: '2rem', fontWeight: '700' }}>{text2}</span>
-            </h1>
+          {PETALS.map(p => (
+            <div
+              key={p.id}
+              className="petal"
+              style={{
+                left: p.left,
+                width: p.w,
+                height: p.h,
+                animationDelay: p.delay,
+                animationDuration: p.dur,
+                color: theme.hex,
+              }}
+            />
+          ))}
+          <div className="loading-content">
+            <p className="loading-para">{text1}</p>
+            <h1 className="loading-nombre" style={{ color: theme.hex }}>{text2}</h1>
           </div>
         </div>
       )}
@@ -227,8 +262,12 @@ export default function RosaVirtual({ data, isPreview }) {
           
           <div className="gift-section" id="gift-rosa">
             <div id="rosa-animada" ref={rosaRef} className={`rosa-animada ${roseClasses}`} style={{ display: 'flex' }}>
+              <div
+                className="rosa-glow"
+                style={{ background: `radial-gradient(circle, ${theme.hex}55 0%, transparent 70%)` }}
+              />
               <div id="rosa-bg" className={`rosa-bg ${popout ? 'bg-popout' : ''}`} style={{ background: theme.bg }}></div>
-              <img id="img-rosa" src={theme.rose} alt="Rosa" className={`rosa-img ${popout ? 'rosa-popout' : ''}`} />
+              <img id="img-rosa" src={roseImg} alt="Rosa" className={`rosa-img ${popout ? 'rosa-popout' : ''}`} />
             </div>
           </div>
 

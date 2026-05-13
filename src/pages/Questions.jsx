@@ -32,8 +32,8 @@ const FAQ_DATA = [
         a: 'Si realizas una donación, el cargo aparecerá como SORPRESAVIRT en tu estado de cuenta o historial de Yape. Es el identificador oficial del proyecto — no te asustes si lo ves ahí.',
       },
       {
-        q: '¿Las fotos que subo se guardan?',
-        a: 'Las fotos forman parte de tu regalo y se almacenan en nuestros servidores para que el destinatario pueda verlas al abrir el enlace. No las usamos con ningún otro fin ni las compartimos con terceros.',
+        q: '¿Es seguro donar con Yape?',
+        a: 'Sí. Donas directamente desde tu app de Yape — nosotros no procesamos ni almacenamos ningún dato de tu cuenta. El pago va íntegramente al proyecto, sin intermediarios de nuestra parte. Es el mismo proceso que cuando le pagas a cualquier negocio con Yape.',
       },
     ],
   },

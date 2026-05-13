@@ -417,7 +417,7 @@ const config = {
                 ref={audioRef}
                 src={config.songUrl}
                 loop
-                preload="auto"
+                preload="none"
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onLoadedMetadata={updateSongProgress}

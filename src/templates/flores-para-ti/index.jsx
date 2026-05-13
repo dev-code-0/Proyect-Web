@@ -315,7 +315,7 @@ export default function FloresParaTiTemplate({ data }) {
                 <div className="growing-grass-fpt"><div className="flower__grass-fpt flower__grass--10-fpt"><div className="flower__grass--top-fpt"></div><div className="flower__grass--bottom-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--1-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--2-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--3-fpt"></div><div className="flower__grass__overlay-fpt"></div></div></div>
             </div>
 
-            <audio id="audioPlayer-fpt" ref={audioRef} loop onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata}>
+            <audio id="audioPlayer-fpt" ref={audioRef} loop preload="none" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata}>
                 <source src={musica} type="audio/mpeg" />
             </audio>
 

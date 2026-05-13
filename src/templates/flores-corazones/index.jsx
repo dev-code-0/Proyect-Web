@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import cajitaImage from "./cajita.webp";
 import "./flores-corazones.css"; 
-import { AntiInspectGuard } from "../../lib/antiInspect";
 import Song from "./musica.mp3";
 
 const flowersSceneMarkup = `
@@ -267,8 +266,11 @@ const heartPath =
 
 export default function FloresCorazonesTemplate({ data }) {
   const nombre = data?.nombre || "María";
+  const mensaje = data?.mensaje || "";
+  const audioSrc = data?.musica || Song;
   const [showScene, setShowScene] = useState(false);
   const [animationsReady, setAnimationsReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
 
   const nombreChars = useMemo(() => Array.from(String(nombre).toUpperCase()), [nombre]);
@@ -285,21 +287,31 @@ export default function FloresCorazonesTemplate({ data }) {
 
   const handleEnter = () => {
     const audio = audioRef.current;
-
     if (audio) {
       audio.currentTime = 0;
-      audio.play().catch(() => {
-        // Ignora bloqueos de autoplay del navegador.
-      });
+      audio.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
-
     setShowScene(true);
   };
 
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
   return (
-    <AntiInspectGuard>
+    <>
     <main className="fc-template-fc">
-      <audio ref={audioRef} src={Song} loop preload="auto" />
+      <audio ref={audioRef} src={audioSrc} loop preload="none" />
       {!showScene ? (
         <section className="fc-intro-fc">
           <img className="img-fc" src={cajitaImage} alt="Caja de regalo" />
@@ -326,6 +338,15 @@ export default function FloresCorazonesTemplate({ data }) {
         <section className={`fc-scene-fc ${animationsReady ? "" : "container-fc"}`}>
           <div dangerouslySetInnerHTML={{ __html: flowersSceneMarkup }} />
 
+          <div className="fc-overlay-fc">
+            <div className="fc-overlay-name-fc">
+              {nombreChars.map((char, index) => (
+                <span key={`${char}-${index}`}>{char === " " ? " " : char}</span>
+              ))}
+            </div>
+            {mensaje && <p className="fc-overlay-msg-fc">{mensaje}</p>}
+          </div>
+
           <div className="bubbles-fc">
             {Array.from({ length: 20 }).map((_, index) => (
               <div className="bubble-fc" key={index}>
@@ -336,9 +357,27 @@ export default function FloresCorazonesTemplate({ data }) {
               </div>
             ))}
           </div>
+
+          <button
+            type="button"
+            className={`fc-audio-btn-fc${isPlaying ? " fc-audio-btn--on-fc" : ""}`}
+            onClick={togglePlay}
+            aria-label={isPlaying ? "Pausar música" : "Reproducir música"}
+          >
+            {isPlaying ? (
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6 3.5L20 12 6 20.5V3.5z" />
+              </svg>
+            )}
+          </button>
         </section> 
       )}
     </main>
-    </AntiInspectGuard>
+    </>
   );
 }

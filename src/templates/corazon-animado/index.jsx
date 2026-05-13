@@ -461,7 +461,7 @@ export default function CorazonMagicotemplate({data}) {
         >
             
             {/* Reproductor de música (Pista relajante de dominio público para probar) */}
-            <audio ref={audioRef} src={music} loop preload="auto" playsInline id="bg-music" />
+            <audio ref={audioRef} src={music} loop preload="none" playsInline id="bg-music" />
 
             
 

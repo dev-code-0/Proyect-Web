@@ -287,7 +287,7 @@ export default function App({ data }) {
       <div className="ambient-light-sr light-2-sr"></div>
       <div className="ambient-light-sr light-3-sr"></div>
 
-      <audio ref={audioRef} src={srcMusica} loop />
+      <audio ref={audioRef} src={srcMusica} loop preload="none" />
 
       {/* Botón de Música */}
       <button onClick={toggleMusic} className={`music-btn-sr glass-premium-sr ${isMusicPlaying ? "music-on-sr" : "music-off-sr"}`}>

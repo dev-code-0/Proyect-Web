@@ -1,35 +1,28 @@
-﻿
-/* ---- Root / fondo ----------------------------------------- */
-.novia-root-pr {
-  min-height: 100vh;
-  display: flex;
-  align-items: center; 
-  justify-content: center;
-  background: #fde8f0;
-  background-image:
-    radial-gradient(circle at 20% 30%, #ffc2d4 0%, transparent 40%),
-    radial-gradient(circle at 80% 70%, #ffb3c6 0%, transparent 40%);
-  transition: background 0.8s ease;
-  font-family: var(--font-text);
-  overflow: hidden; 
-  position: relative;
-}
 
-.novia-root--yes-pr {
-  background: #fff0f6;
-  background-image:
-    radial-gradient(circle at 20% 20%, #ffd6e7 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, #ffb3c6 0%, transparent 50%);
-}
-
+/* ---- Fondo + wrap ----------------------------------------- */
 .novia-wrap-pr {
-  height: 100%;
+  min-height: 100svh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+  background: #fde8f0;
+  background-image:
+    radial-gradient(circle at 20% 30%, #ffc2d4 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, #ffb3c6 0%, transparent 40%);
+  font-family: var(--font-text);
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.8s ease;
+}
+
+.novia-wrap--yes-pr {
+  background-color: #fff0f6;
+  background-image:
+    radial-gradient(circle at 20% 20%, #ffd6e7 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #ffb3c6 0%, transparent 50%);
 }
 
 /* ---- Card -------------------------------------------------- */
@@ -41,20 +34,19 @@
   border-radius: 32px;
   box-shadow:
     0 8px 40px rgba(220, 80, 120, 0.13),
-    0 2px 8px rgba(0,0,0,0.06);
+    0 2px 8px rgba(0, 0, 0, 0.06);
   padding: 2.5rem 2rem 2rem;
   max-width: 420px;
   width: 100%;
-  height: 100%;
   text-align: center;
   position: relative;
   z-index: 10;
-  animation: cardIn 0.7s cubic-bezier(.34,1.56,.64,1) both;
+  animation: cardIn 0.7s cubic-bezier(.34, 1.56, .64, 1) both;
 }
 
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(40px) scale(0.93); }
-  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
 /* ---- GIF --------------------------------------------------- */
@@ -69,7 +61,7 @@
 .novia-gif-pr {
   width: 62%;
   border-radius: 18px;
-  animation: gifPop 0.4s cubic-bezier(.34,1.56,.64,1) both;
+  animation: gifPop 0.4s cubic-bezier(.34, 1.56, .64, 1) both;
 }
 
 @keyframes gifPop {
@@ -94,6 +86,9 @@
   gap: 1.5rem;
   flex-wrap: wrap;
   margin-top: 0.5rem;
+  position: relative;
+  min-height: 60px;
+  align-items: center;
 }
 
 .novia-btn-pr {
@@ -105,19 +100,17 @@
   border-radius: 50px;
   cursor: pointer;
   color: #fff;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  transition: transform 0.25s cubic-bezier(.34,1.56,.64,1),
-              box-shadow 0.25s,
-              background 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   outline: none;
   letter-spacing: 0.02em;
   user-select: none;
+  touch-action: none;
 }
 
-/* SÃ­ */
+/* Si */
 .novia-btn--si-pr {
   background: linear-gradient(135deg, #00b894, #00cec9);
-  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
+  transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1),
               box-shadow 0.25s,
               background 0.2s;
 }
@@ -132,7 +125,6 @@
 /* No */
 .novia-btn--no-pr {
   background: linear-gradient(135deg, #e17055, #d63031);
-  z-index: 100;
 }
 .novia-btn--no-pr:hover {
   background: linear-gradient(135deg, #c0392b, #96281b);
@@ -148,35 +140,19 @@
   margin-top: 1.2rem;
   line-height: 1.6;
   text-shadow: 0 2px 10px rgba(214, 51, 108, 0.2);
-  animation: msgPulse 0.5s ease-in-out infinite alternate;
+  animation:
+    msgIn 0.6s cubic-bezier(.34, 1.56, .64, 1) both,
+    msgPulse 2s ease-in-out 0.6s infinite alternate;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
 }
 
 @keyframes msgPulse {
-  from { transform: scale(1);   }
-  to   { transform: scale(1.06);}
-}
-
-/* ---- Corazones flotantes ----------------------------------- */
-.hearts-overlay-pr {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
-  overflow: hidden;
-}
-
-.heart-particle-pr {
-  position: absolute;
-  bottom: -2rem;
-  animation: floatUp linear infinite both;
-  opacity: 0;
-}
-
-@keyframes floatUp {
-  0%   { transform: translateY(0)   rotate(-10deg); opacity: 0;   }
-  10%  { opacity: 1; }
-  80%  { opacity: 0.8; }
-  100% { transform: translateY(-110vh) rotate(15deg); opacity: 0; }
+  from { transform: scale(1);    }
+  to   { transform: scale(1.04); }
 }
 
 /* ---- Responsive ------------------------------------------- */

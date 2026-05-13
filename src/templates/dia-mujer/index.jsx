@@ -2,26 +2,21 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import IconoSobre from "./icoCarta.svg";
 import IconoMujer from "./icoMujer.svg";
-import Imagen1 from "./images/foto1.jpeg"; 
+import Imagen1 from "./images/foto1.jpeg";
 import Imagen2 from "./images/foto2.jpeg";
 import Imagen3 from "./images/foto3.jpeg";
 import ILOVEYOUSO from "./song/I-love-you-so.mp3";
-import usePreloadImages from "../../hooks/usePreloadImages"; // Ajusta la ruta según dónde estés
-import LogoMovie from "./movie.svg"; 
-import { AntiInspectGuard } from "../../lib/antiInspect";
+import usePreloadImages from "../../hooks/usePreloadImages";
 
-export default function DiaMujerTemplate({ data }) { 
-  // Datos dinámicos (si no hay, usamos valores por defecto para la previsualización)
-  const nombre = data?.nombre || "Maria";
+export default function DiaMujerTemplate({ data, isPreview }) {
+  const nombre = data?.nombre || "María";
+  const mensaje = data?.mensaje || null;
   const misFotos =
-    data?.fotos && data.fotos.length > 0
-      ? data.fotos
-      : [Imagen1, Imagen2, Imagen3];
-  const srcMusica = data?.musica || data?.audio || data?.cancion || ILOVEYOUSO; // Aquí iría tu I-love-you-so.mp3 si lo pones en la carpeta public
+    data?.fotos?.length > 0 ? data.fotos : [Imagen1, Imagen2, Imagen3];
+  const srcMusica = data?.musica || data?.audio || data?.cancion || ILOVEYOUSO;
 
-  usePreloadImages(misFotos); //Cargar las fotos al entrar a la página
+  usePreloadImages(misFotos);
 
-  // Estados que reemplazan a los document.getElementById
   const [sobreAbierto, setSobreAbierto] = useState(false);
   const [mostrarCarrusel, setMostrarCarrusel] = useState(false);
   const [indiceFoto, setIndiceFoto] = useState(0);
@@ -29,13 +24,26 @@ export default function DiaMujerTemplate({ data }) {
   const audioRef = useRef(null);
   const intervaloCarrusel = useRef(null);
 
-  // 1. Lógica del Sobre
-  const abrirSobre = () => {
+  const abrirSobre = async () => {
     if (navigator.vibrate) navigator.vibrate(50);
     setSobreAbierto(true);
+    if (!isPreview) {
+      try {
+        const { default: confetti } = await import("canvas-confetti");
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.5 },
+          colors: ["#c084fc", "#f0abfc", "#e879f9", "#d8b4fe", "#fce7f3", "#f9a8d4"],
+          shapes: ["circle"],
+          scalar: 0.9,
+          gravity: 0.6,
+          drift: 0.3,
+        });
+      } catch {}
+    }
   };
 
-  // 2. Lógica del Carrusel y Música
   const iniciarCarrusel = () => {
     if (navigator.vibrate) navigator.vibrate(50);
     setMostrarCarrusel(true);
@@ -44,7 +52,7 @@ export default function DiaMujerTemplate({ data }) {
     if (audioRef.current && srcMusica) {
       audioRef.current.volume = 0.5;
       audioRef.current.currentTime = 0;
-      audioRef.current.play().catch((e) => console.log("Audio bloqueado", e));
+      audioRef.current.play().catch(() => {});
     }
 
     intervaloCarrusel.current = setInterval(() => {
@@ -61,136 +69,143 @@ export default function DiaMujerTemplate({ data }) {
   const terminarCarrusel = () => {
     clearInterval(intervaloCarrusel.current);
 
-    // Fade out del audio
-    if (audioRef.current && srcMusica) {
-      let fadeAudio = setInterval(() => {
-        if (audioRef.current.volume > 0.05) {
+    if (audioRef.current) {
+      const fadeAudio = setInterval(() => {
+        if (audioRef.current && audioRef.current.volume > 0.05) {
           audioRef.current.volume -= 0.05;
         } else {
           clearInterval(fadeAudio);
-          audioRef.current.pause();
+          if (audioRef.current) audioRef.current.pause();
         }
       }, 100);
     }
 
-    setTimeout(() => {
-      setMostrarCarrusel(false);
-    }, 1000);
+    setTimeout(() => setMostrarCarrusel(false), 1000);
   };
 
-  // Limpiar el intervalo si el componente se desmonta
   useEffect(() => {
     return () => clearInterval(intervaloCarrusel.current);
   }, []);
 
   return (
-    <AntiInspectGuard>
     <div className="template-wrapper-dm">
       {/* PANTALLA SOBRE */}
       <div
-        className={`pantalla-completa-dm ${sobreAbierto ? "sobre-abierto-dm" : ""}`}
-        id="sobre-pantalla-dm"
+        className={`pantalla-completa-dm${sobreAbierto ? " sobre-abierto-dm" : ""}`}
         onClick={abrirSobre}
       >
         <div className="sobre-contenido-dm pulse-dm">
           <span className="icono-sobre-dm">
-            {/* Importar el svg aqui */}
             <img src={IconoSobre} alt="" />
           </span>
-          <p className="txt-dm">Tienes una sorpresa...</p>
+          <p className="txt-dm">Alguien quiere celebrarte</p>
           <p className="txt-dm toque-texto-dm">Toca para abrir</p>
         </div>
       </div>
 
-      {/* CARTA PRINCIPAL */}
-      <main id="carta-principal-dm" className={!sobreAbierto ? "oculto-dm" : ""}>
-        {srcMusica && <audio ref={audioRef} src={srcMusica} loop />}
+      {/* CARTA PRINCIPAL — se monta solo cuando el sobre se abre */}
+      {sobreAbierto && (
+        <main id="carta-principal-dm">
+          {srcMusica && (
+            <audio ref={audioRef} src={srcMusica} loop preload="none" />
+          )}
 
-        <h1 className="anim-cascada-dm">El 8 de Marzo...</h1>
-        <p className="subtitulo-dm anim-cascada-dm c1-dm">Es Memoria y Gratitud.</p>
+          <h1 className="anim-cascada-dm">Para ti...</h1>
+          <p className="subtitulo-dm anim-cascada-dm c1-dm">
+            Porque no hace falta el 8 de marzo para celebrarte.
+          </p>
 
-        <div
-          className="ilustracion-dm anim-respiracion-dm c2-dm"
-          style={{ fontSize: "4rem", margin: "20px 0" }}
-        >
-          {/* PEGA AQUÍ TU SVG DE LA ILUSTRACIÓN */}
-          <img src={IconoMujer} alt="Ilustración" />
-        </div>
-
-        <p className="texto-poema-dm anim-cascada-dm c2-dm">
-          Es el eco suave de mujeres
-          <br />
-          valientes que abrieron caminos
-          <br />
-          <br />
-          para que hoy puedas
-          <br />
-          elegir el tuyo.
-        </p>
-
-        <p className="texto-poema-dm anim-cascada-dm c3-dm">
-          Siento orgullo de caminar a tu lado, <strong>{nombre}</strong>,<br />
-          de tu fuerza serena y de esa luz
-          <br />
-          que transforma todo cuanto toca.
-        </p>
-
-        <p className="texto-poema-dm cita-dm anim-cascada-dm c3-dm">
-          Porque..
-          <br />
-          "No se nace mujer,
-          <br />
-          se llega a serlo".
-          <br />
-          <br />
-          Y tú lo eres en la forma
-          <br />
-          más hermosa.
-        </p>
-
-        <div
-          id="btn-play-dm"
-          className="anim-cascada-dm pulse-suave-dm c3-dm"
-          onClick={iniciarCarrusel}
-        >
-          {/* Cambia esto por tu imagen de video si la tienes en la carpeta public */}
-          <div
-            style={{
-              padding: "10px 20px",
-              borderRadius: "15px",
-              width: "80px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <img className="imagen-logo-dm" src={LogoMovie} alt="" />
+          <div className="ilustracion-marco-dm anim-respiracion-dm c2-dm">
+            <img src={IconoMujer} alt="Ilustración" />
           </div>
-        </div>
-      </main>
+
+          <p className="texto-poema-dm anim-cascada-dm c2-dm">
+            No hay que esperar una fecha
+            <br />
+            para recordar lo que vales.
+            <br />
+            <br />
+            Cada día que caminas
+            <br />
+            dejas huella donde pasas.
+          </p>
+
+          {mensaje ? (
+            <p className="texto-poema-dm mensaje-personal-dm anim-cascada-dm c3-dm">
+              {mensaje}
+            </p>
+          ) : (
+            <p className="texto-poema-dm anim-cascada-dm c3-dm">
+              Siento orgullo de caminar a tu lado,{" "}
+              <strong>{nombre}</strong>,<br />
+              de tu fuerza serena y de esa luz
+              <br />
+              que transforma todo cuanto toca.
+            </p>
+          )}
+
+          <p className="texto-poema-dm cita-dm anim-cascada-dm c3-dm">
+            Porque..
+            <br />
+            "No se nace mujer,
+            <br />
+            se llega a serlo".
+            <br />
+            <br />
+            Y tú lo eres en la forma
+            <br />
+            más hermosa.
+          </p>
+
+          <button
+            className="btn-carrusel-dm"
+            onClick={iniciarCarrusel}
+            aria-label="Ver fotos"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 1.5L12.5 7L3 12.5V1.5Z" fill="currentColor" />
+            </svg>
+            Ver fotos
+          </button>
+        </main>
+      )}
 
       {/* CARRUSEL */}
       {mostrarCarrusel && (
         <div id="carrusel-lightbox-dm" className="pantalla-completa-dm">
-          {/* NUEVO BOTÓN DE CERRAR AQUÍ */}
-          <div className="btn-cerrar-carrusel-dm" onClick={terminarCarrusel}>
-            ✖
-          </div>
+          <button
+            className="btn-cerrar-carrusel-dm"
+            onClick={terminarCarrusel}
+            aria-label="Cerrar"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M1 1L13 13M13 1L1 13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+
+          <span className="carrusel-contador-dm">
+            {indiceFoto + 1} / {misFotos.length}
+          </span>
+
           <img
-            id="foto-actual-dm"
             src={misFotos[indiceFoto]}
             alt="Recuerdo"
             className="zoom-foto-dm"
-            key={indiceFoto} // Obliga a React a reiniciar la animación al cambiar la foto
+            key={indiceFoto}
           />
+
           {indiceFoto === misFotos.length - 1 && (
-            <p id="texto-foto-dm" className="anim-cascada-dm">
-              Gracias por ser tú
+            <p className="texto-final-carrusel-dm anim-cascada-dm">
+              Gracias por ser tú, <strong>{nombre}</strong>
             </p>
           )}
         </div>
       )}
     </div>
-    </AntiInspectGuard>
   );
 }

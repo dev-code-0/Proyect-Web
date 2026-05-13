@@ -617,30 +617,19 @@
 }
 
 .distance-flower-fla .distance-flower-img-fla {
-  width: clamp(7.5rem, 6cqw, 2.25rem);
-  height: clamp(7.5rem, 6cqw, 2.25rem);
+  width: clamp(2.5rem, 10cqw, 4rem);
+  height: clamp(2.5rem, 10cqw, 4rem);
 }
 
 /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 /* LETTER PANEL */
 /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .letter-texture-fla {
-  position: absolute;
-  inset: 0;
-  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-  opacity: 0.1;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-@container (min-width: 600px) {
-  .letter-texture-fla {
-    opacity: 0.15;
-  }
+  display: none;
 }
 
 .bg-glow-letter-fla {
-  position: fixed;
+  position: absolute;
   top: 5%;
   right: -10%;
   width: 80%;
@@ -1240,7 +1229,7 @@
   }
 }
 
-@keyframes fadeIn-fla {
+@keyframes fade-in-fla {
   from {
     opacity: 0;
     letter-spacing: 0.1em;
@@ -1250,6 +1239,11 @@
     opacity: 1;
     letter-spacing: 0.3em;
   }
+}
+
+@keyframes shine-fla {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
 }
 
 @keyframes pulse-slow-fla {

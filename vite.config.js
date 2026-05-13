@@ -24,8 +24,22 @@ export default defineConfig({
             return 'supabase-vendor';
           }
           if (
-            id.includes('/swiper/') ||
-            id.includes('/three/') ||
+            id.includes('maplibre-gl') ||
+            id.includes('@turf/') ||
+            id.includes('react-map-gl')
+          ) {
+            return 'geo-vendor';
+          }
+          if (id.includes('/three/')) {
+            return 'threejs-vendor';
+          }
+          if (id.includes('/animejs/')) {
+            return 'animejs-vendor';
+          }
+          if (id.includes('/swiper/')) {
+            return 'swiper-vendor';
+          }
+          if (
             id.includes('/canvas-confetti/') ||
             id.includes('/qr-code-styling/')
           ) {

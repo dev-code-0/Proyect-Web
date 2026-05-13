@@ -491,7 +491,7 @@ export default function CajaMusicalTemplate({ data }) {
       ))}
 
       {/* MÚSICA ROMÁNTICA */}
-      <audio ref={audioRef} loop preload="auto">
+      <audio ref={audioRef} loop preload="none">
         <source src={musica} type="audio/mp3" />
       </audio>
 

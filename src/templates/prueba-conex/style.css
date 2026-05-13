@@ -1,9 +1,9 @@
-﻿.v13-container {
+.v13-container {
 	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	background-color: #050505;
+	background-color: var(--color-bg, #050505);
 	overflow: hidden;
 	position: relative;
 	color: white;
@@ -15,7 +15,7 @@
 	box-sizing: border-box;
 }
 
-/* Lona para particulas, encima del fondo, debajo del contenido UI */
+/* Lona para partículas, encima del fondo, debajo del contenido UI */
 .v13-canvas {
 	position: absolute;
 	top: 0;
@@ -36,7 +36,7 @@
 	height: 100%;
 }
 
-/* SECCION 1: CABECERA (Toma lo que necesita de alto) */
+/* SECCION 1: CABECERA */
 .v13-section-top {
 	flex: 0 0 auto;
 	padding: 1rem;
@@ -45,9 +45,10 @@
 	gap: 0.5rem;
 	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
 	pointer-events: auto;
+	animation: v13-fade-down 0.7s ease both;
 }
 
-/* SECCION 2: CORAZON (Se expande para tomar el espacio sobrante) */
+/* SECCION 2: CORAZÓN */
 .v13-section-middle {
 	flex: 1 1 auto;
 	position: relative;
@@ -55,7 +56,7 @@
 	pointer-events: none;
 }
 
-/* SECCION 3: ESPIRALES 3D (Toma un % fijo de la pantalla) */
+/* SECCION 3: ANILLOS 3D */
 .v13-section-bottom {
 	flex: 0 0 22%;
 	min-height: 160px;
@@ -66,9 +67,21 @@
 	perspective: 1000px;
 	pointer-events: none;
 	padding-bottom: 1rem;
+	animation: v13-fade-in 0.9s ease 0.35s both;
 }
 
-/* DECORACION DE FONDO */
+/* ANIMACIONES DE ENTRADA */
+@keyframes v13-fade-down {
+	from { opacity: 0; transform: translateY(-16px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes v13-fade-in {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+/* DECORACIÓN DE FONDO */
 .v13-star-layer {
 	position: absolute;
 	inset: -50px;
@@ -77,6 +90,9 @@
 	opacity: 0.15;
 	z-index: 1;
 	pointer-events: none;
+	/* Parallax vía CSS vars escritas directo al DOM — sin re-render */
+	transform: translate(calc(var(--mx, 0) * -10px), calc(var(--my, 0) * -10px));
+	transition: transform 0.15s linear;
 }
 
 .v13-bg-glow {
@@ -85,22 +101,15 @@
 	height: 140%;
 	top: -20%;
 	left: -20%;
-	background: radial-gradient(circle at 50% 50%, rgba(255, 0, 127, 0.08) 0%, transparent 60%);
+	background: radial-gradient(circle at 50% 50%, rgba(var(--color-primary-rgb, 255, 0, 127), 0.08) 0%, transparent 60%);
 	animation: pulseGlow 6s infinite ease-in-out alternate;
 	z-index: 2;
 	pointer-events: none;
 }
 
 @keyframes pulseGlow {
-	0% {
-		transform: scale(0.95);
-		opacity: 0.5;
-	}
-
-	100% {
-		transform: scale(1.05);
-		opacity: 1;
-	}
+	0%   { transform: scale(0.95); opacity: 0.5; }
+	100% { transform: scale(1.05); opacity: 1; }
 }
 
 /* UI CABECERA */
@@ -118,11 +127,11 @@
 
 .v13-shiny-title {
 	margin: 0;
-	font-size: clamp(1.2rem, 6vw, 1.1rem);
+	font-size: clamp(1.1rem, 6vw, 2.2rem);
 	font-weight: 900;
 	line-height: 1.05;
 	text-transform: uppercase;
-	background: linear-gradient(90deg, #ff007f, #fff, #ff007f);
+	background: linear-gradient(90deg, var(--color-primary, #ff007f), #fff, var(--color-primary, #ff007f));
 	background-size: 200% auto;
 	background-clip: text;
 	-webkit-background-clip: text;
@@ -130,10 +139,24 @@
 	animation: titleShine 4s linear infinite;
 }
 
+/* Nombre del destinatario — línea propia debajo del título */
+.v13-title-name {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: clamp(0.95rem, 5vw, 1.6rem);
+	font-weight: 900;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	line-height: 1.1;
+	color: var(--color-primary, #ff007f);
+	text-shadow: 0 0 18px rgba(var(--color-primary-rgb, 255, 0, 127), 0.65);
+	/* Reset del gradient-clip del padre */
+	background: none;
+	-webkit-text-fill-color: var(--color-primary, #ff007f);
+}
+
 @keyframes titleShine {
-	to {
-		background-position: 200% center;
-	}
+	to { background-position: 200% center; }
 }
 
 .v13-subtitle {
@@ -152,19 +175,14 @@
 
 .v13-eq-bar {
 	width: 2px;
-	background-color: #ff007f;
+	background-color: var(--color-primary, #ff007f);
 	border-radius: 1px;
 	animation: eqBounce 0.8s infinite alternate;
 }
 
 @keyframes eqBounce {
-	from {
-		height: 2px;
-	}
-
-	to {
-		height: 10px;
-	}
+	from { height: 2px; }
+	to   { height: 10px; }
 }
 
 .v13-label {
@@ -176,8 +194,8 @@
 }
 
 .v13-play-btn {
-	width: clamp(2.2rem, 8vw, 2rem);
-	height: clamp(2.2rem, 8vw, 2rem);
+	width: clamp(2rem, 8vw, 2.2rem);
+	height: clamp(2rem, 8vw, 2.2rem);
 	padding: 0;
 	margin: 0;
 	line-height: 0;
@@ -202,7 +220,7 @@
 .v13-play-icon {
 	width: 45%;
 	height: 45%;
-	color: #ff007f;
+	color: var(--color-primary, #ff007f);
 }
 
 .v13-message-box {
@@ -212,7 +230,7 @@
 
 .v13-message-text {
 	margin: 0;
-	font-size: clamp(0.8rem, 3.5vw, 0.8rem);
+	font-size: clamp(0.75rem, 3.5vw, 0.85rem);
 	font-weight: 500;
 	line-height: 1.4;
 	font-style: italic;
@@ -223,18 +241,19 @@
 
 .v13-cursor {
 	animation: blink 1s infinite;
-	color: #ff007f;
+	color: var(--color-primary, #ff007f);
+	transition: opacity 0.5s ease;
+}
+
+/* El cursor desaparece suavemente al terminar el typewriter */
+.v13-cursor--done {
+	animation: none;
+	opacity: 0;
 }
 
 @keyframes blink {
-	0%,
-	100% {
-		opacity: 0;
-	}
-
-	50% {
-		opacity: 1;
-	}
+	0%, 100% { opacity: 0; }
+	50%       { opacity: 1; }
 }
 
 /* UI 3D INFERIOR */
@@ -244,6 +263,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	/* Tilt suave con parallax vía CSS var --mx */
+	transform: rotateX(-12deg) rotateY(calc(var(--mx, 0) * 15deg));
+	transition: transform 0.2s ease-out;
 }
 
 .v13-3d-layer {
@@ -277,9 +299,9 @@
 
 .v13-photo-item:hover,
 .v13-photo-item:active {
-	border-color: #ff007f;
+	border-color: var(--color-primary, #ff007f);
 	z-index: 100;
-	box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+	box-shadow: 0 0 15px rgba(var(--color-primary-rgb, 255, 0, 127), 0.5);
 }
 
 .v13-photo-img {
@@ -297,55 +319,93 @@
 }
 
 @keyframes spinY {
-	from {
-		transform: rotateY(0deg);
-	}
-
-	to {
-		transform: rotateY(360deg);
-	}
+	from { transform: rotateY(0deg); }
+	to   { transform: rotateY(360deg); }
 }
 
-/* LIGHTBOX DE FOTOS */
+/* LIGHTBOX */
 .v13-lightbox {
 	position: fixed;
 	inset: 0;
 	z-index: 999;
-	background: rgba(0, 0, 0, 0.95);
-	backdrop-filter: blur(10px);
+	/* Semitransparente para que el template se vea detrás */
+	background: rgba(0, 0, 0, 0.78);
+	backdrop-filter: blur(12px);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	opacity: 0;
-	animation: fadeIn 0.3s forwards;
+	animation: fadeIn 0.25s ease forwards;
 }
 
 @keyframes fadeIn {
-	to {
-		opacity: 1;
-	}
+	to { opacity: 1; }
+}
+
+/* Contenedor que agrupa imagen + caption y bloquea el click */
+.v13-lightbox-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: 90%;
+	gap: 1rem;
 }
 
 .v13-lightbox-img {
-	max-width: 90%;
-	max-height: 80vh;
+	max-width: 100%;
+	max-height: 68vh;
 	border-radius: 1rem;
-	border: 2px solid #333;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+	/* Borde con el color de la paleta activa */
+	border: 2px solid var(--color-primary, #ff007f);
+	box-shadow:
+		0 0 28px rgba(var(--color-primary-rgb, 255, 0, 127), 0.45),
+		0 12px 36px rgba(0, 0, 0, 0.7);
+	/* Pop de entrada con overshoot */
+	animation: v13-lb-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes v13-lb-pop {
+	from { opacity: 0; transform: scale(0.82); }
+	to   { opacity: 1; transform: scale(1); }
+}
+
+/* Caption animado debajo de la foto */
+.v13-lightbox-caption {
+	text-align: center;
+	min-height: 1.6em;
+}
+
+.v13-lightbox-caption-text {
+	margin: 0;
+	font-size: clamp(0.8rem, 3.5vw, 1rem);
+	font-style: italic;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	color: rgba(255, 255, 255, 0.92);
+	text-shadow:
+		0 0 14px rgba(var(--color-primary-rgb, 255, 0, 127), 0.75),
+		0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.v13-lightbox-cursor {
+	color: var(--color-primary, #ff007f);
+	animation: blink 0.8s infinite;
 }
 
 .v13-close {
 	position: absolute;
 	top: 1.5rem;
 	right: 1.5rem;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 	border-radius: 50%;
 	padding: 0.5rem;
 	color: white;
 	cursor: pointer;
-	transition: background 0.3s;
+	transition: background 0.3s, border-color 0.3s;
 }
 
 .v13-close:hover {
-	background: rgba(255, 0, 127, 0.5);
+	background: rgba(var(--color-primary-rgb, 255, 0, 127), 0.45);
+	border-color: var(--color-primary, #ff007f);
 }

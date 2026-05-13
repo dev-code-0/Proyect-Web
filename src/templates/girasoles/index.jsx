@@ -35,10 +35,7 @@ export default function App({ data }) {
     <AntiInspectGuard>
     <div className="regalo-virtual-container-gi">
       
-      <audio 
-        ref={audioRef}  
-        src={Music} 
-      />
+      <audio ref={audioRef} src={Music} preload="none" />
 
 
       {/* Partículas / Estrellas en el fondo */}

@@ -99,7 +99,7 @@ export default function FuegosAmorTemplate({ data }) {
     // Pre-cargar audios de explosión
     const preloadedExplosions = explosionSounds.map(src => {
       const audio = new Audio(src);
-      audio.preload = "auto";
+      audio.preload = "none";
       return audio;
     });
 
@@ -367,7 +367,7 @@ export default function FuegosAmorTemplate({ data }) {
       {/* ==========================================
           MÚSICA DE FONDO (Piano Romántico)
           ========================================== */}
-      <audio ref={audioRef} loop preload="auto">
+      <audio ref={audioRef} loop preload="none">
         <source src={musicaURL} type="audio/mpeg" />
       </audio>
 

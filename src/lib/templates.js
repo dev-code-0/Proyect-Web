@@ -16,16 +16,16 @@ export const templates = [
   },
   {
     id: "flores-amarillas",
-    title: "Flores amarillas",
+    title: "Carta de Amor",
     image: "./images/flores-amarillas/flores_2.svg",
   },
   {
     id: "pregunta",
-    title: "Pregunta",
+    title: "La Gran Pregunta",
     image: "./images/pregunta/oso1.svg",
   },
-  { id: "flores-corazones", 
-    title: "Flores y Corazones", 
+  { id: "flores-corazones",
+    title: "Jardín de Amor",
     image: "./images/flores-corazones/cajita.webp",
   },
   {

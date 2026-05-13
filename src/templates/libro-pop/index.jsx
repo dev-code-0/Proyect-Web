@@ -110,7 +110,7 @@ export default function LibroPopUpTemplate({ data }) {
   return (
     <AntiInspectGuard>
     <div className="template-wrapper-lpu">
-      <audio ref={audioRef} preload="auto">
+      <audio ref={audioRef} preload="none">
         <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_b293e5066a.mp3?filename=page-turn-1-101416.mp3" type="audio/mp3" />
       </audio>
 

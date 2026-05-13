@@ -9,7 +9,6 @@ import { AntiInspectGuard } from "../../lib/antiInspect";
 import usePreloadImages from "../../hooks/usePreloadImages";
 import Image1 from "./images/image1.avif"
 import Image2 from "./images/image2.avif"
-import Image3 from "./images/image3.avif"
 
 // ─────────────────────────────────────────
 // HOOKS
@@ -324,7 +323,7 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
               <p className="letter-date-fla">
                 {new Date().toLocaleDateString('es-ES', { month: 'long', year: 'numeric', day: 'numeric' })}
               </p>
-              <h2 className="letter-title-fla">Querida {recipientName},</h2>
+              <h2 className="letter-title-fla">{recipientName},</h2>
             </header>
 
             <div className="letter-body-fla">
@@ -350,7 +349,7 @@ function LetterPanel({ senderName, recipientName, loveLetter, photoUrls, photoCa
           <div className="gallery-grid-fla">
             {photoUrls.map((url, i) => (
               <div key={i} style={{ transform: `rotate(${POLAROID_ROTATIONS[i % POLAROID_ROTATIONS.length]})` }} className="polaroid-item-fla">
-                <PolaroidStack photoUrl={url} caption={i === 1 ? photoCaption : null} />
+                <PolaroidStack photoUrl={url} caption={photoCaption} />
               </div>
             ))}
           </div>
@@ -412,9 +411,11 @@ function FinalPanel({ startDate, whatsappNumber, active }) {
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="wsp-btn-fla">
             Respóndeme aquí
             <svg className="wsp-icon-fla" fill="currentColor" viewBox="0 0 24 24">
-              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="9" cy="9" r="1">
-</circle><circle cx="15" cy="15" r="1"></circle>
-<path d="M8 9a7 7 0 0 0 7 7m-9 5.2A11 11 0 1 0 2.8 18L2 22Z"></path></g>
+              <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                <circle cx="9" cy="9" r="1" />
+                <circle cx="15" cy="15" r="1" />
+                <path d="M8 9a7 7 0 0 0 7 7m-9 5.2A11 11 0 1 0 2.8 18L2 22Z" />
+              </g>
             </svg>
           </a>
         </div>
@@ -520,7 +521,7 @@ export default function FloresAmarillasTemplate({ data }) {
     >
       
 
-      {audioUrl && <audio ref={audioRef} src={audioUrl} loop preload="auto" />}
+      {audioUrl && <audio ref={audioRef} src={audioUrl} loop preload="none" />}
 
       {!isUnlocked && <UnlockScreen onUnlock={handleUnlock} />}
 
