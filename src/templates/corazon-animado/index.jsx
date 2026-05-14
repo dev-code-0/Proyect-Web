@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './style.css'; 
 import Music from './music.mp3'
 import { AntiInspectGuard } from '../../lib/antiInspect';
@@ -6,11 +6,13 @@ import { AntiInspectGuard } from '../../lib/antiInspect';
 export default function CorazonMagicotemplate({data}) {
     const nombre = data?.nombre || "María";
     const music = data?.music || Music;
+    const mensajeUsuario = (data?.mensaje || "").trim();
+    const firmaUsuario = (data?.firma || "").trim();
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     const audioRef = useRef(null);
     const isLetterOpenRef = useRef(false);
-    
+
     // Estados
     const [isLetterOpen, setIsLetterOpen] = useState(false);
     const [showButton, setShowButton] = useState(false);
@@ -18,8 +20,25 @@ export default function CorazonMagicotemplate({data}) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [typedText, setTypedText] = useState("");
 
-    // Texto de la carta para el efecto de máquina de escribir
-    const fullLetterText = "Así como estas luces infinitas trazan la forma de un corazón sin detenerse jamás, así de constante es lo que siento por ti.\n\nQuería darte un detalle diferente, algo escrito con código y luz, para recordarte que eres la magia que ilumina mi universo.";
+    // Texto por defecto — siempre se escribe primero
+    const defaultLetterText = "Así como estas luces infinitas trazan la forma de un corazón sin detenerse jamás, así de constante es lo que siento por ti.\n\nQuería darte un detalle diferente, algo escrito con código y luz, para recordarte que eres la magia que ilumina mi universo.";
+
+    // Secciones del typewriter: default → mensaje usuario → firma
+    const SEP = "\n\n";
+    const rawSections = [
+        defaultLetterText,
+        mensajeUsuario || null,
+        firmaUsuario ? `— ${firmaUsuario}` : null,
+    ].filter(Boolean);
+    const fullLetterText = rawSections.join(SEP);
+
+    // Posiciones de inicio/fin de cada sección en el string completo
+    let _pos = 0;
+    const sectionBounds = rawSections.map((s, i) => {
+        const start = i === 0 ? 0 : _pos + SEP.length;
+        _pos = start + s.length;
+        return { start, end: _pos };
+    });
 
     // Retrasar la aparición del botón
     useEffect(() => {
@@ -176,16 +195,6 @@ export default function CorazonMagicotemplate({data}) {
     // ==========================================
     useEffect(() => {
         if (!canvasRef.current || !containerRef.current) return;
-
-        window.requestAnimationFrame = window.__requestAnimationFrame || window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || (function () {
-            return function (callback, element) {
-                let lastTime = element.__lastTime || 0;
-                let currTime = Date.now();
-                let timeToCall = Math.max(1, 33 - (currTime - lastTime));
-                window.setTimeout(callback, timeToCall);
-                element.__lastTime = currTime + timeToCall;
-            };
-        })();
 
         const isDevice = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(((navigator.userAgent || navigator.vendor || window.opera)).toLowerCase()));
         
@@ -431,25 +440,54 @@ export default function CorazonMagicotemplate({data}) {
         };
     }, []);
 
-    // Generadores CSS puros (Luciérnagas y Corazones)
-    const fallingHearts = Array.from({ length: 25 }).map((_, i) => (
+    // Bounds de cada sección para el render
+    const userBound = mensajeUsuario ? sectionBounds[1] : null;
+    const firmaBound = firmaUsuario ? sectionBounds[mensajeUsuario ? 2 : 1] : null;
+
+    const defaultTyped = typedText.slice(0, Math.min(typedText.length, sectionBounds[0].end));
+    const isTypingDefault = typedText.length < sectionBounds[0].end;
+
+    const userTyped = userBound && typedText.length > userBound.start
+        ? typedText.slice(userBound.start, Math.min(typedText.length, userBound.end))
+        : null;
+    const isTypingUser = userBound
+        ? typedText.length >= userBound.start && typedText.length < userBound.end
+        : false;
+
+    const firmaTyped = firmaBound && typedText.length > firmaBound.start
+        ? typedText.slice(firmaBound.start, Math.min(typedText.length, firmaBound.end))
+        : null;
+    const isTypingFirma = firmaBound
+        ? typedText.length >= firmaBound.start && typedText.length < firmaBound.end
+        : false;
+
+    const isDone = typedText.length >= fullLetterText.length && fullLetterText.length > 0;
+    const showDoneCursorInDefault = isDone && !userBound && !firmaBound;
+    const showDoneCursorInUser = isDone && !!userBound && !firmaBound;
+    const showDoneCursorInFirma = isDone && !!firmaBound;
+
+    const fallingHearts = useMemo(() => Array.from({ length: 25 }).map((_, i) => (
         <div key={`fh-${i}`} className="falling-heart" style={{
             left: `${Math.random() * 100}%`,
             animationDuration: `${Math.random() * 3 + 4}s`,
             animationDelay: `${Math.random() * 5}s`,
             fontSize: `${Math.random() * 15 + 10}px`,
             opacity: Math.random() * 0.5 + 0.3
-        }}>❤</div>
-    ));
+        }}>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em" aria-hidden="true">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+    )), []);
 
-    const fireflies = Array.from({ length: 20 }).map((_, i) => (
+    const fireflies = useMemo(() => Array.from({ length: 20 }).map((_, i) => (
         <div key={`ff-${i}`} className="firefly" style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             animationDuration: `${Math.random() * 15 + 10}s`,
             animationDelay: `${Math.random() * 10}s`
         }}></div>
-    ));
+    )), []);
 
     return (
         <AntiInspectGuard>
@@ -469,8 +507,16 @@ export default function CorazonMagicotemplate({data}) {
             {fireflies}
 
             {/* Reproductor / Botón Musical */}
-            <button className={`music-btn ${isPlaying ? 'playing' : ''}`} onClick={toggleMusic}>
-                🎵
+            <button className={`music-btn ${isPlaying ? 'playing' : ''}`} onClick={toggleMusic} aria-label={isPlaying ? 'Pausar música' : 'Reproducir música'}>
+                {isPlaying ? (
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="55%" height="55%" aria-hidden="true">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                ) : (
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="55%" height="55%" aria-hidden="true">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                )}
             </button>
 
             {/* Canvas del Corazón Matemático e Interactivo */}
@@ -489,7 +535,7 @@ export default function CorazonMagicotemplate({data}) {
 
             {/* Texto central palpitante */}
             <div className={`center-text ${isLetterOpen ? 'is-hidden' : ''}`}>
-                Para Tí, {nombre}
+                Para ti, {nombre}
             </div>
 
             {/* Botón de apertura Glassmorphism */}
@@ -509,11 +555,25 @@ export default function CorazonMagicotemplate({data}) {
                     <div className="glass-card" onClick={(e) => e.stopPropagation()}>
                         <h2 className="card-title">{nombre}</h2>
                         
-                        {/* Texto con efecto Typewriter */}
-                        <p className="card-body">
-                            {typedText}
-                            <span style={{ borderRight: '2px solid #fff', animation: 'blink 1s infinite' }}></span>
-                        </p>
+                        {/* Texto con efecto Typewriter — secciones diferenciadas */}
+                        <div className="card-body">
+                            <p className="letter-default">
+                                {defaultTyped}
+                                {(isTypingDefault || showDoneCursorInDefault) && <span className="typewriter-cursor" />}
+                            </p>
+                            {userTyped !== null && (
+                                <p className="letter-usuario">
+                                    {userTyped}
+                                    {(isTypingUser || showDoneCursorInUser) && <span className="typewriter-cursor" />}
+                                </p>
+                            )}
+                            {firmaTyped !== null && (
+                                <p className="letter-firma">
+                                    {firmaTyped}
+                                    {(isTypingFirma || showDoneCursorInFirma) && <span className="typewriter-cursor" />}
+                                </p>
+                            )}
+                        </div>
 
                         <button className="close-card-btn" onClick={handleCloseLetter}>
                             Cerrar Carta
@@ -521,12 +581,6 @@ export default function CorazonMagicotemplate({data}) {
                     </div>
                 </div>
             </div>
-
-            <style>{`
-                @keyframes blink {
-                    50% { border-color: transparent; }
-                }
-            `}</style>
 
         </div>
         </AntiInspectGuard>

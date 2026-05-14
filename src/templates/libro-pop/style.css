@@ -61,7 +61,7 @@
 }
 
 .gold-foil-lpu {
-        background: linear-gradient(to right, #bf3f3f, #fcbaba, #b32828, #fbb7b7, #aa1c1c);
+    background: linear-gradient(to right, #b8860b, #f5e07a, #d4af37, #f5e07a, #b8860b);
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
@@ -230,9 +230,17 @@
 }
 
 .cover-ornament-lpu {
-    font-size: var(--fz-h2);
-    margin: 5px 0;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    margin: 6px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+}
+
+.cover-ornament-svg-lpu {
+    width: calc(var(--book-w) * 0.48);
+    height: auto;
+    display: block;
 }
 
 .cover-subtitle-lpu {
@@ -346,6 +354,15 @@
     font-family: var(--font-text);
     pointer-events: none;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.hint-icon-lpu {
+    width: calc(var(--book-w) * 0.045);
+    height: calc(var(--book-w) * 0.045);
+    flex-shrink: 0;
 }
 
 .hint-glow-lpu {
@@ -356,6 +373,9 @@
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
     animation: pulseAnim 2s infinite;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 @keyframes pulseAnim {
@@ -518,7 +538,7 @@
     font-size: var(--fz-small);
 }
 
-/* --- BOTÃ“N DE CIERRE --- */
+/* --- BOTÓN DE CIERRE --- */
 .close-book-btn-lpu {
     position: absolute;
     top: 6px;
@@ -533,6 +553,15 @@
     z-index: 100;
     font-weight: bold;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.close-icon-lpu {
+    width: calc(var(--book-w) * 0.04);
+    height: calc(var(--book-w) * 0.04);
+    flex-shrink: 0;
 }
 
 .close-book-btn-lpu:hover {
@@ -545,14 +574,35 @@
            ======================================================== */
 .diorama-container-lpu {
     perspective: 800px;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding-bottom: 10px;
+}
+
+/* Mensaje personalizado encima de la foto — fade in con el diorama */
+.diorama-mensaje-lpu {
+    font-size: var(--fz-small);
+    color: #5c142e;
+    font-family: var(--font-text);
+    text-align: center;
+    font-style: italic;
+    line-height: 1.4;
+    padding: 4px 6px 0;
+    margin: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.8s ease 1.4s, transform 0.8s ease 1.4s;
+}
+
+.mensaje-visible-lpu {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .popup-diorama-lpu {
     position: relative;
     width: 100%;
     height: 60%;
+    margin-top: auto;
     transform-style: preserve-3d;
 }
 
@@ -698,9 +748,7 @@
 .particle-magic-lpu {
     position: absolute;
     bottom: 0;
-    color: #ff4d6d;
     font-size: var(--size);
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
     opacity: 0;
     animation: magicFloat-lpu linear forwards;
 }

@@ -30,27 +30,27 @@ export const templates = [
   },
   {
     id: "girasoles",
-    title: "Girasoles",
+    title: "Girasoles para Ti",
     image: "./images/girasoles/girasoles.svg",
   }, 
   {
     id: "hot-wheels",
-    title: "Ramo Hot Wheels",
+    title: "Sorpresa Hot Wheels",
     image: "./images/hot-wheels/hot-wheels.svg",
   },
   {
     id: "corazon-carrusel",
-    title: "Corazón Carrusel",
+    title: "Latidos de Amor",
     image: "./images/corazon-carrusel/corazon.svg",
   },
   {
     id: "corazon-animado",
-    title: "Corazón Animado",
+    title: "Corazón de Luz",
     image: "./images/corazon-animado/corazon-animado.svg",
   },
   {
     id: "libro-pop",
-    title: "Libro Pop-up", 
+    title: "Páginas de Amor",
     image: "./images/libro-pop/libro-pop.svg",
   },
   {

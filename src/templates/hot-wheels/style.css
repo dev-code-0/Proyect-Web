@@ -1,9 +1,13 @@
-﻿.regalo-virtual-container-hw {
+/* ================================================================
+   HOT WHEELS TEMPLATE — style.css
+   ================================================================ */
+
+.regalo-virtual-container-hw {
   container-type: size;
   position: relative;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #112a4c 0%, #0d0d0d 100%);
+  background: radial-gradient(ellipse at 50% 30%, #0e2a4a 0%, #0a0a0f 70%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,54 +16,82 @@
   border-radius: inherit;
   color: #fff;
   font-family: var(--font-text);
-  box-sizing: border-box;  
+  box-sizing: border-box;
+  /* Ocultar scrollbar en todos los navegadores */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.regalo-virtual-container-hw::-webkit-scrollbar {
+  display: none;
 }
 
 .regalo-virtual-container-hw * {
   box-sizing: border-box;
 }
 
+/* Raya lateral decorativa que baja periódicamente */
+.regalo-virtual-container-hw::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: -110%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, #00bfff 40%, #fff 50%, #00bfff 60%, transparent 100%);
+  box-shadow: 0 0 14px 3px rgba(0, 191, 255, 0.3);
+  animation: barraLateral 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes barraLateral {
+  0%   { top: -110%; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: 110%;  opacity: 0; }
+}
+
+/* ================================================================
+   PARTÍCULAS
+   ================================================================ */
+
 .fondo-estrellas-hw {
   position: fixed;
-  /* Esto hace que te sigan al hacer scroll hacia la carta */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
 }
 
-.particula-hw.azul-hw {
+.particula-hw {
   position: absolute;
-  bottom: -10px;
-  width: clamp(3px, 1.5cqw, 6px);
-  height: clamp(3px, 1.5cqw, 6px);
-  background: rgba(0, 150, 255, 0.4);
+  bottom: -8px;
+  background: rgba(0, 150, 255, 0.45);
   border-radius: 50%;
-  box-shadow: 0 0 10px 2px rgba(0, 150, 255, 0.2);
+  box-shadow: 0 0 8px 2px rgba(0, 150, 255, 0.2);
   animation: flotar linear infinite;
 }
 
-@keyframes flotar {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  90% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(-100cqh) scale(1.5);
-    opacity: 0;
-  }
+.particula-chica-hw   { width: clamp(2px, 0.8cqw, 4px); height: clamp(2px, 0.8cqw, 4px); }
+.particula-mediana-hw { width: clamp(3px, 1.2cqw, 5px); height: clamp(3px, 1.2cqw, 5px); }
+.particula-grande-hw  {
+  width: clamp(4px, 1.8cqw, 7px);
+  height: clamp(4px, 1.8cqw, 7px);
+  background: rgba(0, 191, 255, 0.55);
+  box-shadow: 0 0 12px 3px rgba(0, 191, 255, 0.25);
 }
+
+@keyframes flotar {
+  0%   { transform: translateY(0)       scale(1);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-100cqh) scale(1.6); opacity: 0; }
+}
+
+/* ================================================================
+   PANTALLA DE INICIO
+   — Animaciones 100% CSS: no dependen de Anime.js, siempre visibles
+   ================================================================ */
 
 .pantalla-inicio-hw {
   height: 100cqh;
@@ -68,355 +100,417 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: clamp(18px, 5cqh, 38px);
   z-index: 10;
+  padding: 20px;
+}
+
+.logo-inicio-hw {
+  width: clamp(80px, 28cqw, 150px);
+  filter: drop-shadow(0 0 18px rgba(0, 191, 255, 0.6));
+  animation:
+    entradaLogo 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both,
+    latir 3s ease-in-out 1s infinite alternate;
+}
+
+@keyframes entradaLogo {
+  from { opacity: 0; transform: translateY(-40px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
 .titulo-tocar-hw {
   font-family: var(--font-text);
-  font-size: clamp(2rem, 10cqw, 3.5rem);
+  font-size: clamp(1.5rem, 6.5cqw, 2.8rem);
   color: #00bfff;
-  text-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
-  margin-bottom: 30px;
-  animation: pulso 2s infinite alternate;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+  text-shadow: 0 0 20px rgba(0, 191, 255, 0.45);
+  text-align: center;
+  line-height: 1.25;
+  padding: 0 12px;
+  animation: entradaTexto 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
 }
 
-.svg-hw {
-  width: 80px;
-  animation: latir 1.5s ease-in-out infinite alternate;
+@keyframes entradaTexto {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-.boton-abrir-hw.azul-gradient-hw {
-  background: linear-gradient(45deg, #0056a3, #00bfff);
-  border: none;
-  padding: clamp(10px, 3cqw, 15px) clamp(20px, 8cqw, 40px);
-  font-size: clamp(1.2rem, 5cqw, 1.5rem);
-  font-family: var(--font-text);
-  font-weight: bold;
-  color: #fff;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(0, 86, 163, 0.5);
-  transition: transform 0.2s, box-shadow 0.2s;
+.boton-abrir-hw {
   display: flex;
   align-items: center;
   gap: 10px;
+  background: linear-gradient(135deg, #0056a3 0%, #00bfff 100%);
+  border: none;
+  padding: clamp(12px, 3cqh, 17px) clamp(28px, 9cqw, 50px);
+  font-size: clamp(1.05rem, 4.2cqw, 1.45rem);
+  font-family: var(--font-text);
+  font-weight: 700;
+  color: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 86, 163, 0.5);
+  transition: transform 0.18s, box-shadow 0.18s;
+  letter-spacing: 0.02em;
+  animation: entradaBoton 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.68s both;
+}
+
+@keyframes entradaBoton {
+  from { opacity: 0; transform: scale(0.75); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+.boton-abrir-hw:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(0, 86, 163, 0.65), 0 0 0 6px rgba(0, 191, 255, 0.15);
 }
 
 .boton-abrir-hw:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
-@keyframes pulso {
-  from {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-
-  to {
-    transform: scale(1.05);
-    opacity: 1;
-  }
+.icon-gift-hw {
+  width: 1.3em;
+  height: 1.3em;
+  flex-shrink: 0;
 }
 
-/* --- ESTILOS DE PALABRAS INTERACTIVAS ACTUALIZADOS --- */
+/* ================================================================
+   CONTENIDO ABIERTO
+   ================================================================ */
+
 .contenido-abierto-hw {
   width: 100%;
-  z-index: 10;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* Clave para posicionar las palabras */
   cursor: pointer;
-  /* Indica que la pantalla es interactiva */
+  z-index: 10;
 }
 
-/* --- ESTILOS DE PALABRAS INTERACTIVAS (EXPLOSIÃ“N) ACTUALIZADOS --- */
+/* Textos explosivos al clic */
 .texto-clic-interactivo-hw {
   position: absolute;
   font-family: var(--font-text);
-  color: rgba(135, 206, 250, 0.9);
-  font-size: clamp(1rem, 4cqw, 1.8rem);
-  /* Un poco mÃ¡s pequeÃ±as por la cantidad */
-  font-weight: 600;
+  color: rgba(135, 206, 250, 0.95);
+  font-size: clamp(0.8rem, 3.2cqw, 1.4rem);
+  font-weight: 700;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.7);
   z-index: 9999;
-  /* Propiedades de animaciÃ³n comunes para todas las variantes */
-  animation-duration: 2s;
+  animation-duration: 1.6s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
 
-/* Asignamos una animaciÃ³n Ãºnica a cada variante */
-.variante-0-hw {
-  animation-name: estallarArriba;
-}
+.variante-0-hw { animation-name: estallarArriba;        }
+.variante-1-hw { animation-name: estallarDiagonalIzq;   }
+.variante-2-hw { animation-name: estallarDiagonalDer;   }
+.variante-3-hw { animation-name: estallarAdelante;      }
+.variante-4-hw { animation-name: estallarAbajoDiagonal; }
 
-/* Eje Y (Arriba) */
-.variante-1-hw {
-  animation-name: estallarDiagonalIzq;
-}
-
-/* Eje X y Y (Arriba-Izquierda) */
-.variante-2-hw {
-  animation-name: estallarDiagonalDer;
-}
-
-/* Eje X y Y (Arriba-Derecha) */
-.variante-3-hw {
-  animation-name: estallarAdelante;
-}
-
-/* SimulaciÃ³n Eje Z (Se agranda mucho) */
-.variante-4-hw {
-  animation-name: estallarAbajoDiagonal;
-}
-
-/* Eje X y Y (Abajo-Izquierda) */
-
-/* --- DEFINICIÃ“N DE LAS 5 ANIMACIONES --- */
-
-/* 1. Variante 0: Movimiento principal hacia arriba (Eje Y) */
 @keyframes estallarArriba {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -130px) scale(1.5);
-    opacity: 0;
-  }
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(-50%, -150px) scale(1.6); opacity: 0; }
 }
-
-/* 2. Variante 1: Diagonal hacia arriba-izquierda (Eje X y Y) */
 @keyframes estallarDiagonalIzq {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-150px, -90px) scale(1.3);
-    opacity: 0;
-  }
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(-170px, -100px) scale(1.3); opacity: 0; }
 }
-
-/* 3. Variante 2: Diagonal hacia arriba-derecha (Eje X y Y) */
 @keyframes estallarDiagonalDer {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(110px, -90px) scale(1.3);
-    opacity: 0;
-  }
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(120px, -100px) scale(1.3); opacity: 0; }
 }
-
-/* 4. Variante 3: SimulaciÃ³n Eje Z (Viene hacia adelante, se agranda y difumina) */
 @keyframes estallarAdelante {
-  0% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-50%, -50%) scale(3.5);
-    opacity: 0;
-    filter: blur(3px);
-  }
+  0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(3.8); opacity: 0; filter: blur(4px); }
 }
-
-/* 5. Variante 4: Diagonal hacia abajo-izquierda (Eje X y Y) */
 @keyframes estallarAbajoDiagonal {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate(-130px, 60px) scale(1.2);
-    opacity: 0;
-  }
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(-140px, 80px) scale(1.2); opacity: 0; }
 }
 
-/* --- SECCIÃ“N DEL RAMO Y LEVITACIÃ“N --- */
+/* ================================================================
+   SECCIÓN DEL RAMO
+   — Imagen centrada verticalmente, indicador siempre visible
+   ================================================================ */
+
 .seccion-ramo-hw {
   height: 100cqh;
-  min-height: 400px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
   pointer-events: none;
-  /* Deja pasar los clics hacia el contenedor padre */
+  /* Padding inferior reservado para el indicador de scroll */
+  padding-bottom: clamp(44px, 9cqh, 70px);
 }
-
-.seccion-ramo-hw * {
-  pointer-events: none;
-}
-
-/* Todo es visual, no interactivo */
 
 .titulo-principal-hw {
   font-family: var(--font-text);
-  font-size: clamp(1.8rem, 9cqw, 3.5rem);
+  font-size: clamp(1.6rem, 7.5cqw, 3rem);
   color: #00bfff;
   text-align: center;
-  margin-top: 10cqh;
-  text-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
-  opacity: 0;
-  animation: aparecerTexto 2s forwards 0.5s;
+  margin-top: clamp(20px, 5cqh, 48px);
+  text-shadow: 0 0 22px rgba(0, 191, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
   line-height: 1.2;
-  padding: 0 10px;
+  padding: 0 12px;
+  flex-shrink: 0;
+  opacity: 0;
+  animation: aparecerTexto 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+
+.titulo-heart-hw {
+  width: clamp(1.2rem, 4.5cqw, 2rem);
+  height: clamp(1.2rem, 4.5cqw, 2rem);
+  color: #00bfff;
+  flex-shrink: 0;
+  animation: latir 1.8s ease-in-out infinite alternate;
 }
 
 @keyframes aparecerTexto {
-  to {
-    opacity: 1;
-    transform: translateY(10px);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
+/* Wrapper que ocupa el espacio restante y centra la imagen */
 .ramo-wrapper-hw {
+  flex: 1;
+  min-height: 0;
   position: relative;
-  bottom: 5%;
   width: 100%;
-  max-width: 600px;
+  max-width: 520px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
 }
 
-/* El wrapper que se encarga de TODO el movimiento y lleva la imagen dentro */
+/* Líneas de velocidad detrás del ramo */
+.lineas-velocidad-hw {
+  position: absolute;
+  inset: 15% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(7px, 1.8cqh, 14px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.linea-hw {
+  align-self: center;
+  height: clamp(1.5px, 0.35cqh, 2.5px);
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 191, 255, 0.55) 35%, rgba(255, 255, 255, 0.75) 50%, rgba(0, 191, 255, 0.55) 65%, transparent 100%);
+  border-radius: 4px;
+  animation: pulsarLinea 2.4s ease-in-out infinite;
+  opacity: 0;
+}
+
+.linea-hw:nth-child(1) { width: 52%; animation-duration: 2.4s; }
+.linea-hw:nth-child(2) { width: 72%; animation-duration: 2.0s; }
+.linea-hw:nth-child(3) { width: 86%; animation-duration: 1.8s; }
+.linea-hw:nth-child(4) { width: 72%; animation-duration: 2.0s; }
+.linea-hw:nth-child(5) { width: 52%; animation-duration: 2.4s; }
+
+@keyframes pulsarLinea {
+  0%, 100% { opacity: 0;    transform: scaleX(0.3); }
+  50%       { opacity: 0.65; transform: scaleX(1);  }
+}
+
+/* Imagen del ramo: tamaño máximo controlado para no tapar el indicador */
 .levitacion-wrapper-hw {
-  width: 90%;
+  width: 88%;
+  max-width: 440px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
   opacity: 0;
-  /* Combina la apariciÃ³n rÃ¡pida con la levitaciÃ³n infinita */
   animation:
-    popImage 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1s,
-    levitarInfinito 4s ease-in-out infinite 1.8s;
+    popImage 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards,
+    levitarInfinito 4s ease-in-out 1.8s infinite;
 }
 
 @keyframes popImage {
-  from {
-    opacity: 0;
-    transform: translateY(50px) scale(0.5);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0px) scale(1);
-  }
+  from { opacity: 0; transform: translateY(40px) scale(0.6); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
 }
 
 @keyframes levitarInfinito {
-  0% {
-    transform: translate(0px, 0px);
-  }
-
-  50% {
-    transform: translate(0px, -15px);
-  }
-
-  100% {
-    transform: translate(0px, 0px);
-  }
+  0%   { transform: translateY(0);     }
+  50%  { transform: translateY(-14px); }
+  100% { transform: translateY(0);     }
 }
 
 .ramo-imagen-hw {
   width: 100%;
   height: auto;
-  border-radius: 15px;
-  /* El brillo neÃ³n azul solicitado aplicado directamente a la imagen */
+  /* Altura máxima para que nunca tape el indicador */
+  max-height: clamp(220px, 52cqh, 460px);
+  object-fit: contain;
+  border-radius: 12px;
   filter:
-    drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 20px rgba(0, 191, 255, 0.7)) drop-shadow(0 0 40px rgba(0, 191, 255, 0.4));
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 22px rgba(0, 191, 255, 0.75))
+    drop-shadow(0 0 48px rgba(0, 191, 255, 0.32));
 }
 
+/* Indicador de scroll — siempre en la parte inferior de la sección */
 .indicador-scroll-hw {
   position: absolute;
-  bottom: 20px;
-  font-size: clamp(0.8rem, 4cqw, 1rem);
-  color: rgba(255, 255, 255, 0.6);
-  animation: pulso 1.5s infinite alternate;
+  bottom: clamp(10px, 2.5cqh, 20px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(0.72rem, 2.8cqw, 0.9rem);
+  color: rgba(255, 255, 255, 0.5);
+  animation: pulso 1.6s ease-in-out infinite alternate;
+  pointer-events: none;
+  letter-spacing: 0.03em;
 }
 
-/* --- SECCIÃ“N CARTA --- */
+.icon-chevron-hw {
+  width: 1em;
+  height: 1em;
+}
+
+/* ================================================================
+   SECCIÓN DE LA CARTA
+   ================================================================ */
+
 .seccion-carta-hw {
   min-height: 100cqh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 15px;
+  padding: clamp(28px, 6cqh, 56px) clamp(10px, 4cqw, 22px);
   background: transparent;
-  animation: fadeIn 1s forwards;
-  pointer-events: none;
 }
 
-.seccion-carta-hw * {
-  pointer-events: none;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.tarjeta-mensaje-hw.blue-glow-hw {
-  background: transparent;
-  border-radius: 15px;
-  padding: clamp(20px, 6cqw, 40px);
+.tarjeta-mensaje-hw {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 191, 255, 0.16);
+  border-radius: 20px;
+  padding: clamp(22px, 6cqw, 42px);
   width: 95%;
-  max-width: 500px;
-  box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
-  backdrop-filter: blur(10px);
+  max-width: 520px;
+  box-shadow:
+    0 0 40px rgba(0, 191, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+/* Cabecera de la carta */
+.carta-header-hw {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 3cqw, 16px);
+  margin-bottom: clamp(14px, 3.5cqh, 26px);
+  opacity: 0; /* animado por Anime.js */
+}
+
+.carta-logo-hw {
+  width: clamp(32px, 9cqw, 52px);
+  flex-shrink: 0;
+  animation: latir 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(0, 191, 255, 0.5));
 }
 
 .titulo-carta-hw {
   font-family: var(--font-text);
   color: #00bfff;
-  font-size: clamp(2rem, 8cqw, 2.5rem);
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 20px;
+  font-size: clamp(1.4rem, 5.5cqw, 2.1rem);
+  margin: 0;
+  text-shadow: 0 0 14px rgba(0, 191, 255, 0.38);
+  line-height: 1.2;
 }
 
-.tarjeta-mensaje-hw p {
-  line-height: 1.6;
-  font-size: clamp(0.9rem, 3.5cqw, 1.1rem);
-  margin-bottom: 15px;
-  color: #e0e0e0;
+/* Párrafos — estado inicial para Anime.js stagger */
+.carta-parrafo-hw {
+  line-height: 1.72;
+  font-size: clamp(0.9rem, 3.3cqw, 1.06rem);
+  margin-bottom: clamp(10px, 2.2cqh, 16px);
+  color: #d6e8f5;
+  opacity: 0;
 }
 
-.tarjeta-mensaje-hw .firma-hw {
-  text-align: right;
-  font-weight: bold;
+/* Divisor entre texto base y nota personal */
+.divisor-carta-hw {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.35), transparent);
+  margin: clamp(14px, 3cqh, 22px) 0;
+}
+
+.nota-personal-label-hw {
+  font-size: clamp(0.78rem, 2.8cqw, 0.9rem) !important;
+  color: rgba(0, 191, 255, 0.65) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px !important;
+}
+
+.carta-mensaje-personalizado-hw {
+  font-size: clamp(0.96rem, 3.6cqw, 1.12rem) !important;
+  white-space: pre-wrap;
+  color: #e8f4fd !important;
+  font-style: italic;
+}
+
+/* Firma */
+.firma-hw {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-weight: 700;
+  color: #00bfff !important;
+  margin-top: clamp(14px, 3cqh, 26px);
+  margin-bottom: 0 !important;
+}
+
+.firma-heart-hw {
+  width: 1.1em;
+  height: 1.1em;
   color: #00bfff;
-  margin-top: 25px;
+  flex-shrink: 0;
+  animation: latir 2s ease-in-out infinite alternate;
 }
 
+/* Detalle final */
 .detalle-final-hw {
-  margin-top: 60px;
-  margin-bottom: 50px;
+  margin-top: clamp(36px, 7cqh, 64px);
+  margin-bottom: clamp(28px, 5cqh, 48px);
+  display: flex;
+  justify-content: center;
 }
 
-.car-emoji-hw img {
-  width: clamp(9rem, 10cqw, 3rem);
+.logo-final-hw {
+  width: clamp(56px, 16cqw, 100px);
   animation: latir 3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 14px rgba(0, 191, 255, 0.48));
+  opacity: 0.82;
+}
 
+/* ================================================================
+   KEYFRAMES COMUNES
+   ================================================================ */
+
+@keyframes latir {
+  0%   { transform: scale(1);    }
+  15%  { transform: scale(1.12); }
+  30%  { transform: scale(1);    }
+  45%  { transform: scale(1.08); }
+  100% { transform: scale(1);    }
+}
+
+@keyframes pulso {
+  from { opacity: 0.38; transform: translateY(0);    }
+  to   { opacity: 0.85; transform: translateY(-4px); }
 }

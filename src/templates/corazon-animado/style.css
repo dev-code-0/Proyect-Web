@@ -26,11 +26,10 @@
                     filter: blur(12px) saturate(2);
                     opacity: 0.3;
                     transform: scale(1.15);
-                    /* ExpansiÃ³n dramÃ¡tica al abrir */
                 }
 
                 /* =======================
-                   BOTÃ“N DE MÃšSICA 
+                   BOTÓN DE MÚSICA
                    ======================= */
                 .music-btn {
                     position: absolute;
@@ -74,7 +73,7 @@
                 }
 
                 /* =======================
-                   TEXTO CENTRAL 
+                   TEXTO CENTRAL
                    ======================= */
                 .center-text {
                     position: absolute;
@@ -83,7 +82,6 @@
                     transform: translate(-50%, -50%);
                     font-family: var(--font-text);
                     font-size: clamp(2.5rem, 12cqw, 6rem);
-                    /* Escalado dinÃ¡mico con cqw */
                     color: #EAD6FF;
                     text-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.8),
@@ -131,14 +129,13 @@
                 }
 
                 /* =======================
-                   LUCIÃ‰RNAGAS (Siempre de fondo)
+                   LUCIÉRNAGAS (Siempre de fondo)
                    ======================= */
                 .firefly {
                     position: absolute;
                     width: clamp(2px, 1cqw, 4px);
                     height: clamp(2px, 1cqw, 4px);
                     background: #ffeb99;
-                    /* Dorado brillante */
                     border-radius: 50%;
                     box-shadow: 0 0 10px 2px #ffb3d9, 0 0 20px 5px #ff1a8c;
                     pointer-events: none;
@@ -170,7 +167,7 @@
                 }
 
                 /* =======================
-                   BOTÃ“N LEER CARTA 
+                   BOTÓN LEER CARTA
                    ======================= */
                 .action-btn {
                     position: absolute;
@@ -269,9 +266,9 @@
 
                 .glass-card {
                     width: 100%;
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
-                    backdrop-filter: blur(18px) saturate(130%);
-                    -webkit-backdrop-filter: blur(18px) saturate(130%);
+                    background: linear-gradient(160deg, rgba(45, 10, 70, 0.82), rgba(15, 5, 30, 0.90));
+                    backdrop-filter: blur(20px) saturate(150%);
+                    -webkit-backdrop-filter: blur(20px) saturate(150%);
                     border: 1px solid rgba(255, 255, 255, 0.25);
                     border-top: 1px solid rgba(255, 255, 255, 0.5);
                     border-left: 1px solid rgba(255, 255, 255, 0.4);
@@ -296,11 +293,12 @@
                 .glass-card::before {
                     content: '';
                     position: absolute;
-                    inset: -2px;
+                    inset: -3px;
                     border-radius: 26px;
+                    background: linear-gradient(135deg, #ff1a8c, #bd00ff, #ff1a8c);
                     z-index: -1;
-                    opacity: 0.3;
-                    filter: blur(10px);
+                    opacity: 0.35;
+                    filter: blur(14px);
                     animation: auraPulse 3s infinite alternate;
                 }
 
@@ -329,16 +327,64 @@
                 }
 
                 .card-body {
-                    font-size: clamp(0.85rem, 4cqw, 1.15rem);
-                    line-height: clamp(1.5, 3.5cqh, 1.9);
-                    color: #f8f8f8;
-                    margin-bottom: clamp(25px, 5cqh, 45px);
+                    margin-bottom: clamp(20px, 4cqh, 40px);
+                    text-align: left;
+                    min-height: clamp(120px, 30cqh, 160px);
+                    transform: translateZ(25px);
+                    display: flex;
+                    flex-direction: column;
+                    gap: clamp(10px, 2cqh, 18px);
+                }
+
+                .letter-default {
+                    font-size: clamp(0.78rem, 3.2cqw, 1rem);
+                    line-height: 1.75;
+                    color: rgba(230, 200, 255, 0.72);
+                    font-style: italic;
+                    font-weight: 300;
+                    letter-spacing: 0.3px;
+                    white-space: pre-wrap;
+                    margin: 0;
+                    padding-bottom: clamp(8px, 1.5cqh, 14px);
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                }
+
+                .letter-usuario {
+                    font-size: clamp(0.9rem, 3.8cqw, 1.12rem);
+                    line-height: 1.8;
+                    color: #ffffff;
+                    font-weight: 400;
+                    letter-spacing: 0.4px;
+                    white-space: pre-wrap;
+                    margin: 0;
+                }
+
+                .letter-firma {
+                    font-size: clamp(0.82rem, 3.2cqw, 1rem);
+                    line-height: 1.6;
+                    color: #ffb3d9;
+                    font-style: italic;
                     font-weight: 300;
                     letter-spacing: 0.5px;
-                    white-space: pre-wrap;
-                    text-align: left;
-                    min-height: clamp(120px, 30cqh, 150px);
-                    transform: translateZ(25px);
+                    text-align: right;
+                    margin: 0;
+                    margin-top: auto;
+                    text-shadow: 0 0 12px rgba(255, 26, 140, 0.5);
+                }
+
+                .typewriter-cursor {
+                    display: inline-block;
+                    width: 2px;
+                    height: 1.1em;
+                    background: #fff;
+                    margin-left: 2px;
+                    vertical-align: text-bottom;
+                    animation: cursorBlink 1s infinite;
+                }
+
+                @keyframes cursorBlink {
+                    0%, 49% { opacity: 1; }
+                    50%, 100% { opacity: 0; }
                 }
 
                 .close-card-btn {
@@ -377,8 +423,11 @@
                     position: absolute;
                     top: -50px;
                     color: #ff1a8c;
-                    text-shadow: 0 0 15px #bd00ff;
+                    filter: drop-shadow(0 0 8px #bd00ff);
                     animation: fall linear infinite;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
 
                 @keyframes fall {
