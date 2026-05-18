@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/cinzel": "^5.2.8",
     "@fontsource/dancing-script": "^5.2.8",
+    "@fontsource/outfit": "^5.2.8",
     "@fontsource/pacifico": "^5.2.7",
     "@sentry/react": "^10.52.0",
     "@supabase/supabase-js": "^2.100.0",

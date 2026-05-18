@@ -2,6 +2,26 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Pipeline de plantillas espectaculares (LEER PRIMERO)
+
+Hay **67 plantillas premium planeadas** documentadas en dos archivos. **Antes de crear cualquier plantilla nueva del pipeline, lee ambos** en este orden:
+
+1. **[DEPENDENCIAS_PROYECTOS.md](./DEPENDENCIAS_PROYECTOS.md)** — qué librerías ya están instaladas, qué falta instalar, comando único de setup, skills de Claude a usar, reglas de oro (no negociables), convenciones de import.
+2. **[PROYECTOS_PIPELINE.md](./PROYECTOS_PIPELINE.md)** — los 67 proyectos detallados con: estado, categoría, dificultad, objetivo emocional, hook visual, tech stack, librerías por proyecto, archivos a crear, pasos clave, pulido espectacular, y **Definition of Done** obligatoria.
+
+### Flujo cuando el usuario pida "crea el siguiente proyecto del pipeline"
+
+1. Abre `PROYECTOS_PIPELINE.md` y busca el **primer proyecto** cuyo `**Estado:**` siga siendo `⬜ Pendiente` siguiendo el **orden recomendado** de la §2 del pipeline (Bloque 0 → Bloque 1 → Bloque 2 → Bloque 3).
+2. Si el Bloque 0 (carpeta `src/templates/_shared/` con helpers) NO existe aún, créalo ANTES de empezar cualquier plantilla. Sin esto, todo el pipeline pierde su ventaja de reuso.
+3. Implementa el proyecto siguiendo la sección detallada §5 del pipeline. Reutiliza lo listado en "Reutiliza:". Instala SOLO las librerías de "Librerías nuevas:" si no están ya.
+4. Cumple **TODA** la "Definition of Done" §0 del pipeline antes de marcar el proyecto como completo.
+5. Al terminar, **edita la línea `**Estado:**` del proyecto** y reemplaza `⬜ Pendiente` por `✅ Creado (YYYY-MM-DD)` con la fecha real. **Actualiza también la tabla §4** del pipeline (cambiar ⬜ por ✅ en la fila correspondiente).
+6. Registra la plantilla en `src/lib/templateRegistry.jsx` y `src/lib/templates.js` como cualquier plantilla normal.
+7. NO marques como ✅ si: la plantilla no abre en `/template/{id}` o `/view/{id}`, baja de 60fps en mobile, le faltan temas, hay emojis en UI, o falla cualquier ítem de la Definition of Done.
+
+### Si te bloqueas en un proyecto del pipeline
+Marca su línea como `**Estado:** 🔒 Bloqueado: {razón concreta}` (ej. "falta modelo GLB de carrusel" o "API de astronomy-engine no soporta hora local"), y pasa al siguiente del orden recomendado. NO dejes proyectos en `🚧 En progreso` entre sesiones sin razón.
+
 ## Comandos
 
 ```bash

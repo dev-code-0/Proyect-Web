@@ -1,22 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import Song from './song.mp3';
-import { AntiInspectGuard } from '../../lib/antiInspect';
+
+const HeartSVG = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+);
+
+const SparkleSVG = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2 L14.09 9.26 L22 12 L14.09 14.74 L12 22 L9.91 14.74 L2 12 L9.91 9.26 Z"/>
+  </svg>
+);
+
+const CloseSVG = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+  </svg>
+);
 
 export default function CajaMusicalTemplate({ data }) {
-  // ==========================================
-  // DATOS Y FALLBACKS
-  // ==========================================
-  const musica = data?.musica || Song; 
+  const musica = data?.song || Song;
   const nombre = data?.nombre || "Mi Princesa";
-  const titulo = data?.titulo || "Magia para ti";
+  const titulo = data?.titulo || "Cofre Mágico";
   const mensaje = data?.mensaje || "En esta cajita de cristal guardo nuestros recuerdos más hermosos. Eres la magia que transformó mi vida en un cuento de hadas. Te amo.";
-  
- // Lógica para manejar la cantidad de fotos subidas por el usuario
+
   const getFotos = () => {
     const userFotos = data?.fotos || [];
-    
-    // Si no hay fotos, usar las de por defecto
     if (userFotos.length === 0) {
       return [
         "https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop",
@@ -25,23 +36,9 @@ export default function CajaMusicalTemplate({ data }) {
         "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=400&auto=format&fit=crop"
       ];
     }
-    
-    // Si sube 1 foto, multiplicarla por 4
-    if (userFotos.length === 1) {
-      return [userFotos[0], userFotos[0], userFotos[0], userFotos[0]];
-    }
-    
-    // Si sube 2 fotos, multiplicarlas por 2 (1,2,1,2)
-    if (userFotos.length === 2) {
-      return [userFotos[0], userFotos[1], userFotos[0], userFotos[1]];
-    }
-    
-    // Si sube 3 fotos, repetir la primera para completar 4 (1,2,3,1)
-    if (userFotos.length === 3) {
-      return [userFotos[0], userFotos[1], userFotos[2], userFotos[0]];
-    }
-    
-    // Si sube 4 o más, tomar las primeras 4
+    if (userFotos.length === 1) return [userFotos[0], userFotos[0], userFotos[0], userFotos[0]];
+    if (userFotos.length === 2) return [userFotos[0], userFotos[1], userFotos[0], userFotos[1]];
+    if (userFotos.length === 3) return [userFotos[0], userFotos[1], userFotos[2], userFotos[0]];
     return userFotos.slice(0, 4);
   };
 
@@ -52,48 +49,47 @@ export default function CajaMusicalTemplate({ data }) {
   const [typedText, setTypedText] = useState("");
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [trailDots, setTrailDots] = useState([]);
-  // ==========================================
-  // NUEVOS ESTADOS (Progreso y Modal)
-  // ==========================================
-  const [progress, setProgress] = useState(0);
-  const [isProgressing, setIsProgressing] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  
+
   const audioRef = useRef(null);
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
-  let trailIdRef = useRef(0);
+  const trailIdRef = useRef(0);
+  const animationFrameIdRef = useRef(null);
+  const trailRafRef = useRef(null);
+  const pendingDotRef = useRef(null);
+  const particles = useRef([]);
 
-  // ==========================================
-  // INTERACCIÓN, PARALLAX Y POLVO DE HADAS
-  // ==========================================
   const handleMouseMove = (e) => {
     if (!containerRef.current) return;
     const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-    
-    // Parallax
+
     if (!isOpen) {
       const x = ((e.clientX - left) / width - 0.5) * 2;
       const y = ((e.clientY - top) / height - 0.5) * 2;
       setMousePos({ x, y });
     }
 
-    // Polvo de hadas (Mouse Trail)
-    const newDot = {
+    pendingDotRef.current = {
       id: trailIdRef.current++,
       x: e.clientX - left,
       y: e.clientY - top,
       size: Math.random() * 8 + 4,
       color: ['#ffb5a7', '#fcd5ce', '#f8edeb', '#ff99c8'][Math.floor(Math.random() * 4)]
     };
-    
-    setTrailDots(prev => [...prev, newDot]);
-    
-    setTimeout(() => {
-      setTrailDots(prev => prev.filter(dot => dot.id !== newDot.id));
-    }, 1000); // El polvo desaparece después de 1 segundo
+
+    if (!trailRafRef.current) {
+      trailRafRef.current = requestAnimationFrame(() => {
+        const dot = pendingDotRef.current;
+        if (dot) {
+          setTrailDots(prev => [...prev.slice(-20), dot]);
+          setTimeout(() => setTrailDots(prev => prev.filter(d => d.id !== dot.id)), 1000);
+        }
+        pendingDotRef.current = null;
+        trailRafRef.current = null;
+      });
+    }
   };
 
   const handleMouseLeave = () => {
@@ -111,22 +107,19 @@ export default function CajaMusicalTemplate({ data }) {
   };
 
   const handleOpen = () => {
-    if (isOpen) return; 
+    if (isOpen) return;
     setIsOpen(true);
-    setMousePos({ x: 0, y: 0 }); // Centrar vista al abrir
-    
+    setMousePos({ x: 0, y: 0 });
+
     if (audioRef.current && !isPlaying) {
       audioRef.current.volume = 0.6;
       audioRef.current.play().then(() => setIsPlaying(true)).catch(e => console.log(e));
     }
 
     triggerExplosion();
-    
-    // INICIAR LA BARRA DE PROGRESO AL ABRIR LA CAJA
-    setIsProgressing(true); 
+    setTimeout(() => setShowButton(true), 1500);
   };
 
-// Efecto Máquina de Escribir (ahora se ejecuta al abrir el modal)
   useEffect(() => {
     if (isModalOpen) {
       let i = 0;
@@ -137,74 +130,10 @@ export default function CajaMusicalTemplate({ data }) {
       }, 40);
       return () => clearInterval(typingInterval);
     } else {
-      setTypedText(""); // Reinicia el texto si cierran el modal
+      setTypedText("");
     }
   }, [isModalOpen, mensaje]);
 
-  // Efecto para la Barra de Progreso
-  useEffect(() => {
-    if (isProgressing) {
-        const interval = setInterval(() => {
-            setProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setIsProgressing(false);
-                    setShowButton(true);
-                    return 100;
-                }
-                return prev + 2; // Velocidad de carga (2% cada 60ms)
-            });
-        }, 60);
-        return () => clearInterval(interval);
-    }
-  }, [isProgressing]);
-
-  // ==========================================
-  // MOTOR CANVAS: PÉTALOS, CORAZONES Y ESTRELLAS
-  // ==========================================
-  const particles = useRef([]);
-  let animationFrameId;
-
-  const triggerExplosion = () => {
-    if (!canvasRef.current || !containerRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = containerRef.current.clientWidth;
-    canvas.height = containerRef.current.clientHeight;
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height * 0.55; 
-
-    // Generar Partículas Mixtas
-    for (let i = 0; i < 120; i++) {
-      const typeRand = Math.random();
-      let pType = 'circle';
-      if (typeRand > 0.7) pType = 'petal';
-      else if (typeRand > 0.4) pType = 'heart';
-      else if (typeRand > 0.2) pType = 'star';
-
-      particles.current.push({
-        x: centerX,
-        y: centerY,
-        vx: (Math.random() - 0.5) * 25,
-        vy: (Math.random() - 1) * 22 - 6,
-        size: Math.random() * 8 + 4,
-        color: ['#ff758f', '#ffb5a7', '#ffd700', '#fff0f3'][Math.floor(Math.random() * 4)],
-        life: 1,
-        decay: Math.random() * 0.008 + 0.004,
-        type: pType,
-        rot: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.4,
-        swaySpeed: Math.random() * 0.1 + 0.05,
-        swayAmp: Math.random() * 3 + 1
-      });
-    }
-
-    animateParticles(ctx, canvas);
-  };
-
-  // Dibujo de un pétalo de rosa/sakura
   const drawPetal = (ctx, x, y, size, color, alpha, rot) => {
     ctx.save();
     ctx.translate(x, y);
@@ -262,38 +191,24 @@ export default function CajaMusicalTemplate({ data }) {
     particles.current.forEach(p => {
       if (p.life > 0) {
         activeParticles = true;
-        
-        // Física general
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.35; // Gravedad suave
+        p.vy += 0.35;
         p.rot += p.rotSpeed;
         p.life -= p.decay;
 
-        // Efecto de mecerse en el viento para pétalos
         if (p.type === 'petal') {
           p.x += Math.sin(p.life * 100 * p.swaySpeed) * p.swayAmp;
-          p.vy *= 0.96; // Los pétalos caen más lento (fricción de aire)
+          p.vy *= 0.96;
         }
 
-        // Rebote en el suelo
-        if (p.y > canvas.height - 20) {
-          p.y = canvas.height - 20;
-          p.vy *= -0.5;
-          p.vx *= 0.8;
-        }
-        if (p.x < 0 || p.x > canvas.width) {
-          p.vx *= -0.8;
-        }
+        if (p.y > canvas.height - 20) { p.y = canvas.height - 20; p.vy *= -0.5; p.vx *= 0.8; }
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -0.8;
 
-        // Dibujar según tipo
-        if (p.type === 'heart') {
-          drawHeart(ctx, p.x, p.y, p.size * 1.5, p.color, Math.max(0, p.life), p.rot);
-        } else if (p.type === 'star') {
-          drawStar(ctx, p.x, p.y, p.size * 1.2, p.color, Math.max(0, p.life), p.rot);
-        } else if (p.type === 'petal') {
-          drawPetal(ctx, p.x, p.y, p.size * 1.8, p.color, Math.max(0, p.life), p.rot);
-        } else {
+        if (p.type === 'heart') drawHeart(ctx, p.x, p.y, p.size * 1.5, p.color, Math.max(0, p.life), p.rot);
+        else if (p.type === 'star') drawStar(ctx, p.x, p.y, p.size * 1.2, p.color, Math.max(0, p.life), p.rot);
+        else if (p.type === 'petal') drawPetal(ctx, p.x, p.y, p.size * 1.8, p.color, Math.max(0, p.life), p.rot);
+        else {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
@@ -304,165 +219,76 @@ export default function CajaMusicalTemplate({ data }) {
     });
 
     if (activeParticles) {
-      animationFrameId = requestAnimationFrame(() => animateParticles(ctx, canvas));
+      animationFrameIdRef.current = requestAnimationFrame(() => animateParticles(ctx, canvas));
     }
+  };
+
+  const triggerExplosion = () => {
+    if (!canvasRef.current || !containerRef.current) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = containerRef.current.clientWidth;
+    canvas.height = containerRef.current.clientHeight;
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height * 0.55;
+
+    for (let i = 0; i < 120; i++) {
+      const typeRand = Math.random();
+      let pType = 'circle';
+      if (typeRand > 0.7) pType = 'petal';
+      else if (typeRand > 0.4) pType = 'heart';
+      else if (typeRand > 0.2) pType = 'star';
+
+      particles.current.push({
+        x: centerX, y: centerY,
+        vx: (Math.random() - 0.5) * 25,
+        vy: (Math.random() - 1) * 22 - 6,
+        size: Math.random() * 8 + 4,
+        color: ['#ff758f', '#ffb5a7', '#ffd700', '#fff0f3'][Math.floor(Math.random() * 4)],
+        life: 1,
+        decay: Math.random() * 0.008 + 0.004,
+        type: pType,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.4,
+        swaySpeed: Math.random() * 0.1 + 0.05,
+        swayAmp: Math.random() * 3 + 1
+      });
+    }
+
+    animateParticles(ctx, canvas);
   };
 
   useEffect(() => {
     return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      // Agregar esto para apagar la música si cambian de vista
-      if (audioRef.current) {
-          audioRef.current.pause();
-      }
+      if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
+      if (trailRafRef.current) cancelAnimationFrame(trailRafRef.current);
+      if (audioRef.current) audioRef.current.pause();
     };
   }, []);
 
   return (
-    <AntiInspectGuard>
-    <div 
-      className={`template-wrapper-c3d ${isOpen ? 'is-open-c3d' : ''}`} 
+    <>
+    <div
+      className={`template-wrapper-c3d ${isOpen ? 'is-open-c3d' : ''}`}
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onTouchMove={(e) => handleMouseMove(e.touches[0])}
-      style={{
-        '--mx': mousePos.x,
-        '--my': mousePos.y
-      }}
+      style={{ '--mx': mousePos.x, '--my': mousePos.y }}
     >
-      {/* ==========================================
-          NUEVA ZONA: PROGRESO, BOTÓN, MODAL Y ESTILOS CSS INCRUSTADOS
-          ========================================== */}
-      
-      {/* Estilos dinámicos inyectados directamente en el JSX */}
-      <style>
-        {`
-          /* Ocultar la caja cuando se abre (Desvanecimiento) */
-          .is-open-c3d .box-body-c3d,
-          .is-open-c3d .box-lid-c3d,
-          .is-open-c3d .box-shadow-c3d,
-          .is-open-c3d .box-aura-c3d {
-              opacity: 0 !important;
-              transition: opacity 1.5s ease 0.5s !important;
-              pointer-events: none;
-          }
-
-          /* Barra de Progreso */
-          .progress-container-c3d {
-              position: absolute;
-              bottom: 15%;
-              left: 50%;
-              transform: translateX(-50%);
-              width: 70%;
-              max-width: 400px;
-              height: 8px;
-              background: rgba(255, 255, 255, 0.1);
-              border-radius: 10px;
-              overflow: hidden;
-              z-index: 60;
-              border: 1px solid rgba(255, 255, 255, 0.2);
-          }
-
-          .progress-bar-c3d {
-              height: 100%;
-              background: linear-gradient(90deg, #ff758f, #ffb5a7);
-              box-shadow: 0 0 10px #ffb5a7;
-              transition: width 0.1s linear;
-          }
-
-          .progress-text-c3d {
-              position: absolute;
-              bottom: calc(15% + 15px);
-              left: 50%;
-              transform: translateX(-50%);
-              color: #ffb5a7;
-              font-size: 0.9rem;
-              letter-spacing: 2px;
-              z-index: 60;
-              font-weight: bold;
-              animation: pulseAlpha 1.5s infinite alternate;
-          }
-
-          /* Botones del Modal */
-          .open-modal-btn-c3d {
-              position: absolute;
-              bottom: 12%;
-              left: 50%;
-              transform: translateX(-50%);
-              padding: 12px 30px;
-              background: linear-gradient(135deg, #c9184a, #590d22);
-              color: white;
-              border: 2px solid #ffb5a7;
-              border-radius: 30px;
-              font-size: 1.1rem;
-              cursor: pointer;
-              z-index: 60;
-              box-shadow: 0 5px 20px rgba(201, 24, 74, 0.6);
-              transition: transform 0.3s, box-shadow 0.3s;
-              font-family: var(--font-text);
-              font-weight: bold;
-          }
-
-          .open-modal-btn-c3d:hover {
-              transform: translateX(-50%) scale(1.05);
-              box-shadow: 0 5px 25px rgba(201, 24, 74, 0.9);
-          }
-
-          .close-btn-c3d {
-              position: absolute;
-              top: 10px;
-              right: 15px;
-              background: transparent;
-              border: none;
-              color: #ffb5a7;
-              font-size: 1.5rem;
-              cursor: pointer;
-              font-weight: bold;
-              transition: transform 0.2s, color 0.2s;
-              z-index: 10;
-          }
-
-          .close-btn-c3d:hover {
-              transform: scale(1.2);
-              color: #fff;
-          }
-
-          /* Modificar la transición del modal original para que responda al nuevo estado */
-          .message-card-c3d {
-              transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease !important;
-          }
-
-          /* NUEVA clase para mostrar el modal */
-          .message-card-c3d.show-modal-c3d {
-              transform: translateX(-50%) translateY(0) scale(1) !important;
-              opacity: 1 !important;
-              pointer-events: auto !important;
-          }
-        `}
-      </style>
-
-      {/* BARRA DE PROGRESO */}
-      {isProgressing && (
-        <>
-            <div className="progress-text-c3d">CARGANDO MAGIA {progress}%</div>
-            <div className="progress-container-c3d">
-                <div className="progress-bar-c3d" style={{ width: `${progress}%` }}></div>
-            </div>
-        </>
-      )}
-
-      {/* BOTÓN PARA ABRIR MODAL */}
       {showButton && !isModalOpen && (
         <button className="open-modal-btn-c3d" onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}>
-            Abrir
+          Leer tu carta
         </button>
       )}
 
-      {/* MENSAJE FINAL (Carta Glassmorphism con Sello de Cera) */}
       <div className={`message-card-c3d ${isModalOpen ? 'show-modal-c3d' : ''}`}>
-        <button className="close-btn-c3d" onClick={(e) => { e.stopPropagation(); setIsModalOpen(false); }}>✖</button>
-        <div className="wax-seal-c3d">❤</div>
+        <button className="close-btn-c3d" onClick={(e) => { e.stopPropagation(); setIsModalOpen(false); }}>
+          <CloseSVG />
+        </button>
+        <div className="wax-seal-c3d"><HeartSVG /></div>
         <h2 className="rose-gold-text-c3d">Para {nombre}</h2>
         <div className="divider-c3d"></div>
         <p>
@@ -470,80 +296,56 @@ export default function CajaMusicalTemplate({ data }) {
           {isModalOpen && typedText.length < mensaje.length && <span className="cursor-c3d">|</span>}
         </p>
         <span className="signature-c3d" style={{ opacity: typedText.length === mensaje.length ? 1 : 0 }}>
-          Con todo mi amor 💖
+          Con todo mi amor
         </span>
       </div>
-      
-      {/* POLVO DE HADAS (MOUSE TRAIL) */}
+
       {trailDots.map(dot => (
-        <div 
-          key={dot.id} 
-          className="fairy-dust-c3d" 
-          style={{
-            left: dot.x,
-            top: dot.y,
-            width: dot.size,
-            height: dot.size,
-            background: dot.color,
-            boxShadow: `0 0 8px ${dot.color}`
-          }} 
+        <div
+          key={dot.id}
+          className="fairy-dust-c3d"
+          style={{ left: dot.x, top: dot.y, width: dot.size, height: dot.size, background: dot.color, boxShadow: `0 0 8px ${dot.color}` }}
         />
       ))}
 
-      {/* MÚSICA ROMÁNTICA */}
       <audio ref={audioRef} loop preload="none">
         <source src={musica} type="audio/mp3" />
       </audio>
 
-      {/* BOTÓN DE VINILO (MÚSICA) */}
       <div className={`vinyl-btn-c3d ${isPlaying ? 'spinning-c3d' : ''}`} onClick={toggleMusic}>
         <div className="vinyl-grooves-c3d"></div>
-        <div className="vinyl-label-c3d">❤</div>
+        <div className="vinyl-label-c3d"><HeartSVG /></div>
       </div>
 
-      {/* MARIPOSAS MÁGICAS CSS */}
       <div className="butterfly-c3d b-one"><div className="wing-l"></div><div className="wing-r"></div></div>
       <div className="butterfly-c3d b-two"><div className="wing-l"></div><div className="wing-r"></div></div>
 
-      {/* CANVAS PARA EFECTOS VISUALES */}
       <canvas ref={canvasRef} className="magic-canvas-c3d" />
 
-      {/* TÍTULO DE FONDO */}
       <div className="title-layer-c3d">
         <h1 className="main-title-c3d">{titulo}</h1>
         <p className="subtitle-c3d">Toca para descubrir la magia</p>
       </div>
 
-      {/* ESCENA 3D */}
       <div className="scene-c3d">
-        
-        {/* LA CAJA CON PARALLAX */}
         <div className="box-wrapper-c3d" onClick={handleOpen}>
-          
           <div className="box-aura-c3d"></div>
-
-          {/* SOMBRA EN EL SUELO */}
           <div className="box-shadow-c3d"></div>
 
-          {/* CUERPO DE LA CAJA */}
           <div className="box-body-c3d">
             <div className="side-c3d front-c3d">
               <div className="ribbon-v-c3d"></div>
-              {/* Cerradura de corazón brillante */}
-              <div className="heart-lock-c3d pulse-glow-c3d">❤</div>
+              <div className="heart-lock-c3d pulse-glow-c3d"><HeartSVG /></div>
             </div>
             <div className="side-c3d back-c3d"><div className="ribbon-v-c3d"></div></div>
             <div className="side-c3d left-c3d"><div className="ribbon-v-c3d"></div></div>
             <div className="side-c3d right-c3d"><div className="ribbon-v-c3d"></div></div>
             <div className="side-c3d bottom-c3d"></div>
-            
-            {/* Interior Mágico de la caja */}
             <div className="side-c3d inner-bottom-c3d">
               <div className="inner-glow-c3d"></div>
             </div>
           </div>
 
-          {/* TAPA DE LA CAJA (Vuela al abrir) */}
           <div className="box-lid-c3d">
             <div className="lid-side-c3d lid-top-c3d">
               <div className="ribbon-v-c3d"></div>
@@ -560,20 +362,14 @@ export default function CajaMusicalTemplate({ data }) {
             <div className="lid-side-c3d lid-right-c3d"><div className="ribbon-h-c3d"></div></div>
           </div>
 
-          {/* CARRUSEL TIPO "MÓVIL COLGANTE" CON NÚCLEO DE LUZ */}
           <div className="carousel-wrapper-c3d">
             <div className="carousel-pillar-c3d">
               <div className="pillar-top-orb-c3d"></div>
-              {/* NÚCLEO DE CRISTAL */}
-              <div className="crystal-core-c3d">✧</div>
+              <div className="crystal-core-c3d"><SparkleSVG /></div>
             </div>
             <div className="carousel-spinner-c3d">
               {fotos.map((src, index) => (
-                <div 
-                  key={index} 
-                  className="carousel-panel-c3d" 
-                  style={{ '--rotY': `${index * 90}deg` }}
-                >
+                <div key={index} className="carousel-panel-c3d" style={{ '--rotY': `${index * 90}deg` }}>
                   <div className="hanging-string-c3d"></div>
                   <div className="photo-frame-c3d">
                     <img src={src} alt={`Recuerdo ${index + 1}`} />
@@ -584,24 +380,8 @@ export default function CajaMusicalTemplate({ data }) {
           </div>
 
         </div>
-
       </div>
-
-      {/* MENSAJE FINAL (Carta Glassmorphism con Sello de Cera) */}
-      <div className="message-card-c3d">
-        <div className="wax-seal-c3d">❤</div>
-        <h2 className="rose-gold-text-c3d">Para {nombre}</h2>
-        <div className="divider-c3d"></div>
-        <p>
-          {typedText}
-          {isOpen && typedText.length < mensaje.length && <span className="cursor-c3d">|</span>}
-        </p>
-        <span className="signature-c3d" style={{ opacity: typedText.length === mensaje.length ? 1 : 0 }}>
-          Con todo mi amor 💖
-        </span>
-      </div>
-      
     </div>
-    </AntiInspectGuard>
+    </>
   );
 }

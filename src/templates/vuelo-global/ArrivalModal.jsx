@@ -26,7 +26,7 @@ export default function ArrivalModal({ data, temaColors, onClose }) {
 
   return (
     <div className={`vg-modal-backdrop${visible ? ' vg-modal-backdrop--in' : ''}`} onClick={onClose}>
-      <div className="vg-modal" onClick={e => e.stopPropagation()}>
+      <div className="vg-modal" onClick={e => e.stopPropagation()} style={{ '--vg-accent': temaColors.primary, '--vg-glow': temaColors.glow }}>
 
         {/* Heart icon */}
         <div className="vg-modal-heart" style={{ color: temaColors.primary }}>
@@ -58,7 +58,7 @@ export default function ArrivalModal({ data, temaColors, onClose }) {
         )}
 
         {/* Close */}
-        <button className="vg-modal-close" onClick={onClose} style={{ borderColor: temaColors.primary, color: temaColors.primary }}>
+        <button className="vg-modal-close" onClick={onClose}>
           Cerrar
         </button>
       </div>

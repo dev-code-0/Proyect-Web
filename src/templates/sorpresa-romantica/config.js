@@ -1,6 +1,6 @@
 export const sorpresaRomanticaConfig={
     id:'sorpresa-romantica',
-    name: 'Sorpresa Romántica',
+    name: 'Bajo el Cerezo',
     fields:[
         {name: 'nombre', label: 'Para', type:'text', placeholder: 'Ej. Su nombre de cariño', require: true},
         {name: 'fecha', label: 'Fecha especial', type:'date'},

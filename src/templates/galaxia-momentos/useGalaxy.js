@@ -150,14 +150,11 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     let mounted = true;
 
     const tema         = THEMES[data.tema] || THEMES.romantica;
-    // GalaxyScene passes displayFotos already duplicated (preview: 12, user: N*2)
     const displayFotos = Array.isArray(data.displayFotos) ? data.displayFotos : [];
-    const rawFotos     = Array.isArray(data.fotos) ? data.fotos.slice(0, 8) : [];
-    const fotos        = displayFotos.length > 0 ? displayFotos : rawFotos;
-    const PORTAL_SLOTS = Math.max(fotos.length, 1);
+    const PORTAL_SLOTS = Math.max(displayFotos.length, 1);
 
     // ── RENDERER ──────────────────────────────────────────────────────────
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: window.devicePixelRatio < 1.5 });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setClearColor(tema.bg, 1);
@@ -166,12 +163,13 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     // ── SCENE & CAMERA ────────────────────────────────────────────────────
     const scene  = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(60, container.clientWidth/container.clientHeight, 0.1, 1200);
-    camera.position.set(0, 0, 600);
+    camera.position.set(0, 22, 58);
+    camera.lookAt(0, 0, 0);
 
     // ── ORBIT CONTROLS — target always Saturn (0,0,0) ─────────────────────
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; controls.dampingFactor = 0.04;
-    controls.minDistance = 8; controls.maxDistance = 90;
+    controls.minDistance = 8; controls.maxDistance = 500;
     controls.target.set(0, 0, 0);
     controls.enabled = false;
 
@@ -207,6 +205,8 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     }));
     scene.add(wormPoints1);
     scene.add(wormPoints2);
+    wormPoints1.visible = false;
+    wormPoints2.visible = false;
 
     // ── BACKGROUND STAR FIELD ─────────────────────────────────────────────
     {
@@ -293,7 +293,7 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
       circle.position.copy(pos); circle.userData.index=i;
       portals.push(circle); scene.add(circle);
 
-      loader.load(fotos[i % fotos.length], (tex) => {
+      loader.load(displayFotos[i % displayFotos.length], (tex) => {
         if (!mounted) { tex.dispose(); return; }
         tex.minFilter=tex.magFilter=THREE.LinearFilter;
         tex.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
@@ -332,20 +332,8 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
       new THREE.Vector3(45,28,55),  new THREE.Vector3(0,22,58),
     ],false,'centripetal');
 
-    // ── AUDIO ─────────────────────────────────────────────────────────────
-    let audio=null, fadeTimer=null;
-    if (data.musica) {
-      audio=new Audio(data.musica); audio.preload='none'; audio.loop=true; audio.volume=0;
-      audio.play().catch(()=>{});
-      let vol=0;
-      fadeTimer=setInterval(()=>{
-        vol=Math.min(vol+0.016,0.78); if (audio) audio.volume=vol;
-        if (vol>=0.78) clearInterval(fadeTimer);
-      },60);
-    }
-
     // ── STATE ─────────────────────────────────────────────────────────────
-    let phase='wormhole', wormT=0, introT=0;
+    let phase='explore', wormT=0, introT=0;
 
     // ── RAYCASTER (click + hover) ─────────────────────────────────────────
     const raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2();
@@ -394,6 +382,7 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
     // ── ANIMATION LOOP ────────────────────────────────────────────────────
     const WORM_MS=3500, INTRO_MS=12000, ORBIT_SPEED=0.025, PHRASE_SPEED=0.010;
     let lastTime=performance.now(), raf;
+    const _p = new THREE.Vector3();
 
     const animate=(now)=>{
       raf=requestAnimationFrame(animate);
@@ -451,8 +440,8 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
       for (let i=0;i<portals.length;i++) {
         const {radius,baseAngle,height}=orbitData[i];
         const a=baseAngle+time*ORBIT_SPEED;
-        const p=new THREE.Vector3(radius*Math.cos(a),height+Math.sin(time*0.4+i*1.1)*0.8,radius*Math.sin(a));
-        portals[i].position.copy(p); portalRings[i].position.copy(p);
+        _p.set(radius*Math.cos(a),height+Math.sin(time*0.4+i*1.1)*0.8,radius*Math.sin(a));
+        portals[i].position.copy(_p); portalRings[i].position.copy(_p);
         portals[i].lookAt(camera.position); portalRings[i].lookAt(camera.position);
 
         const isHover = i === hoveredIdx;
@@ -498,8 +487,6 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
       window.removeEventListener('resize',handleResize);
       renderer.domElement.removeEventListener('pointerdown',handlePointerDown);
       renderer.domElement.removeEventListener('pointermove',handlePointerMove);
-      if (fadeTimer) clearInterval(fadeTimer);
-      if (audio) { audio.pause(); audio.src=''; }
       controls.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       scene.traverse((obj)=>{

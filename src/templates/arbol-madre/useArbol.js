@@ -7,10 +7,10 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
 // ─── Theme palettes ──────────────────────────────────────────────────────────
 const THEMES = {
-  cerezo: { bg: 0x0a0005, trunk: 0x8b4513, leaf: 0xff6b9d, particle: 0xffb3d1, ambient: 0x3a0a20 },
-  roble:  { bg: 0x030a00, trunk: 0x5c4a1e, leaf: 0x4ade80, particle: 0x86efac, ambient: 0x052010 },
-  otono:  { bg: 0x0a0500, trunk: 0x8b4513, leaf: 0xf97316, particle: 0xfed7aa, ambient: 0x3a1200 },
-  noche:  { bg: 0x000510, trunk: 0x374151, leaf: 0x818cf8, particle: 0xc7d2fe, ambient: 0x0a0a30 },
+  cerezo: { bg: 0x0a0005, trunk: 0x8b4513, leaf: 0xff6b9d, particle: 0xffb3d1, ambient: 0x3a0a20, nebula: 0x7a1040 },
+  roble:  { bg: 0x030a00, trunk: 0x5c4a1e, leaf: 0x4ade80, particle: 0x86efac, ambient: 0x052010, nebula: 0x0a3020 },
+  otono:  { bg: 0x0a0500, trunk: 0x8b4513, leaf: 0xf97316, particle: 0xfed7aa, ambient: 0x3a1200, nebula: 0x3a1000 },
+  noche:  { bg: 0x000510, trunk: 0x374151, leaf: 0x818cf8, particle: 0xc7d2fe, ambient: 0x0a0a30, nebula: 0x0a0a60 },
 };
 
 function easeInOutCubic(t) {
@@ -66,10 +66,9 @@ function playChime() {
 }
 
 // ─── Generate procedural tree branches ───────────────────────────────────────
-// Returns array of { start, end, radius } branch descriptors and tip positions
 function generateTree() {
   const branches = [];
-  const tipPositions = []; // { position: Vector3 }
+  const tipPositions = [];
 
   function branch(start, dir, len, radius, depth) {
     if (depth === 0 || len < 0.3) return;
@@ -95,7 +94,6 @@ function generateTree() {
     }
   }
 
-  // Trunk
   const trunkStart = new THREE.Vector3(0, 0, 0);
   const trunkDir   = new THREE.Vector3(0, 1, 0);
   branch(trunkStart, trunkDir, 5.0, 0.45, 4);
@@ -103,17 +101,17 @@ function generateTree() {
   return { branches, tipPositions };
 }
 
-// ─── Build branch mesh from descriptors ──────────────────────────────────────
+// ─── Build branch mesh ───────────────────────────────────────────────────────
 function buildBranchMesh(branches, color) {
   const group = new THREE.Group();
   const mat   = new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0.0 });
 
   branches.forEach(({ start, end, radius }) => {
-    const dir    = end.clone().sub(start);
-    const len    = dir.length();
-    const geo    = new THREE.CylinderGeometry(radius * 0.5, radius, len, 7, 1);
-    const mesh   = new THREE.Mesh(geo, mat);
-    const mid    = start.clone().lerp(end, 0.5);
+    const dir  = end.clone().sub(start);
+    const len  = dir.length();
+    const geo  = new THREE.CylinderGeometry(radius * 0.5, radius, len, 7, 1);
+    const mesh = new THREE.Mesh(geo, mat);
+    const mid  = start.clone().lerp(end, 0.5);
     mesh.position.copy(mid);
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
     group.add(mesh);
@@ -122,7 +120,7 @@ function buildBranchMesh(branches, color) {
   return group;
 }
 
-// ─── Particle texture (soft circle) ──────────────────────────────────────────
+// ─── Soft circle particle texture ────────────────────────────────────────────
 function makeParticleTexture() {
   const c   = document.createElement('canvas');
   c.width   = c.height = 64;
@@ -136,30 +134,25 @@ function makeParticleTexture() {
   return new THREE.CanvasTexture(c);
 }
 
-// ─── Canvas placeholder photo ─────────────────────────────────────────────────
+// ─── Placeholder photo texture ───────────────────────────────────────────────
 function makePlaceholderTexture(index, leafColor) {
   const size = 256;
   const c    = document.createElement('canvas');
   c.width    = c.height = size;
   const ctx  = c.getContext('2d');
-
-  const hsl  = new THREE.Color(leafColor);
-  const hex  = '#' + hsl.getHexString();
-
-  const g = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-  g.addColorStop(0,   hex + 'cc');
-  g.addColorStop(1,   '#00000088');
+  const hex  = '#' + new THREE.Color(leafColor).getHexString();
+  const g    = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, hex + 'cc');
+  g.addColorStop(1, '#00000088');
   ctx.fillStyle = g;
   ctx.beginPath();
   ctx.arc(128, 128, 128, 0, Math.PI * 2);
   ctx.fill();
-
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.font      = 'bold 64px serif';
-  ctx.textAlign = 'center';
+  ctx.fillStyle    = 'rgba(255,255,255,0.6)';
+  ctx.font         = 'bold 64px serif';
+  ctx.textAlign    = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(String(index + 1), 128, 128);
-
   return new THREE.CanvasTexture(c);
 }
 
@@ -173,8 +166,8 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     if (!container || !data) return;
     let mounted = true;
 
-    const tema    = THEMES[data.tema] || THEMES.cerezo;
-    const fotos   = Array.isArray(data.displayFotos) ? data.displayFotos : [];
+    const tema  = THEMES[data.tema] || THEMES.cerezo;
+    const fotos = Array.isArray(data.displayFotos) ? data.displayFotos : [];
 
     // ── RENDERER ──────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -187,90 +180,135 @@ export function useArbol(containerRef, data, onLeafClickRef) {
 
     // ── SCENE & CAMERA ────────────────────────────────────────────────────
     const scene  = new THREE.Scene();
-    // Warm atmospheric fog
-    scene.fog = new THREE.FogExp2(tema.bg, 0.022);
-
-    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 300);
-    camera.position.set(0, 1.5, 1); // start very close to ground
+    const camera = new THREE.PerspectiveCamera(55, container.clientWidth / container.clientHeight, 0.1, 500);
+    camera.position.set(0, 1.5, 1);
 
     // ── LIGHTS ────────────────────────────────────────────────────────────
-    const ambientLight = new THREE.AmbientLight(tema.ambient, 1.8);
-    scene.add(ambientLight);
+    scene.add(new THREE.AmbientLight(tema.ambient, 1.8));
 
     const sunLight = new THREE.DirectionalLight(0xfff5e0, 2.2);
     sunLight.position.set(12, 20, 8);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
-    sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far  = 80;
-    sunLight.shadow.camera.left = sunLight.shadow.camera.bottom = -30;
-    sunLight.shadow.camera.right = sunLight.shadow.camera.top   = 30;
+    sunLight.shadow.camera.near   = 0.5;
+    sunLight.shadow.camera.far    = 80;
+    sunLight.shadow.camera.left   = sunLight.shadow.camera.bottom = -30;
+    sunLight.shadow.camera.right  = sunLight.shadow.camera.top   = 30;
     scene.add(sunLight);
 
     const fillLight = new THREE.PointLight(tema.leaf, 1.2, 30);
     fillLight.position.set(-6, 8, 4);
     scene.add(fillLight);
 
-    // ── GROUND PLANE ──────────────────────────────────────────────────────
-    const groundCanvas = document.createElement('canvas');
-    groundCanvas.width = groundCanvas.height = 512;
-    const gctx = groundCanvas.getContext('2d');
-    const grd = gctx.createRadialGradient(256, 256, 0, 256, 256, 256);
-    grd.addColorStop(0, '#ffffff');
-    grd.addColorStop(0.7, '#444444');
-    grd.addColorStop(1, '#000000');
-    gctx.fillStyle = grd;
-    gctx.fillRect(0, 0, 512, 512);
-    const groundTex = new THREE.CanvasTexture(groundCanvas);
+    // ── STARFIELD ─────────────────────────────────────────────────────────
+    const STAR_COUNT = 2800;
+    const starPos    = new Float32Array(STAR_COUNT * 3);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const theta    = Math.random() * Math.PI * 2;
+      const phi      = Math.acos(2 * Math.random() - 1);
+      const r        = 180 + Math.random() * 80;
+      starPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i*3+2] = r * Math.cos(phi);
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.7, sizeAttenuation: true,
+      transparent: true, opacity: 0.85, depthWrite: false,
+    })));
 
-    const groundGeo  = new THREE.CircleGeometry(35, 64);
-    const groundMat  = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(tema.trunk).multiplyScalar(0.4),
-      map: groundTex,
-      roughness: 1.0, metalness: 0.0,
-      transparent: true, opacity: 0.95
-    });
-    const ground = new THREE.Mesh(groundGeo, groundMat);
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
+    // Colored star layer in theme tint
+    const CSTAR_COUNT = 600;
+    const cstarPos    = new Float32Array(CSTAR_COUNT * 3);
+    for (let i = 0; i < CSTAR_COUNT; i++) {
+      const theta     = Math.random() * Math.PI * 2;
+      const phi       = Math.acos(2 * Math.random() - 1);
+      const r         = 160 + Math.random() * 100;
+      cstarPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+      cstarPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      cstarPos[i*3+2] = r * Math.cos(phi);
+    }
+    const cstarGeo = new THREE.BufferGeometry();
+    cstarGeo.setAttribute('position', new THREE.BufferAttribute(cstarPos, 3));
+    scene.add(new THREE.Points(cstarGeo, new THREE.PointsMaterial({
+      color: tema.particle, size: 0.5, sizeAttenuation: true,
+      transparent: true, opacity: 0.6,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    })));
 
-    // Grass ring particles
-    {
-      const N   = 800;
-      const pos = new Float32Array(N * 3);
-      for (let i = 0; i < N; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = 2 + Math.random() * 22;
-        pos[i*3]   = Math.cos(a) * r;
-        pos[i*3+1] = Math.random() * 0.4;
-        pos[i*3+2] = Math.sin(a) * r;
+    // ── NEBULA CLOUDS ─────────────────────────────────────────────────────
+    const neb1 = new THREE.Mesh(
+      new THREE.SphereGeometry(140, 16, 16),
+      new THREE.MeshBasicMaterial({
+        color: tema.nebula, transparent: true, opacity: 0.09,
+        side: THREE.BackSide, depthWrite: false,
+      })
+    );
+    scene.add(neb1);
+
+    // Nebula clusters — colored star patches at different sky regions
+    [
+      { cx: -150, cy:  60, cz: -120, color: tema.leaf,    count: 280, spread: 45, size: 0.50, opacity: 0.55 },
+      { cx:  160, cy: -40, cz: -100, color: tema.particle, count: 220, spread: 35, size: 0.45, opacity: 0.45 },
+      { cx:   20, cy: 130, cz:  -80, color: tema.nebula,   count: 180, spread: 40, size: 0.40, opacity: 0.38 },
+    ].forEach(({ cx, cy, cz, color, count, spread, size, opacity }) => {
+      const pos = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const theta  = Math.random() * Math.PI * 2;
+        const phi    = Math.acos(2 * Math.random() - 1);
+        const r      = Math.pow(Math.random(), 0.5) * spread;
+        pos[i*3]     = cx + r * Math.sin(phi) * Math.cos(theta);
+        pos[i*3+1]   = cy + r * Math.sin(phi) * Math.sin(theta);
+        pos[i*3+2]   = cz + r * Math.cos(phi);
       }
-      const geo  = new THREE.BufferGeometry();
+      const geo = new THREE.BufferGeometry();
       geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
       scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
-        color: tema.leaf, size: 0.08, sizeAttenuation: true,
-        transparent: true, opacity: 0.4, depthWrite: false,
+        color, size, sizeAttenuation: true,
+        transparent: true, opacity,
+        depthWrite: false, blending: THREE.AdditiveBlending,
       })));
-    }
+    });
 
-    // ── TREE ─────────────────────────────────────────────────────────────
+    // ── GLOWING PLATFORM ──────────────────────────────────────────────────
+    const platInner = new THREE.Mesh(
+      new THREE.CircleGeometry(4, 64),
+      new THREE.MeshBasicMaterial({
+        color: tema.leaf, transparent: true, opacity: 0.18,
+        blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+      })
+    );
+    platInner.rotation.x = -Math.PI / 2;
+    platInner.position.y = 0.02;
+    scene.add(platInner);
+
+    const platOuter = new THREE.Mesh(
+      new THREE.RingGeometry(4, 13, 64),
+      new THREE.MeshBasicMaterial({
+        color: tema.particle, transparent: true, opacity: 0.07,
+        blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+      })
+    );
+    platOuter.rotation.x = -Math.PI / 2;
+    platOuter.position.y = 0.01;
+    scene.add(platOuter);
+
+    // ── TREE ──────────────────────────────────────────────────────────────
     const { branches, tipPositions } = generateTree();
     const treeGroup = new THREE.Group();
     scene.add(treeGroup);
 
-    // Branch mesh (starts at scale 0, grows to 1)
     const branchMesh = buildBranchMesh(branches, tema.trunk);
     branchMesh.traverse(c => { if (c.isMesh) { c.castShadow = true; c.receiveShadow = true; } });
     treeGroup.add(branchMesh);
 
     // ── LEAF CIRCLES (photos) ─────────────────────────────────────────────
-    const leafMeshes  = [];
-    const leafUserData = []; // { position, baseY, phase }
-    const loader       = new THREE.TextureLoader();
+    const leafMeshes = [];
+    const loader     = new THREE.TextureLoader();
     loader.crossOrigin = 'anonymous';
 
-    const LEAF_R = 0.72;
+    const LEAF_R      = 0.72;
     const leafGeoBase = new THREE.CircleGeometry(LEAF_R, 32);
 
     const actualLeafSlots = fotos.length > 0
@@ -282,7 +320,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
 
     for (let i = 0; i < Math.min(tipPositions.length, actualLeafSlots); i++) {
       const { position } = tipPositions[order[i]];
-      const baseScale = 0.8 + Math.random() * 0.4;
+      const baseScale    = 0.8 + Math.random() * 0.4;
 
       const leafGroup = new THREE.Group();
       leafGroup.position.copy(position);
@@ -293,16 +331,15 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       leafGroup.scale.setScalar(baseScale);
 
       const frameGeo = new THREE.TorusGeometry(LEAF_R + 0.03, 0.03, 16, 48);
-      const frameMat = new THREE.MeshBasicMaterial({ 
-        color: new THREE.Color(tema.leaf).lerp(new THREE.Color(0xffffff), 0.5) 
+      const frameMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(tema.leaf).lerp(new THREE.Color(0xffffff), 0.5),
       });
-      const frameMesh = new THREE.Mesh(frameGeo, frameMat);
-      leafGroup.add(frameMesh);
+      leafGroup.add(new THREE.Mesh(frameGeo, frameMat));
 
       const placeholderTex = makePlaceholderTexture(i % 8, tema.leaf);
       const mat  = new THREE.MeshBasicMaterial({
-        color: 0xcccccc, // Ligeramente oscuro para evitar que la foto brille
-        map: placeholderTex, transparent: true, opacity: 0.0,
+        color: 0xcccccc, map: placeholderTex,
+        transparent: true, opacity: 0.0,
         side: THREE.DoubleSide, depthWrite: false,
       });
       const mesh = new THREE.Mesh(leafGeoBase, mat);
@@ -329,84 +366,122 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     }
 
     // ── FILLER LEAVES ─────────────────────────────────────────────────────
-    const fillerCount = 450;
-    const fillerGeo = new THREE.CircleGeometry(0.3, 7);
-    const fillerMat = new THREE.MeshStandardMaterial({
-      color: tema.leaf,
-      roughness: 0.6,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.85
+    const fillerCount      = 450;
+    const fillerGeo        = new THREE.CircleGeometry(0.3, 7);
+    const fillerMat        = new THREE.MeshStandardMaterial({
+      color: tema.leaf, roughness: 0.6,
+      side: THREE.DoubleSide, transparent: true, opacity: 0.85,
     });
-    const fillerInstanced = new THREE.InstancedMesh(fillerGeo, fillerMat, fillerCount);
-    const dummy = new THREE.Object3D();
-    
-    // Filtrar para colocar hojas solo en las ramas más delgadas (las altas)
-    const thinBranches = branches.filter(b => b.radius < 0.2);
-    const targetBranches = thinBranches.length > 0 ? thinBranches : branches;
+    const fillerInstanced  = new THREE.InstancedMesh(fillerGeo, fillerMat, fillerCount);
+    const dummy            = new THREE.Object3D();
+    const thinBranches     = branches.filter(b => b.radius < 0.2);
+    const targetBranches   = thinBranches.length > 0 ? thinBranches : branches;
 
     for (let i = 0; i < fillerCount; i++) {
-        if (targetBranches.length === 0) break;
-        const b = targetBranches[Math.floor(Math.random() * targetBranches.length)];
-        const t = Math.random(); // punto aleatorio a lo largo de la rama
-        const pos = b.start.clone().lerp(b.end, t);
-        
-        // Offset esférico pequeño para que rodeen la rama
-        const offsetR = 0.1 + Math.random() * 0.7; 
-        const randDir = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
-        pos.add(randDir.multiplyScalar(offsetR));
-
-        dummy.position.copy(pos);
-        dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-        dummy.scale.setScalar(0.3 + Math.random()*0.5);
-        dummy.updateMatrix();
-        fillerInstanced.setMatrixAt(i, dummy.matrix);
+      if (targetBranches.length === 0) break;
+      const b      = targetBranches[Math.floor(Math.random() * targetBranches.length)];
+      const t      = Math.random();
+      const pos    = b.start.clone().lerp(b.end, t);
+      const offsetR = 0.1 + Math.random() * 0.7;
+      const randDir = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+      pos.add(randDir.multiplyScalar(offsetR));
+      dummy.position.copy(pos);
+      dummy.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
+      dummy.scale.setScalar(0.3 + Math.random()*0.5);
+      dummy.updateMatrix();
+      fillerInstanced.setMatrixAt(i, dummy.matrix);
     }
     treeGroup.add(fillerInstanced);
 
-    // ── FLOATING PARTICLES ────────────────────────────────────────────────
-    const PART_COUNT  = 320;
-    const partTex     = makeParticleTexture();
-    const partPos     = new Float32Array(PART_COUNT * 3);
-    const partVel     = new Float32Array(PART_COUNT * 3); // x drift, y rise, z drift
-    for (let i = 0; i < PART_COUNT; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = Math.random() * 7;
-      partPos[i*3]   = Math.cos(a) * r;
-      partPos[i*3+1] = Math.random() * 12;
-      partPos[i*3+2] = Math.sin(a) * r;
-      partVel[i*3]   = (Math.random() - 0.5) * 0.008;
-      partVel[i*3+1] = 0.012 + Math.random() * 0.018;
-      partVel[i*3+2] = (Math.random() - 0.5) * 0.008;
+    // ── AURORA RINGS ──────────────────────────────────────────────────────
+    const auroraRings = [];
+    [
+      { r: 5.5, tube: 0.06, color: tema.leaf,    opacity: 0.45, speed:  0.004, y: 2.5, rx: Math.PI/2 + 0.10, rz: 0.0 },
+      { r: 8.0, tube: 0.04, color: tema.particle, opacity: 0.28, speed: -0.003, y: 3.2, rx: Math.PI/2 - 0.15, rz: 1.0 },
+      { r: 11,  tube: 0.03, color: tema.leaf,    opacity: 0.16, speed:  0.002, y: 4.0, rx: Math.PI/2 + 0.05, rz: 2.2 },
+    ].forEach(({ r, tube, color, opacity, speed, y, rx, rz }) => {
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(r, tube, 10, 80),
+        new THREE.MeshBasicMaterial({
+          color, transparent: true, opacity,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+        })
+      );
+      ring.rotation.x     = rx;
+      ring.rotation.z     = rz;
+      ring.position.y     = y;
+      ring.userData.speed = speed;
+      scene.add(ring);
+      auroraRings.push(ring);
+    });
+
+    // ── PARTICLES ─────────────────────────────────────────────────────────
+    const partTex = makeParticleTexture();
+
+    // Dust — slow rising stardust around the tree
+    const DUST_COUNT = 500;
+    const dustPos    = new Float32Array(DUST_COUNT * 3);
+    const dustVel    = new Float32Array(DUST_COUNT * 3);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const a        = Math.random() * Math.PI * 2;
+      const r        = 0.5 + Math.random() * 8;
+      dustPos[i*3]   = Math.cos(a) * r;
+      dustPos[i*3+1] = Math.random() * 14;
+      dustPos[i*3+2] = Math.sin(a) * r;
+      dustVel[i*3]   = (Math.random() - 0.5) * 0.007;
+      dustVel[i*3+1] = 0.008 + Math.random() * 0.012;
+      dustVel[i*3+2] = (Math.random() - 0.5) * 0.007;
     }
-    const partGeo = new THREE.BufferGeometry();
-    partGeo.setAttribute('position', new THREE.BufferAttribute(partPos, 3));
-    const partMesh = new THREE.Points(partGeo, new THREE.PointsMaterial({
+    const dustGeo  = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+    const dustMesh = new THREE.Points(dustGeo, new THREE.PointsMaterial({
       color: tema.particle, size: 0.18, sizeAttenuation: true,
-      map: partTex, transparent: true, opacity: 0.75,
+      map: partTex, transparent: true, opacity: 0.65,
       depthWrite: false, blending: THREE.AdditiveBlending,
     }));
-    scene.add(partMesh);
+    scene.add(dustMesh);
+
+    // Sparks — bright white particles falling from the canopy
+    const SPARK_COUNT = 200;
+    const sparkPos    = new Float32Array(SPARK_COUNT * 3);
+    const sparkVel    = new Float32Array(SPARK_COUNT * 3);
+    for (let i = 0; i < SPARK_COUNT; i++) {
+      const a         = Math.random() * Math.PI * 2;
+      const r         = Math.random() * 3.5;
+      sparkPos[i*3]   = Math.cos(a) * r;
+      sparkPos[i*3+1] = 7 + Math.random() * 5;
+      sparkPos[i*3+2] = Math.sin(a) * r;
+      sparkVel[i*3]   = (Math.random() - 0.5) * 0.016;
+      sparkVel[i*3+1] = -(0.014 + Math.random() * 0.022);
+      sparkVel[i*3+2] = (Math.random() - 0.5) * 0.016;
+    }
+    const sparkGeo  = new THREE.BufferGeometry();
+    sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+    const sparkMesh = new THREE.Points(sparkGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.10, sizeAttenuation: true,
+      map: partTex, transparent: true, opacity: 0.9,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    scene.add(sparkMesh);
 
     // ── ORBIT CONTROLS ────────────────────────────────────────────────────
     const controls         = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance   = 4;
-    controls.maxDistance   = 36;
+    controls.maxDistance   = Infinity;
     controls.maxPolarAngle = Math.PI * 0.82;
     controls.target.set(0, 4, 0);
     controls.enabled       = false;
 
     // ── CAMERA INTRO CURVE ────────────────────────────────────────────────
-    // Starts ground-level near trunk, sweeps up and back to see full tree
     const introCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0,   1.5,  1   ),
-      new THREE.Vector3(3,   2,    3   ),
-      new THREE.Vector3(8,   5,    10  ),
-      new THREE.Vector3(12,  9,    14  ),
-      new THREE.Vector3(10,  12,   16  ),
-      new THREE.Vector3(0,   14,   18  ),
+      new THREE.Vector3(0,   1.5,  1  ),
+      new THREE.Vector3(3,   2,    3  ),
+      new THREE.Vector3(8,   5,    10 ),
+      new THREE.Vector3(12,  9,    14 ),
+      new THREE.Vector3(10,  12,   16 ),
+      new THREE.Vector3(0,   17,   28 ),
     ], false, 'centripetal');
 
     // ── AUDIO ─────────────────────────────────────────────────────────────
@@ -414,8 +489,8 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     if (data.musica) {
       audio = new Audio(data.musica);
       audio.preload = 'none';
-      audio.loop   = true;
-      audio.volume = 0;
+      audio.loop    = true;
+      audio.volume  = 0;
       audio.play().catch(() => {});
       let vol = 0;
       fadeTimer = setInterval(() => {
@@ -457,7 +532,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       if (phase !== 'explore') { hoveredIdx = -1; return; }
       updatePointer(e);
       raycaster.setFromCamera(pointer, camera);
-      const hits    = raycaster.intersectObjects(leafMeshes, true);
+      const hits = raycaster.intersectObjects(leafMeshes, true);
       let newHov = -1;
       if (hits.length > 0) {
         let obj = hits[0].object;
@@ -475,10 +550,11 @@ export function useArbol(containerRef, data, onLeafClickRef) {
 
     // ── POST-PROCESSING (BLOOM) ───────────────────────────────────────────
     const renderScene = new RenderPass(scene, camera);
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 1.5, 0.4, 0.85);
-    bloomPass.threshold = 0.85; // Alto umbral para que solo brille lo muy claro (el marco)
-    bloomPass.strength = 1.2; 
-    bloomPass.radius = 0.6;
+    // UnrealBloomPass(resolution, strength, radius, threshold)
+    const bloomPass   = new UnrealBloomPass(
+      new THREE.Vector2(container.clientWidth, container.clientHeight),
+      1.8, 0.5, 0.70,
+    );
     const composer = new EffectComposer(renderer);
     composer.addPass(renderScene);
     composer.addPass(bloomPass);
@@ -494,7 +570,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
     window.addEventListener('resize', handleResize);
 
     // ── STATE ─────────────────────────────────────────────────────────────
-    let phase  = 'grow';   // grow → intro → explore
+    let phase  = 'grow';
     let growT  = 0;
     let introT = 0;
     const GROW_MS  = 4000;
@@ -514,9 +590,9 @@ export function useArbol(containerRef, data, onLeafClickRef) {
 
     // ── ANIMATION LOOP ────────────────────────────────────────────────────
     const animate = (now) => {
-      raf = requestAnimationFrame(animate);
-      const dt   = Math.min(now - lastTime, 50);
-      lastTime   = now;
+      raf      = requestAnimationFrame(animate);
+      const dt = Math.min(now - lastTime, 50);
+      lastTime = now;
       const time = now / 1000;
 
       if (replayRef.current) {
@@ -529,17 +605,12 @@ export function useArbol(containerRef, data, onLeafClickRef) {
         growT = Math.min(growT + dt / GROW_MS, 1);
         const s = easeInOutCubic(growT);
         treeGroup.scale.setScalar(Math.max(s, 0.001));
-        camera.position.set(
-          lerpN(0, 6, s),
-          lerpN(1.5, 5, s),
-          lerpN(1, 8, s),
-        );
+        camera.position.set(lerpN(0, 6, s), lerpN(1.5, 5, s), lerpN(1, 8, s));
         camera.lookAt(0, 3 * s, 0);
 
-        // Fade-in leaves as tree grows
         leafMeshes.forEach(grp => {
           grp.children.forEach(c => {
-            if (c.material && c.material.transparent) {
+            if (c.material?.transparent) {
               c.material.opacity = Math.min(c.material.opacity + 0.008, s * 0.9 + 0.1);
             }
           });
@@ -551,8 +622,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       // ── INTRO PHASE ───────────────────────────────────────────────────
       if (phase === 'intro') {
         introT = Math.min(introT + dt / INTRO_MS, 1);
-        const pt = introCurve.getPoint(easeInOutCubic(introT));
-        camera.position.copy(pt);
+        camera.position.copy(introCurve.getPoint(easeInOutCubic(introT)));
         camera.lookAt(0, 5, 0);
         if (introT >= 1) {
           phase = 'explore';
@@ -564,44 +634,59 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       // ── EXPLORE PHASE ─────────────────────────────────────────────────
       if (phase === 'explore') controls.update();
 
-      // ── PARTICLES ─────────────────────────────────────────────────────
-      for (let i = 0; i < PART_COUNT; i++) {
-        partPos[i*3]   += partVel[i*3];
-        partPos[i*3+1] += partVel[i*3+1];
-        partPos[i*3+2] += partVel[i*3+2];
-        // Reset when particle drifts too high or too far
-        if (partPos[i*3+1] > 14 || Math.abs(partPos[i*3]) > 9 || Math.abs(partPos[i*3+2]) > 9) {
-          const a = Math.random() * Math.PI * 2;
-          const r = 1 + Math.random() * 5;
-          partPos[i*3]   = Math.cos(a) * r;
-          partPos[i*3+1] = 0.5 + Math.random() * 2;
-          partPos[i*3+2] = Math.sin(a) * r;
+      // ── AURORA RINGS ──────────────────────────────────────────────────
+      auroraRings.forEach(ring => { ring.rotation.z += ring.userData.speed; });
+
+      // ── NEBULA DRIFT ──────────────────────────────────────────────────
+      neb1.rotation.y = time * 0.015;
+
+      // ── DUST PARTICLES ────────────────────────────────────────────────
+      for (let i = 0; i < DUST_COUNT; i++) {
+        dustPos[i*3]   += dustVel[i*3];
+        dustPos[i*3+1] += dustVel[i*3+1];
+        dustPos[i*3+2] += dustVel[i*3+2];
+        if (dustPos[i*3+1] > 15 || Math.abs(dustPos[i*3]) > 10 || Math.abs(dustPos[i*3+2]) > 10) {
+          const a        = Math.random() * Math.PI * 2;
+          const r        = 1 + Math.random() * 6;
+          dustPos[i*3]   = Math.cos(a) * r;
+          dustPos[i*3+1] = Math.random() * 2;
+          dustPos[i*3+2] = Math.sin(a) * r;
         }
       }
-      partGeo.attributes.position.needsUpdate = true;
+      dustGeo.attributes.position.needsUpdate = true;
+
+      // ── SPARK PARTICLES ───────────────────────────────────────────────
+      for (let i = 0; i < SPARK_COUNT; i++) {
+        sparkPos[i*3]   += sparkVel[i*3];
+        sparkPos[i*3+1] += sparkVel[i*3+1];
+        sparkPos[i*3+2] += sparkVel[i*3+2];
+        if (sparkPos[i*3+1] < 0 || Math.abs(sparkPos[i*3]) > 6 || Math.abs(sparkPos[i*3+2]) > 6) {
+          const a         = Math.random() * Math.PI * 2;
+          const r         = Math.random() * 3.5;
+          sparkPos[i*3]   = Math.cos(a) * r;
+          sparkPos[i*3+1] = 7 + Math.random() * 5;
+          sparkPos[i*3+2] = Math.sin(a) * r;
+        }
+      }
+      sparkGeo.attributes.position.needsUpdate = true;
 
       // ── LEAF FLOAT & HOVER ────────────────────────────────────────────
       leafMeshes.forEach((grp, i) => {
-        const bp   = grp.userData.basePos;
-        const ph   = grp.userData.phase;
-        const bs   = grp.userData.baseScale;
-        
+        const bp = grp.userData.basePos;
+        const ph = grp.userData.phase;
+        const bs = grp.userData.baseScale;
         grp.position.set(
           bp.x + Math.sin(time * 0.5 + ph) * 0.15,
           bp.y + Math.sin(time * 0.4 + ph + 1) * 0.1,
           bp.z + Math.cos(time * 0.45 + ph) * 0.12,
         );
         grp.lookAt(camera.position);
-        
         grp.rotation.z += Math.sin(time * 0.8 + ph) * 0.05;
 
-        const isHover     = i === hoveredIdx;
-        const targetScale = isHover ? bs * 1.25 : bs;
-        const cur         = grp.scale.x;
-        grp.scale.setScalar(cur + (targetScale - cur) * 0.15);
+        const targetScale = i === hoveredIdx ? bs * 1.25 : bs;
+        grp.scale.setScalar(grp.scale.x + (targetScale - grp.scale.x) * 0.15);
       });
 
-      // Slow tree sway
       treeGroup.rotation.z = Math.sin(time * 0.18) * 0.012;
 
       composer.render();

@@ -55,12 +55,12 @@ export const templates = [
   },
   {
     id: "caja-musical",
-    title: "Caja Musical",
+    title: "Cofre Mágico",
     image: "./images/caja-musical/caja-musical.svg",
   },
   {
     id: "corazon-mensaje",
-    title: "Corazón Mensaje",
+    title: "Fuegos de Amor",
     image: "./images/corazon-mensaje/corazon-mensaje.svg",
   },
   {
@@ -70,12 +70,12 @@ export const templates = [
   },
   {
     id: "app-recuerdos",
-    title: "App Recuerdos",
+    title: "Cofre de Recuerdos",
     image: "./images/app-recuerdos/app-recuerdos.svg",
   },
   {
     id: "sorpresa-romantica",
-    title: "Sorpresa Romántica",
+    title: "Bajo el Cerezo",
     image: "./images/sorpresa-romantica/sorpresa-romantica.svg",
   },
   {
@@ -85,17 +85,17 @@ export const templates = [
   },
   {
     id: "vuelo-global",
-    title: "Vuelo Global",
+    title: "Encuentro Mágico",
     image: "./images/vuelo-global/preview.svg",
   },
   {
     id: "arbol-madre",
-    title: "Árbol de Momentos — Mamá",
+    title: "Árbol de Momentos",
     image: "./images/arbol-madre/preview.svg",
   },
   {
     id: "jardin-madre",
-    title: "Jardín de Recuerdos — Mamá",
+    title: "Jardín de Recuerdos",
     image: "./images/jardin-madre/preview.svg",
   },
 ];

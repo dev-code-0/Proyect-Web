@@ -374,7 +374,53 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
+/* ─── Overlay nav (prev / counter / next) ────────────────────────────── */
+.gm-overlay-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gm-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.gm-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--gm-glow, rgba(255, 107, 157, 0.6));
+  color: #fff;
+}
+
+.gm-overlay-counter {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  min-width: 48px;
+  text-align: center;
+}
+
 /* ─── Keyframes ───────────────────────────────────────────────────────── */
+@keyframes gm-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.gm-splash--out {
+  animation: gm-fade-out 0.5s ease forwards;
+  pointer-events: none;
+}
+
 @keyframes gm-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }

@@ -1,6 +1,6 @@
 export const cajaMusicalConfig = {
   id: "caja-musical",
-  name: "Caja Musical",
+  name: "Cofre Mágico",
   fields:[
     {name: 'titulo', label: 'Título', type:'text', placeholder: 'Ej. Magia para ti'},
     {name: 'nombre', label: 'Para', type:'text', placeholder: 'Ej. Mi Princesa'},

@@ -52,15 +52,15 @@ const TEMA_GLOW = {
 
 // ─── Photo overlay titles & messages ─────────────────────────────────────────
 const PHOTO_TITLES = [
-  'Tu Amor', 'Mi Raíz', 'Tu Fuerza', 'Siempre Mamá',
+  'Tu Amor', 'Mi Raíz', 'Tu Fuerza', 'Siempre Contigo',
   'Tu Abrazo', 'Mi Hogar', 'Tu Sonrisa', 'Mi Todo',
 ];
 
 const PHOTO_MESSAGES = [
   'Tu amor ha sido el suelo fértil donde crecí. Gracias por darme raíces fuertes y alas para volar.',
-  'Como el árbol que nace de una semilla, yo nací de tu amor. Todo lo que soy te lo debo a ti.',
+  'Cada historia que compartimos es una rama más de este árbol. Gracias por ser parte de mi vida de una manera tan especial.',
   'En cada momento difícil, tu fuerza fue mi refugio. Eres la persona más valiente que conozco.',
-  'No importa el tiempo que pase, siempre serás mi mamá, mi guía, mi luz favorita en este mundo.',
+  'No importa el tiempo ni la distancia, siempre serás mi guía y mi luz favorita en este mundo.',
   'Tu abrazo es el lugar más seguro del universo. Ahí todo duele menos y todo tiene sentido.',
   'Donde tú estás, ahí está mi hogar. Gracias por construir un nido lleno de amor para mí.',
   'Tu sonrisa ilumina cualquier habitación. Espero que hoy sea el día que más hayas sonreído.',

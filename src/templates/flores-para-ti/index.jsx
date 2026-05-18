@@ -3,15 +3,20 @@ import Musica from './sound.mp3';
 import { AntiInspectGuard } from '../../lib/antiInspect';
 import './style.css'
 
-export default function FloresParaTiTemplate({ data }) {
+export default function FloresParaTiTemplate({ data, isPreview }) {
     const titulo = data?.titulo || "Flores Para Ti";
-    const musica = Musica;
+    const para = data?.para || "";
+    const mensaje = data?.mensaje || "Que cada flor te recuerde lo mucho que significas. Con todo mi cariño.";
+    const nombreCancion = data?.nombreCancion || "Feliz Día";
+    const musica = data?.audioUrl || Musica;
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState("0:00");
     const [duration, setDuration] = useState("0:00");
+    const [isEntered, setIsEntered] = useState(false);
+    const [overlayMounted, setOverlayMounted] = useState(!isPreview);
 
     const containerRef = useRef(null); // Ref principal para calcular el tamaño real de la web
     const particleContainerRef = useRef(null);
@@ -19,24 +24,27 @@ export default function FloresParaTiTemplate({ data }) {
     const audioRef = useRef(null);
     const progressBarRef = useRef(null);
 
-    // Initial load animation
+    // En preview, las animaciones arrancan solas después de 1s (no hay gate)
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoaded(true);
-        }, 1000);
+        if (!isPreview) return;
+        const timer = setTimeout(() => setIsLoaded(true), 1000);
         return () => clearTimeout(timer);
-    }, []);
+    }, [isPreview]);
 
     // Animation Loop
     useEffect(() => {
+        if (isPreview) return;
         let animationFrameId;
         let lastParticleTime = 0;
         let lastFlowerTime = 0;
         const particleInterval = 100;
         const flowerInterval = 250;
+        const MAX_PARTICLES = 40;
+        const MAX_FLOWERS = 15;
 
         const createParticle = (x, y) => {
             if (!particleContainerRef.current) return;
+            if (particleContainerRef.current.children.length >= MAX_PARTICLES) return;
             const particle = document.createElement('div');
             particle.className = 'particle-fpt';
             const size = Math.random() * 6 + 2;
@@ -49,6 +57,7 @@ export default function FloresParaTiTemplate({ data }) {
 
         const createFallingFlower = () => {
             if (!fallingContainerRef.current) return;
+            if (fallingContainerRef.current.children.length >= MAX_FLOWERS) return;
             const flowerWrapper = document.createElement('div');
             flowerWrapper.className = 'falling-flower-wrapper-fpt';
             const flower = document.createElement('div');
@@ -95,7 +104,16 @@ export default function FloresParaTiTemplate({ data }) {
 
         animationFrameId = requestAnimationFrame(animationLoop);
         return () => cancelAnimationFrame(animationFrameId);
-    }, []);
+    }, [isPreview]);
+
+    const handleEnter = () => {
+        setIsEntered(true);
+        setIsLoaded(true);
+        audioRef.current?.play()
+            .then(() => setIsPlaying(true))
+            .catch(() => {});
+        setTimeout(() => setOverlayMounted(false), 750);
+    };
 
     // Music Player Logic
     const formatTime = (seconds) => {
@@ -137,6 +155,22 @@ export default function FloresParaTiTemplate({ data }) {
     return (
         <AntiInspectGuard>
         <div className={`body-fpt ${!isLoaded ? 'not-loaded-fpt' : ''}`} ref={containerRef}>
+
+            {overlayMounted && (
+                <div className={`entry-overlay-fpt${isEntered ? ' exiting-fpt' : ''}`}>
+                    <div className="entry-content-fpt">
+                        <svg className="entry-flower-fpt" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#FFD700" d="M50 0 L58.7 34.5 L90.5 25 L65.5 41.3 L99 61.8 L61.8 61.8 L75 90.5 L50 67 L25 90.5 L38.2 61.8 L1 61.8 L34.5 41.3 L9.5 25 L41.3 34.5 Z"/>
+                            <circle cx="50" cy="50" r="20" fill="#654321"/>
+                        </svg>
+                        <p className="entry-label-fpt">Alguien te envió algo especial</p>
+                        <button className="entry-btn-fpt" onClick={handleEnter}>
+                            Ver tu regalo
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div id="falling-flower-container-fpt" ref={fallingContainerRef}></div>
             <div id="particle-container-fpt" ref={particleContainerRef}></div>
             <h1 className="love-title-fpt">{titulo}</h1>
@@ -150,7 +184,7 @@ export default function FloresParaTiTemplate({ data }) {
                     )}
                 </button>
                 <div className="progress-container-fpt">
-                    <div className="song-info-fpt">Feliz Día 🌻</div>
+                    <div className="song-info-fpt">{nombreCancion}</div>
                     <div className="progress-bar-fpt" id="progressBar-fpt" ref={progressBarRef} onClick={handleProgressClick}>
                         <div className="progress-fill-fpt" id="progressFill-fpt" style={{ width: `${progress}%` }}></div>
                     </div>
@@ -315,7 +349,12 @@ export default function FloresParaTiTemplate({ data }) {
                 <div className="growing-grass-fpt"><div className="flower__grass-fpt flower__grass--10-fpt"><div className="flower__grass--top-fpt"></div><div className="flower__grass--bottom-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--1-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--2-fpt"></div><div className="flower__grass__leaf-fpt flower__grass__leaf--3-fpt"></div><div className="flower__grass__overlay-fpt"></div></div></div>
             </div>
 
-            <audio id="audioPlayer-fpt" ref={audioRef} loop preload="none" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata}>
+            <div className={`message-panel-fpt${isLoaded ? ' loaded-fpt' : ''}`}>
+                {para && <p className="message-para-fpt">Para: {para}</p>}
+                <p className="message-text-fpt">{mensaje}</p>
+            </div>
+
+            <audio id="audioPlayer-fpt" ref={audioRef} loop preload="auto" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata}>
                 <source src={musica} type="audio/mpeg" />
             </audio>
 

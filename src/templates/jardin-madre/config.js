@@ -1,26 +1,32 @@
 export const jardinMadreConfig = {
   id: 'jardin-madre',
-  name: 'Jardín de Recuerdos — Mamá',
+  name: 'Jardín de Recuerdos',
   fields: [
     {
       name: 'titulo',
       label: 'Nombre del jardín',
       type: 'text',
-      placeholder: 'Ej. El Jardín de Mamá',
+      placeholder: 'Ej. El Jardín de Ana',
       defaultValue: 'Jardín de Recuerdos',
     },
     {
       name: 'mensaje',
-      label: 'Mensaje para mamá',
+      label: 'Mensaje especial',
       type: 'textarea',
       placeholder: 'Escribe un mensaje especial...',
       maxLength: 300,
     },
     {
-      name: 'para',
-      label: 'Para (nombre de mamá)',
+      name: 'de',
+      label: 'De (tu nombre)',
       type: 'text',
-      placeholder: 'Ej. Mamá',
+      placeholder: 'Ej. Tu nombre',
+    },
+    {
+      name: 'para',
+      label: 'Para (nombre de la persona)',
+      type: 'text',
+      placeholder: 'Ej. Ana, mi amor, la familia...',
     },
     {
       name: 'fotos',

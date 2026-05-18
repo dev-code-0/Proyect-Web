@@ -5,8 +5,51 @@
   width: 100%;
   height: 520px;
   overflow: hidden;
-  background: #000510;
+  background: radial-gradient(circle at 50% 50%, #0a0e29 0%, #03020a 60%, #000000 100%);
   border-radius: 12px;
+}
+
+/* ── Estrellas Animadas (Parallax) ───────────────────── */
+.vg-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 10% 20%, white 100%, transparent),
+    radial-gradient(2px 2px at 40% 60%, rgba(255, 255, 255, 0.8) 100%, transparent),
+    radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.5) 100%, transparent),
+    radial-gradient(2.5px 2.5px at 70% 80%, white 100%, transparent),
+    radial-gradient(1px 1px at 30% 90%, rgba(255, 255, 255, 0.9) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 90% 40%, rgba(255, 255, 255, 0.6) 100%, transparent);
+  background-size: 200px 200px, 350px 350px, 150px 150px, 250px 250px, 300px 300px, 180px 180px;
+  animation: vg-stars-up 120s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes vg-stars-up {
+  0% {
+    background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+  }
+  100% {
+    /* Multiplos exactos de los tamaños para un loop infinito perfecto */
+    background-position: 0px -2000px, 0px -3500px, 0px -1500px, 0px -2500px, 0px -3000px, 0px -1800px;
+  }
+}
+
+/* ── Nebulosa Dinámica por Tema ──────────────────────── */
+.vg-root::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, var(--vg-glow) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, var(--vg-accent) 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, var(--vg-glow) 0%, transparent 30%);
+  opacity: 0.18;
+  z-index: -10;
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 /* ── View mode: pantalla completa ────────────────────── */
@@ -19,21 +62,95 @@
   z-index: 9999;
 }
 
-/* ── Pines de Origen y Destino ───────────────────────── */
-.vg-pin {
-  width: 24px;
-  height: 24px;
-  background: rgba(0, 0, 0, 0.7);
-  border: 2px solid white;
-  border-radius: 50%;
+/* ── Pantalla de Inicio ──────────────────────────────── */
+.vg-start-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 6, 15, 0.95);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: white;
-  font-weight: bold;
-  font-size: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.vg-start-icon {
+  margin-bottom: 24px;
+}
+
+.vg-start-subtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #8a8d9b;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.vg-start-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: white;
+}
+
+.vg-start-route {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  transform: translateY(12px); /* anchor bottom offset */
+  font-size: 0.8rem;
+  color: #7b7e8c;
+  margin-bottom: 35px;
+  max-width: 90%;
+  flex-wrap: wrap;
+  line-height: 1.5;
+}
+
+.vg-btn-start {
+  padding: 14px 42px;
+  background: var(--vg-accent, #e879f9);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 35px var(--vg-glow, #7c3aed);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.vg-btn-start:hover { 
+  transform: scale(1.05);
+  box-shadow: 0 0 45px var(--vg-glow, #7c3aed);
+}
+
+/* ── Pines de Origen y Destino ───────────────────────── */
+.vg-pin {
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 0 15px currentColor, 0 4px 6px rgba(0,0,0,0.5);
+  transform: translateY(9px); /* center offset */
+  position: relative;
+}
+
+.vg-pin::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: vg-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes vg-ping {
+  75%, 100% { transform: scale(2.2); opacity: 0; }
 }
 
 /* ── Vehículos ───────────────────────────────────────── */
@@ -41,27 +158,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-}
-
-.vg-car {
-  font-size: 20px;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  background: white;
-  border: 2px solid #fff;
-  box-shadow: 0 0 15px currentColor;
-}
-
-.vg-plane {
-  /* color se inyecta via react */
 }
 
 /* ── Contenedor del Botón Abrir ──────────────────────── */
 .vg-abrir-container {
   position: absolute;
-  bottom: 44px;
+  top: 44px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
@@ -115,13 +217,15 @@
 .vg-modal-backdrop--in { opacity: 1; }
 
 .vg-modal {
-  background: rgba(8, 10, 28, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 10, 28, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 24px;
-  padding: 38px 34px 30px;
+  padding: 42px 34px 36px;
   width: min(460px, 90vw);
   text-align: center;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.85);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.85), inset 0 0 25px rgba(255, 255, 255, 0.03);
   animation: vg-modal-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
@@ -133,6 +237,7 @@
 .vg-modal-heart {
   margin-bottom: 14px;
   animation: vg-heartbeat 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px var(--vg-glow, currentColor));
 }
 
 @keyframes vg-heartbeat {
@@ -151,10 +256,12 @@
 }
 
 .vg-modal-name {
-  font-size: 1.65rem;
-  color: rgba(255,255,255,0.92);
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.6rem;
+  color: white;
   display: block;
   margin-top: 2px;
+  text-shadow: 0 0 15px var(--vg-glow);
 }
 
 .vg-modal-mensaje {
@@ -188,17 +295,22 @@
 }
 
 .vg-modal-close {
-  padding: 9px 28px;
-  background: transparent;
-  border: 1px solid;
-  border-radius: 8px;
-  font-size: 0.84rem;
-  font-family: inherit;
+  padding: 12px 36px;
+  background: var(--vg-accent);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.18s;
+  box-shadow: 0 0 25px var(--vg-glow);
+  transition: transform 0.2s, box-shadow 0.2s;
   letter-spacing: 0.04em;
 }
-.vg-modal-close:hover { background: rgba(255,255,255,0.06); }
+.vg-modal-close:hover { 
+  transform: scale(1.05);
+  box-shadow: 0 0 40px var(--vg-glow);
+}
 
 /* ── Mobile ──────────────────────────────────────────── */
 @media (max-width: 600px) {

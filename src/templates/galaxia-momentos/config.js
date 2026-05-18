@@ -4,10 +4,10 @@ export const galaxiaMomentosConfig = {
   fields: [
     {
       name: 'titulo',
-      label: 'Nombre de la constelación',
+      label: 'Nombre de tu galaxia',
       type: 'text',
       placeholder: 'Ej. Nuestra Galaxia',
-      defaultValue: 'Galaxia de Recuerdos',
+      defaultValue: 'Galaxia de Momentos',
     },
     {
       name: 'mensaje',
@@ -18,7 +18,7 @@ export const galaxiaMomentosConfig = {
     },
     {
       name: 'para',
-      label: 'Para (nombre de ella)',
+      label: 'Para (nombre del destinatario)',
       type: 'text',
       placeholder: 'Ej. Ana',
     },

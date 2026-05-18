@@ -1,6 +1,6 @@
 export const vueloGlobalConfig = {
   id: 'vuelo-global',
-  name: 'Vuelo Global',
+  name: 'Encuentro Mágico',
   fields: [
     {
       name: 'origen',

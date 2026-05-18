@@ -312,6 +312,7 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                   onChange={(cityObj) => setFormData({ ...formData, [field.name]: cityObj })}
                   placeholder={field.placeholder || ''}
                   accentColor="var(--accent)"
+                  allowExactPin={field.exactPin !== false}
                 />
               ) : (
                 <>
@@ -325,7 +326,8 @@ export default function CustomizeModal({ config, onClose, onSave }) {
                     value={field.type === 'file' ? undefined : (formData[field.name] ?? '')}
                     onChange={(e) => handleChange(e, field)}
                     required={field.required ?? !field.label.includes('(Opcional)')}
-                    disabled={field.type === 'file' && isProcessing}
+                    disabled={(field.type === 'file' && isProcessing) || (!!field.enabledIf && !formData[field.enabledIf])}
+                    title={field.enabledIf && !formData[field.enabledIf] ? 'Primero sube tu música' : undefined}
                   />
                   {field.type === 'file' && isProcessing && (
                     <p className="form-upload-warning">

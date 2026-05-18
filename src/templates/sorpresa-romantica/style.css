@@ -300,32 +300,16 @@
 .tree-container-sr {
     position: relative;
     width: 100%;
-    max-width: 320px;
     flex: 1;
-    min-height: 150px;
-    margin: 0 auto;
-    z-index: 20;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    min-height: 220px;
     pointer-events: none;
     z-index: 0;
 }
 
-.tree-canopy-sr {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 320px;
-}
-
 .tree-svg-sr {
-    width: clamp(5rem, 30%, 10rem);
-    height: auto;
-    max-height: 80%;
-    z-index: 10;
-    margin-bottom: -2%;
-    filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.03));
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 #tree-trunk-sr {
@@ -338,44 +322,14 @@
     transform: scaleY(1);
 }
 
-/* Pétalos */
-.sakura-petal-sr {
+/* Canvas de pétalos cayendo — cubre toda la pantalla */
+.petals-canvas-sr {
     position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: center;
-    border-radius: 50% 0 50% 50%;
-    opacity: 0;
-    transform: translate(160px, 320px) scale(0) rotate(0deg);
-    transition: all 2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 2px 4px rgba(220, 100, 120, 0.2);
-}
-
-.sakura-petal-sr.fly-sr {
-    opacity: 0.85;
-}
-
-.falling-petal-sr {
-    position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    animation: fall-petal var(--fall-duration) linear forwards;
-    z-index: 15;
-    border-radius: 50% 0 50% 50%;
-}
-
-/* Cambiado de 100vh a 1200px para que siempre caiga fuera de cualquier contenedor */
-@keyframes fall-petal {
-    0% {
-        transform: translate(var(--startX), var(--startY)) rotate(var(--startRot)) scale(var(--scale));
-        opacity: 0.85;
-    }
-
-    100% {
-        transform: translate(calc(var(--startX) + var(--drift)), 1200px) rotate(calc(var(--startRot) + 360deg)) scale(var(--scale));
-        opacity: 0;
-    }
+    z-index: 5;
 }
 
 /* ================= DOCK INFERIOR ================= */
@@ -521,21 +475,9 @@
 }
 
 
-@keyframes shine {
-    0% {
-        left: -100%;
-    }
-
-    20%,
-    100% {
-        left: 200%;
-    }
-}
-
 .carta-btn-icon-sr {
     width: clamp(1rem, 3vw, 1.25rem);
     height: auto;
-    color: #fb7185;
 }
 
 .carta-btn-text-sr {
@@ -681,7 +623,7 @@
 }
 
 .modal-title-sr {
-    font-size: clamp(2rem, 8vw, 1rem);
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
     text-align: center;
     margin: 0 0 1rem 0;
     padding: 0.5rem 0;

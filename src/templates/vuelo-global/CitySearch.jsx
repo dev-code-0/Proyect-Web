@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import Map, { Marker } from 'react-map-gl/maplibre';
+import * as turf from '@turf/turf';
 
 export default function CitySearch({ value, onChange, placeholder, accentColor }) {
   const [query,   setQuery]   = useState(value?.name || '');

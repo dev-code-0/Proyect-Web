@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useJardin } from './useJardin';
 import './jardin.css';
 import defaultMusic from './music.mp3';
+import confetti from 'canvas-confetti';
 
 // ─── Placeholder photos (canvas-generated) ───────────────────────────────────
 const PLACEHOLDER_PALETTES = {
@@ -110,14 +111,14 @@ const PHOTO_TITLES = [
 ];
 
 const PHOTO_MESSAGES = [
-  'En cada momento que vivimos juntas hay una flor que nace en mi corazón. Gracias por ser mi jardín más bello.',
+  'En cada momento que vivimos juntos hay una flor que nace en mi corazón. Gracias por ser mi jardín más bello.',
   'Caminar a tu lado es lo más hermoso que me ha dado la vida. Siempre te llevaré en cada paso que dé.',
-  'Tu amor ha sido mi luz en los días oscuros, mi sombra en el sol, mi calma en la tormenta. Gracias, mamá.',
-  'No existen palabras suficientes para decirte cuánto te agradezco todo lo que has dado por mí. Eres todo.',
+  'Tu presencia ha sido mi luz en los días oscuros, mi sombra en el sol, mi calma en la tormenta. Gracias.',
+  'No existen palabras suficientes para decirte cuánto te agradezco todo lo que has dado por mí. Lo eres todo.',
   'Eres el tesoro más grande que guarda mi corazón. Te amo hoy, mañana y todos los días que me queden.',
   'Este jardín lo planté con cada recuerdo tuyo, con cada abrazo, con cada sonrisa. Es solo para ti.',
   'Algunos momentos son tan especiales que se quedan para siempre en el alma. Este es uno de ellos, contigo.',
-  'Donde sea que estés, mi amor por ti llena cada rincón del mundo. Eres mi refugio eterno, mamá.',
+  'Donde sea que estés, mi amor por ti llena cada rincón del mundo. Eres mi refugio eterno.',
 ];
 
 // ─── Typewriter hook ──────────────────────────────────────────────────────────
@@ -194,9 +195,10 @@ export default function JardinScene({ data }) {
   const tema   = data?.tema   || 'rosas';
   const glow   = TEMA_GLOW[tema] || TEMA_GLOW.rosas;
   const bg     = TEMA_BG[tema]   || TEMA_BG.rosas;
-  const titulo = data?.titulo  || 'Jardín de Recuerdos';
+  const titulo  = data?.titulo  || 'Jardín de Recuerdos';
   const mensaje = data?.mensaje || 'Un jardín lleno de amor, creado especialmente para ti.';
-  const para   = data?.para   || '';
+  const de      = data?.de     || '';
+  const para    = data?.para   || '';
 
   const wrapperStyle = {
     background: bg,
@@ -222,6 +224,7 @@ export default function JardinScene({ data }) {
     <JardinView
       data={data}
       titulo={titulo}
+      de={de}
       para={para}
       glow={glow}
       wrapperStyle={wrapperStyle}
@@ -230,7 +233,7 @@ export default function JardinScene({ data }) {
 }
 
 // ─── Garden view (Three.js active) ───────────────────────────────────────────
-function JardinView({ data, titulo, para, glow, wrapperStyle }) {
+function JardinView({ data, titulo, de, para, glow, wrapperStyle }) {
   const containerRef   = useRef(null);
   const [activeFlower, setActiveFlower] = useState(null);
 
@@ -239,13 +242,15 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
 
   // Placeholders (6 gradient images) — only recomputed when tema changes
   const placeholders = useMemo(
-    () => Array.from({ length: 6 }, (_, i) => generatePlaceholderFoto(tema, i)),
+    () => Array.from({ length: 18 }, (_, i) => generatePlaceholderFoto(tema, i)),
     [tema]
   );
 
   const displayFotos = useMemo(() => {
     const arr = Array.isArray(data?.fotos) ? data.fotos.slice(0, 8) : [];
-    return arr.length === 0 ? placeholders : arr;
+    if (arr.length === 0) return placeholders;
+    // Tile photos to always fill 18 flowers around Saturn
+    return Array.from({ length: 18 }, (_, i) => arr[i % arr.length]);
   }, [fotosKey, placeholders]);
 
   // Per-flower overlay text
@@ -260,10 +265,28 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
 
   useEffect(() => {
     onFlowerClickRef.current = (idx) => {
-      setTouring(false); // Stop tour if user clicks manually
-      setActiveFlower((prev) => (prev === idx ? null : idx));
+      setTouring(false);
+      setActiveFlower((prev) => {
+        if (prev !== idx) {
+          const m = glow.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          const hex = m
+            ? `#${parseInt(m[1]).toString(16).padStart(2,'0')}${parseInt(m[2]).toString(16).padStart(2,'0')}${parseInt(m[3]).toString(16).padStart(2,'0')}`
+            : '#ff6b9d';
+          confetti({
+            particleCount: 72,
+            spread: 80,
+            origin: { y: 0.55 },
+            colors: [hex, '#ffffff', '#fff0f8', hex],
+            startVelocity: 30,
+            gravity: 1.15,
+            scalar: 0.82,
+            decay: 0.91,
+          });
+        }
+        return prev === idx ? null : idx;
+      });
     };
-  }, []);
+  }, [glow]);
 
   // Tour logic
   useEffect(() => {
@@ -310,13 +333,26 @@ function JardinView({ data, titulo, para, glow, wrapperStyle }) {
       {/* Title */}
       <h1 className="jm-titulo">{titulo}</h1>
 
-      {/* Para badge — top right */}
-      {para && (
+      {/* De / Para badge — top right */}
+      {(de || para) && (
         <div className="jm-firma-badge">
-          <span className="jm-firma-label">Para</span>
-          <span className="jm-firma-nombre" style={{ textShadow: `0 0 20px ${glow}, 0 0 40px ${glow}` }}>
-            {para}
-          </span>
+          {de && (
+            <>
+              <span className="jm-firma-label">De</span>
+              <span className="jm-firma-nombre" style={{ textShadow: `0 0 20px ${glow}, 0 0 40px ${glow}` }}>
+                {de}
+              </span>
+            </>
+          )}
+          {de && para && <span className="jm-firma-sep" />}
+          {para && (
+            <>
+              <span className="jm-firma-label">Para</span>
+              <span className="jm-firma-nombre" style={{ textShadow: `0 0 20px ${glow}, 0 0 40px ${glow}` }}>
+                {para}
+              </span>
+            </>
+          )}
         </div>
       )}
 

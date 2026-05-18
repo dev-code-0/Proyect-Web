@@ -4,7 +4,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { Reflector } from 'three/addons/objects/Reflector.js';
 
 // ─── Theme palettes ──────────────────────────────────────────────────────────
 const THEMES = {
@@ -181,6 +180,22 @@ function makeSaturnTexture(colorA, colorB) {
   return new THREE.CanvasTexture(c);
 }
 
+function makeNebulaTex(r, g, b) {
+  const S = 512;
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const ctx = c.getContext('2d');
+  const grad = ctx.createRadialGradient(S/2, S/2, 0, S/2, S/2, S/2);
+  grad.addColorStop(0,    `rgba(${r},${g},${b},1)`);
+  grad.addColorStop(0.18, `rgba(${r},${g},${b},0.75)`);
+  grad.addColorStop(0.45, `rgba(${r},${g},${b},0.28)`);
+  grad.addColorStop(0.75, `rgba(${r},${g},${b},0.07)`);
+  grad.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, S, S);
+  return new THREE.CanvasTexture(c);
+}
+
 function makeTextSprite(text, primaryHex) {
   const W = 640, H = 120;
   const canvas = document.createElement('canvas');
@@ -238,13 +253,12 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
 
     // ── SCENE & CAMERA ────────────────────────────────────────────────────────
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(tema.bg, 0.014);
 
     const camera = new THREE.PerspectiveCamera(
       55,
       container.clientWidth / container.clientHeight,
       0.1,
-      300
+      2000
     );
     camera.position.set(0, 80, 0.1);
     camera.lookAt(0, 2, 0);
@@ -266,19 +280,24 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 8;
-    controls.maxDistance = 65;
+    controls.maxDistance = Infinity;
     controls.maxPolarAngle = Math.PI / 2 + 0.08;
     controls.target.set(0, 2, 0);
     controls.enabled = false;
 
-    // ── GROUND GLOW & REFLECTOR (LAGO) ───────────────────────────────────────
+    // ── GROUND DISC ───────────────────────────────────────────────────────────
     const mirrorGeo = new THREE.CircleGeometry(60, 64);
-    const groundMirror = new Reflector(mirrorGeo, {
-      clipBias: 0.003,
-      textureWidth: container.clientWidth * window.devicePixelRatio,
-      textureHeight: container.clientHeight * window.devicePixelRatio,
-      color: 0x222222,
-    });
+    const groundMirror = new THREE.Mesh(
+      mirrorGeo,
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(tema.primary).multiplyScalar(0.06),
+        transparent: true,
+        opacity: 0.22,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      })
+    );
     groundMirror.rotation.x = -Math.PI / 2;
     scene.add(groundMirror);
 
@@ -331,8 +350,11 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
 
     // ── BACKGROUND STAR FIELDS (far + near) ────────────────────────────────
     const nearStarPhases = new Float32Array(STAR_NEAR_COUNT);
-    const nearStarBase = new Float32Array(STAR_NEAR_COUNT);
+    const nearStarBase   = new Float32Array(STAR_NEAR_COUNT);
     const nearStarColors = new Float32Array(STAR_NEAR_COUNT * 3);
+    const nearStarTintR  = new Float32Array(STAR_NEAR_COUNT);
+    const nearStarTintG  = new Float32Array(STAR_NEAR_COUNT);
+    const nearStarTintB  = new Float32Array(STAR_NEAR_COUNT);
     let nearStarsGeo = null;
     {
       const farPos = new Float32Array(STAR_FAR_COUNT * 3);
@@ -366,11 +388,16 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
         nearPos[i * 3 + 2] = r * Math.cos(phi);
 
         nearStarPhases[i] = Math.random() * Math.PI * 2;
-        nearStarBase[i] = 0.55 + Math.random() * 0.45;
+        nearStarBase[i]   = 0.55 + Math.random() * 0.45;
+        // 4 tint palettes: warm amber | cool blue | warm white | soft purple
+        const roll = Math.random();
+        nearStarTintR[i] = roll < 0.30 ? 1.00 : roll < 0.50 ? 0.72 : roll < 0.72 ? 1.00 : 0.88;
+        nearStarTintG[i] = roll < 0.30 ? 0.84 : roll < 0.50 ? 0.82 : roll < 0.72 ? 0.93 : 0.74;
+        nearStarTintB[i] = roll < 0.30 ? 0.68 : roll < 0.50 ? 1.00 : roll < 0.72 ? 0.75 : 1.00;
         const v = nearStarBase[i];
-        nearStarColors[i * 3] = v;
-        nearStarColors[i * 3 + 1] = v;
-        nearStarColors[i * 3 + 2] = v;
+        nearStarColors[i * 3]     = nearStarTintR[i] * v;
+        nearStarColors[i * 3 + 1] = nearStarTintG[i] * v;
+        nearStarColors[i * 3 + 2] = nearStarTintB[i] * v;
       }
       nearStarsGeo = new THREE.BufferGeometry();
       nearStarsGeo.setAttribute('position', new THREE.BufferAttribute(nearPos, 3));
@@ -385,6 +412,134 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
         depthWrite: false,
         blending: THREE.AdditiveBlending,
       })));
+    }
+
+    // ── GALAXY CORE ──────────────────────────────────────────────────────────
+    {
+      const pc = new THREE.Color(tema.primary);
+      const cR = Math.round(pc.r * 255), cG = Math.round(pc.g * 255), cB = Math.round(pc.b * 255);
+      const coreTex   = makeNebulaTex(cR, cG, cB);
+      const whiteTex  = makeNebulaTex(245, 235, 215);
+
+      const outerCore = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: coreTex, transparent: true, opacity: 0.30,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      outerCore.scale.set(95, 95, 1);
+      outerCore.position.set(22, 14, -145);
+      scene.add(outerCore);
+
+      const innerCore = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: whiteTex, transparent: true, opacity: 0.60,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      innerCore.scale.set(24, 24, 1);
+      innerCore.position.set(22, 14, -145);
+      scene.add(innerCore);
+    }
+
+    // ── NEBULAE (5 large background clouds) ──────────────────────────────────
+    {
+      const pc = new THREE.Color(tema.primary);
+      const cR = Math.round(pc.r * 255), cG = Math.round(pc.g * 255), cB = Math.round(pc.b * 255);
+      [
+        { pos: [-125,  18, -55],  sz: 115, rgb: [90, 130, 255],  op: 0.07 },
+        { pos: [ 115, -12,  85],  sz: 100, rgb: [195, 75, 255],  op: 0.06 },
+        { pos: [ -55,  65, 125],  sz:  85, rgb: [255, 175, 55],  op: 0.05 },
+        { pos: [  85,  38,-105],  sz: 105, rgb: [cR, cG, cB],    op: 0.10 },
+        { pos: [ -28, -28,-135],  sz:  75, rgb: [70, 200, 255],  op: 0.06 },
+      ].forEach(({ pos, sz, rgb, op }) => {
+        const s = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: makeNebulaTex(rgb[0], rgb[1], rgb[2]),
+          transparent: true, opacity: op,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        s.scale.set(sz, sz, 1);
+        s.position.set(pos[0], pos[1], pos[2]);
+        scene.add(s);
+      });
+    }
+
+    // ── MILKY WAY BAND ────────────────────────────────────────────────────────
+    {
+      const MW_COUNT  = isMobile ? 2200 : 4500;
+      const MW_R      = 138;
+      const MW_BAND_W = 24;
+      const MW_BAND_H = 7;
+      const TILT_X    = 0.38;
+      const TILT_Z    = 0.18;
+      const cosX = Math.cos(TILT_X), sinX = Math.sin(TILT_X);
+      const cosZ = Math.cos(TILT_Z), sinZ = Math.sin(TILT_Z);
+
+      const mwPos    = new Float32Array(MW_COUNT * 3);
+      const mwColors = new Float32Array(MW_COUNT * 3);
+
+      for (let i = 0; i < MW_COUNT; i++) {
+        const t  = Math.random() * Math.PI * 2;
+        const sR = (Math.random() - 0.5) * MW_BAND_W;
+        const sH = (Math.random() - 0.5) * MW_BAND_H * (1 - Math.abs(sR / MW_BAND_W) * 0.5);
+        let x = Math.cos(t) * (MW_R + sR);
+        let y = sH;
+        let z = Math.sin(t) * (MW_R + sR);
+        // rotate around X
+        const y2 = y * cosX - z * sinX;
+        const z2 = y * sinX + z * cosX;
+        // rotate around Z
+        mwPos[i * 3]     = x * cosZ - y2 * sinZ;
+        mwPos[i * 3 + 1] = x * sinZ + y2 * cosZ;
+        mwPos[i * 3 + 2] = z2;
+        // warm near "galactic center" (angle ~0 and π)
+        const warm = Math.abs(Math.cos(t));
+        const br   = 0.3 + Math.random() * 0.7;
+        mwColors[i * 3]     = br * (0.84 + warm * 0.16);
+        mwColors[i * 3 + 1] = br * (0.87 + warm * 0.13);
+        mwColors[i * 3 + 2] = br * (0.96 + warm * 0.04);
+      }
+
+      const mwGeo = new THREE.BufferGeometry();
+      mwGeo.setAttribute('position', new THREE.BufferAttribute(mwPos, 3));
+      mwGeo.setAttribute('color',    new THREE.BufferAttribute(mwColors, 3));
+      scene.add(new THREE.Points(mwGeo, new THREE.PointsMaterial({
+        size: isMobile ? 0.20 : 0.16,
+        sizeAttenuation: true,
+        map: starSpot,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.72,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      })));
+    }
+
+    // ── GIANT STARS ───────────────────────────────────────────────────────────
+    const giantStars = [];
+    {
+      for (let i = 0; i < 12; i++) {
+        const th  = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        const r   = 55 + Math.random() * 48;
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: starSpot,
+          color: new THREE.Color(2.8, 2.8, 2.8),
+          transparent: true,
+          opacity: 0.55 + Math.random() * 0.45,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        }));
+        const bs = 1.4 + Math.random() * 2.4;
+        sprite.scale.set(bs, bs, 1);
+        sprite.position.set(
+          r * Math.sin(phi) * Math.cos(th),
+          r * Math.sin(phi) * Math.sin(th),
+          r * Math.cos(phi)
+        );
+        sprite.userData.bs    = bs;
+        sprite.userData.phase = Math.random() * Math.PI * 2;
+        sprite.userData.speed = 0.4 + Math.random() * 0.9;
+        sprite.userData.base  = 0.5 + Math.random() * 0.5;
+        scene.add(sprite);
+        giantStars.push(sprite);
+      }
     }
 
     // ── SATURN CENTERPIECE ───────────────────────────────────────────────
@@ -803,6 +958,15 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
         camera.lookAt(0, 2, 0);
       }
 
+      // ── GIANT STAR PULSE ──────────────────────────────────────────────────
+      for (let i = 0; i < giantStars.length; i++) {
+        const gs    = giantStars[i];
+        const pulse = 0.78 + 0.22 * Math.sin(time * gs.userData.speed + gs.userData.phase);
+        gs.material.opacity = gs.userData.base * pulse;
+        const s = gs.userData.bs * (0.94 + 0.06 * pulse);
+        gs.scale.set(s, s, 1);
+      }
+
       // ── SATURN MOTION ──────────────────────────────────────────────────
       saturnBody.rotation.y += dtSec * 0.18;
       const ringWobble = Math.sin(time * 0.35) * 0.05;
@@ -814,12 +978,12 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       // ── STAR TWINKLE ──────────────────────────────────────────────────
       if (nearStarsGeo) {
         for (let i = 0; i < STAR_NEAR_COUNT; i++) {
-          const t = 0.6 + 0.4 * Math.sin(time * 1.2 + nearStarPhases[i]);
-          const v = nearStarBase[i] * t;
+          const t  = 0.6 + 0.4 * Math.sin(time * 1.2 + nearStarPhases[i]);
+          const v  = nearStarBase[i] * t;
           const ii = i * 3;
-          nearStarColors[ii] = v;
-          nearStarColors[ii + 1] = v;
-          nearStarColors[ii + 2] = v;
+          nearStarColors[ii]     = nearStarTintR[i] * v;
+          nearStarColors[ii + 1] = nearStarTintG[i] * v;
+          nearStarColors[ii + 2] = nearStarTintB[i] * v;
         }
         nearStarsGeo.attributes.color.needsUpdate = true;
       }

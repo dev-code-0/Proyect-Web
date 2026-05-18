@@ -1,101 +1,97 @@
-﻿
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .wrapper-fa {
-          container-type: size;
-          position: relative;
-          width: 100%; height: 100%; min-height: 400px;
-          background: radial-gradient(ellipse at center, #332100 0%, #000000 100%);
-          overflow: hidden; touch-action: manipulation;
-          font-family: var(--font-text);
-          /* Desactiva selecciÃ³n para evitar bugs tÃ¡ctiles */
-          user-select: none; -webkit-user-select: none;
-        }
 
-        /* --- CANVAS --- */
-        .fireworks-canvas-fa {
-          position: absolute; inset: 0; z-index: 0; pointer-events: none;
-        }
+/* --- CONTENEDOR PRINCIPAL --- */
+.wrapper-fa {
+  container-type: size;
+  position: relative;
+  width: 100%; height: 100%; min-height: 400px;
+  background: radial-gradient(ellipse at center, #1a0030 0%, #06000e 100%);
+  overflow: hidden; touch-action: manipulation;
+  font-family: var(--font-text);
+  user-select: none; -webkit-user-select: none;
+}
 
-        /* --- ESTRELLAS DE FONDO --- */
-        .star-fa {
-          position: absolute; background-color: #fff; border-radius: 50%;
-          pointer-events: none; z-index: 1;
-          animation: twinkle-fa 4s infinite alternate;
-        }
-        @keyframes twinkle-fa {
-          0%, 100% { opacity: 0.1; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 5px #fff; }
-        }
+/* --- CANVAS --- */
+.fireworks-canvas-fa {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
 
-        /* --- TEXTOS "TE QUIERO" EXPLOSIVOS --- */
-        .floating-text-fa {
-          position: absolute;
-          font-family: var(--font-text);
-          font-size: clamp(1.2rem, 6cqw, 2rem);
-          font-weight: bold;
-          text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-          pointer-events: none; z-index: 5;
-          transform-origin: center;
-          /* Centrar el punto exacto de la explosiÃ³n */
-          transform: translate(-50%, -50%);
-          animation: floatUp-fa 8s ease-out forwards;
-        }
+/* --- ESTRELLAS DE FONDO --- */
+.star-fa {
+  position: absolute; background-color: #fff; border-radius: 50%;
+  pointer-events: none; z-index: 1;
+  animation: twinkle-fa 4s infinite alternate;
+}
+@keyframes twinkle-fa {
+  0%, 100% { opacity: 0.1; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1.2); box-shadow: 0 0 5px #fff; }
+}
 
-        @keyframes floatUp-fa {
-          0% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); opacity: 1; }
-          40% { transform: translate(-50%, calc(-50% - 60px)) scale(1.2) rotate(5deg); opacity: 0.9; }
-          100% { transform: translate(-50%, calc(-50% - 150px)) scale(1.5) rotate(0); opacity: 0; }
-        }
+/* --- TEXTOS "TE QUIERO" EXPLOSIVOS --- */
+.floating-text-fa {
+  position: absolute;
+  font-family: var(--font-text);
+  font-size: clamp(1.2rem, 6cqw, 2rem);
+  font-weight: bold;
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  pointer-events: none; z-index: 5;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  animation: floatUp-fa 8s ease-out forwards;
+}
 
-        /* --- MENSAJE CENTRAL (PACIFICO) --- */
-        .center-message-fa {
-          position: absolute; top: 40%; left: 0; width: 100%;
-          transform: translateY(-50%); text-align: center;
-          font-family: var(--font-text);
-          font-size: clamp(1.5rem, 8cqw, 3rem); line-height: 1.4;
-          color: #ffd966; padding: 0 20px; box-sizing: border-box;
-          text-shadow: 0 0 10px #ffcc33, 0 0 20px #ffb700, 0 0 30px #ffb700;
-          pointer-events: none; z-index: 10;
-          animation: fadeInOut-fa 6s ease-in-out forwards;
-        }
+@keyframes floatUp-fa {
+  0%   { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); opacity: 1; }
+  40%  { transform: translate(-50%, calc(-50% - 60px)) scale(1.2) rotate(5deg); opacity: 0.9; }
+  100% { transform: translate(-50%, calc(-50% - 150px)) scale(1.5) rotate(0); opacity: 0; }
+}
 
-        @keyframes fadeInOut-fa {
-          0% { opacity: 0; transform: translateY(-50%) scale(0.8); }
-          20% { opacity: 1; transform: translateY(-50%) scale(1.05); }
-          30%, 80% { opacity: 1; transform: translateY(-50%) scale(1); }
-          100% { opacity: 0; transform: translateY(-50%) scale(0.8); }
-        }
+/* --- MENSAJE CENTRAL --- */
+.center-message-fa {
+  position: absolute; top: 40%; left: 0; width: 100%;
+  transform: translateY(-50%); text-align: center;
+  font-family: var(--font-text);
+  font-size: clamp(1.5rem, 8cqw, 3rem); line-height: 1.4;
+  color: #ff85a1; padding: 0 20px; box-sizing: border-box;
+  text-shadow: 0 0 10px #ff477e, 0 0 20px #c9184a, 0 0 30px #c9184a;
+  pointer-events: none; z-index: 10;
+  animation: fadeInOut-fa 6s ease-in-out forwards;
+}
 
-        /* --- NOMBRE INFERIOR --- */
-        .bottom-name-fa {
-         
-          position: absolute; bottom: 20px; left: 20px;
-          z-index: 10; font-family: var(--font-text);
-          font-size: clamp(1.2rem, 5cqw, 2rem); color: white;
-          text-shadow: 0 0 10px #ffcc00; opacity: 0.8; pointer-events: none;
-        }
+@keyframes fadeInOut-fa {
+  0%        { opacity: 0; transform: translateY(-50%) scale(0.8); }
+  20%       { opacity: 1; transform: translateY(-50%) scale(1.05); }
+  30%, 80%  { opacity: 1; transform: translateY(-50%) scale(1); }
+  100%      { opacity: 0; transform: translateY(-50%) scale(0.8); }
+}
 
-        .bottom-name-fa p {
-          text-shadow:
-  0 0 2px #fff3b0,
-  0 0 8px #ffee00,
-  0 0 20px #ffea00,
-  0 0 40px #ffd000,
-  0 0 80px rgba(255, 200, 0, 1);
-        }
+/* --- NOMBRE INFERIOR --- */
+.bottom-name-fa {
+  position: absolute; bottom: 20px; left: 20px;
+  z-index: 10; font-family: var(--font-text);
+  font-size: clamp(1.2rem, 5cqw, 2rem); color: white;
+  text-shadow: 0 0 10px #ff477e; opacity: 0.8; pointer-events: none;
+}
 
-        /* --- BOTÃ“N DE INICIO --- */
-        .play-btn-fa {
-          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-          z-index: 100; background: #ffcc00; color: #332200;
-          border: none; border-radius: 50px; padding: 15px 30px;
-          font-size: clamp(1rem, 4cqw, 1.2rem); font-family: var(--font-text);
-          cursor: pointer; box-shadow: 0 0 20px #ffb700; transition: transform 0.2s;
-        }
-        .pulse-btn-fa { animation: btnPulse-fa 1.5s infinite alternate; }
-        
-        @keyframes btnPulse-fa {
-          0% { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 15px #ffb700; }
-          100% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 30px #ffb700, 0 0 40px #ffcc00; }
-        }
-      
+.bottom-name-fa p {
+  text-shadow:
+    0 0 2px #ffb3c6,
+    0 0 8px #ff477e,
+    0 0 20px #ff0a54,
+    0 0 40px #c9184a,
+    0 0 80px rgba(201, 24, 74, 0.8);
+}
+
+/* --- BOTON DE INICIO --- */
+.play-btn-fa {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  z-index: 100; background: #ff2d6b; color: #fff;
+  border: none; border-radius: 50px; padding: 15px 30px;
+  font-size: clamp(1rem, 4cqw, 1.2rem); font-family: var(--font-text);
+  cursor: pointer; box-shadow: 0 0 20px #ff006e; transition: transform 0.2s;
+}
+.pulse-btn-fa { animation: btnPulse-fa 1.5s infinite alternate; }
+
+@keyframes btnPulse-fa {
+  0%   { transform: translate(-50%, -50%) scale(0.95); box-shadow: 0 0 15px #ff006e; }
+  100% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 0 30px #ff006e, 0 0 40px #ff2d6b; }
+}

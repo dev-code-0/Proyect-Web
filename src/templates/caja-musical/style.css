@@ -105,9 +105,13 @@
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: clamp(0.5rem, 2cqw, 0.8rem);
     z-index: 2;
     border: 1px solid var(--color-ribbon);
+}
+
+.vinyl-label-c3d svg {
+    width: 50%;
+    height: 50%;
 }
 
 .spinning-c3d {
@@ -309,7 +313,6 @@
     transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
     cursor: default;
 }
-/* Ocultar la caja cuando se abre (Desvanecimiento) - NUEVO */
 .is-open-c3d .box-body-c3d,
 .is-open-c3d .box-lid-c3d,
 .is-open-c3d .box-shadow-c3d,
@@ -425,15 +428,15 @@
     opacity: 1;
 }
 
-/* Cerradura de corazÃ³n brillante en el frente */
 .heart-lock-c3d {
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #ffd700;
-    font-size: clamp(1rem, 3cqw, 1.5rem);
-    text-shadow: 0 0 10px #ffd700;
+    width: clamp(1rem, 3cqw, 1.5rem);
+    height: clamp(1rem, 3cqw, 1.5rem);
+    filter: drop-shadow(0 0 10px #ffd700);
     z-index: 5;
     transition: opacity 0.5s;
 }
@@ -444,12 +447,12 @@
 
 @keyframes lockPulse {
     0% {
-        text-shadow: 0 0 5px #ffd700;
+        filter: drop-shadow(0 0 5px #ffd700);
         transform: translate(-50%, -50%) scale(0.95);
     }
 
     100% {
-        text-shadow: 0 0 20px #ffb5a7, 0 0 30px #ffb5a7;
+        filter: drop-shadow(0 0 20px #ffb5a7) drop-shadow(0 0 30px #ffb5a7);
         transform: translate(-50%, -50%) scale(1.1);
         color: #fff;
     }
@@ -627,15 +630,15 @@
     box-shadow: 0 0 15px #ffd700, inset -2px -2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* NÃšCLEO MAGICO (CorazÃ³n brillante rotando inversamente) */
 .crystal-core-c3d {
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: clamp(2rem, 8cqw, 3rem);
+    width: clamp(2rem, 8cqw, 3rem);
+    height: clamp(2rem, 8cqw, 3rem);
     color: #fff;
-    text-shadow: 0 0 20px #ffb5a7, 0 0 40px #ff758f, 0 0 60px #fff;
+    filter: drop-shadow(0 0 20px #ffb5a7) drop-shadow(0 0 40px #ff758f);
     animation: floatCrystal 3s ease-in-out infinite alternate, spinCore 10s linear infinite reverse;
 }
 
@@ -746,18 +749,17 @@
     color: #fff;
     opacity: 0;
     pointer-events: none;
-    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.8s, opacity 1s ease 1.8s;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(255, 181, 167, 0.1);
     z-index: 100;
 }
 
-/* .is-open-c3d .message-card-c3d {
+.message-card-c3d.show-modal-c3d {
     transform: translateX(-50%) translateY(0) scale(1);
     opacity: 1;
     pointer-events: auto;
-} */
+}
 
-/* Sello de Cera (Wax Seal) */
 .wax-seal-c3d {
     position: absolute;
     top: -15px;
@@ -770,11 +772,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
     color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), inset 0 0 10px #590d22;
     border: 2px solid #a80a35;
     z-index: 10;
+}
+
+.wax-seal-c3d svg {
+    width: 16px;
+    height: 16px;
 }
 
 .rose-gold-text-c3d {
@@ -835,3 +841,51 @@
     font-family: var(--font-text);
 }
 
+/* --- BOTÓN ABRIR CARTA --- */
+.open-modal-btn-c3d {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #c9184a, #590d22);
+    color: white;
+    border: 2px solid #ffb5a7;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 60;
+    box-shadow: 0 5px 20px rgba(201, 24, 74, 0.6);
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-family: var(--font-text);
+    font-weight: bold;
+}
+
+.open-modal-btn-c3d:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 5px 25px rgba(201, 24, 74, 0.9);
+}
+
+/* --- BOTÓN CERRAR MODAL --- */
+.close-btn-c3d {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: #ffb5a7;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, color 0.2s;
+    z-index: 10;
+}
+
+.close-btn-c3d:hover {
+    transform: scale(1.2);
+    color: #fff;
+}

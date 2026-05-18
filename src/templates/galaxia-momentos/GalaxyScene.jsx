@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { useGalaxy } from './useGalaxy';
 import './galaxia.css';
-import inicioGif    from './inicio.gif';
+import inicioGif     from './inicio.gif';
 import musicaDefault from './Music.mp3';
 import Image1 from './Images/Image1.avif';
 import Image2 from './Images/Image2.avif';
@@ -12,7 +12,7 @@ import Image6 from './Images/Image6.avif';
 
 const PREVIEW_FOTOS = [Image1, Image2, Image3, Image4, Image5, Image6];
 
-// ─── SVG icons (fill="currentColor" — adapt to theme) ────────────────────────
+// ─── SVG icons ────────────────────────────────────────────────────────────────
 const IconSparkle = ({ size = 48 }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" width={size} height={size} aria-hidden="true">
     <path d="M12 0l1.6 9 9.4 3-9.4 3-1.6 9-1.6-9-9.4-3 9.4-3z" />
@@ -44,6 +44,34 @@ const IconClose = ({ size = 12 }) => (
   </svg>
 );
 
+const IconChevronLeft = ({ size = 20 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <polyline points="15 18 9 12 15 6" />
+  </svg>
+);
+
+const IconChevronRight = ({ size = 20 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
+const IconVolume = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+  </svg>
+);
+
+const IconVolumeOff = ({ size = 18 }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" width={size} height={size} aria-hidden="true">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+    <line x1="23" y1="9" x2="17" y2="15" />
+    <line x1="17" y1="9" x2="23" y2="15" />
+  </svg>
+);
+
 // ─── Theme helpers ────────────────────────────────────────────────────────────
 const TEMA_BG = {
   cosmos:    '#020b18',
@@ -58,16 +86,10 @@ const TEMA_GLOW = {
   esmeralda: 'rgba(16, 185, 129, 0.85)',
 };
 
-// ─── Per-photo content (displayed in overlay) ─────────────────────────────────
+// ─── Per-photo content ────────────────────────────────────────────────────────
 const PHOTO_TITLES = [
-  'Para Siempre',
-  'Mi Tesoro',
-  'Amor Infinito',
-  'Mi Mundo',
-  'Tu Sonrisa',
-  'Mi Todo',
-  'Alma Gemela',
-  'Mi Cielo',
+  'Para Siempre', 'Mi Tesoro', 'Amor Infinito', 'Mi Mundo',
+  'Tu Sonrisa',   'Mi Todo',   'Alma Gemela',   'Mi Cielo',
 ];
 
 const PHOTO_MESSAGES = [
@@ -107,86 +129,35 @@ function useTypewriter(text, speed = 35) {
   return { displayed, done };
 }
 
-// ─── Splash screen ────────────────────────────────────────────────────────────
-function SplashScreen({ titulo, mensaje, para, glow, onStart }) {
-  return (
-    <div className="gm-splash">
-      <div className="gm-splash-card">
-        <h1 className="gm-splash-title" style={{ textShadow: `0 0 8px rgba(255,255,255,.9), 0 0 30px ${glow}, 0 0 60px ${glow}` }}>
-          {titulo}
-        </h1>
-
-        <img src={inicioGif} className="gm-splash-gif" alt="" />
-
-        {para && (
-          <p className="gm-splash-para">Para {para}</p>
-        )}
-
-        {mensaje && (
-          <p className="gm-splash-mensaje">{mensaje}</p>
-        )}
-
-        <button className="gm-splash-btn" onClick={onStart}>
-          Iniciar
-        </button>
-      </div>
-    </div>
-  );
+// ─── Entry point ──────────────────────────────────────────────────────────────
+export default function GalaxyScene({ data }) {
+  const resolved = { tema: 'romantica', ...data };
+  return <GalaxyView data={resolved} />;
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
-export default function GalaxyScene({ data }) {
-  const [started, setStarted] = useState(false);
+// ─── Galaxy view ─────────────────────────────────────────────────────────────
+function GalaxyView({ data }) {
+  const containerRef   = useRef(null);
+  const audioRef       = useRef(null);
+  const splashTimerRef = useRef(null);
+  const swipeStartX    = useRef(null);
+
+  const [started,     setStarted]     = useState(false);
+  const [splashOut,   setSplashOut]   = useState(false);
+  const [activePortal, setActivePortal] = useState(null);
+  const [isMuted,     setIsMuted]     = useState(false);
 
   const tema  = data?.tema  || 'romantica';
   const glow  = TEMA_GLOW[tema] || TEMA_GLOW.romantica;
   const bg    = TEMA_BG[tema]   || TEMA_BG.romantica;
 
-  const titulo  = data?.titulo  || 'Galaxia de Recuerdos';
+  const titulo  = data?.titulo  || 'Galaxia de Momentos';
   const mensaje = data?.mensaje || 'Un universo de recuerdos creado especialmente para ti.';
   const para    = data?.para    || '';
 
-  const wrapperStyle = {
-    background: bg,
-    '--gm-bg':   bg,
-    '--gm-glow': glow,
-  };
+  const wrapperStyle = { background: bg, '--gm-bg': bg, '--gm-glow': glow };
 
-  if (!started) {
-    return (
-      <div className="gm-wrapper" style={wrapperStyle}>
-        <SplashScreen
-          titulo={titulo}
-          mensaje={mensaje}
-          para={para}
-          glow={glow}
-          onStart={() => setStarted(true)}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <GalaxyView
-      data={data}
-      titulo={titulo}
-      para={para}
-      glow={glow}
-      wrapperStyle={wrapperStyle}
-      musicaDefault={musicaDefault}
-    />
-  );
-}
-
-// ─── Galaxy view (Three.js active) ───────────────────────────────────────────
-function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDefault }) {
-  const containerRef = useRef(null);
-  const [activePortal, setActivePortal] = useState(null);
-
-  // Photo duplication rule:
-  //   • No upload (preview) → 6 local images × 2 = 12 portals
-  //   • N uploads (1-8)     → N × 2 portals (each photo appears twice)
-  // Stable across renders: only changes when photos actually change.
+  // Photo duplication
   const fotosKey = Array.isArray(data?.fotos) ? data.fotos.join('|') : '';
   const displayFotos = useMemo(() => {
     const arr = Array.isArray(data?.fotos) ? data.fotos.slice(0, 8) : [];
@@ -196,108 +167,218 @@ function GalaxyView({ data, titulo, para, mensaje, glow, wrapperStyle, musicaDef
   }, [fotosKey]);
 
   // Per-portal content
-  const portalTitle   = activePortal !== null ? PHOTO_TITLES[activePortal % PHOTO_TITLES.length]   : '';
+  const portalTitle   = activePortal !== null ? PHOTO_TITLES[activePortal % PHOTO_TITLES.length]     : '';
   const portalMessage = activePortal !== null ? PHOTO_MESSAGES[activePortal % PHOTO_MESSAGES.length] : '';
-
-  // Typewriter — resets whenever activePortal changes (also on reopen)
   const { displayed, done } = useTypewriter(activePortal !== null ? portalMessage : '');
 
-  // Stable click ref for Three.js — updated in effect to avoid render-time ref write
+  // Stable click ref
   const onPortalClickRef = useRef(null);
   useEffect(() => {
-    onPortalClickRef.current = (idx) => setActivePortal((prev) => (prev === idx ? null : idx));
-  }, []); // setActivePortal is stable
+    onPortalClickRef.current = (idx) =>
+      setActivePortal((prev) => (prev === idx ? null : idx));
+  }, []);
 
-  // Enrich data — memoized so the Three.js effect doesn't restart on every render
+  // Three.js — canvas always active (starts in explore mode showing galaxy)
   const enrichedData = useMemo(() => ({
-    tema:    data?.tema,
-    musica:  data?.musica || musicaDefault,
+    tema: data?.tema,
     displayFotos,
-  }), [data?.tema, data?.musica, displayFotos, musicaDefault]);
+  }), [data?.tema, displayFotos]);
 
   const { replayIntro } = useGalaxy(containerRef, enrichedData, onPortalClickRef);
+
+  // Audio cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (splashTimerRef.current) clearTimeout(splashTimerRef.current);
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ''; }
+    };
+  }, []);
+
+  // ── Handlers ───────────────────────────────────────────────────────────────
+  const handleStart = () => {
+    setSplashOut(true);
+    replayIntro();
+
+    const src = data?.musica || musicaDefault;
+    if (src) {
+      const audio = new Audio(src);
+      audio.loop   = true;
+      audio.volume = 0;
+      audioRef.current = audio;
+      audio.play().catch(() => {});
+      let vol = 0;
+      const fadeTimer = setInterval(() => {
+        vol = Math.min(vol + 0.016, 0.78);
+        if (audioRef.current) audioRef.current.volume = vol;
+        if (vol >= 0.78) clearInterval(fadeTimer);
+      }, 60);
+    }
+
+    splashTimerRef.current = setTimeout(() => setStarted(true), 500);
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) audioRef.current.muted = !audioRef.current.muted;
+    setIsMuted((m) => !m);
+  };
 
   const handleFullscreen = () => {
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
   };
 
+  // Overlay navigation
+  const handlePrev = () =>
+    setActivePortal((prev) => (prev - 1 + displayFotos.length) % displayFotos.length);
+  const handleNext = () =>
+    setActivePortal((prev) => (prev + 1) % displayFotos.length);
+
+  // Swipe detection (pointer events, works mouse + touch)
+  const handleSwipeStart = (e) => { swipeStartX.current = e.clientX; };
+  const handleSwipeEnd   = (e) => {
+    if (swipeStartX.current === null) return;
+    const delta = e.clientX - swipeStartX.current;
+    swipeStartX.current = null;
+    if (delta >  50) handlePrev();
+    else if (delta < -50) handleNext();
+  };
+  const handleSwipeCancel = () => { swipeStartX.current = null; };
+
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="gm-wrapper" style={wrapperStyle}>
+
+      {/* Canvas — always in DOM so Three.js shows galaxy behind the splash */}
       <div ref={containerRef} className="gm-canvas" />
 
-      {/* Title */}
-      <h1 className="gm-titulo">{titulo}</h1>
-
-      {/* Para badge — top right */}
-      {para && (
-        <div className="gm-firma-badge">
-          <span className="gm-firma-label">Para</span>
-          <span className="gm-firma-nombre" style={{ textShadow: `0 0 20px ${glow}, 0 0 40px ${glow}` }}>
-            {para}
-          </span>
-        </div>
-      )}
-
-      {/* Empty state — fallback only; with PREVIEW_FOTOS this never shows */}
-      {displayFotos.length === 0 && (
-        <div className="gm-empty" style={{ color: glow }}>
-          <span className="gm-empty-icon"><IconSparkle /></span>
-          <p>Personaliza tu regalo para ver tus fotos entre las estrellas</p>
-        </div>
-      )}
-
-      {displayFotos.length > 0 && (
-        <p className="gm-tap-hint">Toca una estrella para abrirla</p>
-      )}
-
-      {/* Controls */}
-      <div className="gm-controls">
-        <button className="gm-btn" onClick={replayIntro} title="Reiniciar animación" aria-label="Reiniciar"><IconReplay /></button>
-        <button className="gm-btn" onClick={handleFullscreen} title="Pantalla completa" aria-label="Pantalla completa"><IconFullscreen /></button>
-      </div>
-
-      {/* Photo overlay */}
-      {activePortal !== null && (
-        <div className="gm-overlay" onClick={() => setActivePortal(null)}>
-          <div className="gm-overlay-card" onClick={(e) => e.stopPropagation()}>
-
-            {/* Heart accent */}
-            <span className="gm-overlay-heart" style={{ color: glow, filter: `drop-shadow(0 0 8px ${glow})` }} aria-hidden="true">
-              <IconHeart />
-            </span>
-
-            {/* Circular photo */}
-            {displayFotos[activePortal] && (
-              <img
-                src={displayFotos[activePortal]}
-                alt={`Momento ${activePortal + 1}`}
-                className="gm-overlay-img"
-                style={{ boxShadow: `0 0 0 3px rgba(255,255,255,.08), 0 0 32px ${glow}, 0 8px 32px rgba(0,0,0,.5)` }}
-              />
-            )}
-
-            {/* Per-photo title */}
-            <p className="gm-overlay-photo-title" style={{ textShadow: `0 0 20px ${glow}` }}>
-              {portalTitle}
-            </p>
-
-            {/* Typewriter message */}
-            <p className="gm-overlay-typewriter">
-              {displayed}
-              {!done && <span className="gm-cursor" />}
-            </p>
-
-            {/* Close button */}
-            <button
-              className="gm-overlay-cerrar"
-              onClick={() => setActivePortal(null)}
+      {/* Splash — overlay that fades out on Iniciar */}
+      {!started && (
+        <div className={`gm-splash${splashOut ? ' gm-splash--out' : ''}`}>
+          <div className="gm-splash-card">
+            <h1
+              className="gm-splash-title"
+              style={{ textShadow: `0 0 8px rgba(255,255,255,.9), 0 0 30px ${glow}, 0 0 60px ${glow}` }}
             >
-              <span>Cerrar</span>
-              <IconClose />
+              {titulo}
+            </h1>
+
+            <img src={inicioGif} className="gm-splash-gif" alt="" />
+
+            {para && <p className="gm-splash-para">Para {para}</p>}
+
+            {mensaje && <p className="gm-splash-mensaje">{mensaje}</p>}
+
+            <button className="gm-splash-btn" onClick={handleStart}>
+              Iniciar
             </button>
           </div>
         </div>
+      )}
+
+      {/* Main UI — appears after splash */}
+      {started && (
+        <>
+          <h1 className="gm-titulo">{titulo}</h1>
+
+          {para && (
+            <div className="gm-firma-badge">
+              <span className="gm-firma-label">Para</span>
+              <span
+                className="gm-firma-nombre"
+                style={{ textShadow: `0 0 20px ${glow}, 0 0 40px ${glow}` }}
+              >
+                {para}
+              </span>
+            </div>
+          )}
+
+          {displayFotos.length === 0 && (
+            <div className="gm-empty" style={{ color: glow }}>
+              <span className="gm-empty-icon"><IconSparkle /></span>
+              <p>Personaliza tu regalo para ver tus fotos entre las estrellas</p>
+            </div>
+          )}
+
+          {displayFotos.length > 0 && (
+            <p className="gm-tap-hint">Toca una estrella para abrirla</p>
+          )}
+
+          <div className="gm-controls">
+            <button className="gm-btn" onClick={replayIntro} title="Reiniciar animación" aria-label="Reiniciar">
+              <IconReplay />
+            </button>
+            <button
+              className="gm-btn"
+              onClick={toggleMute}
+              title={isMuted ? 'Activar sonido' : 'Silenciar'}
+              aria-label={isMuted ? 'Activar sonido' : 'Silenciar'}
+            >
+              {isMuted ? <IconVolumeOff /> : <IconVolume />}
+            </button>
+            <button className="gm-btn" onClick={handleFullscreen} title="Pantalla completa" aria-label="Pantalla completa">
+              <IconFullscreen />
+            </button>
+          </div>
+
+          {/* Photo overlay */}
+          {activePortal !== null && (
+            <div className="gm-overlay" onClick={() => setActivePortal(null)}>
+              <div
+                className="gm-overlay-card"
+                onClick={(e) => e.stopPropagation()}
+                onPointerDown={handleSwipeStart}
+                onPointerUp={handleSwipeEnd}
+                onPointerCancel={handleSwipeCancel}
+              >
+                <span
+                  className="gm-overlay-heart"
+                  style={{ color: glow, filter: `drop-shadow(0 0 8px ${glow})` }}
+                  aria-hidden="true"
+                >
+                  <IconHeart />
+                </span>
+
+                {displayFotos[activePortal] && (
+                  <img
+                    src={displayFotos[activePortal]}
+                    alt={`Momento ${activePortal + 1}`}
+                    className="gm-overlay-img"
+                    style={{
+                      boxShadow: `0 0 0 3px rgba(255,255,255,.08), 0 0 32px ${glow}, 0 8px 32px rgba(0,0,0,.5)`,
+                    }}
+                  />
+                )}
+
+                <p className="gm-overlay-photo-title" style={{ textShadow: `0 0 20px ${glow}` }}>
+                  {portalTitle}
+                </p>
+
+                <p className="gm-overlay-typewriter">
+                  {displayed}
+                  {!done && <span className="gm-cursor" />}
+                </p>
+
+                {/* Prev / counter / next */}
+                <div className="gm-overlay-nav">
+                  <button className="gm-nav-btn" onClick={handlePrev} aria-label="Foto anterior">
+                    <IconChevronLeft />
+                  </button>
+                  <span className="gm-overlay-counter">
+                    {activePortal + 1} / {displayFotos.length}
+                  </span>
+                  <button className="gm-nav-btn" onClick={handleNext} aria-label="Foto siguiente">
+                    <IconChevronRight />
+                  </button>
+                </div>
+
+                <button className="gm-overlay-cerrar" onClick={() => setActivePortal(null)}>
+                  <span>Cerrar</span>
+                  <IconClose />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import Map, { Marker, Source, Layer, MapProvider } from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-csp-worker.js?url';
+import * as turf from '@turf/turf';
 import { vueloGlobalConfig } from './config.js';
 import { useMapAnimation } from './useMapAnimation.js';
 import ArrivalModal from './ArrivalModal.jsx';
@@ -16,22 +17,22 @@ if (typeof window !== 'undefined') {
 }
 
 // Componente interno que usa el contexto de react-map-gl
-function MapScene({ data, isPreview, temaColors, onArrival }) {
+function MapScene({ data, started, temaColors, onArrival }) {
   const { origen, destino } = data;
-  const { arrived, routeGeojson, vehiclePos, vehicleBearing, isCar } = useMapAnimation({ origen, destino, isPreview });
+  const { arrived, routeGeojson, vehiclePos, vehicleBearing, currentVehicleType } = useMapAnimation({ origen, destino, started });
 
   const [showModal, setShowModal] = useState(false);
   const [showHug, setShowHug] = useState(false);
 
   // Notificar al padre cuando llegue
   useEffect(() => {
-    if (arrived && !isPreview) {
+    if (arrived && started) {
       if (onArrival) onArrival(true);
       setShowHug(true);
       const t = setTimeout(() => setShowHug(false), 3500);
       return () => clearTimeout(t);
     }
-  }, [arrived, isPreview, onArrival]);
+  }, [arrived, started, onArrival]);
 
   // Estilo de la línea
   const lineLayer = useMemo(() => ({
@@ -44,11 +45,11 @@ function MapScene({ data, isPreview, temaColors, onArrival }) {
     },
     paint: {
       'line-color': temaColors.trail,
-      'line-width': isCar ? 4 : 3,
-      'line-dasharray': isCar ? [2, 2] : [1],
+      'line-width': 3,
+      'line-dasharray': [1, 2],
       'line-opacity': 0.8
     }
-  }), [temaColors, isCar]);
+  }), [temaColors]);
 
   return (
     <>
@@ -71,15 +72,15 @@ function MapScene({ data, isPreview, temaColors, onArrival }) {
 
       {/* Marcador de Origen */}
       {origen && (
-        <Marker longitude={origen.lng} latitude={origen.lat} anchor="bottom">
-          <div className="vg-pin" style={{ borderColor: temaColors.primary }}>O</div>
+        <Marker longitude={origen.exactLng || origen.lng} latitude={origen.exactLat || origen.lat} anchor="bottom">
+          <div className="vg-pin" style={{ color: temaColors.primary }}></div>
         </Marker>
       )}
 
       {/* Marcador de Destino */}
       {destino && (
-        <Marker longitude={destino.lng} latitude={destino.lat} anchor="bottom">
-          <div className="vg-pin" style={{ borderColor: temaColors.primary }}>D</div>
+        <Marker longitude={destino.exactLng || destino.lng} latitude={destino.exactLat || destino.lat} anchor="bottom">
+          <div className="vg-pin" style={{ color: temaColors.primary }}></div>
         </Marker>
       )}
 
@@ -91,15 +92,17 @@ function MapScene({ data, isPreview, temaColors, onArrival }) {
           rotation={vehicleBearing}
           anchor="center"
         >
-          {isCar ? (
-            <div className="vg-vehicle vg-car" style={{ background: temaColors.primary }}>🚘</div>
-          ) : (
-            <div className="vg-vehicle vg-plane" style={{ color: temaColors.primary }}>
-               <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28" style={{ transform: 'rotate(-45deg)' }}>
-                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-              </svg>
-            </div>
-          )}
+          <div className="vg-vehicle" style={{ color: '#fff' }}>
+             {currentVehicleType === 'car' ? (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30" style={{ filter: `drop-shadow(0 0 8px ${temaColors.glow})`, transform: 'rotate(90deg)' }}>
+                  <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                </svg>
+             ) : (
+                <svg viewBox="0 0 24 24" fill="currentColor" width="34" height="34" style={{ transform: 'rotate(-45deg)', filter: `drop-shadow(0 0 8px ${temaColors.glow})` }}>
+                  <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+                </svg>
+             )}
+          </div>
         </Marker>
       )}
 
@@ -116,12 +119,22 @@ function MapScene({ data, isPreview, temaColors, onArrival }) {
       )}
 
       {/* Botón de Llegada */}
-      {!isPreview && arrived && !showModal && !showHug && (
+      {started && arrived && !showModal && !showHug && (
         <div className="vg-abrir-container">
           <button
             className="vg-btn-abrir"
             style={{ '--vg-accent': temaColors.primary, '--vg-glow': temaColors.glow }}
-            onClick={() => setShowModal(true)}
+            onClick={async () => {
+              setShowModal(true);
+              const confetti = (await import('canvas-confetti')).default;
+              confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: [temaColors.primary, '#ffffff', temaColors.glow],
+                zIndex: 10000
+              });
+            }}
           >
             Abrir mensaje
           </button>
@@ -141,7 +154,8 @@ function MapScene({ data, isPreview, temaColors, onArrival }) {
 }
 
 export default function VueloGlobal({ isPreview, data }) {
-  const [isInteractive, setIsInteractive] = useState(isPreview);
+  const [started, setStarted] = useState(false);
+  const [isInteractive, setIsInteractive] = useState(false);
 
   // Extraer valores por defecto de la configuración
   const defaultValues = useMemo(() => {
@@ -161,46 +175,52 @@ export default function VueloGlobal({ isPreview, data }) {
   const tema = finalData.tema || 'aurora';
   const temaColors = vueloGlobalConfig.temas[tema] || vueloGlobalConfig.temas.aurora;
 
-  // Mapa base (Dark Matter de Carto) - Gratis sin API Key
+  const isCar = useMemo(() => {
+    if (!finalData.origen || !finalData.destino) return false;
+    const start = [finalData.origen.exactLng || finalData.origen.lng, finalData.origen.exactLat || finalData.origen.lat];
+    const end = [finalData.destino.exactLng || finalData.destino.lng, finalData.destino.exactLat || finalData.destino.lat];
+    const dist = turf.distance(start, end, { units: 'kilometers' });
+    return dist < 400; // Menos de 400km es viaje en auto
+  }, [finalData.origen, finalData.destino]);
+
+  // Mapa base (Dark Matter de Carto) - Gratis sin API Key, súper rápido y ligero
   const mapStyleUrl = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
 
   const rootClass = `vg-root${!isPreview ? ' vg-root--fullscreen' : ''}`;
 
-  const onMapLoad = (e) => {
-    const map = e.target;
-    // Crear un patrón de estrellas en un canvas para usarlo nativamente en MapLibre
-    const canvas = document.createElement('canvas');
-    canvas.width = 300;
-    canvas.height = 300;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#03020a';
-    ctx.fillRect(0, 0, 300, 300);
-    
-    // Dibujar pequeñas estrellas
-    ctx.fillStyle = '#ffffff';
-    for (let i = 0; i < 60; i++) {
-      const x = Math.random() * 300;
-      const y = Math.random() * 300;
-      const radius = Math.random() * 1.2;
-      ctx.globalAlpha = Math.random() * 0.8 + 0.2;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    
-    const dataUrl = canvas.toDataURL();
-    map.loadImage(dataUrl, (error, image) => {
-      if (error) return;
-      map.addImage('stars-pattern', image);
-      if (map.getLayer('background')) {
-        map.setPaintProperty('background', 'background-color', 'transparent'); // Quitamos color sólido
-        map.setPaintProperty('background', 'background-pattern', 'stars-pattern');
-      }
-    });
-  };
+
 
   return (
-    <div className={rootClass}>
+    <div className={rootClass} style={{ '--vg-accent': temaColors.primary, '--vg-glow': temaColors.glow }}>
+      {!started && (
+        <div className="vg-start-overlay">
+          <div className="vg-start-icon" style={{ color: temaColors.primary }}>
+            {isCar ? (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="52" height="52" style={{ filter: `drop-shadow(0 0 12px ${temaColors.glow})` }}>
+                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" fill="currentColor" width="52" height="52" style={{ filter: `drop-shadow(0 0 12px ${temaColors.glow})` }}>
+                <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+              </svg>
+            )}
+          </div>
+          <div className="vg-start-subtitle">TIENES UN MENSAJE ESPECIAL</div>
+          <h2 className="vg-start-title">
+            Para <span style={{ color: temaColors.primary, textShadow: `0 0 15px ${temaColors.glow}` }}>{finalData.para}</span>
+          </h2>
+          <div className="vg-start-route">
+            <span>{finalData.origen?.name}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" style={{ color: temaColors.primary, margin: '0 8px', flexShrink: 0 }}>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+            <span>{finalData.destino?.name}</span>
+          </div>
+          <button className="vg-btn-start" onClick={() => setStarted(true)}>
+            Iniciar viaje
+          </button>
+        </div>
+      )}
       <MapProvider>
         <Map
           initialViewState={{
@@ -217,10 +237,9 @@ export default function VueloGlobal({ isPreview, data }) {
           touchZoomRotate={isInteractive}
           attributionControl={false}
           interactiveLayerIds={[]}
-          onLoad={onMapLoad}
-          style={{ width: '100%', height: '100%', background: '#000510' }}
+          style={{ width: '100%', height: '100%', background: 'transparent' }}
         >
-          <MapScene data={finalData} isPreview={isPreview} temaColors={temaColors} onArrival={() => setIsInteractive(true)} />
+          <MapScene data={finalData} started={started} temaColors={temaColors} onArrival={() => setIsInteractive(true)} />
         </Map>
       </MapProvider>
     </div>
