@@ -148,6 +148,20 @@ function makeStarSpotTexture() {
   return new THREE.CanvasTexture(c);
 }
 
+function makeSoftParticleTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0,    'rgba(255,255,255,0.9)');
+  g.addColorStop(0.25, 'rgba(255,255,255,0.6)');
+  g.addColorStop(0.5,  'rgba(255,255,255,0.2)');
+  g.addColorStop(1,    'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+
 function makeSaturnTexture(colorA, colorB) {
   const c = document.createElement('canvas');
   c.width = c.height = 256;
@@ -347,6 +361,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     scene.add(firefliesPoints);
 
     const starSpot = makeStarSpotTexture();
+    const softParticle = makeSoftParticleTexture();
 
     // ── BACKGROUND STAR FIELDS (far + near) ────────────────────────────────
     const nearStarPhases = new Float32Array(STAR_NEAR_COUNT);
@@ -502,7 +517,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       scene.add(new THREE.Points(mwGeo, new THREE.PointsMaterial({
         size: isMobile ? 0.20 : 0.16,
         sizeAttenuation: true,
-        map: starSpot,
+        map: softParticle,
         vertexColors: true,
         transparent: true,
         opacity: 0.72,
@@ -853,7 +868,7 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
       new THREE.Vector3(-18, 22, -16),
       new THREE.Vector3(12,  12, 18),
       new THREE.Vector3(-6,   7, 14),
-      new THREE.Vector3(0,    6, isMobile ? 48 : 34),
+      new THREE.Vector3(0,   40, isMobile ? 68 : 64),
     ], false, 'centripetal');
 
     // ── AUDIO ─────────────────────────────────────────────────────────────────
@@ -1140,12 +1155,8 @@ export function useJardin(containerRef, data, onFlowerClickRef) {
     raf = requestAnimationFrame(animate);
 
     // ── EXPORT METHODS ────────────────────────────────────────────────────────
-    containerRef.current.takePhoto = () => {
+    containerRef.current.renderFrame = () => {
       composer.render();
-      const link = document.createElement('a');
-      link.download = 'jardin-recuerdos.png';
-      link.href = renderer.domElement.toDataURL('image/png');
-      link.click();
     };
 
     return () => {

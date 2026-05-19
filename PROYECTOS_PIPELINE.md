@@ -166,9 +166,11 @@ Prioriza por tu propio criterio: dificultad técnica vs. demanda comercial vs. a
 
 ---
 
-## 3. Shared Helpers — crear ANTES del bloque 1
+## 3. Bloque 0 — Shared Helpers (✅ COMPLETADO 2026-05-18)
 
-Carpeta: `src/templates/_shared/`
+**Estado:** ✅ Creado (2026-05-18)
+
+Carpeta: `src/templates/_shared/` — 13 helpers creados + npm packages instalados
 
 ### `useTheme.js`
 Sistema de paletas dinámicas. Cada plantilla define sus temas, este hook resuelve `data.tema → { colors, fonts, fx }`.
@@ -223,7 +225,8 @@ Hook que lee `unlock_at` de Supabase, retorna `{ isUnlocked, secondsLeft }`.
 
 | # | Slug | Estado | Categoría | Dif |
 |---|---|---|---|---|
-| 01 | constelacion-nosotros | ⬜ | Pareja | ★★★☆☆ |
+| 00 | _shared | ✅ | Helpers | — |
+| 01 | constelacion-nosotros | ✅ | Pareja | ★★★☆☆ |
 | 02 | vinilo-eterno | ⬜ | Pareja | ★★★★☆ |
 | 03 | hilo-rojo | ⬜ | Pareja | ★★★☆☆ |
 | 04 | globo-aerostatico | ⬜ | Pareja | ★★★★☆ |
@@ -300,7 +303,7 @@ Hook que lee `unlock_at` de Supabase, retorna `{ isUnlocked, secondsLeft }`.
 ---
 
 ### 01. Constelación de Nosotros — `constelacion-nosotros`
-**Estado:** ⬜ Pendiente · **Categoría:** Pareja · **Dificultad:** ★★★☆☆
+**Estado:** ✅ Creado (2026-05-18) · **Categoría:** Pareja · **Dificultad:** ★★★☆☆
 **Objetivo emocional:** "Nuestra historia escrita en las estrellas — oficial, registrable, descargable."
 **Hook visual:** Cielo nocturno 3D. El usuario sube fotos+fechas, cada una es una estrella. Al unir los puntos (drag entre estrellas) se forma la constelación con el nombre de la pareja. Pergamino de "registro estelar" descargable como PNG.
 **Tech:** Three.js + GSAP + canvas 2D para el pergamino final.

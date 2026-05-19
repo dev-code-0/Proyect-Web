@@ -98,4 +98,9 @@ export const templates = [
     title: "Jardín de Recuerdos",
     image: "./images/jardin-madre/preview.svg",
   },
+  {
+    id: "constelacion-nosotros",
+    title: "Constelación de Nosotros",
+    image: "./images/constelacion-nosotros/preview.svg",
+  },
 ];

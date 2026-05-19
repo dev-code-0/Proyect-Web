@@ -20,6 +20,7 @@ import { galaxiaMomentosConfig } from '../templates/galaxia-momentos/config.js';
 import { vueloGlobalConfig } from '../templates/vuelo-global/config.js';
 import { arbolMadreConfig } from '../templates/arbol-madre/config.js';
 import { jardinMadreConfig } from '../templates/jardin-madre/config.js';
+import { constelacionNosotrosConfig } from '../templates/constelacion-nosotros/config.js';
 
 // Components — lazy loaded so each template is its own JS chunk
 const DiaMujerTemplate      = React.lazy(() => import('../templates/dia-mujer/index.jsx'));
@@ -42,6 +43,7 @@ const GalaxyMomentos        = React.lazy(() => import('../templates/galaxia-mome
 const VueloGlobal           = React.lazy(() => import('../templates/vuelo-global/VueloGlobal.jsx'));
 const ArbolMadre            = React.lazy(() => import('../templates/arbol-madre/index.jsx'));
 const JardinMadre           = React.lazy(() => import('../templates/jardin-madre/index.jsx'));
+const ConstelacionNosotros  = React.lazy(() => import('../templates/constelacion-nosotros/index.jsx'));
 
 // Registry: template ID → { Component, config }
 // rosa-virtual uses RosaCreator in Preview (config: null); Component se usa en ViewGift
@@ -68,4 +70,5 @@ export const TEMPLATE_REGISTRY = {
   'vuelo-global':       { Component: VueloGlobal,          config: vueloGlobalConfig },
   'arbol-madre':        { Component: ArbolMadre,           config: arbolMadreConfig },
   'jardin-madre':       { Component: JardinMadre,          config: jardinMadreConfig },
+  'constelacion-nosotros': { Component: ConstelacionNosotros, config: constelacionNosotrosConfig },
 };

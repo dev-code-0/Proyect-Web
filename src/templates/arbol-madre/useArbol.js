@@ -481,7 +481,7 @@ export function useArbol(containerRef, data, onLeafClickRef) {
       new THREE.Vector3(8,   5,    10 ),
       new THREE.Vector3(12,  9,    14 ),
       new THREE.Vector3(10,  12,   16 ),
-      new THREE.Vector3(0,   17,   28 ),
+      new THREE.Vector3(0,   37,   58 ),
     ], false, 'centripetal');
 
     // ── AUDIO ─────────────────────────────────────────────────────────────

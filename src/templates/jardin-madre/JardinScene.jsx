@@ -3,6 +3,7 @@ import { useJardin } from './useJardin';
 import './jardin.css';
 import defaultMusic from './music.mp3';
 import confetti from 'canvas-confetti';
+import html2canvas from 'html2canvas';
 
 // ─── Placeholder photos (canvas-generated) ───────────────────────────────────
 const PLACEHOLDER_PALETTES = {
@@ -91,6 +92,13 @@ const TEMA_BG = {
   lavanda:   '#05000a',
   primavera: '#000a05',
 };
+
+const TEMA_CARD_BG = {
+  rosas:     'rgba(18, 2, 10, 0.93)',
+  girasoles: 'rgba(18, 14, 2, 0.93)',
+  lavanda:   'rgba(8,  2, 18, 0.93)',
+  primavera: 'rgba(2,  16, 8, 0.93)',
+};
 const TEMA_GLOW = {
   rosas:     'rgba(255,107,157,0.85)',
   girasoles: 'rgba(255,210,0,0.85)',
@@ -103,7 +111,7 @@ const PHOTO_TITLES = [
   'Un Recuerdo Especial',
   'Siempre Contigo',
   'Tu Amor me Guía',
-  'Gracias, Mamá',
+  'Mi Gratitud',
   'Mi Mayor Tesoro',
   'Para Ti, con Amor',
   'Momentos Eternos',
@@ -202,8 +210,9 @@ export default function JardinScene({ data }) {
 
   const wrapperStyle = {
     background: bg,
-    '--jm-bg':   bg,
-    '--jm-glow': glow,
+    '--jm-bg':      bg,
+    '--jm-glow':    glow,
+    '--jm-card-bg': TEMA_CARD_BG[tema] || TEMA_CARD_BG.rosas,
   };
 
   if (!started) {
@@ -238,7 +247,6 @@ function JardinView({ data, titulo, de, para, glow, wrapperStyle }) {
   const [activeFlower, setActiveFlower] = useState(null);
 
   const tema      = data?.tema || 'rosas';
-  const fotosKey  = Array.isArray(data?.fotos) ? data.fotos.join('|') : '';
 
   // Placeholders (6 gradient images) — only recomputed when tema changes
   const placeholders = useMemo(
@@ -249,9 +257,8 @@ function JardinView({ data, titulo, de, para, glow, wrapperStyle }) {
   const displayFotos = useMemo(() => {
     const arr = Array.isArray(data?.fotos) ? data.fotos.slice(0, 8) : [];
     if (arr.length === 0) return placeholders;
-    // Tile photos to always fill 18 flowers around Saturn
     return Array.from({ length: 18 }, (_, i) => arr[i % arr.length]);
-  }, [fotosKey, placeholders]);
+  }, [data, placeholders]);
 
   // Per-flower overlay text
   const flowerTitle   = activeFlower !== null ? PHOTO_TITLES[activeFlower   % PHOTO_TITLES.length]   : '';
@@ -320,10 +327,64 @@ function JardinView({ data, titulo, de, para, glow, wrapperStyle }) {
     else document.exitFullscreen?.();
   };
 
-  const handleTakePhoto = () => {
-    if (containerRef.current?.takePhoto) {
-      containerRef.current.takePhoto();
+  const handleTakePhoto = async () => {
+    const wrapper = containerRef.current;
+    if (!wrapper) return;
+
+    // Renderizar frame Three.js en el buffer
+    wrapper.renderFrame?.();
+
+    const wRect = wrapper.getBoundingClientRect();
+    const W = wRect.width, H = wRect.height;
+    const scale = 1920 / W;
+    const FW = Math.round(W * scale), FH = Math.round(H * scale);
+
+    // Canvas de salida
+    const out = document.createElement('canvas');
+    out.width = FW; out.height = FH;
+    const ctx = out.getContext('2d');
+
+    // 1) Dibujar el canvas Three.js directamente (preserveDrawingBuffer:true)
+    const threeCanvas = wrapper.querySelector('canvas');
+    if (threeCanvas) ctx.drawImage(threeCanvas, 0, 0, FW, FH);
+
+    // 2) Capturar todos los elementos HTML del wrapper excepto el canvas WebGL
+    const overlayDiv = document.createElement('div');
+    overlayDiv.style.cssText = [
+      `position:fixed`,
+      `top:${wRect.top}px`,
+      `left:${wRect.left}px`,
+      `width:${W}px`,
+      `height:${H}px`,
+      `pointer-events:none`,
+      `overflow:hidden`,
+      `z-index:9999`,
+    ].join(';');
+    Array.from(wrapper.children).forEach(child => {
+      if (child.tagName !== 'CANVAS') overlayDiv.appendChild(child.cloneNode(true));
+    });
+    document.body.appendChild(overlayDiv);
+
+    try {
+      const overlayCanvas = await html2canvas(overlayDiv, {
+        backgroundColor: null,
+        scale,
+        useCORS: true,
+        logging: false,
+        width: W,
+        height: H,
+        x: wRect.left,
+        y: wRect.top,
+      });
+      ctx.drawImage(overlayCanvas, 0, 0, FW, FH);
+    } finally {
+      document.body.removeChild(overlayDiv);
     }
+
+    const link = document.createElement('a');
+    link.download = 'jardin-recuerdos.png';
+    link.href = out.toDataURL('image/png');
+    link.click();
   };
 
   return (

@@ -1,0 +1,474 @@
+/* ─── Wrapper ────────────────────────────────────────────────────────────── */
+.cn-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--cn-bg, #020b18);
+  color: #fff;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cn-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.cn-canvas canvas {
+  display: block;
+}
+
+/* ─── Floating title (after start) ─────────────────────────────────────── */
+.cn-floating-title {
+  position: absolute;
+  top: clamp(20px, 4vh, 50px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  animation: cn-fade-in 1.2s ease 0.6s forwards;
+}
+
+.cn-floating-title-text {
+  display: block;
+  font-family: 'Dancing Script', 'Pacifico', cursive;
+  font-weight: 600;
+  font-size: clamp(28px, 5.5vw, 54px);
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.cn-floating-title-sub {
+  display: block;
+  margin-top: 6px;
+  font-family: 'Cinzel', 'Outfit', serif;
+  font-weight: 500;
+  font-size: clamp(11px, 1.6vw, 14px);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cn-amp {
+  display: inline-block;
+  margin: 0 8px;
+  opacity: 0.85;
+}
+
+/* ─── Tap hint ──────────────────────────────────────────────────────────── */
+.cn-tap-hint {
+  position: absolute;
+  bottom: clamp(96px, 14vh, 140px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  pointer-events: none;
+  animation: cn-pulse 2.4s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes cn-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* ─── Controls bottom dock ─────────────────────────────────────────────── */
+.cn-controls {
+  position: absolute;
+  bottom: clamp(20px, 4vh, 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+  align-items: center;
+}
+
+.cn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cn-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.cn-btn:active {
+  transform: translateY(0);
+}
+
+.cn-btn--primary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06));
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--cn-glow, #fff);
+  padding: 0 18px;
+}
+
+.cn-btn-label {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ─── Splash overlay ──────────────────────────────────────────────────── */
+.cn-splash {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 10;
+  padding: 24px;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.55) 75%);
+  animation: cn-fade-in 0.6s ease;
+  transition: opacity 0.45s ease;
+}
+
+.cn-splash--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cn-splash-card {
+  width: min(440px, 92vw);
+  padding: 36px 28px 32px;
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.cn-splash-icon {
+  margin-bottom: 14px;
+  display: inline-flex;
+  filter: drop-shadow(0 0 18px currentColor);
+  animation: cn-twinkle 3s ease-in-out infinite;
+}
+
+.cn-splash-title {
+  margin: 0 0 6px;
+  font-family: 'Dancing Script', 'Pacifico', cursive;
+  font-weight: 600;
+  font-size: clamp(32px, 6vw, 48px);
+  color: #fff;
+  line-height: 1.1;
+}
+
+.cn-splash-pair {
+  margin: 0 0 18px;
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.cn-splash-date {
+  margin: -14px 0 18px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.05em;
+}
+
+.cn-splash-desc {
+  margin: 0 0 26px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 38ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cn-splash-btn {
+  display: inline-block;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cn-splash-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+  box-shadow: 0 0 30px var(--cn-glow);
+}
+
+.cn-splash-btn:active {
+  transform: translateY(0);
+}
+
+/* ─── Overlay (star detail) ────────────────────────────────────────────── */
+.cn-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 18px;
+  animation: cn-fade-in 0.3s ease;
+}
+
+.cn-overlay-card {
+  width: min(420px, 94vw);
+  max-height: 86vh;
+  padding: 26px 24px 22px;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid;
+  position: relative;
+  overflow: hidden;
+  animation: cn-rise 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+}
+
+.cn-overlay-icon {
+  display: inline-flex;
+  margin-bottom: 12px;
+  animation: cn-twinkle 3s ease-in-out infinite;
+}
+
+.cn-overlay-img {
+  width: clamp(180px, 50vw, 240px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 0 auto 18px;
+  display: block;
+}
+
+.cn-overlay-title {
+  margin: 0 0 6px;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.cn-overlay-date {
+  margin: 0 0 18px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cn-overlay-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 18px;
+}
+
+.cn-nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease;
+}
+
+.cn-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.cn-overlay-counter {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cn-overlay-cerrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.cn-overlay-cerrar:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ─── Pergamino modal ──────────────────────────────────────────────────── */
+.cn-pergamino-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  animation: cn-fade-in 0.3s ease;
+}
+
+.cn-pergamino-modal {
+  width: min(720px, 96vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.cn-pergamino-preview {
+  flex: 1;
+  width: 100%;
+  max-height: 76vh;
+  overflow: auto;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  background: #111;
+}
+
+.cn-pergamino-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.cn-pergamino-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cn-pergamino-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.22s ease, transform 0.22s ease;
+}
+
+.cn-pergamino-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.cn-pergamino-btn--primary {
+  background: linear-gradient(135deg, var(--cn-glow), rgba(255, 255, 255, 0.15));
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ─── Keyframes ────────────────────────────────────────────────────────── */
+@keyframes cn-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cn-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes cn-twinkle {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.07); }
+}
+
+/* ─── Mobile tweaks ────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cn-floating-title {
+    top: 18px;
+  }
+
+  .cn-btn {
+    height: 40px;
+    min-width: 40px;
+    padding: 0 12px;
+  }
+
+  .cn-btn-label {
+    display: none;
+  }
+
+  .cn-tap-hint {
+    bottom: 90px;
+    font-size: 12px;
+  }
+
+  .cn-splash-card {
+    padding: 28px 22px 26px;
+  }
+
+  .cn-overlay-card {
+    padding: 22px 18px 18px;
+  }
+}

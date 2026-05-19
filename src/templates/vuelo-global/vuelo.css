@@ -160,6 +160,29 @@
   justify-content: center;
 }
 
+/* ── Carro 3D ────────────────────────────────────────── */
+.vg-car3d {
+  animation: vg-car-idle 1.8s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.vg-car3d--moving {
+  animation: vg-car-drive 0.45s ease-in-out infinite;
+}
+
+@keyframes vg-car-idle {
+  0%, 100% { transform: translateY(0px) rotate(0.3deg); }
+  50%       { transform: translateY(-1.5px) rotate(-0.3deg); }
+}
+
+@keyframes vg-car-drive {
+  0%   { transform: translateY(0px)   rotate(-0.8deg) scaleX(1.01); }
+  25%  { transform: translateY(-2px)  rotate(0deg)    scaleX(1.00); }
+  50%  { transform: translateY(-1px)  rotate(0.8deg)  scaleX(0.99); }
+  75%  { transform: translateY(-2.5px) rotate(0deg)   scaleX(1.00); }
+  100% { transform: translateY(0px)   rotate(-0.8deg) scaleX(1.01); }
+}
+
 /* ── Contenedor del Botón Abrir ──────────────────────── */
 .vg-abrir-container {
   position: absolute;

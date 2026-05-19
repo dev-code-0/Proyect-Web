@@ -59,13 +59,13 @@ export function useMapAnimation({ origen, destino, started }) {
       if (isShortTrip) {
         // Only car
         const carData = await getCarRoute(exactStart, exactEnd);
-        segments.push({ type: 'car', ...carData, duration: Math.max(6000, Math.min(carData.distance * 150, 25000)) });
+        segments.push({ type: 'car', ...carData, duration: Math.max(6000, Math.min(carData.distance * 950, 25000)) });
       } else {
         // Multi-modal
         // 1. Car: Exact Start -> City Start
         if (turf.distance(exactStart, cityStart) > 2) {
           const carData1 = await getCarRoute(exactStart, cityStart);
-          segments.push({ type: 'car', ...carData1, duration: Math.max(4000, Math.min(carData1.distance * 150, 10000)) });
+          segments.push({ type: 'car', ...carData1, duration: Math.max(4000, Math.min(carData1.distance * 950, 10000)) });
         }
 
         // 2. Plane: City Start -> City End
@@ -76,7 +76,7 @@ export function useMapAnimation({ origen, destino, started }) {
         // 3. Car: City End -> Exact End
         if (turf.distance(cityEnd, exactEnd) > 2) {
           const carData2 = await getCarRoute(cityEnd, exactEnd);
-          segments.push({ type: 'car', ...carData2, duration: Math.max(4000, Math.min(carData2.distance * 150, 10000)) });
+          segments.push({ type: 'car', ...carData2, duration: Math.max(4000, Math.min(carData2.distance * 950, 10000)) });
         }
       }
 
@@ -106,7 +106,7 @@ export function useMapAnimation({ origen, destino, started }) {
         const endCoord = seg.route.geometry.coordinates[seg.route.geometry.coordinates.length - 1];
         
         // Dynamic camera parameters
-        const zoomLevel = seg.type === 'car' ? 12.5 : (seg.distance > 2000 ? 4 : 5);
+        const zoomLevel = seg.type === 'car' ? 11.5 : (seg.distance > 2000 ? 4 : 5);
         const pitchLevel = seg.type === 'car' ? 55 : 30;
 
         map.flyTo({

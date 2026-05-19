@@ -254,7 +254,7 @@ function GalaxyView({ data }) {
       {/* Splash — overlay that fades out on Iniciar */}
       {!started && (
         <div className={`gm-splash${splashOut ? ' gm-splash--out' : ''}`}>
-          <div className="gm-splash-card">
+          <div className="gm-splash-card" style={{ background: bg, backdropFilter: 'none', WebkitBackdropFilter: 'none' }}>
             <h1
               className="gm-splash-title"
               style={{ textShadow: `0 0 8px rgba(255,255,255,.9), 0 0 30px ${glow}, 0 0 60px ${glow}` }}
@@ -329,6 +329,11 @@ function GalaxyView({ data }) {
                 onPointerDown={handleSwipeStart}
                 onPointerUp={handleSwipeEnd}
                 onPointerCancel={handleSwipeCancel}
+                style={{
+                  background: bg,
+                  borderColor: glow.replace('0.85)', '0.28)'),
+                  boxShadow: `0 0 60px rgba(0,0,0,0.6), 0 0 40px ${glow.replace('0.85)', '0.07)')} inset`,
+                }}
               >
                 <span
                   className="gm-overlay-heart"

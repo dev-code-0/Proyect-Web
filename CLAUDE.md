@@ -136,6 +136,41 @@ Sin Redux ni Context global. Cada página maneja su estado local con `useState`.
 - Fuentes cargadas vía `@fontsource/dancing-script` y `@fontsource/pacifico`.
 - `viernes-13` y `prueba-conex` apuntan al mismo componente en el registry (compatibilidad con registros legacy en BD).
 
+## Responsive Design — Requisitos Obligatorios (NON NEGOTIABLE)
+
+**TODA plantilla creada DEBE cumplir ESTOS tres puntos o será rechazada:**
+
+1. **En CustomizeModal (Preview):** El componente se renderiza dentro de un contenedor fijo en el modal. DEBE adaptarse al tamaño de la pantalla SIN romper layout, sin overflow, sin elementos que se salgan. Usa `position: relative/absolute`, viewport units (`vw`, `vh`, `dvh`), y `max-width`/`max-height`.
+
+2. **En `/view/:id` (ViewGift):** Después que el usuario guarda sus datos, la pantalla pasa a pantalla completa. El componente DEBE ocupar TODO el espacio disponible: `position: fixed; inset: 0; width: 100vw; height: 100dvh`. Sin márgenes, sin espacios en blanco, sin overflow.
+
+3. **Pruebas en múltiples pantallas:** Antes de marcar como ✅ Done, testea en:
+   - Mobile: 320px (Samsung A01), 390px (iPhone 15), 480px (tablet pequeña)
+   - Tablet: 768px, 1024px
+   - Desktop: 1280px, 1920px, 2560px (ultrawide)
+   - Orientación: portrait y landscape en mobile/tablet
+   - NO debe haber scrollbars ocultos, NO debe romper aspecto ratio, NO overflow:hidden si hay contenido importante
+
+**Patrón mínimo para un wrapper de plantilla:**
+```css
+.wrapper {
+  position: fixed;
+  inset: 0;  /* equivalente a top: 0; right: 0; bottom: 0; left: 0; */
+  width: 100vw;
+  height: 100dvh;  /* dvh = dynamic viewport height, mejor en mobile */
+  overflow: hidden;
+}
+
+/* En Preview (CustomizeModal): usa un contenedor relativamente posicionado */
+.container-preview {
+  position: relative;
+  width: 100%;
+  max-width: 90vw;
+  max-height: 70vh;
+  aspect-ratio: 16 / 10;  /* ajusta según necesidad */
+}
+```
+
 ## Reglas de Diseño "Otro Nivel"
 
 - **CERO EMOJIS:** No usar emojis en ninguna parte de la aplicación.
@@ -166,3 +201,4 @@ Sin Redux ni Context global. Cada página maneja su estado local con `useState`.
 | `vuelo-global` | Vuelo Global (Three.js + MapLibre) |
 | `arbol-madre` | Árbol de Momentos — Mamá (Three.js) |
 | `jardin-madre` | Jardín de Recuerdos — Mamá (Three.js) |
+| `constelacion-nosotros` | Constelación de Nosotros (Three.js + canvas export) |

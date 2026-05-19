@@ -28,6 +28,7 @@
   justify-content: center;
   z-index: 50;
   padding: 20px;
+  background: var(--gm-bg, #080010);
 }
 
 .gm-splash-card {

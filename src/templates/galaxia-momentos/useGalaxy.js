@@ -334,6 +334,7 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
 
     // ── STATE ─────────────────────────────────────────────────────────────
     let phase='explore', wormT=0, introT=0;
+    let introPlayed = false; // portals hidden until the first cinematic completes
 
     // ── RAYCASTER (click + hover) ─────────────────────────────────────────
     const raycaster=new THREE.Raycaster(), pointer=new THREE.Vector2();
@@ -393,6 +394,7 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
         controls.enabled=false; camera.position.set(0,0,600);
         wormPoints1.visible=true; wormPoints2.visible=true;
         wormPoints1.material.opacity=0.9; wormPoints2.material.opacity=0.8;
+        introPlayed=true; // portals start fading in from the first frame of the animation
       }
 
       // ── WORMHOLE PHASE ─────────────────────────────────────────────────
@@ -445,8 +447,15 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
         portals[i].lookAt(camera.position); portalRings[i].lookAt(camera.position);
 
         const isHover = i === hoveredIdx;
-        const ringPulse = 0.28 + 0.38 * Math.sin(time*1.3 + portalRings[i].userData.phase);
-        portalRings[i].material.opacity = isHover ? Math.min(ringPulse + 0.45, 1) : ringPulse;
+
+        if (introPlayed) {
+          const portalAlpha = portals[i].material.opacity; // 0→1 as photo fades in
+          const ringPulse = 0.28 + 0.38 * Math.sin(time*1.3 + portalRings[i].userData.phase);
+          const ringTarget = isHover ? Math.min(ringPulse + 0.45, 1) : ringPulse;
+          portalRings[i].material.opacity = ringTarget * portalAlpha;
+        } else {
+          portalRings[i].material.opacity = 0;
+        }
 
         // Smooth scale toward 1.0 (idle) or 1.15 (hover) — independent per portal
         const targetScale = isHover ? 1.15 : 1.0;
@@ -455,8 +464,8 @@ export function useGalaxy(containerRef, data, onPortalClickRef) {
         portals[i].scale.setScalar(next);
         portalRings[i].scale.setScalar(next);
 
-        if (portals[i].userData.loaded && portals[i].material.opacity<1)
-          portals[i].material.opacity=Math.min(portals[i].material.opacity+0.01,1);
+        if (introPlayed && portals[i].userData.loaded && portals[i].material.opacity<1)
+          portals[i].material.opacity=Math.min(portals[i].material.opacity+0.005,1);
       }
 
       for (let i=0;i<textSprites.length;i++) {
